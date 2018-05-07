@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  rawcms:
+    image: rawcms
+    build:
+      context: ./RawCMS
+      dockerfile: Dockerfile
