@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCMS", "RawCMS\RawCMS.csproj", "{0173DCCE-34BA-4988-BA6C-07880C3F71A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS", "RawCMS\RawCMS.csproj", "{0173DCCE-34BA-4988-BA6C-07880C3F71A0}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{543BBE90-C9D8-447C-BC49-060A078FE448}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCMS.Library", "RawCMS.Library\RawCMS.Library.csproj", "{F82B234F-A135-45A6-913A-58B22CE01406}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Library", "RawCMS.Library\RawCMS.Library.csproj", "{F82B234F-A135-45A6-913A-58B22CE01406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCMS.Test", "RawCMS.Test\RawCMS.Test.csproj", "{F354CC2D-3C98-499D-AB1F-E790E7925B70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Test", "RawCMS.Test\RawCMS.Test.csproj", "{F354CC2D-3C98-499D-AB1F-E790E7925B70}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{E88BB72F-C866-4D24-8D1B-DD6B237D376E}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

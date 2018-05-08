@@ -19,7 +19,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Https" Version="2.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
@@ -27,9 +27,14 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NLog" Version="4.5.4" />
     <PackageReference Include="NLog.Config" Version="4.5.4" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="2.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="2.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>

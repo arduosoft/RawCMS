@@ -62,13 +62,15 @@ namespace RawCMS.Library.Service
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(item["_id"].Value<string>()));
 
-
+            
 
             BsonDocument doc = BsonDocument.Parse(item.ToString());
 
             doc["_id"] = BsonObjectId.Create(item["_id"].Value<string>());
 
-            // _mongoService.GetCollection<BsonDocument>(collection).FindOneAndUpdate
+           
+
+            //_mongoService.GetCollection<BsonDocument>(collection).Up
 
             UpdateOptions o = new UpdateOptions();
             o.IsUpsert = true;
@@ -77,11 +79,60 @@ namespace RawCMS.Library.Service
 
             
             
-            _mongoService.GetCollection<BsonDocument>(collection).UpdateOne(filter,doc,o);
+            _mongoService.GetCollection<BsonDocument>(collection).ReplaceOne(filter,doc,o);
 
             return JObject.Parse(item.ToJson(js));
 
 
+        }
+
+
+        public bool Delete(string collection, string id)
+        {
+           
+
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(id));   
+
+            UpdateOptions o = new UpdateOptions();
+            o.IsUpsert = true;
+            o.BypassDocumentValidation = true;
+
+
+
+
+           var result= _mongoService.GetCollection<BsonDocument>(collection).DeleteOne(filter);
+
+
+            return result.DeletedCount == 1;
+
+
+        }
+
+
+        public JObject Get(string collection, string id)
+        {
+
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(id));
+
+
+            var results = _mongoService
+                .GetCollection<BsonDocument>(collection)
+                .Find<BsonDocument>(filter);
+
+            var list = results.ToList();
+
+            var item = list.FirstOrDefault();
+            var json = "{}";
+            //sanitize id format
+            if (item != null)
+            {
+                 item["_id"] = item["_id"].ToString();
+                 json = item.ToJson(js);
+            }
+            
+           
+
+            return JObject.Parse(json);
         }
 
         public ItemList Query(string collection,DataQuery query)
@@ -103,6 +154,12 @@ namespace RawCMS.Library.Service
                 .GetCollection<BsonDocument>(collection).Find<BsonDocument>(filter).Count();
 
             var list = results.ToList();
+
+            //sanitize id format
+            foreach (var item in list)
+            {
+                item["_id"] = item["_id"].ToString();
+            }
            
             
             var json = list.ToJson(js);

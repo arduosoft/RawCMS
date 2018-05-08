@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using RawCMS.Library.Service;
 using RawCMS.Library.DataModel;
 using Newtonsoft.Json.Linq;
+using RawCMS.Model;
 
 namespace RawCMS.Controllers
 {
@@ -17,46 +18,53 @@ namespace RawCMS.Controllers
         {
             this.service = service;
         }
-        // GET api/values
+        // GET api/CRUD/{collection}
         [HttpGet("{collection}")]
-        public ItemList Get(string collection, string rawQuery = null, int pageNumber = 1, int pageSize = 20)
+        public RestMessage<ItemList>  Get(string collection, string rawQuery = null, int pageNumber = 1, int pageSize = 20)
         {
            // CRUDService service = new CRUDService(new MongoService(new MongoSettings() { }));
-            return service.Query(collection, new Library.DataModel.DataQuery()
+            var result= service.Query(collection, new Library.DataModel.DataQuery()
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 RawQuery = rawQuery
             });
-            //return null;
+
+            return new RestMessage<ItemList>  (result);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET api/CRUD/{collection}/5
+        [HttpGet("{collection}/{id}")]
+        public RestMessage<JObject>  Get(string collection, string id)
         {
-            return "value";
+            var data = service.Get(collection, id);
+            return new RestMessage<JObject>(data);
         }
 
-        // POST api/values
+        // POST api/CRUD/{collection}
         [HttpPost("{collection}")]
-        public void Post(string collection,[FromBody]JObject value)
+        public RestMessage<bool> Post(string collection,[FromBody]JObject value)
         {
             service.Insert(collection, value);
+            return new RestMessage<bool>(true);
         }
 
-        // PUT api/values/5
+        // PUT api/CRUD/{collection}/5
         [HttpPut("{collection}/{id}")]
-        public void Put(string collection, string id, [FromBody]JObject value)
+        public RestMessage<bool> Put(string collection, string id, [FromBody]JObject value)
         {
             value["_id"] = id;
             service.Update(collection, value);
+            return new RestMessage<bool>(true);
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // DELETE api/CRUD/{collection}/5
+        [HttpDelete("{collection}/{id}")]
+        public RestMessage<bool> Delete(string collection, string id)
         {
+            
+           var result= service.Delete(collection, id);
+            return new RestMessage<bool>(true);
         }
     }
 }

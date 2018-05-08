@@ -15,6 +15,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace RawCMS
 {
@@ -44,6 +45,16 @@ namespace RawCMS
             services.AddSingleton<CRUDService>();
 
             services.AddMvc();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Web API", Version = "v1" });
+                //x.IncludeXmlComments(AppContext.BaseDirectory + "YourProject.Api.xml");
+                c.IgnoreObsoleteProperties();
+                c.IgnoreObsoleteActions();
+                c.DescribeAllEnumsAsStrings();
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,7 +65,7 @@ namespace RawCMS
             loggerFactory.AddNLog();
             env.ConfigureNLog(".\\conf\\nlog.config");
             app.UseMvc();
-            app.AddNLogWeb();
+           
 
             if (env.IsDevelopment())
             {
@@ -62,7 +73,11 @@ namespace RawCMS
                 app.UseBrowserLink();
             }
 
-            app.UseStaticFiles();
+           
+
+           
+
+
 
             app.UseMvc(routes =>
             {
@@ -70,6 +85,18 @@ namespace RawCMS
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{collection?}/{id?}");
             });
+
+            app.UseSwagger( c=> {
+                c.RouteTemplate = "swagger.json";
+                
+                
+            });
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("ui.json", "Web API");
+            });
+            app.UseStaticFiles();
         }
     }
 }
