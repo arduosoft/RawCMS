@@ -73,11 +73,11 @@ namespace RawCMS
                 app.UseBrowserLink();
             }
 
-           
-
-           
 
 
+
+
+            app.UseMvc();
 
             app.UseMvc(routes =>
             {
@@ -86,15 +86,11 @@ namespace RawCMS
                     template: "{controller=Home}/{action=Index}/{collection?}/{id?}");
             });
 
-            app.UseSwagger( c=> {
-                c.RouteTemplate = "swagger.json";
-                
-                
-            });
+            app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("ui.json", "Web API");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
             app.UseStaticFiles();
         }
