@@ -54,7 +54,17 @@ namespace RawCMS.Controllers
         public RestMessage<bool> Put(string collection, string id, [FromBody]JObject value)
         {
             value["_id"] = id;
-            service.Update(collection, value);
+            service.Update(collection, value,true);
+            return new RestMessage<bool>(true);
+        }
+
+
+        // PUT api/CRUD/{collection}/5
+        [HttpPatch("{collection}/{id}")]
+        public RestMessage<bool> Patch(string collection, string id, [FromBody]JObject value)
+        {
+            value["_id"] = id;
+            service.Update(collection, value,false);
             return new RestMessage<bool>(true);
         }
 

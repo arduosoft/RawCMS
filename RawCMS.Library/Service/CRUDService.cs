@@ -48,7 +48,7 @@ namespace RawCMS.Library.Service
 
         }
 
-        public JObject Update(string collection, JObject item)
+        public JObject Update(string collection, JObject item,bool replace)
         {
             //TODO: create collection if not exists
             try
@@ -75,12 +75,20 @@ namespace RawCMS.Library.Service
             UpdateOptions o = new UpdateOptions();
             o.IsUpsert = true;
             o.BypassDocumentValidation = true;
-            
 
-            
-            
-            _mongoService.GetCollection<BsonDocument>(collection).ReplaceOne(filter,doc,o);
 
+            if (replace)
+            {
+
+                _mongoService.GetCollection<BsonDocument>(collection).ReplaceOne(filter, doc, o);
+
+            }
+            else
+            {
+                BsonDocument dbset = new BsonDocument("$set", doc);
+                _mongoService.GetCollection<BsonDocument>(collection).UpdateOne(filter, dbset, o);
+
+            }
             return JObject.Parse(item.ToJson(js));
 
 
