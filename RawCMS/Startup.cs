@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
+using RawCMS.Library.Core;
 
 namespace RawCMS
 {
@@ -93,6 +94,9 @@ namespace RawCMS
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
             app.UseStaticFiles();
+
+            LambdaManager.SetLogger(loggerFactory);
+            
         }
     }
 }
