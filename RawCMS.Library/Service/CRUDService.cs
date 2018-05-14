@@ -61,6 +61,7 @@ namespace RawCMS.Library.Service
 
         }
 
+
         private void InvokeValidation(JObject newitem, string collection)
         {
             var errors = this.Validate(newitem, collection);
@@ -85,7 +86,8 @@ namespace RawCMS.Library.Service
             
         }
 
-        public JObject Update(string collection, JObject item)
+
+        public JObject Update(string collection, JObject item,bool replace)
         {
             //TODO: create collection if not exists
             try
@@ -120,10 +122,24 @@ namespace RawCMS.Library.Service
 
 
 
-         
-            _mongoService.GetCollection<BsonDocument>(collection).UpdateOne(filter,doc,o);
-            InvokeProcess(collection, ref item, SavePipelineStage.PostSave);
 
+           
+
+
+            if (replace)
+            {
+
+                _mongoService.GetCollection<BsonDocument>(collection).ReplaceOne(filter, doc, o);
+		 InvokeProcess(collection, ref item, SavePipelineStage.PostSave);
+
+            }
+            else
+            {
+                BsonDocument dbset = new BsonDocument("$set", doc);
+                _mongoService.GetCollection<BsonDocument>(collection).UpdateOne(filter, dbset, o);
+		 InvokeProcess(collection, ref item, SavePipelineStage.PostSave);
+
+            }
             return JObject.Parse(item.ToJson(js));
 
 

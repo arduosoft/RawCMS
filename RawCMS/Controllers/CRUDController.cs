@@ -74,12 +74,46 @@ namespace RawCMS.Controllers
         [HttpPut("{collection}/{id}")]
         public RestMessage<bool> Put(string collection, string id, [FromBody]JObject value)
         {
+
             var response = new RestMessage<bool>(false);
             try
             {
 
                 value["_id"] = id;
-                service.Update(collection, value);
+                service.Update(collection, value,true);
+                response.Data = true;
+                return response;
+            }
+            catch (ValidationException err)
+            {
+                response.Errors = err.Errors;
+            }
+            catch (Exception untrapped)
+            {
+                //TODO: log here
+                response.Errors.Add(new Library.Core.Error()
+                {
+                    Code = "UNEXPEXTED",
+                    Title = $"{collection} produces an unexpexted error",
+                    Description = untrapped.Message,
+                });
+            }
+            return response;
+
+         
+        }
+
+
+        // PUT api/CRUD/{collection}/5
+        [HttpPatch("{collection}/{id}")]
+        public RestMessage<bool> Patch(string collection, string id, [FromBody]JObject value)
+        {
+            var response = new RestMessage<bool>(false);
+            try
+            {
+
+                value["_id"] = id;
+                service.Update(collection, value,false);
                 response.Data = true;
                 return response;
             }
