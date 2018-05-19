@@ -27,6 +27,7 @@ namespace RawCMS.Library.Schema
         public string CollectionName { get; set; }
         public bool AllowNonMappedFields { get; set; }
 
+
         public List<Field> FieldSettings { get; set; } = new List<Field>();
     }
 }

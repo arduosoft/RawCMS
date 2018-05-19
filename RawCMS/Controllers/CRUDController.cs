@@ -8,6 +8,7 @@ using RawCMS.Library.DataModel;
 using Newtonsoft.Json.Linq;
 using RawCMS.Model;
 using RawCMS.Library.Core.Exceptions;
+using RawCMS.Library.Core;
 
 namespace RawCMS.Controllers
 {
@@ -15,9 +16,9 @@ namespace RawCMS.Controllers
     public class CRUDController : Controller
     {
         private readonly CRUDService service;
-        public CRUDController(CRUDService service)
+        public CRUDController(LambdaManager manager)
         {
-            this.service = service;
+            this.service = manager.Service;
         }
         // GET api/CRUD/{collection}
         [HttpGet("{collection}")]

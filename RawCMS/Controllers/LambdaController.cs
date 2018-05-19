@@ -11,18 +11,23 @@ namespace RawCMS.Controllers
     [Route("api/[controller]")]
     public class LambdaController : Controller
     {
-        
+        private readonly LambdaManager lambdaManager;
+        public LambdaController(LambdaManager lambdaManager)
+        {
+            this.lambdaManager = lambdaManager;
+        }
+
         [HttpGet()]
         public List<Lambda> Get()
         {
-            return LambdaManager.Current.Lambdas;
+            return lambdaManager.Lambdas;
         }
 
         
-        [HttpPost("{collection}")]
-        public JObject Post(string collection)
+        [HttpPost("{lambda}")]
+        public JObject Post(string lambda)
         {
-            var lamba=LambdaManager.Current[collection] as RestLambda;
+            var lamba= lambdaManager[lambda] as RestLambda;
             if (lamba == null)
             {
                 throw new Exception("Lambda not found or not a Rest Lambda");

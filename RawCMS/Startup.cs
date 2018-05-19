@@ -44,6 +44,8 @@ namespace RawCMS
            
             services.AddSingleton<MongoService>();
             services.AddSingleton<CRUDService>();
+            services.AddSingleton<LambdaManager>();
+
 
             services.AddMvc();
 
@@ -95,7 +97,7 @@ namespace RawCMS
             });
             app.UseStaticFiles();
 
-            LambdaManager.SetLogger(loggerFactory);
+            
             
         }
     }
