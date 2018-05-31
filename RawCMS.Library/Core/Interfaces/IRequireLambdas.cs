@@ -6,6 +6,6 @@ namespace RawCMS.Library.Core.Interfaces
 {
     interface IRequireLambdas
     {
-        void setLambdaManager(LambdaManager manager);
+        void setLambdaManager(AppEngine manager);
     }
 }

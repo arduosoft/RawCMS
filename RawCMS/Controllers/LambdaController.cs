@@ -11,8 +11,8 @@ namespace RawCMS.Controllers
     [Route("api/[controller]")]
     public class LambdaController : Controller
     {
-        private readonly LambdaManager lambdaManager;
-        public LambdaController(LambdaManager lambdaManager)
+        private readonly AppEngine lambdaManager;
+        public LambdaController(AppEngine lambdaManager)
         {
             this.lambdaManager = lambdaManager;
         }

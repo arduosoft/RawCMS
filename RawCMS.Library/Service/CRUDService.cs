@@ -19,7 +19,7 @@ namespace RawCMS.Library.Service
     {
         private readonly MongoService _mongoService;
         private readonly MongoSettings _settings;
-        private  LambdaManager lambdaManager;
+        private  AppEngine lambdaManager;
         JsonWriterSettings js = new JsonWriterSettings()
         {
             OutputMode = JsonOutputMode.Strict,
@@ -284,7 +284,7 @@ namespace RawCMS.Library.Service
             return result;
         }
 
-        public void setLambdaManager(LambdaManager manager)
+        public void setLambdaManager(AppEngine manager)
         {
             this.lambdaManager = manager;
         }

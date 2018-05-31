@@ -5,11 +5,7 @@ using System.Text;
 
 namespace RawCMS.Library.Schema
 {
-    public enum FieldType
-    {
-        text,
-        number
-    }
+   
    
     public class Field
     {
@@ -17,7 +13,7 @@ namespace RawCMS.Library.Schema
         
         public bool Required { get; set; }
         
-        public FieldType Type { get; set; }
+        public string Type { get; set; }
 
         public JObject Options { get; set; }
     }

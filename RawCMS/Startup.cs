@@ -44,7 +44,7 @@ namespace RawCMS
            
             services.AddSingleton<MongoService>();
             services.AddSingleton<CRUDService>();
-            services.AddSingleton<LambdaManager>();
+            services.AddSingleton<AppEngine>();
 
 
             services.AddMvc();

@@ -11,13 +11,14 @@ using System.Linq;
 
 namespace RawCMS.Library.Lambdas
 {
-    public class EntityValidation : SchemaValidationLambda, IRequireCrudService, IInitable
+    public class EntityValidation : SchemaValidationLambda, IRequireCrudService, IInitable,IRequireLambdas
     {
         public override string Name => "Entity Validation";
 
         public override string Description => "Provide generic entity validation, based on configuration";
 
         private static Dictionary<string, CollectionSchema> entities = new Dictionary<string, CollectionSchema>();
+        private static List<FieldTypeValidator> typeValidators = new List<FieldTypeValidator>();
 
 
         private CRUDService service;
@@ -30,17 +31,31 @@ namespace RawCMS.Library.Lambdas
 
         public void Init()
         {
-            var dbEntities = service.Query("_schema",new DataModel.DataQuery() {
-                PageNumber=1,
-                PageSize=int.MaxValue,
-                RawQuery=null
+            InitSchema();
+            InitValidators();
+
+        }
+
+        private void InitValidators()
+        {
+            typeValidators=this.manager.GetAssignablesInstances<FieldTypeValidator>();
+            
+        }
+
+        private void InitSchema()
+        {
+            var dbEntities = service.Query("_schema", new DataModel.DataQuery()
+            {
+                PageNumber = 1,
+                PageSize = int.MaxValue,
+                RawQuery = null
 
             }).Items;
 
             foreach (var item in dbEntities)
             {
-                
-                var schema= item.ToObject<CollectionSchema>();
+
+                var schema = item.ToObject<CollectionSchema>();
                 if (schema.CollectionName != null && !string.IsNullOrEmpty(schema.CollectionName.ToString()))
                 {
                     entities[schema.CollectionName] = schema;
@@ -96,28 +111,10 @@ namespace RawCMS.Library.Lambdas
                 });
             }
 
-
-            if (field.Type == FieldType.text)
+            var typeValidator = typeValidators.FirstOrDefault(x => x.Type == field.Type);
+            if (typeValidator!=null)
             {
-                if (field.Options != null)
-                {
-                    if (field.Options["maxlength"] != null)
-                    {
-                        int maxlenght;
-                        if (int.TryParse(field.Options["maxlength"].ToString(), out maxlenght))
-                        {
-                            if (input[field.Name] != null && maxlenght < input[field.Name].ToString().Length)
-                            {
-                                errors.Add(new Error()
-                                {
-                                    Code = "REQUIRED",
-                                    Title = "Field " + field.Name + " too long"
-                                });
-                            }
-                        }
-                    }
-
-                }
+                errors.AddRange(typeValidator.Validate(input, field));
             }
             return errors;
         }
@@ -125,6 +122,12 @@ namespace RawCMS.Library.Lambdas
         public void SetCRUDService(CRUDService service)
         {
             this.service = service;
+        }
+
+        AppEngine manager;
+        public void setLambdaManager(AppEngine manager)
+        {
+            this.manager = manager;
         }
     }
 }

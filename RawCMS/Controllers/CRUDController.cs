@@ -16,7 +16,7 @@ namespace RawCMS.Controllers
     public class CRUDController : Controller
     {
         private readonly CRUDService service;
-        public CRUDController(LambdaManager manager)
+        public CRUDController(AppEngine manager)
         {
             this.service = manager.Service;
         }
