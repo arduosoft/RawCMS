@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RawCMS.Library.Core.Interfaces
 {
-    interface IRequireLambdas
+    public interface IRequireApp
     {
         void setLambdaManager(AppEngine manager);
     }

@@ -15,7 +15,7 @@ using RawCMS.Library.Core.Interfaces;
 
 namespace RawCMS.Library.Service
 {
-    public class CRUDService:IRequireLambdas
+    public class CRUDService:IRequireApp
     {
         private readonly MongoService _mongoService;
         private readonly MongoSettings _settings;

@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace RawCMS.Library.Lambdas
 {
-    public class EntityValidation : SchemaValidationLambda, IRequireCrudService, IInitable,IRequireLambdas
+    public class EntityValidation : SchemaValidationLambda, IRequireCrudService, IInitable,IRequireApp
     {
         public override string Name => "Entity Validation";
 

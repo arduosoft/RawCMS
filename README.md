@@ -14,10 +14,11 @@ RawCMS is an headless CMS written in asp.net core build for devopers that embrac
 
 ## PHASE 2 - Be ready for production
 - [x] Lambda
-- [ ] Schema definition and validation
-- [ ] Authentication and permission per user
+- [x] Schema definition and validation
+- [ ] Authentication and permission
 - [ ] Data filtering per user
 - [x] Lambda Http
+- [ ] Plugin system
 
 ## PHASE 3 - Ready to send rocket on Mars
 - [ ] design UI for schema managment

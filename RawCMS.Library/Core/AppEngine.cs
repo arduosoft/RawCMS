@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Service;
 using RawCMS.Library.Core.Interfaces;
+using RawCMS.Library.Core.Extension;
 
 namespace RawCMS.Library.Core
 {
@@ -14,6 +15,13 @@ namespace RawCMS.Library.Core
         //#region singleton
         //private static LambdaManager _current = null;
         private static ILogger _logger;
+        private ILoggerFactory loggerFactory;
+
+        public ILogger GetLogger(object caller)
+        {
+           return this.loggerFactory.CreateLogger(caller.GetType());
+        }
+
         //public static void SetLogger(ILoggerFactory factory)
         //{
         //    logger = factory.CreateLogger(typeof(LambdaManager));
@@ -45,6 +53,7 @@ namespace RawCMS.Library.Core
         public AppEngine(ILoggerFactory loggerFactory,CRUDService service)
         {
             _logger = loggerFactory.CreateLogger(typeof(AppEngine));
+            this.loggerFactory = loggerFactory;
             this.service = service;
             this.service.setLambdaManager(this);//TODO: fix this circular dependemcy
             LoadLambdas();
@@ -184,9 +193,9 @@ namespace RawCMS.Library.Core
             {
                 if (instance != null)
                 {
-                    if (instance is IRequireLambdas)
+                    if (instance is IRequireApp)
                     {
-                        ((IRequireLambdas)instance).setLambdaManager(this);
+                        ((IRequireApp)instance).setLambdaManager(this);
                     }
 
                     if (instance is IRequireCrudService)

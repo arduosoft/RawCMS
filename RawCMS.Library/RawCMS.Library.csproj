@@ -5,11 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-   
-  </ItemGroup>
-
-  <ItemGroup>
-    
+    <Compile Include="Core\Interfaces\IRequireApp.cs" />
   </ItemGroup>
 
   <ItemGroup>
