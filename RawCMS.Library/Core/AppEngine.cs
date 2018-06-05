@@ -79,7 +79,7 @@ namespace RawCMS.Library.Core
         public List<Type> GetAnnotatedBy<T>() where T : Attribute
         {
             List<Type> result = new List<Type>();
-            List<Assembly> bundledAssemblies = GetAssemblyInScope<T>();
+            List<Assembly> bundledAssemblies = GetAssemblyInScope();
             foreach (var assembly in bundledAssemblies)
             {
                 _logger.LogInformation("loading from" + assembly.FullName);
@@ -127,8 +127,13 @@ namespace RawCMS.Library.Core
         /// <returns></returns>
         public List<Type> GetImplementors<T>() where T : class
         {
+            return GetImplementors(typeof(T), GetAssemblyInScope());
+        }
+
+        private List<Type> GetImplementors(Type t, List<Assembly> bundledAssemblies) 
+        {
             List<Type> result = new List<Type>();
-            List<Assembly> bundledAssemblies = GetAssemblyInScope<T>();
+            
             foreach (var assembly in bundledAssemblies)
             {
                 _logger.LogInformation("loading from" + assembly.FullName);
@@ -139,7 +144,7 @@ namespace RawCMS.Library.Core
                 {
                     try
                     {
-                        if (typeof(T).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
+                        if (t.IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
                         {
                             result.Add(type);
                         }
@@ -158,19 +163,35 @@ namespace RawCMS.Library.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public List<Assembly> GetAssemblyInScope<T>() where T : class
+        public List<Assembly> GetAssemblyInScope() 
         {
             //TODO: use configuration to define assembly map or regexp to define where to lookup
             return AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.StartsWith("RawCMS")).ToList();
         }
 
-        /// <summary>
-        /// give instances of a list of types
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="types"></param>
-        /// <returns></returns>
-        public List<T> GetInstancesFromTypes<T>(List<Type> types) where T : class
+        public List<Assembly> GetAssemblyWithInstance() 
+        {
+            List<Assembly> result = new List<Assembly>();
+            var assList = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var ass in assList)
+            {
+                var implementors=this.GetImplementors(typeof(Plugin), new List<Assembly>() { ass});
+                if (implementors.Count > 0)
+                {
+                    result.Add(ass);
+                }
+            }
+            return result;
+        }
+
+
+            /// <summary>
+            /// give instances of a list of types
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="types"></param>
+            /// <returns></returns>
+            public List<T> GetInstancesFromTypes<T>(List<Type> types) where T : class
         {
             List<T> result = new List<T>();
             
