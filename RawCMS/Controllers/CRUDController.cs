@@ -9,10 +9,12 @@ using Newtonsoft.Json.Linq;
 using RawCMS.Model;
 using RawCMS.Library.Core.Exceptions;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Attributes;
 
 namespace RawCMS.Controllers
 {
     [Route("api/[controller]")]
+    [ParameterValidator("collection", "_(.*)", true)]
     public class CRUDController : Controller
     {
         private readonly CRUDService service;
