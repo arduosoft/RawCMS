@@ -9,14 +9,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using RawCMS.Library.Core;
+using RawCMS.Library.Core.Exceptions;
+using RawCMS.Library.Core.Interfaces;
 
 namespace RawCMS.Library.Service
 {
-    public class CRUDService
+    public class CRUDService:IRequireApp
     {
         private readonly MongoService _mongoService;
         private readonly MongoSettings _settings;
-
+        private  AppEngine lambdaManager;
         JsonWriterSettings js = new JsonWriterSettings()
         {
             OutputMode = JsonOutputMode.Strict,
@@ -30,30 +33,73 @@ namespace RawCMS.Library.Service
 
         public JObject Insert(string collection, JObject newitem)
         {
-            //TODO: create collection if not exists
+
+            InvokeValidation(newitem, collection);
+
+
+
             try
             {
+
                 _mongoService.GetDatabase().CreateCollection(collection);
+
             }
-            catch 
+            catch
             {
                 //Check for collection exists...
             }
 
+
+
+            InvokeProcess(collection, ref newitem, SavePipelineStage.PreSave);
+
             var json = newitem.ToString();
             _mongoService.GetCollection<BsonDocument>(collection).InsertOne(BsonSerializer.Deserialize<BsonDocument>(json));
+            InvokeProcess(collection, ref newitem, SavePipelineStage.PostSave);
 
             return JObject.Parse(newitem.ToJson(js));
 
 
         }
 
-        public JObject Update(string collection, JObject item,bool replace)
+
+        private void InvokeValidation(JObject newitem, string collection)
         {
+            var errors = this.Validate(newitem, collection);
+            if (errors.Count > 0)
+            {
+                throw new ValidationException(errors, null);
+
+            }
+        }
+
+        private void InvokeProcess(string collection, ref JObject item, SavePipelineStage save)
+        {
+            var processhandlers = lambdaManager.Lambdas
+                .Where(x => x is DataProcessLambda)
+                .Where(x => ((DataProcessLambda)x).Stage == save)
+                .ToList();
+
+            foreach (DataProcessLambda h in processhandlers)
+            {
+                h.Execute(collection, ref item);
+            }
+
+        }
+
+
+        public JObject Update(string collection, JObject item, bool replace)
+        {
+
+            //TODO: why do not manage validation as a simple presave process?
+            InvokeValidation(item, collection);
+
             //TODO: create collection if not exists
             try
             {
+
                 _mongoService.GetDatabase().CreateCollection(collection);
+
             }
             catch
             {
@@ -62,13 +108,16 @@ namespace RawCMS.Library.Service
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(item["_id"].Value<string>()));
 
-            
 
+
+            InvokeProcess(collection, ref item, SavePipelineStage.PreSave);
+
+            //insert id (mandatory)
             BsonDocument doc = BsonDocument.Parse(item.ToString());
-
             doc["_id"] = BsonObjectId.Create(item["_id"].Value<string>());
 
-           
+            //set into "incremental" update mode
+            doc = new BsonDocument("$set", doc);
 
             //_mongoService.GetCollection<BsonDocument>(collection).Up
 
@@ -77,16 +126,23 @@ namespace RawCMS.Library.Service
             o.BypassDocumentValidation = true;
 
 
+
+
+
+
+
             if (replace)
             {
 
                 _mongoService.GetCollection<BsonDocument>(collection).ReplaceOne(filter, doc, o);
+                InvokeProcess(collection, ref item, SavePipelineStage.PostSave);
 
             }
             else
             {
                 BsonDocument dbset = new BsonDocument("$set", doc);
                 _mongoService.GetCollection<BsonDocument>(collection).UpdateOne(filter, dbset, o);
+                InvokeProcess(collection, ref item, SavePipelineStage.PostSave);
 
             }
             return JObject.Parse(item.ToJson(js));
@@ -97,9 +153,9 @@ namespace RawCMS.Library.Service
 
         public bool Delete(string collection, string id)
         {
-           
 
-            var filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(id));   
+
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(id));
 
             UpdateOptions o = new UpdateOptions();
             o.IsUpsert = true;
@@ -108,7 +164,7 @@ namespace RawCMS.Library.Service
 
 
 
-           var result= _mongoService.GetCollection<BsonDocument>(collection).DeleteOne(filter);
+            var result = _mongoService.GetCollection<BsonDocument>(collection).DeleteOne(filter);
 
 
             return result.DeletedCount == 1;
@@ -134,23 +190,23 @@ namespace RawCMS.Library.Service
             //sanitize id format
             if (item != null)
             {
-                 item["_id"] = item["_id"].ToString();
-                 json = item.ToJson(js);
+                item["_id"] = item["_id"].ToString();
+                json = item.ToJson(js);
             }
-            
-           
+
+
 
             return JObject.Parse(json);
         }
 
-        public ItemList Query(string collection,DataQuery query)
+        public ItemList Query(string collection, DataQuery query)
         {
-          
+
 
             FilterDefinition<BsonDocument> filter = FilterDefinition<BsonDocument>.Empty;
             if (query.RawQuery != null)
             {
-                filter=   new JsonFilterDefinition<BsonDocument>(query.RawQuery);
+                filter = new JsonFilterDefinition<BsonDocument>(query.RawQuery);
             }
 
             var results = _mongoService
@@ -168,12 +224,69 @@ namespace RawCMS.Library.Service
             {
                 item["_id"] = item["_id"].ToString();
             }
-           
-            
+
+
             var json = list.ToJson(js);
-            
-            return  new ItemList(JArray.Parse(json), (int)count,query.PageNumber, query.PageSize);
+
+            return new ItemList(JArray.Parse(json), (int)count, query.PageNumber, query.PageSize);
         }
 
+
+
+
+
+
+
+        public List<Error> Validate(JObject item, string collection)
+        {
+            List<Error> result = new List<Error>();
+            result.AddRange(ValidateGeneric(item, collection));
+            result.AddRange(ValidateSpecific(item, collection));
+
+
+            return result;
+
+        }
+
+
+        private  List<Error> ValidateSpecific(JObject item, string collection)
+        {
+            List<Error> result = new List<Error>();
+
+            var labdas = this.lambdaManager.Lambdas
+                .Where(x => x is CollectionValidationLambda)
+                .Where(x => ((CollectionValidationLambda)x).TargetCollections.Contains(collection))
+                .ToList();
+
+            foreach (CollectionValidationLambda lambda in labdas)
+            {
+                var errors = lambda.Validate(item);
+                result.AddRange(errors);
+            }
+
+            return result;
+
+
+        }
+        private  List<Error> ValidateGeneric(JObject item, string collection)
+        {
+            List<Error> result = new List<Error>();
+
+            var labdas = lambdaManager.Lambdas
+                .Where(x => x is SchemaValidationLambda).ToList();
+
+            foreach (SchemaValidationLambda lambda in labdas)
+            {
+                var errors = lambda.Validate(item, collection);
+                result.AddRange(errors);
+            }
+
+            return result;
+        }
+
+        public void setLambdaManager(AppEngine manager)
+        {
+            this.lambdaManager = manager;
+        }
     }
 }

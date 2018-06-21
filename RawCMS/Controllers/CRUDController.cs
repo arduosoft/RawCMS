@@ -7,16 +7,20 @@ using RawCMS.Library.Service;
 using RawCMS.Library.DataModel;
 using Newtonsoft.Json.Linq;
 using RawCMS.Model;
+using RawCMS.Library.Core.Exceptions;
+using RawCMS.Library.Core;
+using RawCMS.Library.Core.Attributes;
 
 namespace RawCMS.Controllers
 {
     [Route("api/[controller]")]
+    [ParameterValidator("collection", "_(.*)", true)]
     public class CRUDController : Controller
     {
         private readonly CRUDService service;
-        public CRUDController(CRUDService service)
+        public CRUDController(AppEngine manager)
         {
-            this.service = service;
+            this.service = manager.Service;
         }
         // GET api/CRUD/{collection}
         [HttpGet("{collection}")]
@@ -45,17 +49,61 @@ namespace RawCMS.Controllers
         [HttpPost("{collection}")]
         public RestMessage<bool> Post(string collection,[FromBody]JObject value)
         {
-            service.Insert(collection, value);
-            return new RestMessage<bool>(true);
+            var response = new RestMessage<bool>(false);
+            try
+            {
+                service.Insert(collection, value);
+                response.Data = true;
+                return response;
+            }
+            catch (ValidationException err)
+            {
+                response.Errors = err.Errors;
+            }
+            catch (Exception untrapped)
+            {
+                //TODO: log here
+                response.Errors.Add(new Library.Core.Error()
+                {
+                    Code = "UNEXPEXTED",
+                    Title = $"{collection} produces an unexpexted error",
+                    Description = untrapped.Message,
+                });
+            }
+            return response;
         }
 
         // PUT api/CRUD/{collection}/5
         [HttpPut("{collection}/{id}")]
         public RestMessage<bool> Put(string collection, string id, [FromBody]JObject value)
         {
-            value["_id"] = id;
-            service.Update(collection, value,true);
-            return new RestMessage<bool>(true);
+
+            var response = new RestMessage<bool>(false);
+            try
+            {
+
+                value["_id"] = id;
+                service.Update(collection, value,true);
+                response.Data = true;
+                return response;
+            }
+            catch (ValidationException err)
+            {
+                response.Errors = err.Errors;
+            }
+            catch (Exception untrapped)
+            {
+                //TODO: log here
+                response.Errors.Add(new Library.Core.Error()
+                {
+                    Code = "UNEXPEXTED",
+                    Title = $"{collection} produces an unexpexted error",
+                    Description = untrapped.Message,
+                });
+            }
+            return response;
+
+         
         }
 
 
@@ -63,18 +111,58 @@ namespace RawCMS.Controllers
         [HttpPatch("{collection}/{id}")]
         public RestMessage<bool> Patch(string collection, string id, [FromBody]JObject value)
         {
-            value["_id"] = id;
-            service.Update(collection, value,false);
-            return new RestMessage<bool>(true);
+            var response = new RestMessage<bool>(false);
+            try
+            {
+
+                value["_id"] = id;
+                service.Update(collection, value,false);
+                response.Data = true;
+                return response;
+            }
+            catch (ValidationException err)
+            {
+                response.Errors = err.Errors;
+            }
+            catch (Exception untrapped)
+            {
+                //TODO: log here
+                response.Errors.Add(new Library.Core.Error()
+                {
+                    Code = "UNEXPEXTED",
+                    Title = $"{collection} produces an unexpexted error",
+                    Description = untrapped.Message,
+                });
+            }
+            return response;
         }
 
         // DELETE api/CRUD/{collection}/5
         [HttpDelete("{collection}/{id}")]
         public RestMessage<bool> Delete(string collection, string id)
         {
-            
-           var result= service.Delete(collection, id);
-            return new RestMessage<bool>(true);
+            var response = new RestMessage<bool>(false);
+            try
+            {
+                var result= service.Delete(collection, id);
+                response.Data = true;
+                return response;
+            }
+            catch (ValidationException err)
+            {
+                response.Errors = err.Errors;
+            }
+            catch (Exception untrapped)
+            {
+                //TODO: log here
+                response.Errors.Add(new Library.Core.Error()
+                {
+                    Code = "UNEXPEXTED",
+                    Title = $"{collection} produces an unexpexted error",
+                    Description = untrapped.Message,
+                });
+            }
+            return response;
         }
     }
 }

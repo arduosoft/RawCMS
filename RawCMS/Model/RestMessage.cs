@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RawCMS.Library.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,20 +13,15 @@ namespace RawCMS.Model
         KO,
         CompletedWithErrors
     }
-        public class RestMessage
-    {
 
-        public string Code { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
 
-    }
+   
 
     public class RestMessage<T>
     {
-        public List<RestMessage> Errors { get; set; } = new List<RestMessage>();
-        public List<RestMessage> Warnings { get; set; } = new List<RestMessage>();
-        public List<RestMessage> Infos { get; set; } = new List<RestMessage>();
+        public List<Error> Errors { get; set; } = new List<Error>();
+        public List<Error> Warnings { get; set; } = new List<Error>();
+        public List<Error> Infos { get; set; } = new List<Error>();
 
         public RestStatus Status { get; set; }
 
