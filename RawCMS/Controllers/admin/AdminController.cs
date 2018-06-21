@@ -8,7 +8,7 @@ using RawCMS.Library.Core.Attributes;
 
 namespace RawCMS.Controllers.admin
 {
-    [Route("admin/[controller]")]
+    [Route("system/[controller]")]
     [ParameterValidator("collection","_(.*)",false)]
     public class AdminController : CRUDController
     {

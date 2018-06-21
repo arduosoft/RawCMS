@@ -9,7 +9,7 @@ namespace RawCMS.Library.Schema.Validation
    
     public class DateTimeValidation : FieldTypeValidator
     {
-        public override string Type =>"int";
+        public override string Type =>"date";
 
         public override List<Error> Validate(JObject input, Field field)
         {

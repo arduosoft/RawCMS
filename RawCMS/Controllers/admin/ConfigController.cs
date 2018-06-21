@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RawCMS.Controllers.admin
 {
-    [Route("admin/[controller]")]
+    [Route("system/[controller]")]
     public class ConfigController : Controller
     {
         
