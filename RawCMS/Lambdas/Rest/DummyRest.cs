@@ -15,9 +15,12 @@ namespace RawCMS.Lambdas.Rest
 
         public override JObject Rest(JObject input)
         {
-            var result = new JObject();
-            result["input"] = input;
-            result["now"] = DateTime.Now;
+            var result = new JObject()
+            {
+                { "input",input},
+                { "now",DateTime.Now}
+            };
+
             return result;
         }
     }

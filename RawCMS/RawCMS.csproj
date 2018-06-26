@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <StartupObject>RawCMS.Program</StartupObject>
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

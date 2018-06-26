@@ -121,10 +121,12 @@ namespace RawCMS.Library.Service
 
             //_mongoService.GetCollection<BsonDocument>(collection).Up
 
-            UpdateOptions o = new UpdateOptions();
-            o.IsUpsert = true;
-            o.BypassDocumentValidation = true;
-
+            UpdateOptions o = new UpdateOptions()
+            {
+               IsUpsert = true,
+            BypassDocumentValidation = true
+           };
+            
 
 
 
@@ -156,12 +158,6 @@ namespace RawCMS.Library.Service
 
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(id));
-
-            UpdateOptions o = new UpdateOptions();
-            o.IsUpsert = true;
-            o.BypassDocumentValidation = true;
-
-
 
 
             var result = _mongoService.GetCollection<BsonDocument>(collection).DeleteOne(filter);
@@ -284,7 +280,7 @@ namespace RawCMS.Library.Service
             return result;
         }
 
-        public void setLambdaManager(AppEngine manager)
+        public void SetAppEngine(AppEngine manager)
         {
             this.lambdaManager = manager;
         }

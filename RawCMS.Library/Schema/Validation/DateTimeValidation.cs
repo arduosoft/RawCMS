@@ -18,8 +18,8 @@ namespace RawCMS.Library.Schema.Validation
             {
                 if (input[field.Name] == null) return errors ; //null check is done on main validation
 
-                DateTime value;
-                if ( !DateTime.TryParse(input[field.Name].ToString(), out value))
+                
+                if ( !DateTime.TryParse(input[field.Name].ToString(), out DateTime value))
                 {
                     
                     errors.Add(new Error()
@@ -32,8 +32,8 @@ namespace RawCMS.Library.Schema.Validation
 
                 if (field.Options["max"] != null)
                 {
-                    DateTime max;
-                    if (DateTime.TryParse(field.Options["max"].ToString(), out max))
+                    
+                    if (DateTime.TryParse(field.Options["max"].ToString(), out DateTime max))
                     {
                         if (input[field.Name] != null && max.Subtract(value).TotalMilliseconds<0)
                         {
@@ -48,8 +48,8 @@ namespace RawCMS.Library.Schema.Validation
 
                 if (field.Options["min"] != null)
                 {
-                    DateTime min;
-                    if (DateTime.TryParse(field.Options["min"].ToString(), out min))
+                  ;
+                    if (DateTime.TryParse(field.Options["min"].ToString(), out DateTime min))
                     {
                         if (input[field.Name] != null && min.Subtract(value).TotalMilliseconds > 0)
                         {

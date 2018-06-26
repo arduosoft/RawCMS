@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using RawCMS.Library.Service;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Core.Extension;
+using System.IO;
 
 namespace RawCMS.Library.Core
 {
@@ -36,28 +37,46 @@ namespace RawCMS.Library.Core
         //#endregion
 
 
-        public List<Lambda> Lambdas { get; set; } = new List<Lambda>();
+       
 
         public CRUDService Service { get { return service; } }
 
-        public Lambda this[string name]
-        {
-            get
-            {
-                return Lambdas.FirstOrDefault(x => x.Name == name);
-            }
-        }
+        public List<Lambda> Lambdas { get; set; } = new List<Lambda>();
+        //public Lambda this[string name]
+        //{
+        //    get
+        //    {
+        //        return Lambdas.FirstOrDefault(x => x.Name == name);
+        //    }
+        //}
 
-      
-        
+        public List<Plugin> Plugins { get; set; } = new List<Plugin>();
+        //public Plugin this[string name]
+        //{
+        //    get
+        //    {
+        //        return Plugin.FirstOrDefault(x => x.Name == name);
+        //    }
+        //}
+
+
+
         public AppEngine(ILoggerFactory loggerFactory,CRUDService service)
         {
             _logger = loggerFactory.CreateLogger(typeof(AppEngine));
             this.loggerFactory = loggerFactory;
             this.service = service;
-            this.service.setLambdaManager(this);//TODO: fix this circular dependemcy
+            this.service.SetAppEngine(this);//TODO: fix this circular dependemcy
+            LoadAllAssembly();
             LoadLambdas();
+            LoadPlugins();
         }
+
+        private void LoadPlugins()
+        {
+           Plugins= GetAnnotatedInstances<Plugin>();
+        }
+
 
         private readonly CRUDService service;
         private void LoadLambdas()
@@ -66,7 +85,31 @@ namespace RawCMS.Library.Core
             DiscoverLambdasInBundle();
         }
 
-        public T GetInstance<T>(params object[] args) where T:class
+        public List<string> GetAllAssembly()
+        {
+            List<string> dlls = new List<string>();
+            dlls.AddRange(Directory.GetFiles(".\\bin", "*.dll", SearchOption.AllDirectories));
+            return dlls;
+            
+        }
+
+        public void LoadAllAssembly()
+        {
+            //foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            //{
+            //    foreach (var method in type.GetMethods(BindingFlags.DeclaredOnly |
+            //                        BindingFlags.NonPublic |
+            //                        BindingFlags.Public | BindingFlags.Instance |
+            //                        BindingFlags.Static))
+            //    {
+            //        System.Runtime.CompilerServices.RuntimeHelpers.PrepareMethod(method.MethodHandle);
+            //    }
+            //}
+
+            GetAllAssembly().ForEach(x => Assembly.LoadFrom(x));
+        }
+
+            public T GetInstance<T>(params object[] args) where T:class
         {
             return Activator.CreateInstance(typeof(T), args) as T;
         }
@@ -166,7 +209,7 @@ namespace RawCMS.Library.Core
         public List<Assembly> GetAssemblyInScope() 
         {
             //TODO: use configuration to define assembly map or regexp to define where to lookup
-            return AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.StartsWith("RawCMS")).ToList();
+            return AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToLower().StartsWith("rawcms.")).ToList();
         }
 
         public List<Assembly> GetAssemblyWithInstance() 
@@ -216,7 +259,7 @@ namespace RawCMS.Library.Core
                 {
                     if (instance is IRequireApp)
                     {
-                        ((IRequireApp)instance).setLambdaManager(this);
+                        ((IRequireApp)instance).SetAppEngine(this);
                     }
 
                     if (instance is IRequireCrudService)
