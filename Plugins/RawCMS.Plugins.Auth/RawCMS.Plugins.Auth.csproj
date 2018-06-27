@@ -8,11 +8,12 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="1.0.8" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RawCMS\RawCMS.Library\RawCMS.Library.csproj" />
+    <ProjectReference Include="..\..\RawCMS.Library\RawCMS.Library.csproj" />
   </ItemGroup>
 
 </Project>

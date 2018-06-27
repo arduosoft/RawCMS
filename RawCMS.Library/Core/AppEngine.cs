@@ -67,7 +67,7 @@ namespace RawCMS.Library.Core
             this.loggerFactory = loggerFactory;
             this.service = service;
             this.service.SetAppEngine(this);//TODO: fix this circular dependemcy
-            LoadAllAssembly();
+           // LoadAllAssembly();
             LoadLambdas();
             LoadPlugins();
         }

@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{E88BB72F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{6DA8883F-F42E-4FDC-A93A-1D41549F6C05}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.Auth", "..\Plugins\RawCMS.Plugins.Auth\RawCMS.Plugins.Auth.csproj", "{B9347ED2-BAEA-4BAA-ABCD-6F9AA4415DF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.Auth", "Plugins\RawCMS.Plugins.Auth\RawCMS.Plugins.Auth.csproj", "{B9347ED2-BAEA-4BAA-ABCD-6F9AA4415DF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

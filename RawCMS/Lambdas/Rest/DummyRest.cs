@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace RawCMS.Lambdas.Rest
 {
@@ -18,9 +20,11 @@ namespace RawCMS.Lambdas.Rest
             var result = new JObject()
             {
                 { "input",input},
-                { "now",DateTime.Now}
+                { "now",DateTime.Now},
+               
             };
 
+            
             return result;
         }
     }

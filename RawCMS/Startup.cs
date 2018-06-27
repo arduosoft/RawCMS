@@ -14,11 +14,13 @@ using NLog.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using RawCMS.Library.Core;
+using RawCMS.Plugins.Auth;
 
 namespace RawCMS
 {
     public class Startup
     {
+        AuthPlugin dd = new AuthPlugin();
         private ILoggerFactory loggerFactory;
         private ILogger logger;
         public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -37,6 +39,7 @@ namespace RawCMS
 
         public IConfigurationRoot Configuration { get; }
 
+        AppEngine appEngine;
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -55,9 +58,9 @@ namespace RawCMS
             IOptions<MongoSettings> settingsOptions = Options.Create<MongoSettings>(settings);
             MongoService mongoService = new MongoService(settingsOptions);
             CRUDService crudService = new CRUDService(mongoService, settingsOptions);
-            AppEngine appEngine = new AppEngine(loggerFactory, crudService);
+             appEngine = new AppEngine(loggerFactory, crudService);
 
-            appEngine.LoadAllAssembly();
+          
 
             services.AddSingleton<MongoService>(mongoService);
             services.AddSingleton<CRUDService>(crudService);
@@ -87,13 +90,13 @@ namespace RawCMS
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AppEngine appEngine)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
            // loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
             env.ConfigureNLog(".\\conf\\nlog.config");
-            app.UseMvc();
+           
            
 
             if (env.IsDevelopment())
@@ -105,6 +108,10 @@ namespace RawCMS
 
 
 
+            appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
+            {
+                x.Configure(app, appEngine);
+            });
 
             app.UseMvc();
 
@@ -124,10 +131,9 @@ namespace RawCMS
             app.UseStaticFiles();
 
 
-            appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
-            {
-                x.Configure(app, appEngine);
-            });
+            app.UseWelcomePage();
+
+
         }
     }
 }
