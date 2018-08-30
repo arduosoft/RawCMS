@@ -1,6 +1,16 @@
 # RawCMS
 RawCMS is an headless CMS written in asp.net core build for devopers that embrace API first tecnology.
 
+## Features
+
+RawCMS is a modular application build on asp.net core+mongo db stack. It is based on "Lambdas". Inside RawCMS Lamba is implemented by command pattern. All parts of RawCMS are fully extensible.
+
+1. Modular. Each module is shippend into a nuget package that can be added to the system to gain new features
+2. Headless. RawCMS doesn't include any presentation logic. All is delegate to the caller. This aims to create a scalable and reusable system
+3. Packaged. RawCMS must be shipped into a single deploable package or added into an existent asp.net core applicatio as nuget package.
+4. Extensible. RawCMS must be customized by the user through extension only. So, no changes to the code will be done. Just adding new packages.
+5. Buildless. RawCMS must give the possibility to manage an installation without need to manage a codebase or a code repository. Will be possible to add lambas code at runtime.
+
 
 # ROADMAP
 
