@@ -41,6 +41,10 @@ All mantainers\owner of the project will follow guidelines.
 
 4. Every mistake into analysis or task explaination must be clarified before stating to work.
 
+5. Everybody have to put its kowdlege as service for others and everybody can ask for help to others.
+
+6. Nobody will blame others for missing deadlines, mistake on code, but must be helpfull to make better output.
+
 ### For people who help whitout obligation
 All kind of help is welcome, so if you want to fork and propose some changes you are welcome. This is the best way to submit bugfix or small improvement. You can also start new feautes, anyway, the change may do not match product standard or plan so it is possible to be rejected. In this case please contact us by issues asking to be added as part of the project to avoid wasting time doing some good initiative in the bad way.
 
