@@ -28,5 +28,6 @@ Docs folder will be available online via readthedoc.
 ### For Mantainers\Owners
 
 ### For people who help whitout obligation
+All kind of help is welcome, so if you want to fork and propose some changes you are welcome. This is the best way to submit bugfix or small improvement. You can also start new feautes, anyway, the change may do not match product standard or plan so it is possible to be rejected. In this case please contact us by issues asking to be added as part of the project to avoid wasting time doing some good initiative in the bad way.
 
 ### Dev environment
