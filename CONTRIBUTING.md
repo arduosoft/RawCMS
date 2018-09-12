@@ -49,3 +49,17 @@ All mantainers\owner of the project will follow guidelines.
 All kind of help is welcome, so if you want to fork and propose some changes you are welcome. This is the best way to submit bugfix or small improvement. You can also start new feautes, anyway, the change may do not match product standard or plan so it is possible to be rejected. In this case please contact us by issues asking to be added as part of the project to avoid wasting time doing some good initiative in the bad way.
 
 ### Dev environment
+We will use VS2017 community as our main IDE and Windows 10 as development platform, VS code for UI part. 
+
+Repository structure will be the following:
+-ROOT
+  - docs
+  - README and root files
+  - API
+     - Module 1
+     - Module N
+  - UI
+  - CLI
+  
+  to follow the rule <COMPONENT>/<Module>/<Project>
+
