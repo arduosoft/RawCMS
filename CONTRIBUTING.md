@@ -61,7 +61,7 @@ Repository structure will be the following:
   - UI
   - CLI
   
-  to follow the rule <COMPONENT>//<Module>//<Project>
+  to follow the rule \<COMPONENT\>//\<Module\>//\<Project\>
 
 #### Api 
 Code must be validated by sonarlint. 
