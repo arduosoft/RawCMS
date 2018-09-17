@@ -63,3 +63,18 @@ Repository structure will be the following:
   
   to follow the rule <COMPONENT>/<Module>/<Project>
 
+#### Api 
+Code must be validated by sonarlint. 
+
+Each commmit must follow the "conventional commit" rules. Semantic code are parsed changelog and automatically produced during commit.
+
+[Conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/)
+
+Releases must follow the semantic versioni rules.
+
+[Semantic Versioning] (https://semver.org/)
+
+Features mus be deployed using a TDD approach, Test will be done DURING developement.
+
+
+
