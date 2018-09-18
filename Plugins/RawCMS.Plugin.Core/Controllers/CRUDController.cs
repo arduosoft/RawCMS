@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using RawCMS.Library.Service;
 using RawCMS.Library.DataModel;
 using Newtonsoft.Json.Linq;
-using RawCMS.Model;
 using RawCMS.Library.Core.Exceptions;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
+using RawCMS.Plugin.Core.Model;
 
-namespace RawCMS.Controllers
+namespace RawCMS.Plugin.Core.Controllers
 {
     [Route("api/[controller]")]
     [ParameterValidator("collection", "_(.*)", true)]

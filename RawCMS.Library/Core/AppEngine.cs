@@ -39,7 +39,7 @@ namespace RawCMS.Library.Core
 
        
 
-        public CRUDService Service { get { return service; } }
+        public CRUDService Service { get { return service; } set { service = value; service.SetAppEngine(this); } }
 
         public List<Lambda> Lambdas { get; set; } = new List<Lambda>();
         //public Lambda this[string name]
@@ -61,24 +61,30 @@ namespace RawCMS.Library.Core
 
 
 
-        public AppEngine(ILoggerFactory loggerFactory,CRUDService service)
+        public AppEngine(ILoggerFactory loggerFactory)
         {
             _logger = loggerFactory.CreateLogger(typeof(AppEngine));
             this.loggerFactory = loggerFactory;
-            this.service = service;
-            this.service.SetAppEngine(this);//TODO: fix this circular dependemcy
-           // LoadAllAssembly();
-            LoadLambdas();
+
+
+          LoadAllAssembly();
+           
             LoadPlugins();
+        }
+
+        public void Init()
+        {
+            LoadLambdas();
         }
 
         private void LoadPlugins()
         {
-           Plugins= GetAnnotatedInstances<Plugin>();
+            Plugins= GetAnnotatedInstances<Plugin>();
+            Plugins.ForEach(x => x.SetAppEngine(this));
         }
 
 
-        private readonly CRUDService service;
+        private  CRUDService service;
         private void LoadLambdas()
         {
            

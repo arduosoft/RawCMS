@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RawCMS.Model
+namespace RawCMS.Plugin.Core.Model
 {
 
     public enum RestStatus

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Folder Include="conf\" />
+    <Folder Include="Controllers\" />
     <Folder Include="Middlewares\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
@@ -47,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Plugins\RawCMS.Plugin.Core\RawCMS.Plugins.Core.csproj" />
     <ProjectReference Include="..\Plugins\RawCMS.Plugins.Auth\RawCMS.Plugins.Auth.csproj" />
     <ProjectReference Include="..\RawCMS.Library\RawCMS.Library.csproj" />
   </ItemGroup>

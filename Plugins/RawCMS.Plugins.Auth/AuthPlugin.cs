@@ -24,41 +24,6 @@ using System.Security.Claims;
 namespace RawCMS.Plugins.Auth
 {
 
-    public class Config
-    {
-        // scopes define the API resources in your system
-        public static IEnumerable<ApiResource> GetApiResources()
-        {
-            return new List<ApiResource>
-            {
-                new ApiResource("api1", "My API")
-            };
-        }
-
-        // clients want to access resources (aka scopes)
-        public static IEnumerable<Client> GetClients()
-        {
-            // client credentials client
-            return new List<Client>
-            {
-                new Client
-                {
-                    ClientId = "client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                   
-
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes = { "api1" },
-                    Enabled=true,
-                   
-                }
-            };
-        }
-    }
-
     public class AuthPlugin : Plugin
     {
         public override string Name => "Authorization";
@@ -73,95 +38,14 @@ namespace RawCMS.Plugins.Auth
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
+                //NOT IMPLEMENTED YET   
+            }
 
-            //services.AddIdentity<ApplicationUser, ApplicationRole>()
-            //.AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>
-            //(
-            //    "mongodb://localhost:27017",
-            //    "MongoDbTests"
-            //)
-            //.AddDefaultTokenProviders();
-
-            var mongoDbIdentityConfiguration = new MongoDbIdentityConfiguration
-            {
-                MongoDbSettings = new MongoDbSettings
-                {
-                    ConnectionString = "mongodb://localhost:27017",
-                    DatabaseName = "MongoDbTests"
-                },
-                IdentityOptionsAction = options =>
-                {
-                    options.Password.RequireDigit = false;
-                    options.Password.RequiredLength = 8;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireLowercase = false;
-
-                    // Lockout settings
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-                    options.Lockout.MaxFailedAccessAttempts = 10;
-
-                    // ApplicationUser settings
-                    options.User.RequireUniqueEmail = true;
-                    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
-                }
-            };
-
-
-            services.AddIdentityServer(x =>
-            {
-                x.Endpoints.EnableAuthorizeEndpoint = true;
-            })
-              .AddDeveloperSigningCredential()
-              .AddInMemoryApiResources(Config.GetApiResources())
-              .AddInMemoryPersistedGrants()
-
-
-              .AddInMemoryClients(Config.GetClients())
-           
-              .AddTestUsers(new List<IdentityServer4.Test.TestUser>() {
-                  new IdentityServer4.Test.TestUser()
-                  {
-                      Username="prova",
-                      Password="prova",
-                      IsActive=true,
-                      SubjectId=Guid.NewGuid().ToString(),
-                       ProviderName="HardCoded",
-                       Claims= new List<Claim>()
-                       {
-                          new Claim(ClaimTypes.Name,"valore")
-                          {
-                              
-                          }
-                       }
-
-                  }
-              });
-
-            
-            services.AddAuthentication(o=> {
-                {
-                    o.DefaultScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
-                    o.DefaultAuthenticateScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
-                }
-            }).AddIdentityServerAuthentication(options =>
-            {
-                options.Authority = "http://localhost:50093";
-                options.RequireHttpsMetadata = false;
-
-                options.ApiName = "api1";
-            });
-
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-        }
-
-        public override void Configure(IApplicationBuilder app, AppEngine appEngine)
+            public override void Configure(IApplicationBuilder app, AppEngine appEngine)
         {
             base.Configure(app, appEngine);
-
             
-            app.UseAuthentication()
-            .UseIdentityServer();
+                //NOT IMPLEMENTED YET
         }
     }
 }
