@@ -20,9 +20,13 @@ namespace RawCMS
 {
     public class Startup
     {
+        //TODO: this forces module reload. Fix it to avoid this manual step.
         AuthPlugin dd = new AuthPlugin();
+        CorePlugin cp = new CorePlugin();
+
         private ILoggerFactory loggerFactory;
         private ILogger logger;
+
         public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             this.loggerFactory = loggerFactory;
@@ -43,31 +47,14 @@ namespace RawCMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           // AppEngine appEngine = new AppEngine();
+            appEngine = new AppEngine(loggerFactory);
 
-            services.Configure<MongoSettings>(x =>
+            appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
             {
-                Configuration.GetSection("MongoSettings").Bind(x);
+                x.Setup(Configuration);
             });
 
-            
-
-            //Move to base plugin!
-            MongoSettings settings=new MongoSettings();
-            Configuration.GetSection("MongoSettings").Bind(settings);
-            IOptions<MongoSettings> settingsOptions = Options.Create<MongoSettings>(settings);
-            MongoService mongoService = new MongoService(settingsOptions);
-            CRUDService crudService = new CRUDService(mongoService, settingsOptions);
-             appEngine = new AppEngine(loggerFactory, crudService);
-
-          
-
-            services.AddSingleton<MongoService>(mongoService);
-            services.AddSingleton<CRUDService>(crudService);
-            services.AddSingleton<AppEngine>(appEngine);
-
-            
-
+           
 
             services.AddMvc();
 
@@ -87,6 +74,8 @@ namespace RawCMS
             {
                 x.ConfigureServices(services);
             });
+
+            appEngine.Init();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,9 +93,7 @@ namespace RawCMS
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
-
-
-
+            
 
             appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
             {
