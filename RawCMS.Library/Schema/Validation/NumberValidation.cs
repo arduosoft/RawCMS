@@ -18,8 +18,8 @@ namespace RawCMS.Library.Schema.Validation
             {
                 if (input[field.Name] == null) return errors ; //null check is done on main validation
 
-                double value;
-                if ( !double.TryParse(input[field.Name].ToString(), out value))
+                
+                if ( !double.TryParse(input[field.Name].ToString(), out double value))
                 {
                     
                     errors.Add(new Error()
@@ -32,8 +32,8 @@ namespace RawCMS.Library.Schema.Validation
 
                 if (field.Options["max"] != null)
                 {
-                    double max;
-                    if (double.TryParse(field.Options["max"].ToString(), out max))
+                   
+                    if (double.TryParse(field.Options["max"].ToString(), out double max))
                     {
                         if (input[field.Name] != null && max < value)
                         {
@@ -48,8 +48,8 @@ namespace RawCMS.Library.Schema.Validation
 
                 if (field.Options["min"] != null)
                 {
-                    double min;
-                    if (double.TryParse(field.Options["min"].ToString(), out min))
+                   
+                    if (double.TryParse(field.Options["min"].ToString(), out double min))
                     {
                         if (input[field.Name] != null && min > value)
                         {

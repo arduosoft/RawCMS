@@ -11,19 +11,24 @@ using RawCMS.Library.Service;
 using RawCMS.Library.DataModel;
 using NLog.Web;
 using NLog.Extensions.Logging;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using RawCMS.Library.Core;
+using RawCMS.Plugins.Auth;
 
 namespace RawCMS
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        AuthPlugin dd = new AuthPlugin();
+        private ILoggerFactory loggerFactory;
+        private ILogger logger;
+        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
+            this.logger=loggerFactory.CreateLogger(typeof(Startup));
+
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -34,17 +39,34 @@ namespace RawCMS
 
         public IConfigurationRoot Configuration { get; }
 
+        AppEngine appEngine;
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           // AppEngine appEngine = new AppEngine();
+
             services.Configure<MongoSettings>(x =>
             {
                 Configuration.GetSection("MongoSettings").Bind(x);
             });
-           
-            services.AddSingleton<MongoService>();
-            services.AddSingleton<CRUDService>();
-            services.AddSingleton<AppEngine>();
+
+            
+
+            //Move to base plugin!
+            MongoSettings settings=new MongoSettings();
+            Configuration.GetSection("MongoSettings").Bind(settings);
+            IOptions<MongoSettings> settingsOptions = Options.Create<MongoSettings>(settings);
+            MongoService mongoService = new MongoService(settingsOptions);
+            CRUDService crudService = new CRUDService(mongoService, settingsOptions);
+             appEngine = new AppEngine(loggerFactory, crudService);
+
+          
+
+            services.AddSingleton<MongoService>(mongoService);
+            services.AddSingleton<CRUDService>(crudService);
+            services.AddSingleton<AppEngine>(appEngine);
+
+            
 
 
             services.AddMvc();
@@ -58,6 +80,13 @@ namespace RawCMS
                 c.DescribeAllEnumsAsStrings();
 
             });
+
+            //Invoke appEngine
+
+            appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
+            {
+                x.ConfigureServices(services);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +96,7 @@ namespace RawCMS
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
             env.ConfigureNLog(".\\conf\\nlog.config");
-            app.UseMvc();
+           
            
 
             if (env.IsDevelopment())
@@ -79,6 +108,10 @@ namespace RawCMS
 
 
 
+            appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
+            {
+                x.Configure(app, appEngine);
+            });
 
             app.UseMvc();
 
@@ -97,8 +130,10 @@ namespace RawCMS
             });
             app.UseStaticFiles();
 
-            
-            
+
+            app.UseWelcomePage();
+
+
         }
     }
 }

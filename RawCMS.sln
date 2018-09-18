@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS", "RawCMS\RawCMS.csproj", "{0173DCCE-34BA-4988-BA6C-07880C3F71A0}"
 EndProject
@@ -16,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{E88BB72F
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{6DA8883F-F42E-4FDC-A93A-1D41549F6C05}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.Auth", "Plugins\RawCMS.Plugins.Auth\RawCMS.Plugins.Auth.csproj", "{B9347ED2-BAEA-4BAA-ABCD-6F9AA4415DF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +43,16 @@ Global
 		{F354CC2D-3C98-499D-AB1F-E790E7925B70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F354CC2D-3C98-499D-AB1F-E790E7925B70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F354CC2D-3C98-499D-AB1F-E790E7925B70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9347ED2-BAEA-4BAA-ABCD-6F9AA4415DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9347ED2-BAEA-4BAA-ABCD-6F9AA4415DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9347ED2-BAEA-4BAA-ABCD-6F9AA4415DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9347ED2-BAEA-4BAA-ABCD-6F9AA4415DF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B9347ED2-BAEA-4BAA-ABCD-6F9AA4415DF8} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE0F5781-A4C7-4C01-8B4C-4AE7A10908CF}

@@ -6,6 +6,6 @@ namespace RawCMS.Library.Core.Interfaces
 {
     public interface IRequireApp
     {
-        void setLambdaManager(AppEngine manager);
+        void SetAppEngine(AppEngine manager);
     }
 }

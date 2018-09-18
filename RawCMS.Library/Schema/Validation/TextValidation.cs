@@ -20,8 +20,8 @@ namespace RawCMS.Library.Schema.Validation
             {
                 if (field.Options["maxlength"] != null)
                 {
-                    int maxlenght;
-                    if (int.TryParse(field.Options["maxlength"].ToString(), out maxlenght))
+                   
+                    if (int.TryParse(field.Options["maxlength"].ToString(), out int  maxlenght))
                     {
                         if (input[field.Name] != null && maxlenght < value.ToString().Length)
                         {

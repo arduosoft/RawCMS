@@ -65,9 +65,8 @@ namespace RawCMS.Library.Lambdas
 
         public override List<Error> Validate(JObject input, string collection)
         {
-            CollectionSchema settings;
             List<Error> errors = new List<Error>();
-            if (entities.TryGetValue(collection, out settings))
+            if (entities.TryGetValue(collection, out CollectionSchema settings))
             {
                 //do validation!
 
@@ -125,7 +124,7 @@ namespace RawCMS.Library.Lambdas
         }
 
         AppEngine manager;
-        public void setLambdaManager(AppEngine manager)
+        public void SetAppEngine(AppEngine manager)
         {
             this.manager = manager;
         }
