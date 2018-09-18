@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using RawCMS.Library.Core;
 using RawCMS.Plugins.Auth;
+using RawCMS.Plugin.Core;
 
 namespace RawCMS
 {
@@ -53,8 +54,7 @@ namespace RawCMS
             {
                 x.Setup(Configuration);
             });
-
-           
+            
 
             services.AddMvc();
 
