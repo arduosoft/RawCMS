@@ -12,7 +12,7 @@ namespace RawCMS.Plugins.Auth
     {
         public override string Name => "UserCheckLambda";
 
-        public override string Description => throw new NotImplementedException();
+        public override string Description => "";
 
         public override JObject Rest(JObject input)
         {
