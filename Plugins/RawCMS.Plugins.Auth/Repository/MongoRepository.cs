@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using RawCMS.Plugins.Auth.Configuration;
 using RawCMS.Plugins.Auth.Interfaces;
 using System;
 using System.Collections.Generic;

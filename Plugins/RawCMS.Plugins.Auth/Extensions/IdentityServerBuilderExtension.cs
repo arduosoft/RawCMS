@@ -3,7 +3,6 @@ using IdentityServer4.Stores;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Identity.MongoDB;
 using MongoDB.Driver;
 using RawCMS.Plugins.Auth.Interfaces;
 using RawCMS.Plugins.Auth.Repository;
@@ -35,33 +34,23 @@ namespace RawCMS.Plugins.Auth.Extensions
         /// - IRoleStore<T>
         /// ]]></remarks>
         public static IIdentityServerBuilder AddMongoDbForAspIdentity(this IIdentityServerBuilder builder, IConfigurationRoot configurationRoot)
-        {
-
-            //User Mongodb for Asp.net identity in order to get users stored
-            var configurationOptions = configurationRoot.Get<ConfigurationOptions>();
-            var client = new MongoClient(configurationOptions.MongoConnection);
-            var database = client.GetDatabase(configurationOptions.MongoDatabaseName);
-
-
+        {         
 
             // Configure Asp Net Core Identity / Role to use MongoDB
-            builder.Services.AddSingleton<IUserStore<Microsoft.AspNetCore.Identity.MongoDB.IdentityUser>>(x =>
-            {
-                var usersCollection = database.GetCollection<Microsoft.AspNetCore.Identity.MongoDB.IdentityUser>("Identity_Users");
-                IndexChecks.EnsureUniqueIndexOnNormalizedEmail(usersCollection);
-                IndexChecks.EnsureUniqueIndexOnNormalizedUserName(usersCollection);
+            builder.Services.AddSingleton<IUserStore<IdentityUser>>(x =>
+            {                            
                 
-                var userStore= new  UserStore<Microsoft.AspNetCore.Identity.MongoDB.IdentityUser>(usersCollection);
-                return  (IUserStore<Microsoft.AspNetCore.Identity.IdentityUser>) userStore;
+                var userStore= new  RawUserStore();
+                return   userStore;
             });
 
-            builder.Services.AddSingleton<Microsoft.AspNetCore.Identity.IRoleStore<TRole>>(x =>
+            builder.Services.AddSingleton<IRoleStore<IdentityRole>>(x =>
             {
-                var rolesCollection = database.GetCollection<TRole>("Identity_Roles");
-                IndexChecks.EnsureUniqueIndexOnNormalizedRoleName(rolesCollection);
-                return new RoleStore<TRole>(rolesCollection);
+
+                return new RawRoleStore();
             });
-            builder.Services.AddIdentity<TIdentity, TRole>();
+
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>();
 
 
             return builder;
