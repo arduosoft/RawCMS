@@ -39,7 +39,9 @@ namespace RawCMS.Plugins.Auth.Stores
                 return new IdentityUser()
                 {
                     UserName = normalizedUserName,
-                    PasswordHash = "XYZ"
+                    PasswordHash = "XYZ",
+                    NormalizedUserName=normalizedUserName
+                    
 
                 };
             
@@ -52,7 +54,7 @@ namespace RawCMS.Plugins.Auth.Stores
 
         public async Task<string> GetUserIdAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            return user.Id;
+            return user.UserName;
         }
 
         public Task<string> GetUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
