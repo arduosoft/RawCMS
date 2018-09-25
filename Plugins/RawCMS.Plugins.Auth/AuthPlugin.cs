@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using IdentityServer4;
+using IdentityServer4.AccessTokenValidation;
+
 using IdentityServer4.Models;
 using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -65,12 +69,19 @@ namespace RawCMS.Plugins.Auth
                 {
                     ClientId = "ro.client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-
+                    AccessTokenType=AccessTokenType.Jwt,
+                    AlwaysIncludeUserClaimsInIdToken=true,
+                    
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { "api1",
+                        IdentityServerConstants.StandardScopes.OpenId
+
+
+
+                    }
                 },
 
                 // OpenID Connect hybrid flow and client credentials client (MVC)
@@ -181,11 +192,25 @@ namespace RawCMS.Plugins.Auth
             //    {
             //        SubjectId="SSS",
             //        IsActive=true,
-                    
+
             //        Username="bob",
             //        Password="Password.1"
             //    }
             //});
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            .AddIdentityServerAuthentication(options =>
+            {
+                // base-address of your identityserver
+                options.Authority = "http://localhost:50093";
+                options.ApiSecret = "secret";
+                
+                // name of the API resource
+                options.ApiName = "api1";
+                options.RequireHttpsMetadata = false;
+                options.SupportedTokens = SupportedTokens.Both;
+            });
 
 
         }
@@ -201,7 +226,9 @@ namespace RawCMS.Plugins.Auth
         {
             base.Configure(app, appEngine);
 
+           // JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             app.UseIdentityServer();
+            app.UseAuthentication();
 
         }
     }
