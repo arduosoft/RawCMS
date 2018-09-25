@@ -124,6 +124,28 @@ namespace RawCMS.Plugins.Auth
                 return userStore;
             });
 
+
+            services.AddSingleton<IUserPasswordStore<IdentityUser>>(x =>
+            {
+
+                var userStore = new RawUserStore();
+                return userStore;
+            });
+
+            services.AddSingleton<IPasswordValidator<IdentityUser>>(x =>
+            {
+
+                var userStore = new RawUserStore();
+                return userStore;
+            });
+
+            services.AddSingleton<IPasswordHasher<IdentityUser>>(x =>
+            {
+
+                var userStore = new RawUserStore();
+                return userStore;
+
+            });
             services.AddSingleton<IRoleStore<IdentityRole>>(x =>
             {
 

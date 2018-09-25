@@ -11,7 +11,12 @@ using RawCMS.Library.Service;
 
 namespace RawCMS.Plugins.Auth.Stores
 {
-    public class RawUserStore : IUserStore<IdentityUser>, IRequireApp, IRequireCrudService, IUserPasswordStore<IdentityUser>
+    public class RawUserStore : IUserStore<IdentityUser>, 
+        IRequireApp, 
+        IRequireCrudService, 
+        IUserPasswordStore<IdentityUser>, 
+        IPasswordValidator<IdentityUser>,
+        IPasswordHasher<IdentityUser>
     {
         public Task<IdentityResult> CreateAsync(IdentityUser user, CancellationToken cancellationToken)
         {
@@ -30,7 +35,7 @@ namespace RawCMS.Plugins.Auth.Stores
 
         public Task<IdentityUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return FindByNameAsync(userId, cancellationToken);
         }
 
         public async Task<IdentityUser>  FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -39,7 +44,7 @@ namespace RawCMS.Plugins.Auth.Stores
                 return new IdentityUser()
                 {
                     UserName = normalizedUserName,
-                    PasswordHash = "XYZ",
+                    PasswordHash = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes("XYZ")),
                     NormalizedUserName=normalizedUserName
                     
 
@@ -57,9 +62,9 @@ namespace RawCMS.Plugins.Auth.Stores
             return user.UserName;
         }
 
-        public Task<string> GetUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
+        public async Task<string> GetUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return user.UserName;
         }
 
         private AppEngine appEngine;
@@ -97,12 +102,29 @@ namespace RawCMS.Plugins.Auth.Stores
 
         public async Task<string> GetPasswordHashAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            return Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes( user.PasswordHash));
+            return user.PasswordHash;
         }
 
         public async Task<bool> HasPasswordAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             return true;
+        }
+
+        public async Task<IdentityResult> ValidateAsync(UserManager<IdentityUser> manager, IdentityUser user, string password)
+        {
+
+            return IdentityResult.Success;
+            
+        }
+
+        public string HashPassword(IdentityUser user, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PasswordVerificationResult VerifyHashedPassword(IdentityUser user, string hashedPassword, string providedPassword)
+        {
+            return PasswordVerificationResult.Success;
         }
     }
 }
