@@ -33,8 +33,7 @@ namespace RawCMS.Plugins.Auth
             {
                 return new List<IdentityResource>
             {
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+                new IdentityResources.OpenId()
             };
             }
 
@@ -43,6 +42,16 @@ namespace RawCMS.Plugins.Auth
                 return new List<ApiResource>
             {
                 new ApiResource("api1", "My API")
+                {
+                    ApiSecrets = new List<Secret>
+                {
+                    new Secret("secret".Sha256())
+                },
+                Scopes=
+                {
+                    new Scope("openid"), 
+                }
+                }
             };
             }
 
@@ -50,65 +59,28 @@ namespace RawCMS.Plugins.Auth
             public static IEnumerable<Client> GetClients()
             {
                 // client credentials client
-                return new List<Client>
+               return new List<Client>
             {
-                new Client
-                {
-                    ClientId = "client",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes = { "api1" }
-                },
+                
 
                 // resource owner password grant client
                 new Client
                 {
                     ClientId = "ro.client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                    AccessTokenType=AccessTokenType.Jwt,
-                    AlwaysIncludeUserClaimsInIdToken=true,
+                    
                     
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "api1",
+                    AllowedScopes =
+                    { 
                         IdentityServerConstants.StandardScopes.OpenId
-
-
-
                     }
                 },
 
-                // OpenID Connect hybrid flow and client credentials client (MVC)
-                new Client
-                {
-                    ClientId = "mvc",
-                    ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-
-                    RequireConsent = true,
-
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-
-                    RedirectUris = { "http://localhost:5002/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
-                    },
-                    AllowOfflineAccess = true
-                }
+               
             };
             }
         }
@@ -198,14 +170,13 @@ namespace RawCMS.Plugins.Auth
             //    }
             //});
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+          //  JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
             .AddIdentityServerAuthentication(options =>
             {
                 // base-address of your identityserver
-                options.Authority = "http://localhost:50093";
+                options.Authority = "http://localhost:28436";
                 options.ApiSecret = "secret";
-                
                 // name of the API resource
                 options.ApiName = "api1";
                 options.RequireHttpsMetadata = false;

@@ -10,8 +10,10 @@ namespace RawCMS.Library.Core
 {
     public abstract class RestLambda : HttpLambda
     {
+        public HttpContext Request;
         public override object Execute(HttpContext request)
         {
+            this.Request = request;
             using (var reader = new StreamReader(request.Request.Body))
             {
                 var body = reader.ReadToEnd();

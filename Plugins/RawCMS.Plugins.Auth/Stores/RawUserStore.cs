@@ -46,8 +46,6 @@ namespace RawCMS.Plugins.Auth.Stores
                     UserName = normalizedUserName,
                     PasswordHash = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes("XYZ")),
                     NormalizedUserName=normalizedUserName
-                    
-
                 };
             
         }

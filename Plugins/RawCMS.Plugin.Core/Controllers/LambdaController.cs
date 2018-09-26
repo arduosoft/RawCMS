@@ -27,7 +27,7 @@ namespace RawCMS.Plugin.Core.Controllers
         [HttpPost("{lambda}")]
         public JObject Post(string lambda)
         {
-            var lamba= lambdaManager.Lambdas.SingleOrDefault(x=> typeof(HttpLambda).IsAssignableFrom(x.GetType()) && x.Name==lambda) as RestLambda;
+            var lamba= lambdaManager.Lambdas.SingleOrDefault(x=> typeof(RestLambda).IsAssignableFrom(x.GetType()) && x.Name==lambda) as RestLambda;
             if (lamba == null)
             {
                 throw new Exception("Lambda not found or not a Rest Lambda");
