@@ -33,7 +33,7 @@ namespace RawCMS.Plugins.Auth
             {
                 return new List<IdentityResource>
             {
-                new IdentityResources.OpenId()
+                //new IdentityResources.OpenId()
             };
             }
 
@@ -49,7 +49,7 @@ namespace RawCMS.Plugins.Auth
                 },
                 Scopes=
                 {
-                    new Scope("openid"), 
+                    new Scope("openid"),
                 }
                 }
             };
@@ -62,8 +62,6 @@ namespace RawCMS.Plugins.Auth
                return new List<Client>
             {
                 
-
-                // resource owner password grant client
                 new Client
                 {
                     ClientId = "ro.client",
@@ -76,7 +74,7 @@ namespace RawCMS.Plugins.Auth
                     },
                     AllowedScopes =
                     { 
-                        IdentityServerConstants.StandardScopes.OpenId
+                        IdentityServerConstants.StandardScopes.OpenId,
                     }
                 },
 
