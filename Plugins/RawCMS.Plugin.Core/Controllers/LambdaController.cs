@@ -20,14 +20,14 @@ namespace RawCMS.Plugin.Core.Controllers
         [HttpGet()]
         public List<Lambda> Get()
         {
-            return lambdaManager.Lambdas;
+            return lambdaManager.Lambdas.Where(x=>typeof(RestLambda).IsAssignableFrom(x.GetType())).ToList();
         }
 
         
         [HttpPost("{lambda}")]
         public JObject Post(string lambda)
         {
-            var lamba= lambdaManager.Lambdas.Where(x=>x.Name==lambda) as RestLambda;
+            var lamba= lambdaManager.Lambdas.SingleOrDefault(x=> typeof(HttpLambda).IsAssignableFrom(x.GetType()) && x.Name==lambda) as RestLambda;
             if (lamba == null)
             {
                 throw new Exception("Lambda not found or not a Rest Lambda");

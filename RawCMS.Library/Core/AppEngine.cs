@@ -67,9 +67,8 @@ namespace RawCMS.Library.Core
             this.loggerFactory = loggerFactory;
 
 
-          LoadAllAssembly();
-           
-            LoadPlugins();
+          LoadAllAssembly();           
+          LoadPlugins();
         }
 
         public void Init()
@@ -79,7 +78,16 @@ namespace RawCMS.Library.Core
 
         private void LoadPlugins()
         {
+            _logger.LogDebug("Load plugins");
+
             Plugins= GetAnnotatedInstances<Plugin>();
+
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                Plugins.ForEach(x => {
+                    _logger.LogDebug("Plugin enabled {0}", x.Name);
+                });
+            }
             Plugins.ForEach(x => x.SetAppEngine(this));
         }
 
@@ -93,8 +101,16 @@ namespace RawCMS.Library.Core
 
         public List<string> GetAllAssembly()
         {
+            _logger.LogDebug("Get all assembly");
             List<string> dlls = new List<string>();
             dlls.AddRange(Directory.GetFiles(".\\bin", "*.dll", SearchOption.AllDirectories));
+
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                dlls.ForEach(x => {
+                    _logger.LogDebug("Plugin enabled {0}", x);
+                });
+            }
             return dlls;
             
         }
@@ -127,13 +143,15 @@ namespace RawCMS.Library.Core
 
         public List<Type> GetAnnotatedBy<T>() where T : Attribute
         {
+            _logger.LogDebug("Get all entries annotated by {0}", typeof(T).FullName);
             List<Type> result = new List<Type>();
             List<Assembly> bundledAssemblies = GetAssemblyInScope();
+
             foreach (var assembly in bundledAssemblies)
             {
-                _logger.LogInformation("loading from" + assembly.FullName);
-                var types = assembly.GetTypes();
+                _logger.LogDebug("loading from" + assembly.FullName);
 
+                var types = assembly.GetTypes();
 
                 foreach (var type in types)
                 {
@@ -181,11 +199,14 @@ namespace RawCMS.Library.Core
 
         private List<Type> GetImplementors(Type t, List<Assembly> bundledAssemblies) 
         {
+            _logger.LogDebug("Get implementors for {0} in {1}", t,
+                string.Join(",", bundledAssemblies.Select(x => x.FullName).ToArray()));
+
             List<Type> result = new List<Type>();
             
             foreach (var assembly in bundledAssemblies)
             {
-                _logger.LogInformation("loading from" + assembly.FullName);
+                _logger.LogDebug("loading from" + assembly.FullName);
                 var types = assembly.GetTypes();
 
 
@@ -213,18 +234,23 @@ namespace RawCMS.Library.Core
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public List<Assembly> GetAssemblyInScope() 
-        {
-            //TODO: use configuration to define assembly map or regexp to define where to lookup
-            return AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.ToLower().StartsWith("rawcms.")).ToList();
+        {   
+            List<Assembly> plugins = new List<Assembly>();
+            plugins.AddRange(GetAssemblyWithInstance<Plugin>());
+            plugins.Add(Assembly.GetExecutingAssembly());
+            plugins.Add(Assembly.GetEntryAssembly());
+            return plugins;
         }
 
-        public List<Assembly> GetAssemblyWithInstance() 
+        public List<Assembly> GetAssemblyWithInstance<T>() 
         {
+            _logger.LogDebug("Get all assembly with instance");
+
             List<Assembly> result = new List<Assembly>();
             var assList = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var ass in assList)
             {
-                var implementors=this.GetImplementors(typeof(Plugin), new List<Assembly>() { ass});
+                var implementors=this.GetImplementors(typeof(T), new List<Assembly>() { ass});
                 if (implementors.Count > 0)
                 {
                     result.Add(ass);
@@ -256,6 +282,7 @@ namespace RawCMS.Library.Core
         /// </summary>
         private void DiscoverLambdasInBundle()
         {
+            _logger.LogDebug("Discover Lambdas in Bundle");
 
             List<Lambda> lambdas = GetAnnotatedInstances<Lambda>();
 
