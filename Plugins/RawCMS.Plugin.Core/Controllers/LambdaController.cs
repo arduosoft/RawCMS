@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RawCMS.Library.Core;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RawCMS.Plugin.Core.Controllers
 {
@@ -23,7 +24,7 @@ namespace RawCMS.Plugin.Core.Controllers
             return lambdaManager.Lambdas.Where(x=>typeof(RestLambda).IsAssignableFrom(x.GetType())).ToList();
         }
 
-        
+        [Authorize (AuthenticationSchemes  ="Bearer")]
         [HttpPost("{lambda}")]
         public JObject Post(string lambda)
         {

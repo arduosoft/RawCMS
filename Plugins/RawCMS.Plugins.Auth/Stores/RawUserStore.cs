@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Core;
 using RawCMS.Library.Service;
+using System.Security.Claims;
 
 namespace RawCMS.Plugins.Auth.Stores
 {
@@ -16,7 +17,9 @@ namespace RawCMS.Plugins.Auth.Stores
         IRequireCrudService, 
         IUserPasswordStore<IdentityUser>, 
         IPasswordValidator<IdentityUser>,
-        IPasswordHasher<IdentityUser>
+        IPasswordHasher<IdentityUser>,
+        IUserClaimStore<IdentityUser>
+        
     {
         public Task<IdentityResult> CreateAsync(IdentityUser user, CancellationToken cancellationToken)
         {
@@ -45,7 +48,9 @@ namespace RawCMS.Plugins.Auth.Stores
                 {
                     UserName = normalizedUserName,
                     PasswordHash = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes("XYZ")),
-                    NormalizedUserName=normalizedUserName
+                    NormalizedUserName=normalizedUserName,
+                    Email="test@test.it",
+                    NormalizedEmail="test@test.it"
                 };
             
         }
@@ -123,6 +128,34 @@ namespace RawCMS.Plugins.Auth.Stores
         public PasswordVerificationResult VerifyHashedPassword(IdentityUser user, string hashedPassword, string providedPassword)
         {
             return PasswordVerificationResult.Success;
+        }
+
+        public async Task<IList<Claim>> GetClaimsAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+            claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            return claims;
+        }
+
+        public Task AddClaimsAsync(IdentityUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ReplaceClaimAsync(IdentityUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveClaimsAsync(IdentityUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<IdentityUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
     }
 }

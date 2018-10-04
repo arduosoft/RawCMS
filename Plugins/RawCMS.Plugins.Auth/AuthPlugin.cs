@@ -18,6 +18,10 @@ using RawCMS.Library.Core.Extension;
 using RawCMS.Plugins.Auth.Configuration;
 using RawCMS.Plugins.Auth.Extensions;
 using RawCMS.Plugins.Auth.Stores;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using IdentityModel.AspNetCore.OAuth2Introspection;
 
 namespace RawCMS.Plugins.Auth
 {
@@ -120,6 +124,12 @@ namespace RawCMS.Plugins.Auth
                 return userStore;
             });
 
+            services.AddSingleton<IUserClaimStore<IdentityUser>>(x =>
+            {
+
+                return new RawUserStore();
+            });
+
             services.AddSingleton<IPasswordHasher<IdentityUser>>(x =>
             {
 
@@ -132,6 +142,8 @@ namespace RawCMS.Plugins.Auth
 
                 return new RawRoleStore();
             });
+
+           
 
             services.AddIdentity<IdentityUser, IdentityRole>();
 
@@ -168,19 +180,30 @@ namespace RawCMS.Plugins.Auth
             //    }
             //});
 
-          //  JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-            .AddIdentityServerAuthentication(options =>
-            {
-                // base-address of your identityserver
-                options.Authority = "http://localhost:28436";
-                options.ApiSecret = "secret";
-                // name of the API resource
-                options.ApiName = "api1";
-                options.RequireHttpsMetadata = false;
-                options.SupportedTokens = SupportedTokens.Both;
-            });
+           // OAuth2IntrospectionOptions options = new OAuth2IntrospectionOptions();
 
+            // base-address of your identityserver
+           // options.Authority = "http://localhost:28436";
+           // options.ClientSecret = "secret";
+           // options.ClientId = "api1";
+           // options.BasicAuthenticationHeaderStyle = IdentityModel.Client.BasicAuthenticationHeaderStyle.Rfc2617;
+           //// options.IntrospectionEndpoint = "http://localhost:28436/connect/introspect";
+           // options.TokenTypeHint = "Bearer";
+            
+           // options.Validate();
+
+             
+            services.AddAuthentication(OAuth2IntrospectionDefaults.AuthenticationScheme)
+            //.AddOAuth2Introspection( x => {
+            //    x = options;
+            //});
+             .AddIdentityServerAuthentication("Bearer", options =>
+             {
+                 options.Authority = "http://localhost:28436";
+                 options.ApiName = "api1";
+                 options.ApiSecret = "secret";
+                 options.RequireHttpsMetadata = false;
+             });
 
         }
 
@@ -195,9 +218,11 @@ namespace RawCMS.Plugins.Auth
         {
             base.Configure(app, appEngine);
 
-           // JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            app.UseIdentityServer();
+            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+          
             app.UseAuthentication();
+            app.UseIdentityServer();
+          
 
         }
     }

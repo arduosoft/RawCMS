@@ -30,9 +30,11 @@ namespace RawCMS
 
         public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            
             this.loggerFactory = loggerFactory;
+            loggerFactory.AddConsole(LogLevel.Trace);
             this.logger=loggerFactory.CreateLogger(typeof(Startup));
-
+            
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)

@@ -16,8 +16,12 @@ namespace RawCMS.Plugins.Auth.Lambdas
         public override JObject Rest(JObject input)
         {
             var jj= new JObject();
-            jj["username"] = this.Request.User.Identity.Name;
-            jj["parameters"] = this.Request.User.Identity.IsAuthenticated;
+            
+            jj["IsAuthenticated"] = this.Request.User.Identity.IsAuthenticated;
+            foreach (var claim in this.Request.User.Claims)
+            {
+                jj[claim.Subject] = claim.Value;
+            }
             return jj;
         }
     }
