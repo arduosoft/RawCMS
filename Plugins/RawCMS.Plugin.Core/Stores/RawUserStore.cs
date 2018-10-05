@@ -84,10 +84,7 @@ namespace RawCMS.Plugins.Core.Stores
             //    NormalizedEmail="test@test.it"
             //};
 
-            var sample = new IdentityUser()
-            {
-                UserName=normalizedUserName
-            };
+           
 
             var query = new DataQuery()
             {
@@ -124,14 +121,13 @@ namespace RawCMS.Plugins.Core.Stores
 
         public  async Task InitData()
         {
-            var user = await FindByNameAsync("bob", CancellationToken.None);
+            var user = await FindByNameAsync("BOB", CancellationToken.None);
             if (user == null)
             {
                 var userToAdd =new IdentityUser()
                 {
-                    UserName = "bob",
-                 
-                    NormalizedUserName = "bob",
+                    UserName = "bob",                 
+                    NormalizedUserName = "BOB",
                     Email = "test@test.it",
                     NormalizedEmail = "test@test.it",
                     PasswordHash= ComputePasswordHash("XYZ")
