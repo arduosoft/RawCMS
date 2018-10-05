@@ -95,18 +95,23 @@ namespace RawCMS.Plugins.Core
             this.Logger.LogInformation("Authorization plugin loaded");
         }
 
+        RawUserStore userStore = new RawUserStore();
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
 
             services.Configure<ConfigurationOptions>(configuration);
 
-            var userStore = new RawUserStore();
+           
+
+
             services.AddSingleton<IUserStore<IdentityUser>>(x => {  return userStore;  });
             services.AddSingleton<IUserPasswordStore<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IPasswordValidator<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IUserClaimStore<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IPasswordHasher<IdentityUser>>(x => { return userStore; });
+            //services.AddSingleton<IPasswordHasher<IdentityUser>>(x => { return userStore; });
+
+           
 
             var roleStore= new RawRoleStore();
             services.AddSingleton<IRoleStore<IdentityRole>>(x => {   return roleStore;  });
@@ -181,9 +186,16 @@ namespace RawCMS.Plugins.Core
             base.Setup(configuration);
             this.configuration = configuration;
         }
-
+        AppEngine appEngine;
         public override void Configure(IApplicationBuilder app, AppEngine appEngine)
         {
+            this.appEngine = appEngine;
+
+
+            userStore.SetCRUDService(this.appEngine.Service);
+            userStore.SetLogger(this.appEngine.GetLogger(this));
+            userStore.InitData();
+
             base.Configure(app, appEngine);
 
             //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

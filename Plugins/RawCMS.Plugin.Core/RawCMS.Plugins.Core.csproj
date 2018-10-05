@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Interface\" />
   </ItemGroup>
 
 </Project>
