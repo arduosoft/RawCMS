@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using IdentityServer4.Models;
-using RawCMS.Plugins.Auth.Interfaces;
+using RawCMS.Plugins.Core.Interfaces;
 
-namespace RawCMS.Plugins.Auth.Stores
+namespace RawCMS.Plugins.Core.Stores
 {
     public class CustomClientStore : IdentityServer4.Stores.IClientStore
     {

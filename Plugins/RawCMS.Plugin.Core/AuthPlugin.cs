@@ -15,18 +15,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Extension;
-using RawCMS.Plugins.Auth.Configuration;
-using RawCMS.Plugins.Auth.Extensions;
-using RawCMS.Plugins.Auth.Stores;
-using System.IdentityModel.Tokens.Jwt;
+using RawCMS.Plugins.Core.Configuration;
+using RawCMS.Plugins.Core.Stores;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using IdentityModel.AspNetCore.OAuth2Introspection;
+using RawCMS.Plugins.Core.Model;
 
-namespace RawCMS.Plugins.Auth
+namespace RawCMS.Plugins.Core
 {
 
-    public class AuthPlugin : Plugin
+    public class AuthPlugin : RawCMS.Library.Core.Extension.Plugin
     {
 
 
@@ -102,46 +101,15 @@ namespace RawCMS.Plugins.Auth
 
             services.Configure<ConfigurationOptions>(configuration);
 
-            services.AddSingleton<IUserStore<IdentityUser>>(x =>
-            {
+            var userStore = new RawUserStore();
+            services.AddSingleton<IUserStore<IdentityUser>>(x => {  return userStore;  });
+            services.AddSingleton<IUserPasswordStore<IdentityUser>>(x => { return userStore; });
+            services.AddSingleton<IPasswordValidator<IdentityUser>>(x => { return userStore; });
+            services.AddSingleton<IUserClaimStore<IdentityUser>>(x => { return userStore; });
+            services.AddSingleton<IPasswordHasher<IdentityUser>>(x => { return userStore; });
 
-                var userStore = new RawUserStore();
-                return userStore;
-            });
-
-
-            services.AddSingleton<IUserPasswordStore<IdentityUser>>(x =>
-            {
-
-                var userStore = new RawUserStore();
-                return userStore;
-            });
-
-            services.AddSingleton<IPasswordValidator<IdentityUser>>(x =>
-            {
-
-                var userStore = new RawUserStore();
-                return userStore;
-            });
-
-            services.AddSingleton<IUserClaimStore<IdentityUser>>(x =>
-            {
-
-                return new RawUserStore();
-            });
-
-            services.AddSingleton<IPasswordHasher<IdentityUser>>(x =>
-            {
-
-                var userStore = new RawUserStore();
-                return userStore;
-
-            });
-            services.AddSingleton<IRoleStore<IdentityRole>>(x =>
-            {
-
-                return new RawRoleStore();
-            });
+            var roleStore= new RawRoleStore();
+            services.AddSingleton<IRoleStore<IdentityRole>>(x => {   return roleStore;  });
 
            
 

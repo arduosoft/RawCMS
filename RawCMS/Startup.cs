@@ -14,8 +14,7 @@ using NLog.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using RawCMS.Library.Core;
-using RawCMS.Plugins.Auth;
-using RawCMS.Plugin.Core;
+using RawCMS.Plugins.Core;
 
 namespace RawCMS
 {

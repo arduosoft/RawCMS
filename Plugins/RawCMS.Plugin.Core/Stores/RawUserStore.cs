@@ -9,8 +9,9 @@ using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Core;
 using RawCMS.Library.Service;
 using System.Security.Claims;
+using RawCMS.Plugins.Core.Model;
 
-namespace RawCMS.Plugins.Auth.Stores
+namespace RawCMS.Plugins.Core.Stores
 {
     public class RawUserStore : IUserStore<IdentityUser>, 
         IRequireApp, 

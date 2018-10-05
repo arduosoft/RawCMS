@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using RawCMS.Plugins.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RawCMS.Plugins.Auth.Stores
+namespace RawCMS.Plugins.Core.Stores
 {
     public class RawRoleStore : IRoleStore<IdentityRole>
     {

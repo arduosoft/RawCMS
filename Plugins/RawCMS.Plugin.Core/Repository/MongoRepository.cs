@@ -3,15 +3,15 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using RawCMS.Plugins.Auth.Configuration;
-using RawCMS.Plugins.Auth.Interfaces;
+using RawCMS.Plugins.Core.Configuration;
+using RawCMS.Plugins.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RawCMS.Plugins.Auth.Repository
+namespace RawCMS.Plugins.Core.Repository
 {
     /// <summary>
     /// Provides functionality  to persist "IdentityServer4.Models" into a given MongoDB

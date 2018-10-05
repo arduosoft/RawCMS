@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
-using RawCMS.Plugins.Auth.Interfaces;
+using RawCMS.Plugins.Core.Interfaces;
 
-namespace RawCMS.Plugins.Auth.Stores
+namespace RawCMS.Plugins.Core.Stores
 {
     /// <summary>
     /// Handle consent decisions, authorization codes, refresh and reference tokens

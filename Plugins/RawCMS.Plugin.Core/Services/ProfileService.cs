@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 
-namespace RawCMS.Plugins.Auth.Services
+namespace RawCMS.Plugins.Core.Services
 {
     public class ProfileService : IProfileService
     {

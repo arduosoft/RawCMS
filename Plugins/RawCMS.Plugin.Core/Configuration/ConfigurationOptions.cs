@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RawCMS.Plugins.Auth.Configuration
+namespace RawCMS.Plugins.Core.Configuration
 {
     
         public class ConfigurationOptions

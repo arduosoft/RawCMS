@@ -11,7 +11,7 @@ using RawCMS.Library.DataModel;
 using Microsoft.Extensions.Options;
 using RawCMS.Library.Service;
 
-namespace RawCMS.Plugin.Core
+namespace RawCMS.Plugins.Core
 {
 
 

@@ -7,7 +7,7 @@ using RawCMS.Library.Core;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Authorization;
 
-namespace RawCMS.Plugin.Core.Controllers
+namespace RawCMS.Plugins.Core.Controllers
 {
     [Route("api/[controller]")]
     public class LambdaController : Controller

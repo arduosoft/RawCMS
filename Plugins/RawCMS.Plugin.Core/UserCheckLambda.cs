@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
-namespace RawCMS.Plugins.Auth
+namespace RawCMS.Plugins.Core
 {
     public class UserCheckLambda : RestLambda
     {

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
-namespace RawCMS.Plugins.Auth.Interfaces
+namespace RawCMS.Plugins.Core.Interfaces
 {
     /// <summary>
     /// Basic interface with a few methods for adding, deleting, and querying data.

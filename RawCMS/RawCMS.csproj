@@ -51,7 +51,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Plugins\RawCMS.Plugin.Core\RawCMS.Plugins.Core.csproj" />
-    <ProjectReference Include="..\Plugins\RawCMS.Plugins.Auth\RawCMS.Plugins.Auth.csproj" />
     <ProjectReference Include="..\RawCMS.Library\RawCMS.Library.csproj" />
   </ItemGroup>
 

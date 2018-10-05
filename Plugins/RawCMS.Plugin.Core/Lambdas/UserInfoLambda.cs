@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RawCMS.Plugins.Auth.Lambdas
+namespace RawCMS.Plugins.Core.Lambdas
 {
     public class UserInfoLambda : RestLambda
     {
@@ -20,7 +20,7 @@ namespace RawCMS.Plugins.Auth.Lambdas
             jj["IsAuthenticated"] = this.Request.User.Identity.IsAuthenticated;
             foreach (var claim in this.Request.User.Claims)
             {
-                jj[claim.Subject] = claim.Value;
+                jj[claim.Type] = claim.Value;
             }
             return jj;
         }

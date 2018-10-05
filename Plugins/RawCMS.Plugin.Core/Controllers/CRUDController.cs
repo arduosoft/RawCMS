@@ -9,9 +9,9 @@ using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core.Exceptions;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
-using RawCMS.Plugin.Core.Model;
+using RawCMS.Plugins.Core.Model;
 
-namespace RawCMS.Plugin.Core.Controllers
+namespace RawCMS.Plugins.Core.Controllers
 {
     [Route("api/[controller]")]
     [ParameterValidator("collection", "_(.*)", true)]

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
-using RawCMS.Plugins.Auth.Interfaces;
+using RawCMS.Plugins.Core.Interfaces;
 
-namespace RawCMS.Plugins.Auth.Store
+namespace RawCMS.Plugins.Core.Store
 {
     public class CustomResourceStore : IResourceStore
     {

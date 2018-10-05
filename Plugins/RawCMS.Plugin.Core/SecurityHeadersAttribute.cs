@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace RawCMS.Plugins.Auth.Attributes
+namespace RawCMS.Plugins.Core.Attributes
 {
     public class SecurityHeadersAttribute : ActionFilterAttribute
     {
