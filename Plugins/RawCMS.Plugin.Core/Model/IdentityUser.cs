@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace RawCMS.Plugins.Core.Model
@@ -28,5 +29,7 @@ namespace RawCMS.Plugins.Core.Model
         }
 
         public virtual JObject Metadata { get; } = new JObject();
+
+        public virtual ICollection<Claim> Claims { get; } = new List<Claim>();
     }
 }

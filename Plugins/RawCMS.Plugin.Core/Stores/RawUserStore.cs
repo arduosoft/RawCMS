@@ -22,7 +22,9 @@ namespace RawCMS.Plugins.Core.Stores
         IRequireCrudService, 
         IUserPasswordStore<IdentityUser>, 
         IPasswordValidator<IdentityUser>,
-        IUserClaimStore<IdentityUser>,  IRequireLog
+        IUserClaimStore<IdentityUser>,  
+        IPasswordHasher<IdentityUser>,
+        IRequireLog
     {
         ILogger logger;
         CRUDService service;
@@ -48,6 +50,7 @@ namespace RawCMS.Plugins.Core.Stores
 
         public async Task<IdentityResult> CreateAsync(IdentityUser user, CancellationToken cancellationToken)
         {
+            user.NormalizedUserName = user.UserName.ToUpper();
             this.service.Insert(collection, JObject.FromObject(user));
             return IdentityResult.Success;
         }
@@ -88,11 +91,7 @@ namespace RawCMS.Plugins.Core.Stores
 
             var query = new DataQuery()
             {
-                RawQuery= JsonConvert.SerializeObject(sample,Formatting.None,new JsonSerializerSettings()
-                {
-                    NullValueHandling=NullValueHandling.Ignore,
-                    DefaultValueHandling=DefaultValueHandling.Ignore
-                })
+                RawQuery = JsonConvert.SerializeObject(new { NormalizedUserName = normalizedUserName })
             };
 
             var result = this.service.Query(collection, query);
@@ -123,7 +122,7 @@ namespace RawCMS.Plugins.Core.Stores
             user.NormalizedUserName = normalizedName;
         }
 
-        public  async void InitData()
+        public  async Task InitData()
         {
             var user = await FindByNameAsync("bob", CancellationToken.None);
             if (user == null)
@@ -134,11 +133,11 @@ namespace RawCMS.Plugins.Core.Stores
                  
                     NormalizedUserName = "bob",
                     Email = "test@test.it",
-                    NormalizedEmail = "test@test.it"
+                    NormalizedEmail = "test@test.it",
+                    PasswordHash= ComputePasswordHash("XYZ")
+
                 };
-
-                userToAdd.PasswordHash = await GetPasswordHashAsync(userToAdd, CancellationToken.None);
-
+                
                 await this.CreateAsync(userToAdd, CancellationToken.None);
             }
         }
@@ -192,14 +191,23 @@ namespace RawCMS.Plugins.Core.Stores
             
         }
 
-        //public  string HashPassword(IdentityUser user, string password)
-        //{
-        //    return user.PasswordHash= await GetPasswordHashAsync(user, CancellationToken.None);
-        //}
+        public string HashPassword(IdentityUser user, string password)
+        {
+            return ComputePasswordHash(password);
+        }
+
+        private string ComputePasswordHash(string password)
+        {
+            return Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes(password));
+        }
 
         public PasswordVerificationResult VerifyHashedPassword(IdentityUser user, string hashedPassword, string providedPassword)
         {
-            return PasswordVerificationResult.Success;
+            if (hashedPassword == HashPassword(user, providedPassword))
+            {
+                return PasswordVerificationResult.Success;
+            }
+            return PasswordVerificationResult.Failed;
         }
 
         public async Task<IList<Claim>> GetClaimsAsync(IdentityUser user, CancellationToken cancellationToken)
@@ -209,9 +217,12 @@ namespace RawCMS.Plugins.Core.Stores
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
             JObject userObj = JObject.FromObject(user);
             foreach (var key in userObj.Properties())
-            {         
-                //TODO: manage metadata
-                claims.Add(new Claim(key.Name, key.Value.ToString()));
+            {
+                if (key.HasValues)
+                {
+                    //TODO: manage metadata
+                    claims.Add(new Claim(key.Name, key.Value.ToString()));
+                }
             }
             return claims;
         }

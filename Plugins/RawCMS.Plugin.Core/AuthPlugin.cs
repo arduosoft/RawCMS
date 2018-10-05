@@ -109,7 +109,7 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<IUserPasswordStore<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IPasswordValidator<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IUserClaimStore<IdentityUser>>(x => { return userStore; });
-            //services.AddSingleton<IPasswordHasher<IdentityUser>>(x => { return userStore; });
+            services.AddSingleton<IPasswordHasher<IdentityUser>>(x => { return userStore; });
 
            
 
@@ -172,7 +172,7 @@ namespace RawCMS.Plugins.Core
             //});
              .AddIdentityServerAuthentication("Bearer", options =>
              {
-                 options.Authority = "http://localhost:28436";
+                 options.Authority = "http://localhost:50093";
                  options.ApiName = "api1";
                  options.ApiSecret = "secret";
                  options.RequireHttpsMetadata = false;
@@ -194,7 +194,7 @@ namespace RawCMS.Plugins.Core
 
             userStore.SetCRUDService(this.appEngine.Service);
             userStore.SetLogger(this.appEngine.GetLogger(this));
-            userStore.InitData();
+             userStore.InitData().Wait();
 
             base.Configure(app, appEngine);
 
