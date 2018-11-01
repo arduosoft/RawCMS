@@ -12,6 +12,8 @@ There isn't any nuget package atm or relases. Just clone code on your local, com
 * [Data Process Lambda](Data-process-Lambda)
 * [Validation](Custom-Validation)
 * [Create Custom Field Validator](Custom-Field-Validation)
+* [Make Plugin configurable](Configurable-Plugins)
+* [Authentication](Authentication)
 
 ### Frontend User
 

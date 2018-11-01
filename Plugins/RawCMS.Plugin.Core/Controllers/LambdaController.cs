@@ -6,9 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using RawCMS.Library.Core;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Authorization;
+using RawCMS.Library.Core.Attributes;
 
 namespace RawCMS.Plugins.Core.Controllers
 {
+    [AllowAnonymous]
+    [RawAuthentication]
+    [Authorize(Policy ="ApiKey")]
     [Route("api/[controller]")]
     public class LambdaController : Controller
     {
@@ -24,7 +28,7 @@ namespace RawCMS.Plugins.Core.Controllers
             return lambdaManager.Lambdas.Where(x=>typeof(RestLambda).IsAssignableFrom(x.GetType())).ToList();
         }
 
-        [Authorize (AuthenticationSchemes  ="Bearer")]
+        
         [HttpPost("{lambda}")]
         public JObject Post(string lambda)
         {

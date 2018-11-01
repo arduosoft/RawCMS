@@ -10,6 +10,9 @@ using RawCMS.Library.Core;
 using RawCMS.Library.DataModel;
 using Microsoft.Extensions.Options;
 using RawCMS.Library.Service;
+using RawCMS.Library.Core.Interfaces;
+using RawCMS.Library.Core.Configuration;
+using Newtonsoft.Json.Linq;
 
 namespace RawCMS.Plugins.Core
 {
@@ -45,9 +48,53 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<MongoService>(mongoService);
             services.AddSingleton<CRUDService>(crudService);
             services.AddSingleton<AppEngine>(this.Engine);
+            services.AddHttpContextAccessor();
+
+            crudService.EnsureCollection("_configuration");
+
+
+            this.Engine.Plugins.ForEach(x => SetConfiguration(x,crudService));          
 
 
         }
+
+        private void SetConfiguration(Plugin plugin, CRUDService crudService)
+        {
+            var confitf = plugin.GetType().GetInterface("IConfigurablePlugin`1");
+            if (confitf != null)
+            {
+                var confType=confitf.GetGenericArguments()[0];
+                var pluginType = plugin.GetType();
+
+                var confItem=crudService.Query("_configuration", new DataQuery()
+                {
+                    PageNumber = 1,
+                    PageSize = 1,
+                    RawQuery = @"{""plugin_name"":""" + pluginType.FullName + @"""}"
+                });
+
+                JObject confToSave = null;
+
+                if (confItem.TotalCount == 0)
+                {
+                    confToSave = new JObject();
+
+                    confToSave["plugin_name"] = plugin.GetType().FullName;
+                    confToSave["data"] = JToken.FromObject(pluginType.GetMethod("GetDefaultConfig").Invoke(plugin, new object[] { }));
+                    crudService.Insert("_configuration", confToSave);
+                }
+                else
+                {
+                    confToSave = confItem.Items.First as JObject;
+                }
+
+                var objData= confToSave["data"].ToObject(confType);
+
+                pluginType.GetMethod("SetActualConfig").Invoke(plugin, new object[] { objData });
+
+            }
+        }
+
 
         public override void Configure(IApplicationBuilder app, AppEngine appEngine)
         {

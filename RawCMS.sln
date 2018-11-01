@@ -19,6 +19,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{6DA8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.Core", "Plugins\RawCMS.Plugin.Core\RawCMS.Plugins.Core.csproj", "{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6F40-4D56-ACAD-03F3C8E08137}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Authentication.md = docs\Authentication.md
+		docs\Configurable-Plugins.md = docs\Configurable-Plugins.md
+		docs\Custom-Field-Validation.md = docs\Custom-Field-Validation.md
+		docs\Custom-Validation.md = docs\Custom-Validation.md
+		docs\Data-process-Lambda.md = docs\Data-process-Lambda.md
+		docs\Data-Schema.md = docs\Data-Schema.md
+		docs\Define-net-lambda.md = docs\Define-net-lambda.md
+		docs\Dynamic-Crud-Controller.md = docs\Dynamic-Crud-Controller.md
+		docs\Dynamic-Lambda-Controller.md = docs\Dynamic-Lambda-Controller.md
+		docs\index.md = docs\index.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +61,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
+		{18F5053A-6F40-4D56-ACAD-03F3C8E08137} = {E88BB72F-C866-4D24-8D1B-DD6B237D376E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE0F5781-A4C7-4C01-8B4C-4AE7A10908CF}

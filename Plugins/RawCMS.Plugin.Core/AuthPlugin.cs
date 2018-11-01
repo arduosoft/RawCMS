@@ -21,70 +21,17 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using IdentityModel.AspNetCore.OAuth2Introspection;
 using RawCMS.Plugins.Core.Model;
+using RawCMS.Library.Core.Interfaces;
+using RawCMS.Plugins.Core.MVC;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RawCMS.Plugins.Core
 {
 
-    public class AuthPlugin : RawCMS.Library.Core.Extension.Plugin
+    public class AuthPlugin : RawCMS.Library.Core.Extension.Plugin, IConfigurablePlugin<AuthConfig>
     {
 
 
-        public class Config
-        {
-            // scopes define the resources in your system
-            public static IEnumerable<IdentityResource> GetIdentityResources()
-            {
-                return new List<IdentityResource>
-            {
-                //new IdentityResources.OpenId()
-            };
-            }
-
-            public static IEnumerable<ApiResource> GetApiResources()
-            {
-                return new List<ApiResource>
-            {
-                new ApiResource("api1", "My API")
-                {
-                    ApiSecrets = new List<Secret>
-                {
-                    new Secret("secret".Sha256())
-                },
-                Scopes=
-                {
-                    new Scope("openid"),
-                }
-                }
-            };
-            }
-
-            // clients want to access resources (aka scopes)
-            public static IEnumerable<Client> GetClients()
-            {
-                // client credentials client
-               return new List<Client>
-            {
-                
-                new Client
-                {
-                    ClientId = "ro.client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                    
-                    
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes =
-                    { 
-                        IdentityServerConstants.StandardScopes.OpenId,
-                    }
-                },
-
-               
-            };
-            }
-        }
 
         public override string Name => "Authorization";
 
@@ -102,82 +49,93 @@ namespace RawCMS.Plugins.Core
 
             services.Configure<ConfigurationOptions>(configuration);
 
-           
 
 
-            services.AddSingleton<IUserStore<IdentityUser>>(x => {  return userStore;  });
+
+            services.AddSingleton<IUserStore<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IUserPasswordStore<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IPasswordValidator<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IUserClaimStore<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IPasswordHasher<IdentityUser>>(x => { return userStore; });
 
+
+            //Add apikey authentication
            
 
-            var roleStore= new RawRoleStore();
-            services.AddSingleton<IRoleStore<IdentityRole>>(x => {   return roleStore;  });
+            var roleStore = new RawRoleStore();
+            services.AddSingleton<IRoleStore<IdentityRole>>(x => { return roleStore; });
 
-           
+
 
             services.AddIdentity<IdentityUser, IdentityRole>();
-
-            //services.AddIdentityServer(
-            //       // Enable IdentityServer events for logging capture - Events are not turned on by default
-            //       options =>
-            //       {
-            //           options.Events.RaiseSuccessEvents = true;
-            //           options.Events.RaiseFailureEvents = true;
-            //           options.Events.RaiseErrorEvents = true;
-            //       }
-            //   ).AddDeveloperSigningCredential()
-            //   .AddMongoRepository()
-            //   .AddMongoDbForAspIdentity(configuration);
-
 
             // configure identity server with in-memory stores, keys, clients and scopes
             services.AddIdentityServer()
             .AddDeveloperSigningCredential()
             .AddInMemoryPersistedGrants()
-            .AddInMemoryIdentityResources(Config.GetIdentityResources())
-            .AddInMemoryApiResources(Config.GetApiResources())
-            .AddInMemoryClients(Config.GetClients())
+            .AddInMemoryIdentityResources(this.config.GetIdentityResources())
+            .AddInMemoryApiResources(this.config.GetApiResources())
+            .AddInMemoryClients(this.config.GetClients())
             .AddAspNetIdentity<IdentityUser>();
-            //.AddTestUsers(new List<IdentityServer4.Test.TestUser>()
-            //{
-            //    new IdentityServer4.Test.TestUser()
-            //    {
-            //        SubjectId="SSS",
-            //        IsActive=true,
 
-            //        Username="bob",
-            //        Password="Password.1"
-            //    }
-            //});
-
-           // OAuth2IntrospectionOptions options = new OAuth2IntrospectionOptions();
-
-            // base-address of your identityserver
-           // options.Authority = "http://localhost:28436";
-           // options.ClientSecret = "secret";
-           // options.ClientId = "api1";
-           // options.BasicAuthenticationHeaderStyle = IdentityModel.Client.BasicAuthenticationHeaderStyle.Rfc2617;
-           //// options.IntrospectionEndpoint = "http://localhost:28436/connect/introspect";
-           // options.TokenTypeHint = "Bearer";
             
-           // options.Validate();
 
-             
-            services.AddAuthentication(OAuth2IntrospectionDefaults.AuthenticationScheme)
-            //.AddOAuth2Introspection( x => {
-            //    x = options;
-            //});
-             .AddIdentityServerAuthentication("Bearer", options =>
-             {
-                 options.Authority = "http://localhost:50093";
-                 options.ApiName = "api1";
-                 options.ApiSecret = "secret";
-                 options.RequireHttpsMetadata = false;
-             });
+            if (this.config.Mode == OAuthMode.External)
+            {
+                OAuth2IntrospectionOptions options = new OAuth2IntrospectionOptions();
 
+                //base - address of your identityserver
+                options.Authority = this.config.Authority;
+                options.ClientSecret = this.config.ClientSecret;
+                options.ClientId = this.config.ClientId;
+                options.BasicAuthenticationHeaderStyle = IdentityModel.Client.BasicAuthenticationHeaderStyle.Rfc2617;
+                if (!string.IsNullOrWhiteSpace(this.config.IntrospectionEndpoint))
+                {
+                    options.IntrospectionEndpoint = this.config.IntrospectionEndpoint;
+                }
+                options.TokenTypeHint = "Bearer";
+                if (!string.IsNullOrWhiteSpace(this.config.TokenTypeHint))
+                {
+                    options.TokenTypeHint = this.config.TokenTypeHint;
+                }
+
+                options.Validate();
+
+                services.AddAuthentication(OAuth2IntrospectionDefaults.AuthenticationScheme)
+                    .AddOAuth2Introspection(x =>
+                    {
+                        x = options;
+                    });
+
+
+            }
+            else
+            {
+                services.AddAuthentication(OAuth2IntrospectionDefaults.AuthenticationScheme)
+                 //.AddOAuth2Introspection( x => {
+                 //    x = options;
+                 //});
+                 .AddIdentityServerAuthentication("Bearer", options =>
+                 {
+                     options.Authority = this.config.Authority;
+                     options.ApiName = this.config.ApiResource;
+                     options.ApiSecret = this.config.ClientSecret;
+                     options.RequireHttpsMetadata = false;
+                 });
+            }
+
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiKey", policy =>
+                    policy.Requirements.Add(new ApiKeyRequirement()
+                    {
+                        AdminApiKey = this.config.AdminApiKey,
+                        ApiKey = this.config.ApiKey
+                    }));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, RawAuthorizationHandler>();
         }
 
         IConfigurationRoot configuration;
@@ -203,7 +161,26 @@ namespace RawCMS.Plugins.Core
             app.UseAuthentication();
             app.UseIdentityServer();
           
+            
 
+        }
+
+        public AuthConfig GetDefaultConfig()
+        {
+            return new AuthConfig()
+            {
+                Mode=OAuthMode.Standalone,
+                Authority="http://localhost:50093",
+                ClientId="raw.client",
+                ClientSecret="raw.secret",
+                ApiResource="rawcms"
+            };
+        }
+
+        AuthConfig config;
+        public void SetActualConfig(AuthConfig config)
+        {
+            this.config = config;
         }
     }
 }

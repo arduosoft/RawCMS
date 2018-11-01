@@ -14,7 +14,7 @@ namespace RawCMS.Library.Core.Extension
     /// </summary>
     public abstract class Plugin : IRequireApp, IInitable
     {
-        public virtual int Priority => 1;
+        public virtual int Priority { get; internal set; } = 1;
         public abstract string Name { get; }
         public abstract string Description { get; }
         public ILogger Logger { get => logger; private set => logger = value; }

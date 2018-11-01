@@ -89,8 +89,15 @@ namespace RawCMS.Library.Core
                 });
             }
             Plugins.ForEach(x => x.SetAppEngine(this));
-        }
 
+            //Core plugin must be the first to be called. This ensure it also in case thirdy party define malicius priority.
+            int minPriority = 0;
+            Plugins.ForEach(x => { if (x.Priority <= minPriority) minPriority = x.Priority - 1; });
+            var corePlugin=Plugins.Single(x => x.Name == "Core");
+            corePlugin.Priority = minPriority;
+            
+        }
+       
 
         private  CRUDService service;
         private void LoadLambdas()

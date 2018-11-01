@@ -37,17 +37,7 @@ namespace RawCMS.Library.Service
             InvokeValidation(newitem, collection);
 
 
-
-            try
-            {
-
-                _mongoService.GetDatabase().CreateCollection(collection);
-
-            }
-            catch
-            {
-                //Check for collection exists...
-            }
+            EnsureCollection(collection);
 
 
 
@@ -95,16 +85,7 @@ namespace RawCMS.Library.Service
             InvokeValidation(item, collection);
 
             //TODO: create collection if not exists
-            try
-            {
-
-                _mongoService.GetDatabase().CreateCollection(collection);
-
-            }
-            catch
-            {
-                //Check for collection exists...
-            }
+            EnsureCollection(collection);
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(item["_id"].Value<string>()));
 
@@ -123,10 +104,10 @@ namespace RawCMS.Library.Service
 
             UpdateOptions o = new UpdateOptions()
             {
-               IsUpsert = true,
-            BypassDocumentValidation = true
-           };
-            
+                IsUpsert = true,
+                BypassDocumentValidation = true
+            };
+
 
 
 
@@ -152,10 +133,24 @@ namespace RawCMS.Library.Service
 
         }
 
+        public void EnsureCollection(string collection)
+        {
+            try
+            {
+
+                _mongoService.GetDatabase().CreateCollection(collection);
+
+            }
+            catch
+            {
+                //Check for collection exists...
+            }
+        }
 
         public bool Delete(string collection, string id)
         {
 
+            EnsureCollection(collection);
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(id));
 
