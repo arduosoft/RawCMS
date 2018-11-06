@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -8,6 +9,7 @@ namespace RawCMS.Plugins.Core.Model
 {
     public class IdentityUser
     {
+        [JsonProperty(PropertyName = "_id")]
         public virtual string Id { get; set; }
         public virtual string UserName { get; set; }
         public virtual string NormalizedUserName { get; set; }
@@ -29,7 +31,6 @@ namespace RawCMS.Plugins.Core.Model
         }
 
         public virtual JObject Metadata { get; } = new JObject();
-
-        public virtual ICollection<Claim> Claims { get; } = new List<Claim>();
+        
     }
 }

@@ -24,6 +24,8 @@ using RawCMS.Plugins.Core.Model;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Plugins.Core.MVC;
 using Microsoft.AspNetCore.Authorization;
+using RawCMS.Plugins.Core.Extensions;
+using System.Security.Claims;
 
 namespace RawCMS.Plugins.Core
 {
@@ -57,10 +59,12 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<IPasswordValidator<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IUserClaimStore<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IPasswordHasher<IdentityUser>>(x => { return userStore; });
+            services.AddSingleton<IProfileService>(x => { return userStore; });
+            services.AddSingleton<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
 
 
             //Add apikey authentication
-           
+
 
             var roleStore = new RawRoleStore();
             services.AddSingleton<IRoleStore<IdentityRole>>(x => { return roleStore; });
@@ -76,9 +80,10 @@ namespace RawCMS.Plugins.Core
             .AddInMemoryIdentityResources(this.config.GetIdentityResources())
             .AddInMemoryApiResources(this.config.GetApiResources())
             .AddInMemoryClients(this.config.GetClients())
-            .AddAspNetIdentity<IdentityUser>();
+            .AddAspNetIdentity<IdentityUser>()
+            .AddProfileServiceCustom(userStore);
 
-            
+
 
             if (this.config.Mode == OAuthMode.External)
             {
@@ -121,21 +126,18 @@ namespace RawCMS.Plugins.Core
                      options.ApiName = this.config.ApiResource;
                      options.ApiSecret = this.config.ClientSecret;
                      options.RequireHttpsMetadata = false;
+                     options.SaveToken = true;
+                     options.NameClaimType = ClaimTypes.NameIdentifier;
+                    
                  });
             }
 
 
-            services.AddAuthorization(options =>
+            services.AddMvc(options =>
             {
-                options.AddPolicy("ApiKey", policy =>
-                    policy.Requirements.Add(new ApiKeyRequirement()
-                    {
-                        AdminApiKey = this.config.AdminApiKey,
-                        ApiKey = this.config.ApiKey
-                    }));
-            });
+                options.Filters.Add(new RawAuthorizationAttribute(this.config.ApiKey, this.config.AdminApiKey));
 
-            services.AddSingleton<IAuthorizationHandler, RawAuthorizationHandler>();
+            });
         }
 
         IConfigurationRoot configuration;
@@ -160,7 +162,9 @@ namespace RawCMS.Plugins.Core
           
             app.UseAuthentication();
             app.UseIdentityServer();
-          
+
+
+            app.UseMvc();
             
 
         }

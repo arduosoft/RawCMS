@@ -12,7 +12,6 @@ namespace RawCMS.Plugins.Core.Controllers
 {
     [AllowAnonymous]
     [RawAuthentication]
-    [Authorize(Policy ="ApiKey")]
     [Route("api/[controller]")]
     public class LambdaController : Controller
     {
@@ -28,7 +27,8 @@ namespace RawCMS.Plugins.Core.Controllers
             return lambdaManager.Lambdas.Where(x=>typeof(RestLambda).IsAssignableFrom(x.GetType())).ToList();
         }
 
-        
+        [AllowAnonymous]
+        [RawAuthentication]
         [HttpPost("{lambda}")]
         public JObject Post(string lambda)
         {

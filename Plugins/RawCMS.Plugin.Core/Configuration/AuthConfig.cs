@@ -3,6 +3,7 @@ using IdentityServer4.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace RawCMS.Plugins.Core.Configuration
@@ -36,7 +37,9 @@ namespace RawCMS.Plugins.Core.Configuration
         {
             return new List<IdentityResource>
             {
-                //new IdentityResources.OpenId()
+                new IdentityResources.Email(),
+                new IdentityResources.Profile(),
+                new IdentityResource("custom",new string[]{ ClaimTypes.Email,ClaimTypes.NameIdentifier, ClaimTypes.Name})
             };
         }
 
@@ -53,8 +56,11 @@ namespace RawCMS.Plugins.Core.Configuration
                 Scopes=
                 {
                     new Scope("openid"),
+                    
+                },
+                UserClaims= new string[]{ ClaimTypes.NameIdentifier, ClaimTypes.Email}
                 }
-                }
+                
             };
         }
 
@@ -70,7 +76,9 @@ namespace RawCMS.Plugins.Core.Configuration
                 {
                     ClientId = this.ClientId,
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AlwaysSendClientClaims = true,
+                    
 
                     ClientSecrets =
                     {
@@ -79,6 +87,7 @@ namespace RawCMS.Plugins.Core.Configuration
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
                     }
                 },
 

@@ -44,7 +44,13 @@ namespace RawCMS.Library.Service
             InvokeProcess(collection, ref newitem, SavePipelineStage.PreSave);
 
             var json = newitem.ToString();
-            _mongoService.GetCollection<BsonDocument>(collection).InsertOne(BsonSerializer.Deserialize<BsonDocument>(json));
+            var itemToAdd = BsonSerializer.Deserialize<BsonDocument>(json);
+            if (itemToAdd.Contains("_id"))
+            {
+                itemToAdd.Remove("_id");
+            }
+
+            _mongoService.GetCollection<BsonDocument>(collection).InsertOne(itemToAdd);
             InvokeProcess(collection, ref newitem, SavePipelineStage.PostSave);
 
             return JObject.Parse(newitem.ToJson(js));

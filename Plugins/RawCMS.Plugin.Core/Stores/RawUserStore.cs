@@ -14,16 +14,80 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.DataModel;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
+using IdentityServer4.Services;
+using IdentityServer4.Models;
+using IdentityModel;
+using System.Linq;
 
 namespace RawCMS.Plugins.Core.Stores
 {
-    public class RawUserStore : IUserStore<IdentityUser>, 
+
+    public class RawClaimsFactory : UserClaimsPrincipalFactory<IdentityUser, IdentityRole>
+    {
+
+        public async Task<IList<Claim>> GetClaimsAsync(IdentityUser user)
+        {
+            List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
+            claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            JObject userObj = JObject.FromObject(user);
+            foreach (var key in userObj.Properties())
+            {
+                if (key.HasValues && !key.Name.Contains("Password"))
+                {
+                    //TODO: manage metadata
+                    claims.Add(new Claim(key.Name, key.Value.ToString()));
+                }
+            }
+            return claims;
+        }
+
+        public RawClaimsFactory(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<IdentityOptions> options)
+            : base(userManager, roleManager, options)
+        {
+        }
+
+        public override async Task<ClaimsPrincipal> CreateAsync(IdentityUser user)
+        {
+            
+            var principal= await base.CreateAsync(user);
+            //principal.Identity.(await GetClaimsAsync(user));
+            return principal;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        protected override async Task<ClaimsIdentity> GenerateClaimsAsync(IdentityUser user)
+        {
+
+            var principal = await base.GenerateClaimsAsync(user);
+            principal.AddClaims(await GetClaimsAsync(user));
+            return principal;
+        }
+    }
+
+    public class RawUserStore :  IUserStore<IdentityUser>, 
         IRequireApp, 
         IRequireCrudService, 
         IUserPasswordStore<IdentityUser>, 
         IPasswordValidator<IdentityUser>,
         IUserClaimStore<IdentityUser>,  
-        IPasswordHasher<IdentityUser>,
+        IPasswordHasher<IdentityUser>,       
+        IProfileService,
         IRequireLog
     {
         ILogger logger;
@@ -209,12 +273,12 @@ namespace RawCMS.Plugins.Core.Stores
         public async Task<IList<Claim>> GetClaimsAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
             JObject userObj = JObject.FromObject(user);
             foreach (var key in userObj.Properties())
             {
-                if (key.HasValues)
+                if (key.HasValues && !key.Name.Contains("Password"))//TODO: implement blacklists
                 {
                     //TODO: manage metadata
                     claims.Add(new Claim(key.Name, key.Value.ToString()));
@@ -245,6 +309,43 @@ namespace RawCMS.Plugins.Core.Stores
         {
             //TODO:
             return null;
+        }
+
+        public async Task<ClaimsPrincipal> CreateAsync(IdentityUser user)
+        {
+            ClaimsIdentity id = new ClaimsIdentity(user.UserName, ClaimTypes.NameIdentifier, ClaimTypes.Role);
+            id.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
+            
+            if (user.Roles != null)
+            {
+                id.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", user.Roles)));
+            }
+            id.AddClaims(await GetClaimsAsync( user, CancellationToken.None));
+
+            
+
+            ClaimsPrincipal userprincipal = new ClaimsPrincipal();            
+            userprincipal.AddIdentity(id);
+            return userprincipal;
+
+        }
+
+        public async  Task GetProfileDataAsync(ProfileDataRequestContext context)
+        {
+            var userid = context.Subject.Claims.FirstOrDefault(x => x.Type == "sub");
+            if (userid != null)
+            {
+                var user= await this.FindByIdAsync(userid.Value, CancellationToken.None);
+                var tokens = await this.GetClaimsAsync(user, CancellationToken.None);
+                
+                context.IssuedClaims.AddRange(tokens);
+            }
+            //context.IssuedClaims = claims;
+        }
+
+        public async Task IsActiveAsync(IsActiveContext context)
+        {
+            
         }
     }
 }
