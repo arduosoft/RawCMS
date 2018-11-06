@@ -81,7 +81,7 @@ where \<xxx\> is the standard basic authentication using username=api resource n
 ```
 grant_type:password
 client_id:raw.client
-client_secret:raw.secred
+client_secret:raw.secret
 scope:openid
 username:bob
 password:XYZ
