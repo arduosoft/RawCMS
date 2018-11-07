@@ -1,6 +1,8 @@
 # RawCMS
 RawCMS is an headless CMS written in asp.net core build for devopers that embrace API first tecnology.
 
+[![CodeFactor](https://www.codefactor.io/repository/github/arduosoft/rawcms/badge?style=flat-square)](https://www.codefactor.io/repository/github/arduosoft/rawcms/)
+
 ## Features
 
 RawCMS is a modular application build on asp.net core+mongo db stack. It is based on "Lambdas". Inside RawCMS Lamba is implemented by command pattern. All parts of RawCMS are fully extensible.
