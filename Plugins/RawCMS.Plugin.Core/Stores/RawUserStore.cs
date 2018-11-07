@@ -176,8 +176,16 @@ namespace RawCMS.Plugins.Core.Stores
 
         public async Task InitData()
         {
-            IdentityUser user = await FindByNameAsync("BOB", CancellationToken.None);
-            if (user == null)
+            var count = 0l;
+            try
+            {
+                count = this.service.Count(collection, null);
+            }
+            catch
+            {
+                //no error if missing collection
+            }
+            if (count==0)
             {
                 IdentityUser userToAdd = new IdentityUser()
                 {

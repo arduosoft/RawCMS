@@ -161,7 +161,23 @@ namespace RawCMS.Library.Service
             return JObject.Parse(json);
         }
 
-        public ItemList Query(string collection, DataQuery query)
+        public long Count(string collection,string query)
+        {
+            FilterDefinition<BsonDocument> filter = FilterDefinition<BsonDocument>.Empty;
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                filter = new JsonFilterDefinition<BsonDocument>(query);
+            }
+            return Count(collection, filter);
+        }
+
+            public long Count(string collection, FilterDefinition<BsonDocument> filter)
+        {
+            long count = _mongoService
+               .GetCollection<BsonDocument>(collection).Find<BsonDocument>(filter).Count();
+            return count;
+        }
+            public ItemList Query(string collection, DataQuery query)
         {
             FilterDefinition<BsonDocument> filter = FilterDefinition<BsonDocument>.Empty;
             if (query.RawQuery != null)
@@ -174,8 +190,7 @@ namespace RawCMS.Library.Service
                 .Skip((query.PageNumber - 1) * query.PageSize)
                 .Limit(query.PageSize);
 
-            long count = _mongoService
-                .GetCollection<BsonDocument>(collection).Find<BsonDocument>(filter).Count();
+            long count =Count(collection, filter);
 
             List<BsonDocument> list = results.ToList();
 
