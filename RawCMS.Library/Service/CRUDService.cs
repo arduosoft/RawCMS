@@ -18,6 +18,7 @@ namespace RawCMS.Library.Service
     {
         private readonly MongoService _mongoService;
         private readonly MongoSettings _settings;
+        private readonly List<string> collectionNames= new List<string>();
         private AppEngine lambdaManager;
 
         private readonly JsonWriterSettings js = new JsonWriterSettings()
@@ -30,6 +31,16 @@ namespace RawCMS.Library.Service
         {
             _mongoService = mongoService;
             _settings = settings.Value;
+            LoadCollectionNames();
+            
+        }
+
+        private void LoadCollectionNames()
+        {
+            foreach (var collection in this._mongoService.GetDatabase().ListCollections().ToEnumerable())
+            {
+                this.collectionNames.Add(collection["name"].AsString);
+            }
         }
 
         public JObject Insert(string collection, JObject newitem)
@@ -118,14 +129,12 @@ namespace RawCMS.Library.Service
 
         public void EnsureCollection(string collection)
         {
-            try
-            {
-                _mongoService.GetDatabase().CreateCollection(collection);
-            }
-            catch
-            {
-                //Check for collection exists...
-            }
+           
+                if (!this.collectionNames.Any(x => x.Equals(collection)))
+                {
+                    _mongoService.GetDatabase().CreateCollection(collection);
+                    this.collectionNames.Add(collection);
+                }
         }
 
         public bool Delete(string collection, string id)
