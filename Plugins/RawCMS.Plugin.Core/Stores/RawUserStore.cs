@@ -32,8 +32,7 @@ namespace RawCMS.Plugins.Core.Stores
             foreach (JProperty key in userObj.Properties())
             {
                 if (key.HasValues && !key.Name.Contains("Password"))
-                {
-                    //TODO: manage metadata
+                {                   
                     claims.Add(new Claim(key.Name, key.Value.ToString()));
                 }
             }
@@ -48,7 +47,6 @@ namespace RawCMS.Plugins.Core.Stores
         public override async Task<ClaimsPrincipal> CreateAsync(IdentityUser user)
         {
             ClaimsPrincipal principal = await base.CreateAsync(user);
-            //principal.Identity.(await GetClaimsAsync(user));
             return principal;
         }
 
@@ -131,14 +129,6 @@ namespace RawCMS.Plugins.Core.Stores
 
         public async Task<IdentityUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            //return new IdentityUser()
-            //{
-            //    UserName = normalizedUserName,
-            //    PasswordHash = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes("XYZ")),
-            //    NormalizedUserName=normalizedUserName,
-            //    Email="test@test.it",
-            //    NormalizedEmail="test@test.it"
-            //};
 
             DataQuery query = new DataQuery()
             {
