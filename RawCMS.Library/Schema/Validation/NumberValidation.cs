@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
+using System.Collections.Generic;
 
 namespace RawCMS.Library.Schema.Validation
 {
-   
     public class NumberValidation : FieldTypeValidator
     {
-        public override string Type =>"number";
+        public override string Type => "number";
 
         public override List<Error> Validate(JObject input, Field field)
         {
             List<Error> errors = new List<Error>();
             if (field.Options != null)
             {
-                if (input[field.Name] == null) return errors ; //null check is done on main validation
-
-                
-                if ( !double.TryParse(input[field.Name].ToString(), out double value))
+                if (input[field.Name] == null)
                 {
-                    
+                    return errors; //null check is done on main validation
+                }
+
+                if (!double.TryParse(input[field.Name].ToString(), out double value))
+                {
                     errors.Add(new Error()
                     {
                         Code = "INVALID VALUE",
@@ -32,7 +30,6 @@ namespace RawCMS.Library.Schema.Validation
 
                 if (field.Options["max"] != null)
                 {
-                   
                     if (double.TryParse(field.Options["max"].ToString(), out double max))
                     {
                         if (input[field.Name] != null && max < value)
@@ -48,7 +45,6 @@ namespace RawCMS.Library.Schema.Validation
 
                 if (field.Options["min"] != null)
                 {
-                   
                     if (double.TryParse(field.Options["min"].ToString(), out double min))
                     {
                         if (input[field.Name] != null && min > value)
@@ -60,9 +56,7 @@ namespace RawCMS.Library.Schema.Validation
                             });
                         }
                     }
-
                 }
-
             }
             return errors;
         }

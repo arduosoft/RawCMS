@@ -1,38 +1,35 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using IdentityServer4.Models;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RawCMS.Library.Core;
+using RawCMS.Library.Core.Interfaces;
+using RawCMS.Library.DataModel;
+using RawCMS.Library.Service;
+using RawCMS.Plugins.Core.Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using RawCMS.Library.Core.Interfaces;
-using RawCMS.Library.Core;
-using RawCMS.Library.Service;
-using System.Security.Claims;
-using RawCMS.Plugins.Core.Model;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
-using RawCMS.Library.DataModel;
-using Newtonsoft.Json;
-using Microsoft.Extensions.Options;
-using IdentityServer4.Services;
-using IdentityServer4.Models;
-using IdentityModel;
-using System.Linq;
 
 namespace RawCMS.Plugins.Core.Stores
 {
-
     public class RawClaimsFactory : UserClaimsPrincipalFactory<IdentityUser, IdentityRole>
     {
-
         public async Task<IList<Claim>> GetClaimsAsync(IdentityUser user)
         {
-            List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
-            claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
             JObject userObj = JObject.FromObject(user);
-            foreach (var key in userObj.Properties())
+            foreach (JProperty key in userObj.Properties())
             {
                 if (key.HasValues && !key.Name.Contains("Password"))
                 {
@@ -50,8 +47,7 @@ namespace RawCMS.Plugins.Core.Stores
 
         public override async Task<ClaimsPrincipal> CreateAsync(IdentityUser user)
         {
-            
-            var principal= await base.CreateAsync(user);
+            ClaimsPrincipal principal = await base.CreateAsync(user);
             //principal.Identity.(await GetClaimsAsync(user));
             return principal;
         }
@@ -73,38 +69,36 @@ namespace RawCMS.Plugins.Core.Stores
 
         protected override async Task<ClaimsIdentity> GenerateClaimsAsync(IdentityUser user)
         {
-
-            var principal = await base.GenerateClaimsAsync(user);
+            ClaimsIdentity principal = await base.GenerateClaimsAsync(user);
             principal.AddClaims(await GetClaimsAsync(user));
             return principal;
         }
     }
 
-    public class RawUserStore :  IUserStore<IdentityUser>, 
-        IRequireApp, 
-        IRequireCrudService, 
-        IUserPasswordStore<IdentityUser>, 
+    public class RawUserStore : IUserStore<IdentityUser>,
+        IRequireApp,
+        IRequireCrudService,
+        IUserPasswordStore<IdentityUser>,
         IPasswordValidator<IdentityUser>,
-        IUserClaimStore<IdentityUser>,  
-        IPasswordHasher<IdentityUser>,       
+        IUserClaimStore<IdentityUser>,
+        IPasswordHasher<IdentityUser>,
         IProfileService,
         IRequireLog
     {
-        ILogger logger;
-        CRUDService service;
-        const string collection = "_users";
+        private ILogger logger;
+        private CRUDService service;
+        private const string collection = "_users";
 
         private AppEngine appEngine;
+
         public void SetAppEngine(AppEngine manager)
         {
-            this.appEngine = manager;
-
+            appEngine = manager;
         }
 
         public void SetCRUDService(CRUDService service)
         {
             this.service = service;
-
         }
 
         public void SetLogger(ILogger logger)
@@ -115,30 +109,28 @@ namespace RawCMS.Plugins.Core.Stores
         public async Task<IdentityResult> CreateAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             user.NormalizedUserName = user.UserName.ToUpper();
-            this.service.Insert(collection, JObject.FromObject(user));
+            service.Insert(collection, JObject.FromObject(user));
             return IdentityResult.Success;
         }
 
         public async Task<IdentityResult> DeleteAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            this.service.Delete(collection, user.Id);
+            service.Delete(collection, user.Id);
             return IdentityResult.Success;
         }
 
         public void Dispose()
         {
-          
         }
 
         public async Task<IdentityUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            var result= this.service.Get(collection, userId);
+            JObject result = service.Get(collection, userId);
             return result.ToObject<IdentityUser>();
         }
 
-        public async Task<IdentityUser>  FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        public async Task<IdentityUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-
             //return new IdentityUser()
             //{
             //    UserName = normalizedUserName,
@@ -148,17 +140,18 @@ namespace RawCMS.Plugins.Core.Stores
             //    NormalizedEmail="test@test.it"
             //};
 
-           
-
-            var query = new DataQuery()
+            DataQuery query = new DataQuery()
             {
                 RawQuery = JsonConvert.SerializeObject(new { NormalizedUserName = normalizedUserName })
             };
 
-            var result = this.service.Query(collection, query);
-            if (result.TotalCount == 0) return null;
-            return result.Items.First.ToObject<IdentityUser>();
+            ItemList result = service.Query(collection, query);
+            if (result.TotalCount == 0)
+            {
+                return null;
+            }
 
+            return result.Items.First.ToObject<IdentityUser>();
         }
 
         public async Task<string> GetNormalizedUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
@@ -176,29 +169,26 @@ namespace RawCMS.Plugins.Core.Stores
             return user.UserName;
         }
 
-      
-
         public async Task SetNormalizedUserNameAsync(IdentityUser user, string normalizedName, CancellationToken cancellationToken)
         {
             user.NormalizedUserName = normalizedName;
         }
 
-        public  async Task InitData()
+        public async Task InitData()
         {
-            var user = await FindByNameAsync("BOB", CancellationToken.None);
+            IdentityUser user = await FindByNameAsync("BOB", CancellationToken.None);
             if (user == null)
             {
-                var userToAdd =new IdentityUser()
+                IdentityUser userToAdd = new IdentityUser()
                 {
-                    UserName = "bob",                 
+                    UserName = "bob",
                     NormalizedUserName = "BOB",
                     Email = "test@test.it",
                     NormalizedEmail = "test@test.it",
-                    PasswordHash= ComputePasswordHash("XYZ")
-
+                    PasswordHash = ComputePasswordHash("XYZ")
                 };
-                
-                await this.CreateAsync(userToAdd, CancellationToken.None);
+
+                await CreateAsync(userToAdd, CancellationToken.None);
             }
         }
 
@@ -209,11 +199,9 @@ namespace RawCMS.Plugins.Core.Stores
 
         public async Task<IdentityResult> UpdateAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            this.service.Update(collection, JObject.FromObject(user),true);
+            service.Update(collection, JObject.FromObject(user), true);
             return IdentityResult.Success;
         }
-
-       
 
         public async Task SetPasswordHashAsync(IdentityUser user, string passwordHash, CancellationToken cancellationToken)
         {
@@ -232,9 +220,7 @@ namespace RawCMS.Plugins.Core.Stores
 
         public async Task<IdentityResult> ValidateAsync(UserManager<IdentityUser> manager, IdentityUser user, string password)
         {
-
-            
-            foreach (var val in manager.PasswordValidators)
+            foreach (IPasswordValidator<IdentityUser> val in manager.PasswordValidators)
             {
                 if (await val.ValidateAsync(manager, user, password) != IdentityResult.Success)
                 {
@@ -248,7 +234,6 @@ namespace RawCMS.Plugins.Core.Stores
                 }
             }
             return IdentityResult.Success;
-            
         }
 
         public string HashPassword(IdentityUser user, string password)
@@ -272,11 +257,13 @@ namespace RawCMS.Plugins.Core.Stores
 
         public async Task<IList<Claim>> GetClaimsAsync(IdentityUser user, CancellationToken cancellationToken)
         {
-            List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserName));
-            claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
             JObject userObj = JObject.FromObject(user);
-            foreach (var key in userObj.Properties())
+            foreach (JProperty key in userObj.Properties())
             {
                 if (key.HasValues && !key.Name.Contains("Password"))//TODO: implement blacklists
                 {
@@ -289,7 +276,7 @@ namespace RawCMS.Plugins.Core.Stores
 
         public async Task AddClaimsAsync(IdentityUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
         {
-            foreach (var claim in claims)
+            foreach (Claim claim in claims)
             {
                 //TODO:
             }
@@ -315,29 +302,26 @@ namespace RawCMS.Plugins.Core.Stores
         {
             ClaimsIdentity id = new ClaimsIdentity(user.UserName, ClaimTypes.NameIdentifier, ClaimTypes.Role);
             id.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
-            
+
             if (user.Roles != null)
             {
                 id.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", user.Roles)));
             }
-            id.AddClaims(await GetClaimsAsync( user, CancellationToken.None));
+            id.AddClaims(await GetClaimsAsync(user, CancellationToken.None));
 
-            
-
-            ClaimsPrincipal userprincipal = new ClaimsPrincipal();            
+            ClaimsPrincipal userprincipal = new ClaimsPrincipal();
             userprincipal.AddIdentity(id);
             return userprincipal;
-
         }
 
-        public async  Task GetProfileDataAsync(ProfileDataRequestContext context)
+        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            var userid = context.Subject.Claims.FirstOrDefault(x => x.Type == "sub");
+            Claim userid = context.Subject.Claims.FirstOrDefault(x => x.Type == "sub");
             if (userid != null)
             {
-                var user= await this.FindByIdAsync(userid.Value, CancellationToken.None);
-                var tokens = await this.GetClaimsAsync(user, CancellationToken.None);
-                
+                IdentityUser user = await FindByIdAsync(userid.Value, CancellationToken.None);
+                IList<Claim> tokens = await GetClaimsAsync(user, CancellationToken.None);
+
                 context.IssuedClaims.AddRange(tokens);
             }
             //context.IssuedClaims = claims;
@@ -345,7 +329,6 @@ namespace RawCMS.Plugins.Core.Stores
 
         public async Task IsActiveAsync(IsActiveContext context)
         {
-            
         }
     }
 }

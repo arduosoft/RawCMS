@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 
 namespace RawCMS.Library.Core
@@ -11,26 +8,25 @@ namespace RawCMS.Library.Core
     public abstract class RestLambda : HttpLambda
     {
         public HttpContext Request;
+
         public override object Execute(HttpContext request)
         {
-            this.Request = request;
-            using (var reader = new StreamReader(request.Request.Body))
+            Request = request;
+            using (StreamReader reader = new StreamReader(request.Request.Body))
             {
-                var body = reader.ReadToEnd();
-                var input = new JObject();
+                string body = reader.ReadToEnd();
+                JObject input = new JObject();
                 try
                 {
                     input = JObject.Parse(body);
                 }
-                catch (Exception er)
+                catch (Exception)
                 {
                     //TODO: add log here
                 }
 
-                return Rest(input);            
+                return Rest(input);
             }
-
-           
         }
 
         public abstract JObject Rest(JObject input);

@@ -1,7 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RawCMS.Library.Core
 {
@@ -18,14 +15,13 @@ namespace RawCMS.Library.Core
         public abstract void Execute(string collection, ref JObject Item);
     }
 
-
     public abstract class PostSaveLambda : DataProcessLambda
     {
-        public override SavePipelineStage Stage {get  { return SavePipelineStage.PostSave; } }
+        public override SavePipelineStage Stage => SavePipelineStage.PostSave;
     }
 
     public abstract class PreSaveLambda : DataProcessLambda
     {
-        public override SavePipelineStage Stage { get { return SavePipelineStage.PreSave; } }
+        public override SavePipelineStage Stage => SavePipelineStage.PreSave;
     }
 }

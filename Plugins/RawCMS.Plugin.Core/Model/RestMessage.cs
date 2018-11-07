@@ -1,21 +1,14 @@
 ﻿using RawCMS.Library.Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RawCMS.Plugins.Core.Model
 {
-
     public enum RestStatus
     {
         OK,
         KO,
         CompletedWithErrors
     }
-
-
-   
 
     public class RestMessage<T>
     {
@@ -29,8 +22,7 @@ namespace RawCMS.Plugins.Core.Model
 
         public RestMessage(T item)
         {
-            this.Data = item;
+            Data = item;
         }
-
     }
 }

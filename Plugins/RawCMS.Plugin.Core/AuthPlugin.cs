@@ -1,58 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using IdentityServer4;
-using IdentityServer4.AccessTokenValidation;
-
-using IdentityServer4.Models;
+﻿using IdentityModel.AspNetCore.OAuth2Introspection;
 using IdentityServer4.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
-using RawCMS.Library.Core.Extension;
-using RawCMS.Plugins.Core.Configuration;
-using RawCMS.Plugins.Core.Stores;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using IdentityModel.AspNetCore.OAuth2Introspection;
-using RawCMS.Plugins.Core.Model;
 using RawCMS.Library.Core.Interfaces;
-using RawCMS.Plugins.Core.MVC;
-using Microsoft.AspNetCore.Authorization;
+using RawCMS.Plugins.Core.Configuration;
 using RawCMS.Plugins.Core.Extensions;
+using RawCMS.Plugins.Core.Model;
+using RawCMS.Plugins.Core.MVC;
+using RawCMS.Plugins.Core.Stores;
 using System.Security.Claims;
 
 namespace RawCMS.Plugins.Core
 {
-
     public class AuthPlugin : RawCMS.Library.Core.Extension.Plugin, IConfigurablePlugin<AuthConfig>
     {
-
-
-
         public override string Name => "Authorization";
 
         public override string Description => "Add authorizaton capabilities";
 
         public override void Init()
         {
-            this.Logger.LogInformation("Authorization plugin loaded");
+            Logger.LogInformation("Authorization plugin loaded");
         }
 
-        RawUserStore userStore = new RawUserStore();
+        private RawUserStore userStore = new RawUserStore();
+
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
 
             services.Configure<ConfigurationOptions>(configuration);
-
-
-
 
             services.AddSingleton<IUserStore<IdentityUser>>(x => { return userStore; });
             services.AddSingleton<IUserPasswordStore<IdentityUser>>(x => { return userStore; });
@@ -62,14 +43,10 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<IProfileService>(x => { return userStore; });
             services.AddSingleton<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
 
-
             //Add apikey authentication
 
-
-            var roleStore = new RawRoleStore();
+            RawRoleStore roleStore = new RawRoleStore();
             services.AddSingleton<IRoleStore<IdentityRole>>(x => { return roleStore; });
-
-
 
             services.AddIdentity<IdentityUser, IdentityRole>();
 
@@ -77,31 +54,30 @@ namespace RawCMS.Plugins.Core
             services.AddIdentityServer()
             .AddDeveloperSigningCredential()
             .AddInMemoryPersistedGrants()
-            .AddInMemoryIdentityResources(this.config.GetIdentityResources())
-            .AddInMemoryApiResources(this.config.GetApiResources())
-            .AddInMemoryClients(this.config.GetClients())
+            .AddInMemoryIdentityResources(config.GetIdentityResources())
+            .AddInMemoryApiResources(config.GetApiResources())
+            .AddInMemoryClients(config.GetClients())
             .AddAspNetIdentity<IdentityUser>()
             .AddProfileServiceCustom(userStore);
 
-
-
-            if (this.config.Mode == OAuthMode.External)
+            if (config.Mode == OAuthMode.External)
             {
-                OAuth2IntrospectionOptions options = new OAuth2IntrospectionOptions();
-
-                //base - address of your identityserver
-                options.Authority = this.config.Authority;
-                options.ClientSecret = this.config.ClientSecret;
-                options.ClientId = this.config.ClientId;
-                options.BasicAuthenticationHeaderStyle = IdentityModel.Client.BasicAuthenticationHeaderStyle.Rfc2617;
-                if (!string.IsNullOrWhiteSpace(this.config.IntrospectionEndpoint))
+                OAuth2IntrospectionOptions options = new OAuth2IntrospectionOptions
                 {
-                    options.IntrospectionEndpoint = this.config.IntrospectionEndpoint;
+                    //base - address of your identityserver
+                    Authority = config.Authority,
+                    ClientSecret = config.ClientSecret,
+                    ClientId = config.ClientId,
+                    BasicAuthenticationHeaderStyle = IdentityModel.Client.BasicAuthenticationHeaderStyle.Rfc2617
+                };
+                if (!string.IsNullOrWhiteSpace(config.IntrospectionEndpoint))
+                {
+                    options.IntrospectionEndpoint = config.IntrospectionEndpoint;
                 }
                 options.TokenTypeHint = "Bearer";
-                if (!string.IsNullOrWhiteSpace(this.config.TokenTypeHint))
+                if (!string.IsNullOrWhiteSpace(config.TokenTypeHint))
                 {
-                    options.TokenTypeHint = this.config.TokenTypeHint;
+                    options.TokenTypeHint = config.TokenTypeHint;
                 }
 
                 options.Validate();
@@ -111,8 +87,6 @@ namespace RawCMS.Plugins.Core
                     {
                         x = options;
                     });
-
-
             }
             else
             {
@@ -122,66 +96,63 @@ namespace RawCMS.Plugins.Core
                  //});
                  .AddIdentityServerAuthentication("Bearer", options =>
                  {
-                     options.Authority = this.config.Authority;
-                     options.ApiName = this.config.ApiResource;
-                     options.ApiSecret = this.config.ClientSecret;
+                     options.Authority = config.Authority;
+                     options.ApiName = config.ApiResource;
+                     options.ApiSecret = config.ClientSecret;
                      options.RequireHttpsMetadata = false;
                      options.SaveToken = true;
                      options.NameClaimType = ClaimTypes.NameIdentifier;
-                    
                  });
             }
 
-
             services.AddMvc(options =>
             {
-                options.Filters.Add(new RawAuthorizationAttribute(this.config.ApiKey, this.config.AdminApiKey));
-
+                options.Filters.Add(new RawAuthorizationAttribute(config.ApiKey, config.AdminApiKey));
             });
         }
 
-        IConfigurationRoot configuration;
+        private IConfigurationRoot configuration;
+
         public override void Setup(IConfigurationRoot configuration)
         {
             base.Setup(configuration);
             this.configuration = configuration;
         }
-        AppEngine appEngine;
+
+        private AppEngine appEngine;
+
         public override void Configure(IApplicationBuilder app, AppEngine appEngine)
         {
             this.appEngine = appEngine;
 
-
             userStore.SetCRUDService(this.appEngine.Service);
             userStore.SetLogger(this.appEngine.GetLogger(this));
-             userStore.InitData().Wait();
+            userStore.InitData().Wait();
 
             base.Configure(app, appEngine);
 
             //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-          
+
             app.UseAuthentication();
             app.UseIdentityServer();
 
-
             app.UseMvc();
-            
-
         }
 
         public AuthConfig GetDefaultConfig()
         {
             return new AuthConfig()
             {
-                Mode=OAuthMode.Standalone,
-                Authority="http://localhost:50093",
-                ClientId="raw.client",
-                ClientSecret="raw.secret",
-                ApiResource="rawcms"
+                Mode = OAuthMode.Standalone,
+                Authority = "http://localhost:50093",
+                ClientId = "raw.client",
+                ClientSecret = "raw.secret",
+                ApiResource = "rawcms"
             };
         }
 
-        AuthConfig config;
+        private AuthConfig config;
+
         public void SetActualConfig(AuthConfig config)
         {
             this.config = config;

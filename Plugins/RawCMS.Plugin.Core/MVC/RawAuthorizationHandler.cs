@@ -1,28 +1,19 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RawCMS.Plugins.Core.MVC
 {
-
-   
-
     public class RawAuthorizationAttribute : ActionFilterAttribute
     {
+        private readonly string apikey;
+        private readonly string adminapikey;
 
-        string apikey;
-        string adminapikey;
-
-        public RawAuthorizationAttribute(string apikey, string adminapikey):base()
+        public RawAuthorizationAttribute(string apikey, string adminapikey) : base()
         {
             this.adminapikey = adminapikey;
             this.apikey = apikey;
-           
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -39,20 +30,16 @@ namespace RawCMS.Plugins.Core.MVC
             if (!isAdmin && !string.IsNullOrWhiteSpace(apikey) && context.HttpContext.Request.Headers["Authorization"] == apikey)
             {
                 SetUser("ApiKeyUser", "Authenticated", context.HttpContext);
-
-                
             }
 
             if (isAdmin && !string.IsNullOrWhiteSpace(adminapikey) && context.HttpContext.Request.Headers["Authorization"] == adminapikey)
             {
                 SetUser("ApiKeyUser", "Authenticated,Admin", context.HttpContext);
-              
             }
             if (context.HttpContext.User == null || !context.HttpContext.User.Identity.IsAuthenticated)
             {
                 Send401(context.HttpContext);
             }
-            
         }
 
         private void Send401(HttpContext httpContext)
@@ -63,7 +50,7 @@ namespace RawCMS.Plugins.Core.MVC
             throw new Exception("user not athenticated and api missing.");
         }
 
-        private void SetUser(string username,string roles, HttpContext httpContext)
+        private void SetUser(string username, string roles, HttpContext httpContext)
         {
             ClaimsIdentity id = new ClaimsIdentity("ApiKey", ClaimTypes.NameIdentifier, ClaimTypes.Role);
             id.AddClaim(new Claim(ClaimTypes.NameIdentifier, username));

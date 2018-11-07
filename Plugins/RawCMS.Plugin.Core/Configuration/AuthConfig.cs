@@ -1,10 +1,7 @@
 ﻿using IdentityServer4;
 using IdentityServer4.Models;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 
 namespace RawCMS.Plugins.Core.Configuration
 {
@@ -21,7 +18,7 @@ namespace RawCMS.Plugins.Core.Configuration
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
         public string ApiResource { get; set; }
-        public string Authority { get;  set; }
+        public string Authority { get; set; }
         public string IntrospectionEndpoint { get; internal set; }
         public string TokenTypeHint { get; internal set; }
 
@@ -30,10 +27,8 @@ namespace RawCMS.Plugins.Core.Configuration
         public string AdminApiKey { get; set; }
         public string ApiKey { get; set; }
 
-
-
         // scopes define the resources in your system
-        public  IEnumerable<IdentityResource> GetIdentityResources()
+        public IEnumerable<IdentityResource> GetIdentityResources()
         {
             return new List<IdentityResource>
             {
@@ -47,42 +42,37 @@ namespace RawCMS.Plugins.Core.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource(this.ApiResource, this.ApiResource)
+                new ApiResource(ApiResource, ApiResource)
                 {
                     ApiSecrets = new List<Secret>
                 {
-                    new Secret(this.ClientSecret.Sha256())
+                    new Secret(ClientSecret.Sha256())
                 },
                 Scopes=
                 {
                     new Scope("openid"),
-                    
                 },
                 UserClaims= new string[]{ ClaimTypes.NameIdentifier, ClaimTypes.Email}
                 }
-                
             };
         }
 
-      
         // clients want to access resources (aka scopes)
         public IEnumerable<Client> GetClients()
         {
             // client credentials client
             return new List<Client>
             {
-
                 new Client
                 {
-                    ClientId = this.ClientId,
+                    ClientId = ClientId,
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AlwaysSendClientClaims = true,
-                    
 
                     ClientSecrets =
                     {
-                        new Secret(this.ClientSecret.Sha256())
+                        new Secret(ClientSecret.Sha256())
                     },
                     AllowedScopes =
                     {
@@ -90,10 +80,7 @@ namespace RawCMS.Plugins.Core.Configuration
                         IdentityServerConstants.StandardScopes.Profile
                     }
                 },
-
-
             };
         }
-
     }
 }

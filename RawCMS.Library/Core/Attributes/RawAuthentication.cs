@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace RawCMS.Library.Core.Attributes
 {
     public class RawAuthenticationAttribute : AuthorizeAttribute
     {
-        public RawAuthenticationAttribute() 
+        public RawAuthenticationAttribute()
         {
-            this.AuthenticationSchemes = "Bearer";
-            
+            AuthenticationSchemes = "Bearer";
         }
-
-        
     }
 }

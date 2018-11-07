@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RawCMS.Plugins.Core.Lambdas
 {
@@ -15,10 +12,11 @@ namespace RawCMS.Plugins.Core.Lambdas
 
         public override JObject Rest(JObject input)
         {
-            var jj= new JObject();
-            
-            jj["IsAuthenticated"] = this.Request.User.Identity.IsAuthenticated;
-            foreach (var claim in this.Request.User.Claims)
+            JObject jj = new JObject
+            {
+                ["IsAuthenticated"] = Request.User.Identity.IsAuthenticated
+            };
+            foreach (System.Security.Claims.Claim claim in Request.User.Claims)
             {
                 jj[claim.Type] = claim.Value;
             }

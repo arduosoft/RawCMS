@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -11,7 +10,7 @@ namespace RawCMS.Plugins.Core.Attributes
     {
         public override void OnResultExecuting(ResultExecutingContext context)
         {
-            var result = context.Result;
+            IActionResult result = context.Result;
             if (result is ViewResult)
             {
                 if (!context.HttpContext.Response.Headers.ContainsKey("X-Content-Type-Options"))
@@ -23,7 +22,7 @@ namespace RawCMS.Plugins.Core.Attributes
                     context.HttpContext.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
                 }
 
-                var csp = "default-src 'self'";
+                string csp = "default-src 'self'";
                 // once for standards compliant browsers
                 if (!context.HttpContext.Response.Headers.ContainsKey("Content-Security-Policy"))
                 {
