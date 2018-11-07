@@ -27,10 +27,10 @@ RawCMS is a modular application build on asp.net core+mongo db stack. It is base
 ## PHASE 2 - Be ready for production
 - [x] Lambda
 - [x] Schema definition and validation
-- [ ] Authentication and permission
+- [x] Authentication and permission
 - [ ] Data filtering per user
 - [x] Lambda Http
-- [ ] Plugin system
+- [x] Plugin system
 
 ## PHASE 3 - Ready to send rocket on Mars
 - [ ] design UI for schema managment
