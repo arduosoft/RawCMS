@@ -1,55 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using RawCMS.Library.Service;
-using RawCMS.Library.DataModel;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using RawCMS.Library.Core.Exceptions;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
-using RawCMS.Plugin.Core.Model;
+using RawCMS.Library.Core.Exceptions;
+using RawCMS.Library.DataModel;
+using RawCMS.Library.Service;
+using RawCMS.Plugins.Core.Model;
+using System;
 
-namespace RawCMS.Plugin.Core.Controllers
+namespace RawCMS.Plugins.Core.Controllers
 {
     [Route("api/[controller]")]
     [ParameterValidator("collection", "_(.*)", true)]
     public class CRUDController : Controller
     {
         private readonly CRUDService service;
+
         public CRUDController(AppEngine manager)
         {
-            this.service = manager.Service;
+            service = manager.Service;
         }
+
         // GET api/CRUD/{collection}
         [HttpGet("{collection}")]
-        public RestMessage<ItemList>  Get(string collection, string rawQuery = null, int pageNumber = 1, int pageSize = 20)
+        public RestMessage<ItemList> Get(string collection, string rawQuery = null, int pageNumber = 1, int pageSize = 20)
         {
-           // CRUDService service = new CRUDService(new MongoService(new MongoSettings() { }));
-            var result= service.Query(collection, new Library.DataModel.DataQuery()
+            // CRUDService service = new CRUDService(new MongoService(new MongoSettings() { }));
+            ItemList result = service.Query(collection, new Library.DataModel.DataQuery()
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 RawQuery = rawQuery
             });
 
-            return new RestMessage<ItemList>  (result);
+            return new RestMessage<ItemList>(result);
         }
 
         // GET api/CRUD/{collection}/5
         [HttpGet("{collection}/{id}")]
-        public RestMessage<JObject>  Get(string collection, string id)
+        public RestMessage<JObject> Get(string collection, string id)
         {
-            var data = service.Get(collection, id);
+            JObject data = service.Get(collection, id);
             return new RestMessage<JObject>(data);
         }
 
         // POST api/CRUD/{collection}
         [HttpPost("{collection}")]
-        public RestMessage<bool> Post(string collection,[FromBody]JObject value)
+        public RestMessage<bool> Post(string collection, [FromBody]JObject value)
         {
-            var response = new RestMessage<bool>(false);
+            RestMessage<bool> response = new RestMessage<bool>(false);
             try
             {
                 service.Insert(collection, value);
@@ -77,13 +76,11 @@ namespace RawCMS.Plugin.Core.Controllers
         [HttpPut("{collection}/{id}")]
         public RestMessage<bool> Put(string collection, string id, [FromBody]JObject value)
         {
-
-            var response = new RestMessage<bool>(false);
+            RestMessage<bool> response = new RestMessage<bool>(false);
             try
             {
-
                 value["_id"] = id;
-                service.Update(collection, value,true);
+                service.Update(collection, value, true);
                 response.Data = true;
                 return response;
             }
@@ -102,21 +99,17 @@ namespace RawCMS.Plugin.Core.Controllers
                 });
             }
             return response;
-
-         
         }
-
 
         // PUT api/CRUD/{collection}/5
         [HttpPatch("{collection}/{id}")]
         public RestMessage<bool> Patch(string collection, string id, [FromBody]JObject value)
         {
-            var response = new RestMessage<bool>(false);
+            RestMessage<bool> response = new RestMessage<bool>(false);
             try
             {
-
                 value["_id"] = id;
-                service.Update(collection, value,false);
+                service.Update(collection, value, false);
                 response.Data = true;
                 return response;
             }
@@ -141,10 +134,10 @@ namespace RawCMS.Plugin.Core.Controllers
         [HttpDelete("{collection}/{id}")]
         public RestMessage<bool> Delete(string collection, string id)
         {
-            var response = new RestMessage<bool>(false);
+            RestMessage<bool> response = new RestMessage<bool>(false);
             try
             {
-                var result= service.Delete(collection, id);
+                bool result = service.Delete(collection, id);
                 response.Data = true;
                 return response;
             }

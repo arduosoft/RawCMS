@@ -3,9 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RawCMS.Library.Core.Extension
 {
@@ -14,23 +11,23 @@ namespace RawCMS.Library.Core.Extension
     /// </summary>
     public abstract class Plugin : IRequireApp, IInitable
     {
-        public virtual int Priority => 1;
+        public virtual int Priority { get; internal set; } = 1;
         public abstract string Name { get; }
         public abstract string Description { get; }
         public ILogger Logger { get => logger; private set => logger = value; }
-        public AppEngine Engine { get => engine;  }
+        public AppEngine Engine => engine;
 
-        AppEngine engine;
-        ILogger logger;
+        private AppEngine engine;
+        private ILogger logger;
 
         public void SetAppEngine(AppEngine manager)
         {
-            this.engine = manager;
-            Logger = this.Engine.GetLogger(this);
+            engine = manager;
+            Logger = Engine.GetLogger(this);
         }
 
         /// <summary>
-        /// startup application event 
+        /// startup application event
         /// </summary>
         public virtual void OnApplicationStart()
         {

@@ -1,8 +1,4 @@
-﻿using MongoDB.Bson;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json.Linq;
 
 namespace RawCMS.Library.DataModel
 {
@@ -15,10 +11,10 @@ namespace RawCMS.Library.DataModel
 
         public ItemList(JArray items, int totalCount, int pageNumber, int pageSize)
         {
-            this.Items = items;
-            this.TotalCount = totalCount;
-            this.PageNumber = pageNumber;
-            this.PageSize = pageSize;
+            Items = items;
+            TotalCount = totalCount;
+            PageNumber = pageNumber;
+            PageSize = pageSize;
         }
     }
 }

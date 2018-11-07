@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace RawCMS.Test
@@ -8,8 +7,6 @@ namespace RawCMS.Test
         [Fact]
         public void CRUD()
         {
-
-
         }
     }
 }

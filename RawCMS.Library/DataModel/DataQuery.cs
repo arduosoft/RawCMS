@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RawCMS.Library.DataModel
+﻿namespace RawCMS.Library.DataModel
 {
     public class DataQuery
     {

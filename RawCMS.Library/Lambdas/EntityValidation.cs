@@ -1,17 +1,14 @@
-﻿using RawCMS.Library.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using RawCMS.Library.Service;
-using Newtonsoft.Json;
-using RawCMS.Library.Schema;
+﻿using Newtonsoft.Json.Linq;
+using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
+using RawCMS.Library.Schema;
+using RawCMS.Library.Service;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RawCMS.Library.Lambdas
 {
-    public class EntityValidation : SchemaValidationLambda, IRequireCrudService, IInitable,IRequireApp
+    public class EntityValidation : SchemaValidationLambda, IRequireCrudService, IInitable, IRequireApp
     {
         public override string Name => "Entity Validation";
 
@@ -20,42 +17,35 @@ namespace RawCMS.Library.Lambdas
         private static Dictionary<string, CollectionSchema> entities = new Dictionary<string, CollectionSchema>();
         private static List<FieldTypeValidator> typeValidators = new List<FieldTypeValidator>();
 
-
         private CRUDService service;
 
         public EntityValidation()
         {
-           
-
         }
 
         public void Init()
         {
             InitSchema();
             InitValidators();
-
         }
 
         private void InitValidators()
         {
-            typeValidators=this.manager.GetAssignablesInstances<FieldTypeValidator>();
-            
+            typeValidators = manager.GetAssignablesInstances<FieldTypeValidator>();
         }
 
         private void InitSchema()
         {
-            var dbEntities = service.Query("_schema", new DataModel.DataQuery()
+            JArray dbEntities = service.Query("_schema", new DataModel.DataQuery()
             {
                 PageNumber = 1,
                 PageSize = int.MaxValue,
                 RawQuery = null
-
             }).Items;
 
-            foreach (var item in dbEntities)
+            foreach (JToken item in dbEntities)
             {
-
-                var schema = item.ToObject<CollectionSchema>();
+                CollectionSchema schema = item.ToObject<CollectionSchema>();
                 if (schema.CollectionName != null && !string.IsNullOrEmpty(schema.CollectionName.ToString()))
                 {
                     entities[schema.CollectionName] = schema;
@@ -72,26 +62,23 @@ namespace RawCMS.Library.Lambdas
 
                 if (!settings.AllowNonMappedFields)
                 {
-
-                    
-                    foreach (var field in input.Properties())
+                    foreach (JProperty field in input.Properties())
                     {
-                        if (!settings.FieldSettings.Any(x => x.Name==field.Name))
+                        if (!settings.FieldSettings.Any(x => x.Name == field.Name))
                         {
                             errors.Add(new Error()
                             {
-                                Code="Forbidden Field",
-                                Title= $"Field {field.Name} not in allowed field list",
+                                Code = "Forbidden Field",
+                                Title = $"Field {field.Name} not in allowed field list",
                             });
                         }
                     }
                 }
 
-                foreach (var field in settings.FieldSettings)
+                foreach (Field field in settings.FieldSettings)
                 {
                     errors.AddRange(ValidateField(field, input, collection));
                 }
-
             }
 
             return errors;
@@ -110,8 +97,8 @@ namespace RawCMS.Library.Lambdas
                 });
             }
 
-            var typeValidator = typeValidators.FirstOrDefault(x => x.Type == field.Type);
-            if (typeValidator!=null)
+            FieldTypeValidator typeValidator = typeValidators.FirstOrDefault(x => x.Type == field.Type);
+            if (typeValidator != null)
             {
                 errors.AddRange(typeValidator.Validate(input, field));
             }
@@ -123,7 +110,8 @@ namespace RawCMS.Library.Lambdas
             this.service = service;
         }
 
-        AppEngine manager;
+        private AppEngine manager;
+
         public void SetAppEngine(AppEngine manager)
         {
             this.manager = manager;
