@@ -46,6 +46,9 @@ namespace RawCMS.Plugins.Core
             crudService.EnsureCollection("_configuration");
 
             Engine.Plugins.ForEach(x => SetConfiguration(x, crudService));
+
+            crudService.EnsureCollection("_schema");
+            
         }
 
         private void SetConfiguration(Plugin plugin, CRUDService crudService)

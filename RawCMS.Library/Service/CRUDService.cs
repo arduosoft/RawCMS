@@ -8,9 +8,11 @@ using RawCMS.Library.Core;
 using RawCMS.Library.Core.Exceptions;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.DataModel;
+using RawCMS.Library.Lambdas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace RawCMS.Library.Service
 {
@@ -83,6 +85,30 @@ namespace RawCMS.Library.Service
             foreach (DataProcessLambda h in processhandlers)
             {
                 h.Execute(collection, ref item);
+            }
+        }
+
+        private void InvokeAlterQuery(string collection,  FilterDefinition<BsonDocument>  query)
+        {
+            List<Lambda> genericAlter = lambdaManager.Lambdas
+                .Where(x => x is AlterQueryLambda)
+                .ToList();
+
+            foreach (AlterQueryLambda h in genericAlter)
+            {
+                h.Alter(collection,  query);
+            }
+
+
+            List<CollectionAlterQueryLambda> collectionAlter = lambdaManager.Lambdas
+                .Where(x => x is CollectionAlterQueryLambda)
+                .Cast<CollectionAlterQueryLambda>()
+                .Where(x=> Regex.IsMatch(collection,x.Collection))
+                .ToList();
+
+            foreach (CollectionAlterQueryLambda h in collectionAlter)
+            {
+                h.Alter(  query);
             }
         }
 
@@ -182,17 +208,21 @@ namespace RawCMS.Library.Service
 
             public long Count(string collection, FilterDefinition<BsonDocument> filter)
         {
+            InvokeAlterQuery(collection, filter);
             long count = _mongoService
                .GetCollection<BsonDocument>(collection).Find<BsonDocument>(filter).Count();
             return count;
         }
-            public ItemList Query(string collection, DataQuery query)
+
+        public ItemList Query(string collection, DataQuery query)
         {
             FilterDefinition<BsonDocument> filter = FilterDefinition<BsonDocument>.Empty;
             if (query.RawQuery != null)
             {
                 filter = new JsonFilterDefinition<BsonDocument>(query.RawQuery);
             }
+
+            InvokeAlterQuery(collection, filter);
 
             IFindFluent<BsonDocument, BsonDocument> results = _mongoService
                 .GetCollection<BsonDocument>(collection).Find<BsonDocument>(filter)

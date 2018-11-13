@@ -26,19 +26,25 @@ namespace RawCMS.Plugins.Core.MVC
             }
 
             bool isAdmin = context.HttpContext.Request.Path.Value.StartsWith("system/");
+            bool requiresAdminKey = (isAdmin && !string.IsNullOrWhiteSpace(adminapikey));
+            bool requiresPublicKey=!isAdmin && !string.IsNullOrWhiteSpace(apikey);
+            bool requiresAuth = requiresPublicKey || requiresAdminKey;
 
-            if (!isAdmin && !string.IsNullOrWhiteSpace(apikey) && context.HttpContext.Request.Headers["Authorization"] == apikey)
+            if (requiresAdminKey && context.HttpContext.Request.Headers["Authorization"] == apikey)
             {
                 SetUser("ApiKeyUser", "Authenticated", context.HttpContext);
             }
 
-            if (isAdmin && !string.IsNullOrWhiteSpace(adminapikey) && context.HttpContext.Request.Headers["Authorization"] == adminapikey)
+            if (requiresPublicKey && context.HttpContext.Request.Headers["Authorization"] == adminapikey)
             {
                 SetUser("ApiKeyUser", "Authenticated,Admin", context.HttpContext);
             }
-            if (context.HttpContext.User == null || !context.HttpContext.User.Identity.IsAuthenticated)
+            if (requiresAuth)
             {
-                Send401(context.HttpContext);
+                if (context.HttpContext.User == null || !context.HttpContext.User.Identity.IsAuthenticated)
+                {
+                    Send401(context.HttpContext);
+                }
             }
         }
 
