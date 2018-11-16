@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace RawCMS.Library.Schema.Validation
 {
-   
     public class TextValidation : FieldTypeValidator
     {
-        public override string Type =>"text";
+        public override string Type => "text";
 
         public override List<Error> Validate(JObject input, Field field)
         {
@@ -20,8 +17,7 @@ namespace RawCMS.Library.Schema.Validation
             {
                 if (field.Options["maxlength"] != null)
                 {
-                   
-                    if (int.TryParse(field.Options["maxlength"].ToString(), out int  maxlenght))
+                    if (int.TryParse(field.Options["maxlength"].ToString(), out int maxlenght))
                     {
                         if (input[field.Name] != null && maxlenght < value.ToString().Length)
                         {

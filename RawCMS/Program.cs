@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Builder;
 using NLog.Web;
+using System.IO;
 
 namespace RawCMS
 {
@@ -14,7 +9,7 @@ namespace RawCMS
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
+            IWebHost host = new WebHostBuilder()
                 .UseNLog()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
