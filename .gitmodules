@@ -1,3 +1,4 @@
+
 [submodule "docs"]
-    path = docs
-    url = https://github.com/arduosoft/RawCMS.wiki.git
+	path = docs
+	url = https://github.com/arduosoft/RawCMS.wiki.git
