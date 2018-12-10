@@ -2,6 +2,7 @@ using Xunit;
 using RestSharp;
 using Newtonsoft.Json;
 using System;
+using System.IO;
 
 namespace RawCMS.Test
 {
@@ -27,7 +28,90 @@ namespace RawCMS.Test
         {
         }
 
-        public string GetToken()
+        /* tests */
+
+        [Fact]
+        public void GetTokenFromFileTest()
+        {
+            string token = getToken();
+            Assert.False(string.IsNullOrEmpty(token));
+                
+            saveTokenToFile(token);
+            string tokenfile = getTokenFromFile();
+            Assert.True(tokenfile.Equals(token));
+
+        }
+
+        [Fact]
+        public void TestGetToken()
+        {
+            // get token
+            var token = getToken();
+            Assert.True(!string.IsNullOrEmpty(token));
+
+            // create new user
+            var user = createUser();
+            Assert.True(user);
+
+        }
+
+        /* private stuff */
+
+
+        private void saveTokenToFile(string token)
+        {
+
+            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            string filePath = System.IO.Path.Combine(mydocpath, "RawCMSToken.token");
+
+            //File.SetAttributes(filePath, FileAttributes.Hidden);
+
+            try
+            {
+                using (StreamWriter outputFile = new StreamWriter(filePath))
+                {
+                    outputFile.Write(token);
+                }
+            }           
+            catch (Exception e)
+            {
+                Console.WriteLine("The file could not be writed:");
+                Console.WriteLine(e.Message);
+            }
+
+
+
+        }
+
+        private string getTokenFromFile()
+        {
+            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            string filePath = System.IO.Path.Combine(mydocpath, "RawCMSToken.token");
+
+            string token = string.Empty;
+            try
+            {   // Open the text file using a stream reader.
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    // Read the stream to a string, and write the string to the console.
+                    token = sr.ReadToEnd();
+                    Console.WriteLine(token);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The file could not be read:");
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine(token);
+            return token;
+        }
+
+
+
+        private string getToken()
         {
             var url = $"{baseUrl}/connect/token";
 
@@ -60,9 +144,9 @@ namespace RawCMS.Test
 
 
 
-        public bool CreateUser()
+        private bool createUser()
         {
-            var token = GetToken();
+            var token = getToken();
             //create RestSharp client and POST request object
 
             var url = $"{baseUrl}/api/CRUD/test";
@@ -100,39 +184,25 @@ namespace RawCMS.Test
 
         }
 
-        public bool DeleteUser()
+
+
+        private bool deleteUser()
         {
             return false;
         }
 
-        public bool UpdateUser()
+        private bool updateUser()
         {
             return false;
         }
 
-        public bool GetUser()
+        private bool getUser()
         {
             return false;
         }
 
 
-        [Fact]
-        public void TestGetToken()
-        {
-            // get token
-            var token = GetToken();
-            Assert.True(!string.IsNullOrEmpty(token));
-
-            // create new user
-            var user = CreateUser();
-            Assert.True(user);
-
-
-
-        }
-
-
-
+       
     }
 
 

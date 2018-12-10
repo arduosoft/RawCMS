@@ -17,6 +17,22 @@ namespace RawCMSClient
                         Console.WriteLine("Verbose mode enabled.");
                     }
 
+                    if (opts.Login)
+                    {
+                        if ( false
+                        || string.IsNullOrEmpty(opts.Username) 
+                        || string.IsNullOrEmpty(opts.Pasword)
+                        || string.IsNullOrEmpty(opts.ClientId)
+                        || string.IsNullOrEmpty(opts.ClientSecret) )
+                        {
+                            Console.WriteLine("login params (-l) reqire: username (-u), password (-p), clientid (-i) and clientsecret (-t).");
+                            return;
+                        }
+
+
+                        return;
+                    }
+
                     switch (opts.Command)
                     {
                         case CommandType.none:
@@ -25,6 +41,7 @@ namespace RawCMSClient
                             string data = string.Empty;
                             try
                             {
+                                if (o.Verbose) Console.WriteLine($"parsing file: {opts.DataFile} ...");
                                 data = ParseDataFile(opts.DataFile);
 
                             }
@@ -32,17 +49,17 @@ namespace RawCMSClient
                             {
                                 Console.WriteLine("data file error: {0}", e.Message);
                             }
-                            
+                            return;
 
-                            break;
+                
                         case CommandType.delete:
-                            break;
+                            return;
                         case CommandType.get:
-                            break;
+                            return;
                         case CommandType.update:
-                            break;
+                            return;
                         default:
-                            break;
+                            return;
                     }
 
                   
