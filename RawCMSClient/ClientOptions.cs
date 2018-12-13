@@ -11,23 +11,22 @@ namespace RawCMSClient
         [Option('v', "verbose", Default = false, HelpText = "Prints all messages to standard output.")]
         public bool Verbose { get; set; }
 
-        [Option('l', "login", Default = false, HelpText = "Login")]
+        [Option('l', "login", Default = false, HelpText = "Login. Required also (-u) username, (-p) password, (-i) client id, (-t) client secret")]
         public bool Login { get; set; }
 
-        [Option('u', "username", Required = false, HelpText = "Username for login")]
+        [Option('u', "username", Required = false, HelpText = "Login Username")]
         public string Username { get; set; }
 
-        [Option('p', "password", Required = false, HelpText = "Password for login")]
+        [Option('p', "password", Required = false, HelpText = "Login Password")]
         public string Pasword { get; set; }
 
-        [Option('i', "clientid", Required = false, HelpText = "client id for getting token")]
+        [Option('i', "clientid", Required = false, HelpText = "Login client id")]
         public string ClientId { get; set; }
 
-        [Option('t', "clientsecret", Required = false, HelpText = "client secret for getting token")]
+        [Option('t', "clientsecret", Required = false, HelpText = "Login client secret")]
         public string ClientSecret { get; set; }
 
-
-        [Option('s', "syncronize", Required = false,  HelpText = "file path to synchronize the db.")]
+        [Option('s', "syncronize", Required = false,  HelpText = "File path to synchronize the db.")]
         public string SincronizationFile { get; set; }
   
         [Option('r',"purge", Default = false, HelpText = "Remove data during syncronization. Only with syncronization (-s)")]
