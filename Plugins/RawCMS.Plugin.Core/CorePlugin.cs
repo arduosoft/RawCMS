@@ -33,7 +33,7 @@ namespace RawCMS.Plugins.Core
             });
 
             IOptions<MongoSettings> settingsOptions = Options.Create<MongoSettings>(mongoSettings);
-            MongoService mongoService = new MongoService(settingsOptions);
+            MongoService mongoService = new MongoService(settingsOptions, Logger);
             CRUDService crudService = new CRUDService(mongoService, settingsOptions);
 
             Engine.Service = crudService;
