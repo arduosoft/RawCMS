@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using RawCMS.Library.Core;
+using RawCMS.Library.DataModel;
 using RawCMS.Plugins.Core;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Linq;
@@ -35,6 +37,8 @@ namespace RawCMS
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -45,7 +49,7 @@ namespace RawCMS
             // loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
-            env.ConfigureNLog(".\\conf\\nlog.config");
+            env.ConfigureNLog($"./conf/NLog.{env.EnvironmentName}.config");
 
             if (env.IsDevelopment())
             {

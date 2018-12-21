@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="conf\" />
     <Folder Include="Controllers\" />
     <Folder Include="Middlewares\" />
     <Folder Include="wwwroot\" />
