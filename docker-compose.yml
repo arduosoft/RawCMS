@@ -1,0 +1,14 @@
+version: '3'
+services:
+  rawcms:
+    build: .
+    ports:
+    - "54321:54321"   
+    links:
+    - mongo
+    environment:
+    - MongoSettings__ConnectionString=mongodb://mongo:27017/rawCms
+    - PORT=54321
+    - ASPNETCORE_ENVIRONMENT=Docker
+  mongo:
+    image: mongo
