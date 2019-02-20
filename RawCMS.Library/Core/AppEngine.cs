@@ -103,7 +103,7 @@ namespace RawCMS.Library.Core
         {
             _logger.LogDebug("Get all assembly");
             List<string> dlls = new List<string>();
-            dlls.AddRange(Directory.GetFiles(".\\bin", "*.dll", SearchOption.AllDirectories));
+           // dlls.AddRange(Directory.GetFiles(".\\bin", "*.dll", SearchOption.AllDirectories));
 
             if (_logger.IsEnabled(LogLevel.Debug))
             {

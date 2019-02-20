@@ -1,23 +1,34 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using RawCMS.Library.DataModel;
+using System;
 
 namespace RawCMS.Library.Service
 {
     public class MongoService
     {
         private readonly MongoSettings _settings;
+        private readonly ILogger logger;
 
-        public MongoService(IOptions<MongoSettings> settings)
+        public MongoService(IOptions<MongoSettings> settings, ILogger logger)
         {
+            this.logger = logger;
             _settings = settings.Value;
         }
 
         public MongoClient GetClient()
         {
-            string connectionString = "mongodb://" + _settings.Host + ":" + _settings.Port;
+         
+            MongoClient client = new MongoClient(_settings.ConnectionString);
+            if (string.IsNullOrEmpty(_settings.DBName))
+            {
+                var url=MongoUrl.Create(_settings.ConnectionString);
 
-            MongoClient client = new MongoClient(connectionString);
+                _settings.DBName = url.DatabaseName;
+            }
+
+            
 
             return client;
         }
