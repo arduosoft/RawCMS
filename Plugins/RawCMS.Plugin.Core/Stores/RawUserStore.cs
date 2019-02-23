@@ -22,6 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -190,7 +192,7 @@ namespace RawCMS.Plugins.Core.Stores
                     NormalizedUserName = "BOB",
                     Email = "test@test.it",
                     NormalizedEmail = "test@test.it",
-                    PasswordHash = ComputePasswordHash("XYZ")
+                    NewPassword = "XYZ"//password will be hashed by service
                 };
 
                 await CreateAsync(userToAdd, CancellationToken.None);
@@ -246,9 +248,15 @@ namespace RawCMS.Plugins.Core.Stores
             return ComputePasswordHash(password);
         }
 
-        private string ComputePasswordHash(string password)
+        public static string ComputePasswordHash(string password)
         {
-            return Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes(password));
+            using (var algorithm = SHA256.Create())
+            {
+                // Create the at_hash using the access token returned by CreateAccessTokenAsync.
+                var hash = algorithm.ComputeHash(Encoding.ASCII.GetBytes(password));
+                return Convert.ToBase64String(hash);
+            }
+                
         }
 
         public PasswordVerificationResult VerifyHashedPassword(IdentityUser user, string hashedPassword, string providedPassword)
@@ -334,6 +342,12 @@ namespace RawCMS.Plugins.Core.Stores
 
         public async Task IsActiveAsync(IsActiveContext context)
         {
+        }
+
+        public static string NormalizeString(string value)
+        {
+            if (value == null) return null;
+            return value.ToString().ToUpper().Trim();
         }
     }
 }
