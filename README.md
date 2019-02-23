@@ -23,36 +23,16 @@ Actually RawCMS is in progress, but the target is to be:
 
 **__If you are interested in contriubuting just open an issue to start a converstion. Helps wanted.__**
 
-# Tecnical documentation
+## Download
+Actually you have 3 options to start using RawCMS:
+- run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhu page](https://hub.docker.com/r/arduosoft/rawcms-preview) to get more options like docker compose file.
+- download the **zip and deploy** a a regular asp.net core application from [github releases](https://github.com/arduosoft/RawCMS/releases)
+- **fork** the repository and customize (the deplpoy as you want)
+
+## Tecnical documentation
 You can find all we have on [Github wiki](https://github.com/arduosoft/RawCMS/wiki). There is user documentation for user, developer and contributors.
 
-
-
-# ROADMAP
-
-## PHASE 1 - POC
-
-- [x] Dynamic entity managment
-- [x] Expose with regular web api services and swagger
-- [x] Lambda
-- [x] Schema definition and validation
-
-
-## PHASE 2 - Be ready for production
-- [x] Expose with graphQL
-- [x] Authentication and permission
-- [x] Lambda Http
-- [x] Plugin system
-- [x] Client to automate operations
-
-## PHASE 3 - Ready to send rocket on Mars
-- [ ] Expose with Odata
-- [ ] Test and client sample
-- [ ] design UI for schema managment
-- [ ] design UI for data managment
-
-
-# Features
+## Features
 - store and filter any data using mongodb expression
 - docker container ready
 - data validation
@@ -64,8 +44,34 @@ You can find all we have on [Github wiki](https://github.com/arduosoft/RawCMS/wi
 - GraphQL data query
 
 
-# LIMITATIONS
+## LIMITATIONS
 - CRUD controller must manage exceptions and errors
 - Update is in "replace mode". No upsert or incremental save are allowed
 - No UI to manange entities
 - No data data relation
+
+## ROADMAP
+
+### PHASE 1 - POC
+
+- [x] Dynamic entity managment
+- [x] Expose with regular web api services and swagger
+- [x] Lambda
+- [x] Schema definition and validation
+
+
+### PHASE 2 - Be ready for production
+- [x] Expose with graphQL
+- [x] Authentication and permission
+- [x] Lambda Http
+- [x] Plugin system
+- [x] Client to automate operations
+
+### PHASE 3 - Ready to send rocket on Mars
+- [ ] Expose with Odata
+- [ ] Test and client sample
+- [ ] design UI for schema managment
+- [ ] design UI for data managment
+
+
+
