@@ -54,11 +54,12 @@ namespace RawCMS.Library.Service
 
         public JObject Insert(string collection, JObject newitem)
         {
+            var dataContext = new Dictionary<string, object>();
             InvokeValidation(newitem, collection);
 
             EnsureCollection(collection);
 
-            InvokeProcess(collection, ref newitem, SavePipelineStage.PreSave);
+            InvokeProcess(collection, ref newitem, SavePipelineStage.PreSave, dataContext);
 
             string json = newitem.ToString();
             BsonDocument itemToAdd = BsonSerializer.Deserialize<BsonDocument>(json);
@@ -68,9 +69,15 @@ namespace RawCMS.Library.Service
             }
 
             _mongoService.GetCollection<BsonDocument>(collection).InsertOne(itemToAdd);
-            InvokeProcess(collection, ref newitem, SavePipelineStage.PostSave);
 
-            return JObject.Parse(newitem.ToJson(js));
+            //sanitize
+            itemToAdd["_id"] = itemToAdd["_id"].ToString();
+
+            var addedItem = JObject.Parse(itemToAdd.ToJson(js));
+
+            InvokeProcess(collection, ref addedItem, SavePipelineStage.PostSave, dataContext);
+
+            return addedItem;
         }
 
         private void InvokeValidation(JObject newitem, string collection)
@@ -82,7 +89,7 @@ namespace RawCMS.Library.Service
             }
         }
 
-        private void InvokeProcess(string collection, ref JObject item, SavePipelineStage save)
+        private void InvokeProcess(string collection, ref JObject item, SavePipelineStage save, Dictionary<string, object> dataContext)
         {
             List<Lambda> processhandlers = lambdaManager.Lambdas
                 .Where(x => x is DataProcessLambda)
@@ -91,7 +98,7 @@ namespace RawCMS.Library.Service
 
             foreach (DataProcessLambda h in processhandlers)
             {
-                h.Execute(collection, ref item);
+                h.Execute(collection, ref item, ref dataContext);
             }
         }
 
@@ -120,6 +127,7 @@ namespace RawCMS.Library.Service
 
         public JObject Update(string collection, JObject item, bool replace)
         {
+            var dataContext = new Dictionary<string, object>();
             //TODO: why do not manage validation as a simple presave process?
             InvokeValidation(item, collection);
 
@@ -128,16 +136,12 @@ namespace RawCMS.Library.Service
 
             FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(item["_id"].Value<string>()));
 
-            InvokeProcess(collection, ref item, SavePipelineStage.PreSave);
+            InvokeProcess(collection, ref item, SavePipelineStage.PreSave, dataContext);
 
+            var id = item["_id"].Value<string>();
             //insert id (mandatory)
             BsonDocument doc = BsonDocument.Parse(item.ToString());
-            doc["_id"] = BsonObjectId.Create(item["_id"].Value<string>());
-
-            //set into "incremental" update mode
-            doc = new BsonDocument("$set", doc);
-
-            //_mongoService.GetCollection<BsonDocument>(collection).Up
+            doc["_id"] = BsonObjectId.Create(id);
 
             UpdateOptions o = new UpdateOptions()
             {
@@ -148,15 +152,15 @@ namespace RawCMS.Library.Service
             if (replace)
             {
                 _mongoService.GetCollection<BsonDocument>(collection).ReplaceOne(filter, doc, o);
-                InvokeProcess(collection, ref item, SavePipelineStage.PostSave);
             }
             else
             {
                 BsonDocument dbset = new BsonDocument("$set", doc);
                 _mongoService.GetCollection<BsonDocument>(collection).UpdateOne(filter, dbset, o);
-                InvokeProcess(collection, ref item, SavePipelineStage.PostSave);
             }
-            return JObject.Parse(item.ToJson(js));
+            var fullSaved = Get(collection, id);
+            InvokeProcess(collection, ref fullSaved, SavePipelineStage.PostSave, dataContext);
+            return JObject.Parse(fullSaved.ToJson(js));
         }
 
         public void EnsureCollection(string collection)

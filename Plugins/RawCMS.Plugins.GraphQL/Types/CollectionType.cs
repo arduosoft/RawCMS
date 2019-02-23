@@ -57,6 +57,7 @@ namespace RawCMS.Plugins.GraphQL.Types
         public CollectionType(CollectionSchema collectionSchema)
         {
             Name = collectionSchema.CollectionName;
+
             foreach (Field field in collectionSchema.FieldSettings)
             {
                 InitGraphField(field);
