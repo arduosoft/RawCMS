@@ -10,26 +10,23 @@ namespace RawCMS.Library.Service
     {
         private readonly MongoSettings _settings;
         private readonly ILogger logger;
+        private readonly MongoClient client;
 
         public MongoService(IOptions<MongoSettings> settings, ILogger logger)
         {
             this.logger = logger;
             _settings = settings.Value;
+            client = new MongoClient(_settings.ConnectionString);
+            if (string.IsNullOrEmpty(_settings.DBName))
+            {
+                var url = MongoUrl.Create(_settings.ConnectionString);
+
+                _settings.DBName = url.DatabaseName;
+            }
         }
 
         public MongoClient GetClient()
         {
-         
-            MongoClient client = new MongoClient(_settings.ConnectionString);
-            if (string.IsNullOrEmpty(_settings.DBName))
-            {
-                var url=MongoUrl.Create(_settings.ConnectionString);
-
-                _settings.DBName = url.DatabaseName;
-            }
-
-            
-
             return client;
         }
 
