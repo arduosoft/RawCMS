@@ -28,9 +28,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 		docs\Data-process-Lambda.md = docs\Data-process-Lambda.md
 		docs\Data-Schema.md = docs\Data-Schema.md
 		docs\Define-net-lambda.md = docs\Define-net-lambda.md
+		docs\Docker.md = docs\Docker.md
 		docs\Dynamic-Crud-Controller.md = docs\Dynamic-Crud-Controller.md
 		docs\Dynamic-Lambda-Controller.md = docs\Dynamic-Lambda-Controller.md
-		docs\index.md = docs\index.md
+		docs\Home.md = docs\Home.md
+		docs\RawCMS.postman_collection.json = docs\RawCMS.postman_collection.json
+		docs\TestBook.md = docs\TestBook.md
 	EndProjectSection
 EndProject
 Global
