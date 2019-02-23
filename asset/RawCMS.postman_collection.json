@@ -1,0 +1,355 @@
+{
+	"info": {
+		"_postman_id": "bddea064-20f6-5f9b-91e8-5f3ebb2ff3c7",
+		"name": "RawCMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/CRUD/_schema/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"CRUD",
+						"_schema",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"b\":\"value\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/CRUD/entity/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"CRUD",
+						"entity",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"prova\":\"Porva13\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/CRUD/prova/5af6d7d914ac3c4ba40e7581/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"CRUD",
+						"prova",
+						"5af6d7d914ac3c4ba40e7581",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/CRUD/prova/5af155be8bed7776647e1e92/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"CRUD",
+						"prova",
+						"5af155be8bed7776647e1e92",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "raw.client",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "raw.secret",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "XYZ",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "bob",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:28436/connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lambda",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:28436/api/Lambda/DummyRest/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"Lambda",
+						"DummyRest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "introspect",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXBpMTpzZWNyZXQ="
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjQzMTEwNTc0ODJhZmMyODgyZDllYzVmNWEzYmIzOGJhIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1Mzg0MTQ3NzEsImV4cCI6MTUzODQxODM3MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyODQzNiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6Mjg0MzYvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoicm8uY2xpZW50Iiwic3ViIjoiQk9CIiwiYXV0aF90aW1lIjoxNTM4NDE0NzcxLCJpZHAiOiJsb2NhbCIsInNjb3BlIjpbIm9wZW5pZCJdLCJhbXIiOlsicHdkIl19.sMYm5SUATySB7vz7aqPSdcNyo1d4ii5mVE8SNXAwURTN5f1X0q3ijtVpkpYO6q19mdeCuICltMM4V0gnQuyIgX8JrrQgD-VrkWIFOvcaT-D4SZAJ_U45kofPolFzBbhltBMVDBPiKgX8WMv3NB_-65CXtqToZ1A2EdoiAXC2EXBt_ikxiDlkQwG0TWqOXd8J_J1ky_7nDxlkqblf79XUZguo97eLSBKYNDN03AWIrtSQJGRNPEwrlJnUm3rpWD9nopw8TtfqQBQngwliiJ947pq3zfUKPR_Wi1UT8Ouy9VT5AxyiT3VL1xeAM3kIwh0j9yehr4jARh_8IbHHRMoiSQ",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:28436/connect/introspect",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"connect",
+						"introspect"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "openid-configuration",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:28436/.well-known/openid-configuration",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						".well-known",
+						"openid-configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userinfo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXBpMTpzZWNyZXQ="
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjQzMTEwNTc0ODJhZmMyODgyZDllYzVmNWEzYmIzOGJhIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1Mzg0MTQ3NzEsImV4cCI6MTUzODQxODM3MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyODQzNiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6Mjg0MzYvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoicm8uY2xpZW50Iiwic3ViIjoiQk9CIiwiYXV0aF90aW1lIjoxNTM4NDE0NzcxLCJpZHAiOiJsb2NhbCIsInNjb3BlIjpbIm9wZW5pZCJdLCJhbXIiOlsicHdkIl19.sMYm5SUATySB7vz7aqPSdcNyo1d4ii5mVE8SNXAwURTN5f1X0q3ijtVpkpYO6q19mdeCuICltMM4V0gnQuyIgX8JrrQgD-VrkWIFOvcaT-D4SZAJ_U45kofPolFzBbhltBMVDBPiKgX8WMv3NB_-65CXtqToZ1A2EdoiAXC2EXBt_ikxiDlkQwG0TWqOXd8J_J1ky_7nDxlkqblf79XUZguo97eLSBKYNDN03AWIrtSQJGRNPEwrlJnUm3rpWD9nopw8TtfqQBQngwliiJ947pq3zfUKPR_Wi1UT8Ouy9VT5AxyiT3VL1xeAM3kIwh0j9yehr4jARh_8IbHHRMoiSQ",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:28436/connect/introspect",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"connect",
+						"introspect"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:28436/api/Lambda/UserInfo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjQzMTEwNTc0ODJhZmMyODgyZDllYzVmNWEzYmIzOGJhIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1Mzg2MzM5OTMsImV4cCI6MTUzODYzNzU5MywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyODQzNiIsImF1ZCI6WyJodHRwOi8vbG9jYWxob3N0OjI4NDM2L3Jlc291cmNlcyIsImFwaTEiXSwiY2xpZW50X2lkIjoicm8uY2xpZW50Iiwic3ViIjoiQk9CIiwiYXV0aF90aW1lIjoxNTM4NjMzOTkzLCJpZHAiOiJsb2NhbCIsInNjb3BlIjpbIm9wZW5pZCJdLCJhbXIiOlsicHdkIl19.QpMReIC5PsreWcuAd_2JLW0qVFDs58_2oIgit3GErUiCXXDv5nrIdiVPdj4H0F_Lux30RMQq9v4QjKcyo4oMl1j8xQHagWk1rDhVlKWhU938L1AoyaFe8kkE74HTZv768hHGgyh3Lg78rSp32fDILq8PU8hXUWxePD87Nsf-A7j6g7GZSM2fjpi3y-3Ojf0CvAoaNJHaqyISNkDRkBdeVTcT1qR3Ve2UaiZSyP6kH8j-lSJxsu7Nu015jBlAmLk13OUBmbAj1jkheZwbDI1XXJxWgN1GiOuR9S1SXqXB31OnM17i24bl7v35CaArXPLscaZct_bi9-ZdOKFwIIJ4SQ"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/Lambda/UserInfo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"Lambda",
+						"UserInfo"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
