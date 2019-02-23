@@ -74,7 +74,7 @@ You can find all we have on [Github wiki](https://github.com/arduosoft/RawCMS/wi
 - [ ] design UI for data managment
 
 
-##License
+## License
 
 This software is published under the [GNU General Public License v3](https://github.com/arduosoft/RawCMS/blob/develop/LICENSE).
 
