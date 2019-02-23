@@ -51,6 +51,10 @@ All kind of help is welcome, so if you want to fork and propose some changes you
 ### Dev environment
 We will use VS2017 community as our main IDE and Windows 10 as development platform, VS code for UI part. 
 
+Required plugin on VS2017:
+- [license manager](https://marketplace.visualstudio.com/items?itemName=StefanWenig.LicenseHeaderManager)
+- [Code refacroting](https://marketplace.visualstudio.com/items?itemName=SteveCadwallader.CodeMaid)
+
 Repository structure will be the following:
 -ROOT
   - docs
