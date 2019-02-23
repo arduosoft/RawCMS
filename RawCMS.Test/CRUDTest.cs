@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using RawCMSClient;
+using RawCMSClient.BLL.Helper;
+using RawCMSClient.BLL.Core;
 
 namespace RawCMS.Test
 {
@@ -32,8 +34,13 @@ namespace RawCMS.Test
 
 
             Assert.False(string.IsNullOrEmpty(token));
-                
-            TokenHelper.saveTokenToFile(token);
+
+            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string fileconfigname = ClientConfig.GetValue<string>("ConfigFile");
+            fileconfigname = string.Format(fileconfigname, username);
+            string filePath = System.IO.Path.Combine(mydocpath, fileconfigname);
+
+            TokenHelper.SaveTokenToFile(filePath,token);
             string tokenfile = TokenHelper.getTokenFromFile();
             Assert.True(tokenfile.Equals(token));
 

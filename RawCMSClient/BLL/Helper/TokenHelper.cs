@@ -1,19 +1,24 @@
-﻿using RestSharp;
+﻿using RawCMSClient.BLL.Core;
+using RawCMSClient.BLL.Log;
+using RawCMSClient.BLL.Model;
+using RestSharp;
 using System;
 using System.IO;
 
-namespace RawCMSClient
+namespace RawCMSClient.BLL.Helper
 {
     public   class TokenHelper
     {
-        public static string baseUrl = "http://localhost:49439";
 
-
+        private static Runner log = LogProvider.Runner;
 
         public static string getToken(string username, string password, string clientId, string clientSecret)
         {
-            
+
+            string baseUrl = ClientConfig.GetValue<string>("BaseUrl");
             var url = $"{baseUrl}/connect/token";
+
+            log.Debug(url);
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -33,40 +38,44 @@ namespace RawCMSClient
 
             //make the API request and get the response
             IRestResponse response = client.Execute(request);
-
+            TokenResponse res = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponse>(response.Content);
             if (response.IsSuccessful)
             {
-                TokenResponse res = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponse>(response.Content);
+                log.Debug("success response token");          
                 return res.access_token;
             }
             else
             {
-               // Logger.LogWarning("unable to get valid token.");
+
+               log.Warn("unable to get valid token.");
+                throw new ExceptionToken(res.error, res.error_description);
             }
-            return "";
+            
         }
 
-        public static void saveTokenToFile(string token)
+        public static string SaveTokenToFile(string filePath,string token)
         {
+            log.Debug("save token to file");
 
-            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            
 
-            string filePath = System.IO.Path.Combine(mydocpath, "RawCMSToken.token");
+            log.Debug($"filePath: {filePath}");
 
-            //File.SetAttributes(filePath, FileAttributes.Hidden);
-
+            
             try
             {
                 using (StreamWriter outputFile = new StreamWriter(filePath))
-                {
+                {                  
                     outputFile.Write(token);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("The file could not be writed:");
-                Console.WriteLine(e.Message);
+                log.Error("The file could not be writed:", e );
+                
             }
+
+            return filePath;
 
 
 
@@ -74,26 +83,37 @@ namespace RawCMSClient
 
         public static string getTokenFromFile()
         {
-            string mydocpath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            string filePath = System.IO.Path.Combine(mydocpath, "RawCMSToken.token");
-
             string token = string.Empty;
+            log.Debug("get token from file...");
+
+            string filePath = Environment.GetEnvironmentVariable("RAWCMSCONFIG",EnvironmentVariableTarget.Process);
+            log.Debug($"config file: {filePath}");
+
+            /// ***** DEBUG DA VISUALSTUDIO *****
+            /// cambiare col path relativo all'ambiente
+            filePath = @"C:\Users\fmina\Documents\RawCMS.config";
+            ///
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                log.Warn("config file not found. Perform login.");
+                return "";
+            }
+
             try
             {   // Open the text file using a stream reader.
                 using (StreamReader sr = new StreamReader(filePath))
                 {
                     // Read the stream to a string, and write the string to the console.
                     token = sr.ReadToEnd();
-                    Console.WriteLine(token);
+                    log.Debug($"token: {token}");
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
+                log.Error("The file could not be read:",e);
+                
             }
-            Console.WriteLine(token);
             return token;
         }
     }
