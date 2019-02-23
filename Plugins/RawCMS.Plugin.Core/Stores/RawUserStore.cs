@@ -134,7 +134,22 @@ namespace RawCMS.Plugins.Core.Stores
         public async Task<IdentityUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
             JObject result = service.Get(collection, userId);
-            return result.ToObject<IdentityUser>();
+            var user = result.ToObject<IdentityUser>();
+            user = await AddPasswordHash(user);
+            return user;
+        }
+
+        private async Task<IdentityUser> AddPasswordHash(IdentityUser user)
+        {
+            DataQuery query = new DataQuery()
+            {
+                RawQuery = JsonConvert.SerializeObject(new { UserId = user.Id })
+            };
+
+            ItemList password = service.Query("_credentials", query);
+
+            user.PasswordHash = password.Items.Single()["PasswordHash"].Value<string>();
+            return user;
         }
 
         public async Task<IdentityUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -150,7 +165,9 @@ namespace RawCMS.Plugins.Core.Stores
                 return null;
             }
 
-            return result.Items.First.ToObject<IdentityUser>();
+            var user = result.Items.First.ToObject<IdentityUser>();
+            user = await AddPasswordHash(user);
+            return user;
         }
 
         public async Task<string> GetNormalizedUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
@@ -256,7 +273,6 @@ namespace RawCMS.Plugins.Core.Stores
                 var hash = algorithm.ComputeHash(Encoding.ASCII.GetBytes(password));
                 return Convert.ToBase64String(hash);
             }
-                
         }
 
         public PasswordVerificationResult VerifyHashedPassword(IdentityUser user, string hashedPassword, string providedPassword)

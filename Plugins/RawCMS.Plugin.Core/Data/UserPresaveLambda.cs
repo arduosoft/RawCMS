@@ -3,9 +3,7 @@ using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Stores;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace RawCMS.Plugins.Core.Data
 {
@@ -17,25 +15,27 @@ namespace RawCMS.Plugins.Core.Data
 
         private CRUDService service;
 
-        public override void Execute(string collection, ref JObject item)
+        public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
-            item["NormalizedUserName"] = RawUserStore.NormalizeString(item["UserName"].Value<string>());
-            if (item.ContainsKey("NormalizedEmail"))
+            if (collection == "_users")
             {
-                item["NormalizedEmail"] = RawUserStore.NormalizeString(item["NormalizedEmail"].Value<string>());
-            }
-
-            //Password cant' be changed during update 
-            if (item.ContainsKey("_id") && !string.IsNullOrWhiteSpace(item["_id"].Value<string>()) && !item.ContainsKey("NewPassword"))
-            {
-                var id = item["_id"].Value<string>();
-                
-                var old = service.Get(collection, id);
-                item["PasswordHash"] = old["PasswordHash"];
-            }
-            else
-            {
-                item["PasswordHash"] = RawUserStore.ComputePasswordHash(item["NewPassword"].Value<string>());
+                if (item.ContainsKey("UserName"))
+                {
+                    item["NormalizedUserName"] = RawUserStore.NormalizeString(item["UserName"].Value<string>());
+                }
+                if (item.ContainsKey("NormalizedEmail"))
+                {
+                    item["NormalizedEmail"] = RawUserStore.NormalizeString(item["NormalizedEmail"].Value<string>());
+                }
+                if (item.ContainsKey("NewPassword"))
+                {
+                    dataContext["NewPassword"] = item["NewPassword"].Value<string>();
+                    item.Remove("NewPassword");
+                }
+                if (item.ContainsKey("PasswordHash"))
+                {
+                    item.Remove("PasswordHash");
+                }
             }
         }
 
@@ -43,7 +43,5 @@ namespace RawCMS.Plugins.Core.Data
         {
             this.service = service;
         }
-
     }
 }
-
