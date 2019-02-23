@@ -1,4 +1,8 @@
-﻿//******************************************************************************
+﻿using GraphiQl;
+using GraphQL;
+using GraphQL.Http;
+using GraphQL.Types;
+//******************************************************************************
 // <copyright file="license.md" company="RawCMS project  (https://github.com/arduosoft/RawCMS)">
 // Copyright (c) 2019 RawCMS project  (https://github.com/arduosoft/RawCMS)
 // RawCMS project is released under GPL3 terms, see LICENSE file on repository root at  https://github.com/arduosoft/RawCMS .
@@ -14,7 +18,11 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using RawCMS.Library.Core;
+using RawCMS.Library.DataModel;
+using RawCMS.Library.Service;
+using RawCMS.Library.Service.Contracts;
 using RawCMS.Plugins.Core;
+using RawCMS.Plugins.GraphQL;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Linq;
 
@@ -26,6 +34,8 @@ namespace RawCMS
 
         //TODO: this forces module reload. Fix it to avoid this manual step.
         private readonly AuthPlugin dd = new AuthPlugin();
+
+        private readonly GraphQLPlugin df = new GraphQLPlugin();
 
         private readonly ILogger logger;
         private readonly ILoggerFactory loggerFactory;

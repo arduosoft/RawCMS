@@ -1,4 +1,7 @@
-﻿//******************************************************************************
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+//******************************************************************************
 // <copyright file="license.md" company="RawCMS project  (https://github.com/arduosoft/RawCMS)">
 // Copyright (c) 2019 RawCMS project  (https://github.com/arduosoft/RawCMS)
 // RawCMS project is released under GPL3 terms, see LICENSE file on repository root at  https://github.com/arduosoft/RawCMS .
@@ -11,6 +14,16 @@ using System.Collections.Generic;
 
 namespace RawCMS.Library.Schema
 {
+    public enum FieldBaseType
+    {
+        Int,
+        Float,
+        String,
+        Boolean,
+        ID,
+        Date
+    }
+
     public class Field
     {
         public string Name { get; set; }
@@ -18,6 +31,9 @@ namespace RawCMS.Library.Schema
         public bool Required { get; set; }
 
         public string Type { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public FieldBaseType BaseType { get; set; }
 
         public JObject Options { get; set; }
     }

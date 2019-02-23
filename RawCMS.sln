@@ -34,7 +34,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 		docs\Home.md = docs\Home.md
 		docs\RawCMS.postman_collection.json = docs\RawCMS.postman_collection.json
 		docs\TestBook.md = docs\TestBook.md
+		docs\index.md = docs\index.md
+		docs\Plugin.md = docs\Plugin.md
+		docs\Home.md = docs\Home.md
+		docs\RawCMS.postman_collection.json = docs\RawCMS.postman_collection.json
+		docs\TestBook.md = docs\TestBook.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCMS.Plugins.GraphQL", "Plugins\RawCMS.Plugins.GraphQL\RawCMS.Plugins.GraphQL.csproj", "{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +65,10 @@ Global
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +76,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
 		{18F5053A-6F40-4D56-ACAD-03F3C8E08137} = {E88BB72F-C866-4D24-8D1B-DD6B237D376E}
+		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE0F5781-A4C7-4C01-8B4C-4AE7A10908CF}
