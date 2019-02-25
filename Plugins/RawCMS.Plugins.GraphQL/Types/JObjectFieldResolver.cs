@@ -14,6 +14,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using RawCMS.Library.DataModel;
 using RawCMS.Plugins.GraphQL.Classes;
+using System;
 using System.Collections.Generic;
 
 namespace RawCMS.Plugins.GraphQL.Types
@@ -80,25 +81,33 @@ namespace RawCMS.Plugins.GraphQL.Types
                     NullValueHandling = NullValueHandling.Ignore
                 };
 
-                jSettings.ContractResolver = new DefaultContractResolver();
-                Dictionary<string, object> dictionary = new Dictionary<string, object>();
-                foreach (string key in arguments.Keys)
+                if (arguments.ContainsKey("rawQuery"))
                 {
-                    if (arguments[key] is string)
-                    {
-                        JObject reg = new JObject
-                        {
-                            ["$regex"] = $"/*{arguments[key]}/*",
-                            ["$options"] = "si"
-                        };
-                        dictionary[key.ToPascalCase()] = reg;
-                    }
-                    else
-                    {
-                        dictionary[key.ToPascalCase()] = arguments[key];
-                    }
+                    query = Convert.ToString(arguments["rawQuery"]);
                 }
-                query = JsonConvert.SerializeObject(dictionary, jSettings);
+                else
+                {
+
+                    jSettings.ContractResolver = new DefaultContractResolver();
+                    Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                    foreach (string key in arguments.Keys)
+                    {
+                        if (arguments[key] is string)
+                        {
+                            JObject reg = new JObject
+                            {
+                                ["$regex"] = $"/*{arguments[key]}/*",
+                                ["$options"] = "si"
+                            };
+                            dictionary[key.ToPascalCase()] = reg;
+                        }
+                        else
+                        {
+                            dictionary[key.ToPascalCase()] = arguments[key];
+                        }
+                    }
+                    query = JsonConvert.SerializeObject(dictionary, jSettings);
+                }
             }
 
             return query;

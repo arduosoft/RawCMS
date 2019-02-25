@@ -94,6 +94,7 @@ namespace RawCMS.Plugins.GraphQL.Types
 
             TableArgs.Add(new QueryArgument<IntGraphType> { Name = "pageNumber" });
             TableArgs.Add(new QueryArgument<IntGraphType> { Name = "pageSize" });
+            TableArgs.Add(new QueryArgument<IntGraphType> { Name = "rawQuery" });
         }
     }
 }
