@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RawCMSClient.BLL.Core;
 using RawCMSClient.BLL.Log;
 using RawCMSClient.BLL.Model;
 using RestSharp;
 using System;
+using System.IO;
 
 namespace RawCMSClient.BLL.Helper
 {
@@ -69,6 +71,34 @@ namespace RawCMSClient.BLL.Helper
 
 
         }
+        public static int CheckJSON(string filePath)
+        {
+            var content = File.ReadAllText(filePath);
+            if (string.IsNullOrEmpty(content))
+            {
+                return 1;
+            }
+
+            try
+            {
+                var obj = JObject.Parse(content);
+                return 0;
+            }
+            catch (JsonReaderException jex)
+            {
+                //Exception in parsing json
+                log.Error(jex.Message);
+                return 2;
+            }
+            catch (Exception ex) //some other exception
+            {
+                log.Error(ex.ToString());
+                return 2;
+            }
+            return 0;
+
+        }
+
         #region fun
         public static string Message { get {
                 Random r = new Random();

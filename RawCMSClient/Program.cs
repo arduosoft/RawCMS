@@ -19,7 +19,7 @@ namespace RawCMSClient
         static int Main(string[] args)
         {
 
-            log.Info(RawCmsHelper.Message);
+            Console.WriteLine(RawCmsHelper.Message);
 
             var ret = Parser.Default.ParseArguments<ClientOptions, LoginOptions, ListOptions, CreateOptions>(args)
                     .MapResult(
@@ -48,15 +48,34 @@ namespace RawCMSClient
 
         private static int RunCreateOptionsCode(CreateOptions opts)
         {
+            var collection = opts.Collection;
+            var filePath = opts.FilePath;
 
             if (opts.Verbose)
             {
-                log.Info("Verbose mode enabled.");
 
+                log.Info($"workin into collection: {collection}");
+                log.Info($"filedata path: {filePath}");
             }
 
-            log.Info($"create {opts.Collection} {opts.FilePath}");
+            // check if file exists
+            if (!System.IO.File.Exists(filePath))
+            {
+                log.Warn($"File not found: {filePath}");
+                return 0;
+            }
 
+            // check if file is valid json
+
+            var check = RawCmsHelper.CheckJSON(filePath);
+
+            if (check!=0)
+            {
+                log.Warn("skip file.");
+                return 0;
+            }
+
+            // TODO: save data to collection....
 
             return 0;
         }
