@@ -18,6 +18,7 @@ namespace RawCMS.Plugins.GraphQL.Classes
         public string GraphiQLPath { get; set; }
 
         public Func<HttpContext, object> BuildUserContext { get; set; }
+
         public bool EnableMetrics { get; set; }
     }
 }
