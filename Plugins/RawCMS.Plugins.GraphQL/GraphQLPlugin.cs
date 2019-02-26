@@ -17,7 +17,6 @@ using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Service;
-using RawCMS.Library.Service.Contracts;
 using RawCMS.Plugins.GraphQL.Classes;
 
 namespace RawCMS.Plugins.GraphQL
@@ -39,12 +38,14 @@ namespace RawCMS.Plugins.GraphQL
         {
             base.ConfigureServices(services);
 
-            services.AddSingleton(s => graphService);
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            services.AddScoped<ICollectionMetadata, CollectionMetadataService>();
+            //services.AddSingleton<ICollectionMetadata, CollectionMetadataService>();
             services.AddScoped<ISchema, GraphQLSchema>();
+            services.AddSingleton<GraphQLQuery>();
+            //services.AddSingleton<GraphQLService>();
+            services.AddSingleton(x => graphService);
         }
 
         private AppEngine appEngine;
@@ -55,6 +56,7 @@ namespace RawCMS.Plugins.GraphQL
             graphService.SetCRUDService(this.appEngine.Service);
             graphService.SetLogger(this.appEngine.GetLogger(this));
             graphService.SetSettings(config);
+            graphService.SetAppEngine(appEngine);
 
             base.Configure(app, appEngine);
 

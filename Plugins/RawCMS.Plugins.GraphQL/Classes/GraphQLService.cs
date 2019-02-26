@@ -8,14 +8,28 @@
 //******************************************************************************
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
+using RawCMS.Library.Lambdas;
+using RawCMS.Library.Schema;
 using RawCMS.Library.Service;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RawCMS.Plugins.GraphQL.Classes
 {
     public class GraphQLService
     {
+
+        public GraphQLService()
+        {
+        }
+
         private ILogger logger;
-        public CRUDService service { get; private set; }
+        public CRUDService CrudService { get; private set; }
+
+        public Dictionary<string, CollectionSchema> Collections { get; private set; }
+
+
         private AppEngine appEngine;
 
         public GraphQLSettings Settings { get; private set; }
@@ -23,11 +37,13 @@ namespace RawCMS.Plugins.GraphQL.Classes
         public void SetAppEngine(AppEngine manager)
         {
             appEngine = manager;
+            var lambda = manager.Lambdas.Where(x => x.Name == "Entity Validation").First() as EntityValidation;
+            Collections = lambda.GetCollections();
         }
 
         public void SetCRUDService(CRUDService service)
         {
-            this.service = service;
+            this.CrudService = service;
         }
 
         public void SetLogger(ILogger logger)

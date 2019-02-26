@@ -51,7 +51,7 @@ namespace RawCMS.Plugins.GraphQL.Types
                     context.Arguments.Remove("pageSize");
                 }
 
-                result = _graphQLService.service.Query(context.FieldName.ToPascalCase(), new DataQuery()
+                result = _graphQLService.CrudService.Query(context.FieldName.ToPascalCase(), new DataQuery()
                 {
                     PageNumber = pageNumber,
                     PageSize = pageSize,
@@ -60,7 +60,7 @@ namespace RawCMS.Plugins.GraphQL.Types
             }
             else
             {
-                result = _graphQLService.service.Query(context.FieldName.ToPascalCase(), new DataQuery()
+                result = _graphQLService.CrudService.Query(context.FieldName.ToPascalCase(), new DataQuery()
                 {
                     PageNumber = 1,
                     PageSize = 1000,
@@ -84,6 +84,9 @@ namespace RawCMS.Plugins.GraphQL.Types
                 if (arguments.ContainsKey("rawQuery"))
                 {
                     query = Convert.ToString(arguments["rawQuery"]);
+                }else if (arguments.ContainsKey("_id"))
+                {
+                    query = "{_id: ObjectId(\"" + Convert.ToString(arguments["_id"]) + "\")}";
                 }
                 else
                 {
@@ -94,6 +97,7 @@ namespace RawCMS.Plugins.GraphQL.Types
                     {
                         if (arguments[key] is string)
                         {
+
                             JObject reg = new JObject
                             {
                                 ["$regex"] = $"/*{arguments[key]}/*",
