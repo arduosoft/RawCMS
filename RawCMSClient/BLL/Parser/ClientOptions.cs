@@ -1,18 +1,13 @@
 ﻿using CommandLine;
 
-namespace RawCMSClient.BLL.ClientOptions
+namespace RawCMSClient.BLL.Parser
 {
 
+    [Verb("client", HelpText = "set client configuration")]
 
     public class ClientOptions
     {
-        [Option('v', "verbose",  Default = false, HelpText = "Prints all messages to standard output.")]
-        public bool Verbose { get; set; }
-
-        [Option('p', "prettyJSON", Default = false, HelpText = "Format JSON output.")]
-        public bool Pretty { get; set; }
-
-        //[Option('s', "syncronize", Required = false,  HelpText = "File path to synchronize the db.")]
+         //[Option('s', "syncronize", Required = false,  HelpText = "File path to synchronize the db.")]
         //public string SincronizationFile { get; set; }
 
         //[Option('r',"purge", Default = false, HelpText = "Remove data during syncronization. Only with syncronization (-s)")]
