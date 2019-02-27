@@ -1,0 +1,64 @@
+﻿@page
+@model RawCMS.IndexModel
+@{
+}
+
+<html>
+<head>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,900' rel='stylesheet' type='text/css'>
+
+    <!-- use the font -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .linkarea {
+            font-size: 48px;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        a {
+            text-align: center;
+            font-size: 30px;
+            color: black !important;
+            text-decoration: none !important;
+            font-style: inherit;
+            font-weight: bold;
+            text-align: center
+        }
+
+            a:hover {
+                color: #f2c315 !important;
+            }
+
+        .license {
+            font-size: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <p class="linkarea">
+        <img src="~/logo.png" />
+        <br />
+        <a href="/swagger/"><b>Swagger</b></a><br />
+        <a href="/graphql/"><b>GraphQL</b></a><br />
+        <a href="https://github.com/arduosoft/RawCMS"><b>Raw CMS on github</b></a><br />
+        <a href="https://github.com/arduosoft/RawCMS/wiki"><b>Doc</b></a><br />
+    </p>
+
+    <pre class="license">
+        RawCMS
+        Copyright (C) 2019  Daniele Fontani, Emanuele Bucarelli, Francesco Minà
+
+        This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+        This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the  GNU General Public License for more details.
+        You should have received a copy of the GNU General Public License along with this program.  If not, see http://www.gnu.org/licenses/.
+    </pre>
+</body>
+</html>
