@@ -6,12 +6,13 @@ using System.IO;
 using RawCMSClient;
 using RawCMSClient.BLL.Helper;
 using RawCMSClient.BLL.Core;
+using System.Collections.Generic;
 
 namespace RawCMS.Test
 {
-    
 
-   
+
+
     public class CRUDTest
     {
         string baseUrl = "http://localhost:49439";
@@ -40,7 +41,7 @@ namespace RawCMS.Test
             fileconfigname = string.Format(fileconfigname, username);
             string filePath = System.IO.Path.Combine(mydocpath, fileconfigname);
 
-            TokenHelper.SaveTokenToFile(filePath,token);
+            TokenHelper.SaveTokenToFile(filePath, token);
             string tokenfile = TokenHelper.getTokenFromFile();
             Assert.True(tokenfile.Equals(token));
 
@@ -59,8 +60,25 @@ namespace RawCMS.Test
 
         }
 
-     
-       
+        
+        public void GetRecursiveFile()
+        {
+            var folderPath = @"C:\temp\data";
+            Dictionary<string, string> listFile = new Dictionary<string, string>();
+
+
+            string[] subdirectoryEntries = Directory.GetDirectories(folderPath);
+            foreach (string subDir in subdirectoryEntries)
+            {
+                RawCmsHelper.ProcessDirectory(true, listFile, subDir, subDir);
+            }
+
+            foreach (var i in listFile)
+            {
+                Console.WriteLine($"{i.Key} : {i.Value}");
+            }
+        }
+
 
 
         private bool createUser()
@@ -77,7 +95,8 @@ namespace RawCMS.Test
             request.AddHeader("Content-Type", "application/json");
 
             //object containing input parameter data for DoStuff() API method
-            var apiInput = new {
+            var apiInput = new
+            {
                 UserName = "Matt",
                 NormalizedUserName = "Mattius",
                 Email = "info@matt.com",
@@ -120,9 +139,7 @@ namespace RawCMS.Test
             return false;
         }
 
-
-       
+     
     }
-
 
 }

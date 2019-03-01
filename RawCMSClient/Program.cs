@@ -3,10 +3,11 @@ using Newtonsoft.Json;
 using RawCMSClient.BLL.Parser;
 using RawCMSClient.BLL.Core;
 using RawCMSClient.BLL.Helper;
-using RawCMSClient.BLL.Log;
+using RawCMSClient.BLL.Core;
 using RawCMSClient.BLL.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace RawCMSClient
 {
@@ -21,17 +22,37 @@ namespace RawCMSClient
 
             Console.WriteLine(RawCmsHelper.Message);
 
-            var ret = Parser.Default.ParseArguments<ClientOptions, LoginOptions, ListOptions, CreateOptions>(args)
+            var ret = Parser.Default.ParseArguments<ClientOptions, LoginOptions, ListOptions, InsertOptions>(args)
                     .MapResult(
                       (ClientOptions opts) => RunClientOptionsCode(opts),
                       (LoginOptions opts) => RunLoginOptionsCode(opts),
                       (ListOptions opts) => RunListOptionsCode(opts),
-                      (CreateOptions opts) => RunCreateOptionsCode(opts),
+                      (InsertOptions opts) => RunInsertOptionsCode(opts),
+                      (ReplaceOptions opts) => RunReplacetOptionsCode(opts),
+                      (DeleteOptions opts) => RunDeleteOptionsCode(opts),
+                      (PatchOptions opts) => RunPatchOptionsCode(opts),
+
+
                       errs => RunErrorCode(errs));
 
             log.Info("done.");
             return ret;
 
+        }
+
+        private static int RunPatchOptionsCode(PatchOptions opts)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static int RunDeleteOptionsCode(DeleteOptions opts)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static int RunReplacetOptionsCode(ReplaceOptions opts)
+        {
+            throw new NotImplementedException();
         }
 
         private static int RunErrorCode(IEnumerable<Error> errs)
@@ -46,36 +67,107 @@ namespace RawCMSClient
             return 1;
         }
 
-        private static int RunCreateOptionsCode(CreateOptions opts)
+        private static int RunInsertOptionsCode(InsertOptions opts)
         {
+            var Verbose = opts.Verbose;
+            var Recursive = opts.Recursive;
+            var DryRun = opts.Recursive;
             var collection = opts.Collection;
             var filePath = opts.FilePath;
+            var folderPath = opts.FolderPath;
+
 
             if (opts.Verbose)
             {
+                log.Info("Verbose mode enabled.");
+                Verbose = true;
+            }
 
+            // check token befare action..
+            log.Debug("get token from file...");
+            var token = TokenHelper.getTokenFromFile();
+
+
+            if (string.IsNullOrEmpty(token))
+            {
+                log.Warn("No token found. Please login before continue.");
+                log.Warn("Program aborted.");
+                return 0;
+
+            };
+
+            if (Verbose)
+            {
+                log.Info($"Token: {token}");
                 log.Info($"workin into collection: {collection}");
-                log.Info($"filedata path: {filePath}");
             }
 
-            // check if file exists
-            if (!System.IO.File.Exists(filePath))
+
+            Dictionary<string, string> listFile = new Dictionary<string, string>();
+
+            // pass a file to options
+            if (!string.IsNullOrEmpty(filePath) )
             {
-                log.Warn($"File not found: {filePath}");
+                // check if file exists
+                if ( !File.Exists(filePath))
+                {
+                    log.Warn($"File not found: {filePath}");
+                    return 0;
+                }
+
+                // check if file is valid json
+
+                var check = RawCmsHelper.CheckJSON(filePath);
+
+                if (check != 0)
+                {
+                    log.Warn("son is not well-formatted. Skip file.");
+                    return 0;
+                }
+
+                listFile.Add(collection, filePath);
+
+
+            }
+            else if (!string.IsNullOrEmpty(folderPath))
+            {
+                // get all file from folder
+                if (!Directory.Exists(folderPath))
+                {
+                    log.Warn($"File not found: {filePath}");
+                    return 0;
+                 
+                }
+
+                // This path is a directory
+                // get first level path, 
+                // folder => collection
+                string[] subdirectoryEntries = Directory.GetDirectories(folderPath);
+                foreach (string  subDir in subdirectoryEntries)
+                {
+                    RawCmsHelper.ProcessDirectory(Recursive, listFile, subDir, subDir);
+                }
+            }
+            else
+            {
+                log.Warn("At least one of the two options -f (file) or -d (folder) is mandatory.");
                 return 0;
             }
 
-            // check if file is valid json
 
-            var check = RawCmsHelper.CheckJSON(filePath);
+               
 
-            if (check!=0)
+            foreach (var item in listFile)
             {
-                log.Warn("skip file.");
-                return 0;
+                RawCmsHelper.CreateElement(new CreateRequest
+                {
+                    Collection = item.Key,
+                    Data = item.Value,
+                    Token = token
+                });
             }
 
-            // TODO: save data to collection....
+           
 
             return 0;
         }
@@ -95,9 +187,9 @@ namespace RawCMSClient
                 Pretty = true;
             }
 
-            // get token from file
-            // check token befare action..
 
+            // check token befare action..
+            log.Debug("get token from file...");
             var token = TokenHelper.getTokenFromFile();
 
             if (string.IsNullOrEmpty(token))

@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RawCMSClient.BLL.Core;
-using RawCMSClient.BLL.Log;
 using RawCMSClient.BLL.Model;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace RawCMSClient.BLL.Helper
@@ -43,10 +43,9 @@ namespace RawCMSClient.BLL.Helper
             return response.Content;
         }
 
-        private static string ParseDataFile(string dataFile)
-        {
-            throw new NotImplementedException();
-        }
+     
+
+
         public static string CreateElement(CreateRequest req)
         {
             var url = $"{baseUrl}/api/CRUD/{req.Collection}";
@@ -71,6 +70,37 @@ namespace RawCMSClient.BLL.Helper
 
 
         }
+
+        public static void ProcessDirectory(bool recursive, Dictionary<string, string> fileList, string targetDirectory, string collection = null)
+        {
+            // Process the list of files found in the directory.
+            string[] fileEntries = Directory.GetFiles(targetDirectory);
+            foreach (string fileName in fileEntries)
+            {
+                fileList.Add( collection,fileName);
+            }
+            
+            if (recursive)
+            {
+                // Recurse into subdirectories of this directory.
+                // this is the main level, so take care of name
+                // of folder, thus is name of collection...
+
+                string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory);
+                foreach (string subdirectory in subdirectoryEntries)
+                {
+                    ProcessDirectory(recursive,fileList, subdirectory, collection);
+                }
+            }
+          
+
+        }
+
+        //public static void ProcessFile(Dictionary<string,string> fileList, string filePath,string collection)
+        //{
+        //    fileList.Add(collection, filePath);
+        //}
+
         public static int CheckJSON(string filePath)
         {
             var content = File.ReadAllText(filePath);
@@ -142,6 +172,8 @@ namespace RawCMSClient.BLL.Helper
 "
             
         };
+
+      
         #endregion
     }
 }
