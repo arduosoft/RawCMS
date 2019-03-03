@@ -14,10 +14,11 @@ namespace RawCMSClient.BLL.Helper
         private static Runner log = LogProvider.Runner;
         private static string baseUrl = ClientConfig.GetValue<string>("BaseUrl");
 
-        public static string GetData(ListRequest req)
+        public static IRestResponse GetData(ListRequest req)
         {
             var url = $"{baseUrl}/api/CRUD/{req.Collection}";
-            log.Debug(url);
+
+            log.Debug($"Service url: {url}");
 
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
@@ -40,17 +41,17 @@ namespace RawCMSClient.BLL.Helper
 
 
 
-            return response.Content;
+            return response;
         }
 
      
 
 
-        public static string CreateElement(CreateRequest req)
+        public static IRestResponse CreateElement(CreateRequest req)
         {
             var url = $"{baseUrl}/api/CRUD/{req.Collection}";
 
-            log.Debug(url);
+            log.Debug($"Server URL: {url}");
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);
 
@@ -65,19 +66,26 @@ namespace RawCMSClient.BLL.Helper
 
             //make the API request and get a response
             IRestResponse response = client.Execute(request);
+            
 
-            return response.Content;
+            return response;
 
 
         }
 
-        public static void ProcessDirectory(bool recursive, Dictionary<string, string> fileList, string targetDirectory, string collection = null)
+        public static void ProcessDirectory(bool recursive, Dictionary<string, List<string>> fileList, string targetDirectory, string collection = null)
         {
             // Process the list of files found in the directory.
             string[] fileEntries = Directory.GetFiles(targetDirectory);
             foreach (string fileName in fileEntries)
             {
-                fileList.Add( collection,fileName);
+                
+                if (!fileList.ContainsKey(collection))
+                {
+                    fileList.Add(collection, new List<string>());
+                }
+                fileList[collection].Add(fileName);
+                
             }
             
             if (recursive)
@@ -112,7 +120,6 @@ namespace RawCMSClient.BLL.Helper
             try
             {
                 var obj = JObject.Parse(content);
-                return 0;
             }
             catch (JsonReaderException jex)
             {
@@ -137,40 +144,23 @@ namespace RawCMSClient.BLL.Helper
             }
         }
         private static string[] messages = new string[] {
-@"/***
- *        _     ______               _____                 _____ _ _            _        _    
- *     /\| |/\  | ___ \             /  __ \               /  __ \ (_)          | |    /\| |/\ 
- *     \ ` ' /  | |_/ /__ ___      _| /  \/_ __ ___  ___  | /  \/ |_  ___ _ __ | |_   \ ` ' / 
- *    |_     _| |    // _` \ \ /\ / / |   | '_ ` _ \/ __| | |   | | |/ _ \ '_ \| __| |_     _|
- *     / , . \  | |\ \ (_| |\ V  V /| \__/\ | | | | \__ \ | \__/\ | |  __/ | | | |_   / , . \ 
- *     \/|_|\/  \_| \_\__,_| \_/\_/  \____/_| |_| |_|___/  \____/_|_|\___|_| |_|\__|  \/|_|\/ 
- *                                                   _   _ _              _              _    
- *                                                  | | | (_)            | |            | |   
- *      ___ ___  _ __ ___  _ __ ___   __ _ _ __   __| | | |_ _ __   ___  | |_ ___   ___ | |   
- *     / __/ _ \| '_ ` _ \| '_ ` _ \ / _` | '_ \ / _` | | | | '_ \ / _ \ | __/ _ \ / _ \| |   
- *    | (_| (_) | | | | | | | | | | | (_| | | | | (_| | | | | | | |  __/ | || (_) | (_) | |   
- *     \___\___/|_| |_| |_|_| |_| |_|\__,_|_| |_|\__,_| |_|_|_| |_|\___|  \__\___/ \___/|_|   
- *                                                                                            
- *                                                                                            
- */"
-            ,
 @"
-/***
- *               __________              _________                  _________ .__  .__               __              
- *      /\|\/\   \______   \____ __  _  _\_   ___ \  _____   ______ \_   ___ \|  | |__| ____   _____/  |_   /\|\/\   
- *     _)    (__  |       _|__  \\ \/ \/ /    \  \/ /     \ /  ___/ /    \  \/|  | |  |/ __ \ /    \   __\ _)    (__ 
- *     \_     _/  |    |   \/ __ \\     /\     \___|  Y Y  \\___ \  \     \___|  |_|  \  ___/|   |  \  |   \_     _/ 
- *       )    \   |____|_  (____  /\/\_/  \______  /__|_|  /____  >  \______  /____/__|\___  >___|  /__|     )    \  
- *       \/\|\/          \/     \/               \/      \/     \/          \/             \/     \/         \/\|\/  
- *                                                    .___ .__  .__                  __                .__           
- *      ____  ____   _____   _____ _____    ____    __| _/ |  | |__| ____   ____   _/  |_  ____   ____ |  |          
- *    _/ ___\/  _ \ /     \ /     \\__  \  /    \  / __ |  |  | |  |/    \_/ __ \  \   __\/  _ \ /  _ \|  |          
- *    \  \__(  <_> )  Y Y  \  Y Y  \/ __ \|   |  \/ /_/ |  |  |_|  |   |  \  ___/   |  | (  <_> |  <_> )  |__        
- *     \___  >____/|__|_|  /__|_|  (____  /___|  /\____ |  |____/__|___|  /\___  >  |__|  \____/ \____/|____/        
- *         \/            \/      \/     \/     \/      \/               \/     \/                                    
- */
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMWNMMMMMMMMMMMMMMMMMMMM ______               _____                 _____  _ _            _    M
+MWNXWMMMMMMKc,dXMMMMMMMMMMMMMMMMMM | ___ \             /  __ \               /  __ \| (_)          | |   M 
+MWXKXNMMMW0;...cKWMMMMMMMMMMMMMMMM | |_/ /__ ___      _| /  \/_ __ ___  ___  | /  \/| |_  ___ _ __ | |_  M
+MWXKKXMMMNkoxd,.':o0WMMMMMMMWMWMWM |    // _` \ \ /\ / / |   | '_ ` _ \/ __| | |   || | |/ _ \ '_ \| __| M
+MMMMMMMMXkONN0;    .lXMMMMMMKMKMKM | |\ \ (_| |\ V  V /| \__/\ | | | | \__ \ | \__/\| | |  __/ | | | |_  M
+MMMMMMMK:.:kd,.   . .dXNWMMMKMKMKM \_| \_\__,_| \_/\_/  \____/_| |_| |_|___/  \____/|_|_|\___|_| |_|\__| M 
+MMMMMMMO' ... .   . .ll,dXMMKMKMKM                                                _   _ _                M
+MMMMMMM0' ......    ,o' .xWMKMKMKM                                               | | | (_)               M
+MMMMMMMX: .;:;,.   .l;. .xWMKMKMKM   ___ ___  _ __ ___  _ __ ___   __ _ _ __   __| | | |_ _ __   ___     M
+MMMMMMMWd. .dO, . .:;,' ,0WMKMKMKM  / __/ _ \| '_ ` _ \| '_ ` _ \ / _` | '_ \ / _` | | | | '_ \ / _ \    M
+MMMMMMMMK; .dX: .,kl.;o'.lXMKMKMKM | (_| (_) | | | | | | | | | | | (_| | | | | (_| | | | | | | |  __/    M
+MMMMMMMMWO,.c0c .cKd,cOc .xMKMKMKM  \___\___/|_| |_| |_|_| |_| |_|\__,_|_| |_|\__,_| |_|_|_| |_|\___|    M
+MMMMMMMMMWk,;kd,,l0XXNXdcl0WKWKWKW                                                                       M
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 "
-            
         };
 
       

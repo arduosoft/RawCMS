@@ -1,5 +1,6 @@
 ﻿using RawCMSClient.BLL.Core;
 using RawCMSClient.BLL.Model;
+using RawCMSClient.BLL.Parser;
 using RestSharp;
 using System;
 using System.IO;
@@ -11,13 +12,14 @@ namespace RawCMSClient.BLL.Helper
 
         private static Runner log = LogProvider.Runner;
 
-        public static string getToken(string username, string password, string clientId, string clientSecret)
+        public static string getToken(LoginOptions opts)
         {
 
-            string baseUrl = ClientConfig.GetValue<string>("BaseUrl");
-            var url = $"{baseUrl}/connect/token";
+            //string baseUrl = ClientConfig.GetValue<string>("BaseUrl");
+            
+            var url = $"{opts.ServerUrl}/connect/token";
 
-            log.Debug(url);
+            log.Debug($"Server url: {url}");
 
             //create RestSharp client and POST request object
             var client = new RestClient(url);
@@ -27,11 +29,11 @@ namespace RawCMSClient.BLL.Helper
             request.Parameters.Clear();
             request.AddParameter("grant_type", "password");
 
-            request.AddParameter("username", username);
-            request.AddParameter("password", password);
+            request.AddParameter("username", opts.Username);
+            request.AddParameter("password", opts.Password);
 
-            request.AddParameter("client_id", clientId);
-            request.AddParameter("client_secret", clientSecret);
+            request.AddParameter("client_id", opts.ClientId);
+            request.AddParameter("client_secret", opts.ClientSecret);
             request.AddParameter("scoope", "openid");
 
 
@@ -40,32 +42,29 @@ namespace RawCMSClient.BLL.Helper
             TokenResponse res = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenResponse>(response.Content);
             if (response.IsSuccessful)
             {
-                log.Debug("success response token");          
+                log.Debug("Success response token");          
                 return res.access_token;
             }
             else
             {
 
-               log.Warn("unable to get valid token.");
+               log.Warn("Unable to get valid token.");
                 throw new ExceptionToken(res.error, res.error_description);
             }
             
         }
 
-        public static string SaveTokenToFile(string filePath,string token)
+        public static void SaveTokenToFile(string filePath,ConfigFile cf)
         {
-            log.Debug("save token to file");
-
+            log.Debug("Save config to file...");
             
-
-            log.Debug($"filePath: {filePath}");
-
+            log.Debug($"FilePath: {filePath}");
             
             try
             {
                 using (StreamWriter outputFile = new StreamWriter(filePath))
-                {                  
-                    outputFile.Write(token);
+                {
+                    outputFile.Write(cf.ToString());
                 }
             }
             catch (Exception e)
@@ -73,10 +72,6 @@ namespace RawCMSClient.BLL.Helper
                 log.Error("The file could not be writed:", e );
                 
             }
-
-            return filePath;
-
-
 
         }
 
@@ -86,26 +81,22 @@ namespace RawCMSClient.BLL.Helper
             log.Debug("get token from file...");
 
             string filePath = Environment.GetEnvironmentVariable("RAWCMSCONFIG",EnvironmentVariableTarget.Process);
-            log.Debug($"config file: {filePath}");
-
-            /// ***** DEBUG DA VISUALSTUDIO *****
-            /// cambiare col path relativo all'ambiente
-            filePath = @"C:\Users\fmina\Documents\RawCMS.config";
-            ///
+            log.Debug($"Config file: {filePath}");
 
             if (string.IsNullOrEmpty(filePath))
             {
-                log.Warn("config file not found. Perform login.");
-                return "";
+                log.Warn("Config file not found. Perform login.");
+                return null;
             }
 
             try
             {   // Open the text file using a stream reader.
                 using (StreamReader sr = new StreamReader(filePath))
                 {
-                    // Read the stream to a string, and write the string to the console.
-                    token = sr.ReadToEnd();
-                    log.Debug($"token: {token}");
+                    var data = sr.ReadToEnd();
+                    ConfigFile config = new ConfigFile(data);
+                    token = config.Token;
+                    log.Debug($"Get token From file:\n---- TOKEN ------\n{token}\n-----------------");
                 }
             }
             catch (Exception e)

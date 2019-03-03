@@ -8,7 +8,7 @@ namespace RawCMSClient.BLL.Model
     {
         public string Token { get; set; }
         public string Collection { get; set; }
-        public string RawQuery { get; set; } = "{}";
+        public string RawQuery { get; set; }
 
     }
 

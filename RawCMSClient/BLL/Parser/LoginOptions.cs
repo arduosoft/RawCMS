@@ -12,13 +12,17 @@ namespace RawCMSClient.BLL.Parser
         public string Username { get; set; }
 
         [Option('p', "password", Required = true, HelpText = "Password")]
-        public string Pasword { get; set; }
+        public string Password { get; set; }
 
-        [Option('i', "clientid", Required = true, HelpText = "Client id")]
+        [Option('i', "client-id", Required = true, HelpText = "Client id")]
         public string ClientId { get; set; }
 
-        [Option('t', "clientsecret", Required = true, HelpText = "Client secret")]
+        [Option('t', "client-secret", Required = true, HelpText = "Client secret")]
         public string ClientSecret { get; set; }
+
+        [Option('s', "server-url", Required = true, HelpText = "Server URL")]
+        public string ServerUrl { get; set; }
+
 
 
 

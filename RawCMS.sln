@@ -22,6 +22,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6F40-4D56-ACAD-03F3C8E08137}"
 	ProjectSection(SolutionItems) = preProject
 		docs\Authentication.md = docs\Authentication.md
+		docs\Client.md = docs\Client.md
 		docs\Configurable-Plugins.md = docs\Configurable-Plugins.md
 		docs\Custom-Field-Validation.md = docs\Custom-Field-Validation.md
 		docs\Custom-Validation.md = docs\Custom-Validation.md
@@ -33,7 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 		docs\index.md = docs\index.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCMSClient", "RawCMSClient\RawCMSClient.csproj", "{2BB731D6-72F7-48FA-8300-5A47E7500102}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMSClient", "RawCMSClient\RawCMSClient.csproj", "{2BB731D6-72F7-48FA-8300-5A47E7500102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -28,6 +28,18 @@ namespace RawCMSClient.BLL.Parser
         [Option('i', "id", Required = false, HelpText = "Element id to get.")]
         public string Id { get; set; }
 
+        [Option('s', "page-size", Required = false, HelpText = "Page Size, default 10")]
+        public int PageSize { get; set; }
+
+        [Option('n', "page-number", Required = false, HelpText = "Page Number, default 1")]
+        public int PageNumber { get; set; }
+
+
+        [Option('r', "raw-query", Required = false, HelpText = "Raw query.")]
+        public string RawQuery { get; set; }
+
+
+
 
 
     }

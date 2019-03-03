@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,25 +10,43 @@ namespace RawCMSClient.BLL.Core
     {
         private readonly ILogger<Runner> _logger;
 
+        private bool _verbose { get; set; }
+        private bool _pretty { get; set; }
+
+        public void SetVerbose(bool verbose)
+        {
+            _verbose = verbose;
+            if (_verbose) _logger.LogInformation("verbose mode enabled.");
+            
+        }
+        public void SetPretty(bool pretty)
+        {
+            _pretty = pretty;
+        }
+
         public Runner(ILogger<Runner> logger)
         {
             _logger = logger;
         }
 
-        public void Debug(int eventId,Exception e, string message,object[] args)
+        public void Debug(int eventId, Exception e, string message, object[] args)
         {
             _logger.LogDebug(eventId, e, message, args);
         }
 
-        public void Debug(string message,object[] args)
+        public void Debug(string message, object[] args)
         {
-            _logger.LogDebug(message,args);
+            _logger.LogDebug(message, args);
+            // to avoid duplicate log line. only in info level
+            if (_verbose && !_logger.IsEnabled(LogLevel.Debug)) _logger.LogInformation(message, args);
         }
         public void Debug(string message)
         {
             _logger.LogDebug(message);
+            // to avoid duplicate log line. only in info level
+            if (_verbose && !_logger.IsEnabled(LogLevel.Debug)) _logger.LogInformation(message);
         }
-        public void Info(string message,object[] args)
+        public void Info(string message, object[] args)
         {
             _logger.LogInformation(message, args);
         }
@@ -52,7 +71,7 @@ namespace RawCMSClient.BLL.Core
         {
             _logger.LogError(message);
         }
-        public void Error(string message,Exception e)
+        public void Error(string message, Exception e)
         {
             _logger.LogError(e, message);
         }
@@ -74,5 +93,43 @@ namespace RawCMSClient.BLL.Core
             _logger.LogCritical(message);
         }
 
+        internal void Response(string contentResponse)
+        {
+            _logDataCall(contentResponse, "Response");
+        }
+
+        internal void Request(string contentRequest)
+        {
+            _logDataCall(contentRequest, "Request");
+            
+        }
+
+        internal void _logDataCall(string content, string direction)
+        {
+            var ret = string.Empty;
+
+            if (string.IsNullOrEmpty(content))
+            {
+                Debug("Request has no data.");
+                return;
+            }
+
+            if (_pretty)
+            {
+                try
+                {
+                    var obj = JsonConvert.DeserializeObject(content);
+                    ret = JsonConvert.SerializeObject(obj, Formatting.Indented);
+
+                }
+                catch(Exception e)
+                {
+                    Warn($"error parsing reponse: {e.Message}");
+                }
+            }
+
+            Debug(string.Format("\n------------- {0} -------------\n\n{1}\n\n-------------------------------------\n", direction, ret));
+
+        }
     }
 }

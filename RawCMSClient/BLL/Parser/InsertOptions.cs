@@ -13,7 +13,10 @@ namespace RawCMSClient.BLL.Parser
        
         [Option('v', "verbose", Default = false, HelpText = "Prints all messages to standard output.")]
         public bool Verbose { get; set; }
-        
+
+        [Option('p', "pretty", Default = false, HelpText = "Format JSON output.")]
+        public bool Pretty { get; set; }
+
         [Option('c', "collection", Required = true, HelpText = "Collection where to do the operation.")]
         public string Collection { get; set; }    
 

@@ -7,6 +7,7 @@ using RawCMSClient;
 using RawCMSClient.BLL.Helper;
 using RawCMSClient.BLL.Core;
 using System.Collections.Generic;
+using RawCMSClient.BLL.Parser;
 
 namespace RawCMS.Test
 {
@@ -31,7 +32,16 @@ namespace RawCMS.Test
         [Fact]
         public void GetTokenFromFileTest()
         {
-            string token = TokenHelper.getToken(username, password, clientId, clientSecret);
+            LoginOptions lo = new LoginOptions
+            {
+                ClientId = clientId,
+                ClientSecret = clientSecret,
+                Password = password,
+                ServerUrl = baseUrl,
+                Username = username,
+                
+            };
+            string token = TokenHelper.getToken(lo);
 
 
             Assert.False(string.IsNullOrEmpty(token));
@@ -41,7 +51,16 @@ namespace RawCMS.Test
             fileconfigname = string.Format(fileconfigname, username);
             string filePath = System.IO.Path.Combine(mydocpath, fileconfigname);
 
-            TokenHelper.SaveTokenToFile(filePath, token);
+            ConfigFile cf = new ConfigFile
+            {
+                Token = token,
+                CreatedTime = DateTime.Now.ToShortDateString(),
+                ServerUrl = baseUrl,
+                User = username
+
+            };
+
+            TokenHelper.SaveTokenToFile(filePath, cf);
             string tokenfile = TokenHelper.getTokenFromFile();
             Assert.True(tokenfile.Equals(token));
 
@@ -50,8 +69,17 @@ namespace RawCMS.Test
         [Fact]
         public void TestGetToken()
         {
+            LoginOptions lo = new LoginOptions
+            {
+                ClientId = clientId,
+                ClientSecret = clientSecret,
+                Password = password,
+                ServerUrl = baseUrl,
+                Username = username,
+
+            };
             // get token
-            string token = TokenHelper.getToken(username, password, clientId, clientSecret);
+            string token = TokenHelper.getToken(lo);
             Assert.True(!string.IsNullOrEmpty(token));
 
             // create new user
@@ -61,32 +89,25 @@ namespace RawCMS.Test
         }
 
         
-        public void GetRecursiveFile()
-        {
-            var folderPath = @"C:\temp\data";
-            Dictionary<string, string> listFile = new Dictionary<string, string>();
-
-
-            string[] subdirectoryEntries = Directory.GetDirectories(folderPath);
-            foreach (string subDir in subdirectoryEntries)
-            {
-                RawCmsHelper.ProcessDirectory(true, listFile, subDir, subDir);
-            }
-
-            foreach (var i in listFile)
-            {
-                Console.WriteLine($"{i.Key} : {i.Value}");
-            }
-        }
-
+     
 
 
         private bool createUser()
         {
-            string token = TokenHelper.getToken(username, password, clientId, clientSecret);
-            //create RestSharp client and POST request object
+            LoginOptions lo = new LoginOptions
+            {
+                ClientId = clientId,
+                ClientSecret = clientSecret,
+                Password = password,
+                ServerUrl = baseUrl,
+                Username = username,
 
-            var url = $"{baseUrl}/api/CRUD/test";
+            };
+            string token = TokenHelper.getToken(lo);
+            //create RestSharp client and POST request object
+            var collection = "_users";
+
+            var url = $"{baseUrl}/api/CRUD/{collection}";
             var client = new RestClient(url);
             var request = new RestRequest(Method.POST);
 

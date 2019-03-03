@@ -1,13 +1,12 @@
 ﻿using CommandLine;
-using Newtonsoft.Json;
 using RawCMSClient.BLL.Parser;
 using RawCMSClient.BLL.Core;
 using RawCMSClient.BLL.Helper;
-using RawCMSClient.BLL.Core;
 using RawCMSClient.BLL.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace RawCMSClient
 {
@@ -35,7 +34,7 @@ namespace RawCMSClient
 
                       errs => RunErrorCode(errs));
 
-            log.Info("done.");
+            log.Info("Done.");
             return ret;
 
         }
@@ -71,20 +70,18 @@ namespace RawCMSClient
         {
             var Verbose = opts.Verbose;
             var Recursive = opts.Recursive;
-            var DryRun = opts.Recursive;
+            var DryRun = opts.DryRun;
+            var Pretty = opts.Pretty;
             var collection = opts.Collection;
             var filePath = opts.FilePath;
             var folderPath = opts.FolderPath;
 
+            // setting log/console Output 
+            log.SetVerbose(Verbose);
+            log.SetPretty(Pretty);
 
-            if (opts.Verbose)
-            {
-                log.Info("Verbose mode enabled.");
-                Verbose = true;
-            }
-
+          
             // check token befare action..
-            log.Debug("get token from file...");
             var token = TokenHelper.getTokenFromFile();
 
 
@@ -96,14 +93,13 @@ namespace RawCMSClient
 
             };
 
-            if (Verbose)
-            {
-                log.Info($"Token: {token}");
-                log.Info($"workin into collection: {collection}");
-            }
 
 
-            Dictionary<string, string> listFile = new Dictionary<string, string>();
+            log.Debug($"Working into collection: {collection}");
+          
+
+            Dictionary<string, List<string>> listFile = new Dictionary<string, List<string>>();
+
 
             // pass a file to options
             if (!string.IsNullOrEmpty(filePath) )
@@ -121,16 +117,20 @@ namespace RawCMSClient
 
                 if (check != 0)
                 {
-                    log.Warn("son is not well-formatted. Skip file.");
+                    log.Warn("Json is not well-formatted. Skip file.");
                     return 0;
                 }
-
-                listFile.Add(collection, filePath);
+                List<string> filelist = new List<string>();
+                filelist.Add(filePath);
+                listFile.Add(collection, filelist);
 
 
             }
             else if (!string.IsNullOrEmpty(folderPath))
             {
+                string cwd = Directory.GetCurrentDirectory();
+                log.Info($"Current working directory: {cwd}");
+
                 // get all file from folder
                 if (!Directory.Exists(folderPath))
                 {
@@ -142,10 +142,12 @@ namespace RawCMSClient
                 // This path is a directory
                 // get first level path, 
                 // folder => collection
-                string[] subdirectoryEntries = Directory.GetDirectories(folderPath);
-                foreach (string  subDir in subdirectoryEntries)
+                DirectoryInfo dInfo = new DirectoryInfo(folderPath);
+                DirectoryInfo[] subdirs = dInfo.GetDirectories();
+
+                foreach (DirectoryInfo subDir in subdirs)
                 {
-                    RawCmsHelper.ProcessDirectory(Recursive, listFile, subDir, subDir);
+                    RawCmsHelper.ProcessDirectory(Recursive, listFile, subDir.FullName,subDir.Name);
                 }
             }
             else
@@ -154,74 +156,114 @@ namespace RawCMSClient
                 return 0;
             }
 
+            elaborateQueue(listFile,token,Pretty);
+            
 
-               
-
-            foreach (var item in listFile)
-            {
-                RawCmsHelper.CreateElement(new CreateRequest
-                {
-                    Collection = item.Key,
-                    Data = item.Value,
-                    Token = token
-                });
-            }
-
-           
-
+            log.Info($"Processing file complete.");
             return 0;
+        }
+
+        private static void elaborateQueue(Dictionary<string, List<string>> listFile,string token,bool pretty)
+        {
+            int totalfile = listFile.Sum(x => x.Value.Count);
+            int partialOfTotal = 0;
+
+            foreach (var c in listFile)
+            {
+                int progress = 0;
+            
+                foreach (var item in c.Value)
+                {
+                    log.Info($"Processing file {++progress} of {c.Value.Count} in collection: {c.Key}");
+                    
+                    var contentFile = File.ReadAllText(item);
+                    
+                    
+                    log.Request(contentFile);
+
+                    var responseRawCMS = RawCmsHelper.CreateElement(new CreateRequest
+                    {
+                        Collection = c.Key,
+                        Data = contentFile,
+                        Token = token
+                    });
+
+                    log.Debug($"RawCMS response code: {responseRawCMS.StatusCode}");
+
+                    if (!responseRawCMS.IsSuccessful)
+                    {
+                        //log.Error($"Error occurred: \n{responseRawCMS.Content}");
+                        log.Error($"Error: {responseRawCMS.ErrorMessage}");
+                    }
+                    else
+                    {
+                        log.Response(responseRawCMS.Content);
+                    }
+
+                    //switch (responseRawCMS.ResponseStatus)
+                    //{
+
+                    //    case RestSharp.ResponseStatus.Completed:
+                    //        log.Response(responseRawCMS.Content);
+
+                    //        break;
+
+                    //    case RestSharp.ResponseStatus.None:
+                    //    case RestSharp.ResponseStatus.Error:
+                    //    case RestSharp.ResponseStatus.TimedOut:
+                    //    case RestSharp.ResponseStatus.Aborted:
+
+                    //    default:
+                    //        log.Error($"Error response: {responseRawCMS.ErrorMessage}");
+                    //        break;
+                    //}
+
+
+                    log.Info($"File processed\n\tCollection progress: {progress} of {c.Value.Count}\n\tTotal progress: {++partialOfTotal} of {totalfile}\n\tFile: {item}\n\tCollection: {c.Key}");
+                }
+
+            }
         }
 
         private static int RunListOptionsCode(ListOptions opts)
         {
-            bool Verbose = false;
-            bool Pretty = false;
+           
+            var Verbose = opts.Verbose;
+            log.SetVerbose(Verbose);
 
-            if (opts.Verbose)
-            {
-                log.Info("Verbose mode enabled.");
-                Verbose = true;
-            }
-            if (opts.Pretty)
-            {
-                Pretty = true;
-            }
+            var Pretty = opts.Pretty;
+            log.SetPretty(Pretty);
 
+            var PageSize = opts.PageSize;
+            var PageNumber = opts.PageNumber;
+            var RawQuery = opts.RawQuery;
+
+            var id = opts.Id;
+            var collection = opts.Collection;
+            
+            
 
             // check token befare action..
-            log.Debug("get token from file...");
             var token = TokenHelper.getTokenFromFile();
 
             if (string.IsNullOrEmpty(token))
             {
-                log.Warn("No token found. Please login before continue.");
-                log.Warn("Program aborted.");
+                log.Warn("No token found. Please login.");
                 return 0;
 
             };
-            if (Verbose)
-            {
-                log.Info($"Token: {token}");
-            }
-
-            var collection = opts.Collection;
-            var id = opts.Id;
-            var ret = string.Empty;
-
-            if (string.IsNullOrEmpty(opts.Collection))
-            {
-                log.Warn("Collection name is rquired for list command.");
-                log.Warn("Program aborted.");
-                return 0;
-            }
-
-            log.Debug($"perform action in collection: {collection}");
+            
+           
+            log.Debug($"Perform action in collection: {collection}");
 
 
             ListRequest req = new ListRequest
             {
                 Collection = collection,
-                Token = token
+                Token = token,
+                PageNumber = PageNumber < 1 ? 1 : PageNumber,
+                PageSize = PageSize < 1 ? 10 : PageSize,
+                RawQuery = RawQuery,
             };
 
             if (!string.IsNullOrEmpty(id))
@@ -229,54 +271,59 @@ namespace RawCMSClient
                 req.Id = id;
             }
 
-            ret = RawCmsHelper.GetData(req);
-            if (string.IsNullOrEmpty(ret))
+            var responseRawCMS = RawCmsHelper.GetData(req);
+           
+            log.Debug($"RawCMS response code: {responseRawCMS.StatusCode}");
+
+            if (!responseRawCMS.IsSuccessful)
             {
-                log.Info("Response has no data.");
+                //log.Error($"Error occurred: \n{responseRawCMS.Content}");
+                log.Error($"Error: {responseRawCMS.ErrorMessage}");
             }
             else
             {
-                if (Pretty)
-                {
-                    var obj = JsonConvert.DeserializeObject(ret);
-                    ret = JsonConvert.SerializeObject(obj, Formatting.Indented);
-                    log.Info($"Result query:\n------------- RESULT -------------\n\n{ret}\n\n-------------------------------------\n");
-
-                }
+                log.Response(responseRawCMS.Content);
             }
+
+            //switch (responseRawCMS.ResponseStatus)
+            //{
+
+            //    case RestSharp.ResponseStatus.Completed:
+            
+            //        break;
+
+            //    case RestSharp.ResponseStatus.None:
+            //    case RestSharp.ResponseStatus.Error:
+            //    case RestSharp.ResponseStatus.TimedOut:
+            //    case RestSharp.ResponseStatus.Aborted:
+
+            //    default:
+            //        log.Error($"Error response: {responseRawCMS.ErrorMessage}");
+            //        break;
+            //}
+    
+            
             return 0;
         }
 
         private static int RunLoginOptionsCode(LoginOptions opts)
         {
             bool Verbose = false;
+            log.SetVerbose(Verbose);
+
             var token = string.Empty;
-
-            if (opts.Verbose)
-            {
-                log.Info("Verbose mode enabled.");
-                Verbose = true;
-            }
-
-            if (false
-            || string.IsNullOrEmpty(opts.Username)
-            || string.IsNullOrEmpty(opts.Pasword)
-            || string.IsNullOrEmpty(opts.ClientId)
-            || string.IsNullOrEmpty(opts.ClientSecret))
-            {
-                log.Warn("Login (-l) params reqire other parameters:\n(-u) username\n(-p) password\n(-i) clientid\n(-t) clientsecret");
-                log.Warn("Program aborted.");
-                return 0;
-            }
-
+            
+           
             try
             {
-                token = TokenHelper.getToken(opts.Username, opts.Pasword, opts.ClientId, opts.ClientSecret);
+                token = TokenHelper.getToken(opts);
+                log.Debug($"\n---- TOKEN ------\n{token}\n-----------------");
 
             }
             catch (ExceptionToken e)
             {
-                log.Error($"token error: {e.Code}, {e.Message}");
+                log.Error($"token error:");
+                log.Error($"\t{e.Code}, {e.Message}");
                 return 2;
             }
             catch (Exception e)
@@ -289,7 +336,6 @@ namespace RawCMSClient
             if (string.IsNullOrEmpty(token))
             {
                 log.Warn("Unable to get token. check if data are correct and retry.");
-                log.Warn("Program aborted.");
                 return 2;
 
             }
@@ -300,17 +346,19 @@ namespace RawCMSClient
             fileconfigname = string.Format(fileconfigname, opts.Username);
             string filePath = System.IO.Path.Combine(mydocpath, fileconfigname);
 
-
-            var f = TokenHelper.SaveTokenToFile(filePath, token);
-            log.Info("set enviroinment configuration: (copy, paste and hit return in console)");
-            log.Info($"\n\nSET RAWCMSCONFIG={f}");
-
-
-            if (Verbose)
+            ConfigFile cf = new ConfigFile
             {
-                log.Info($"\n---- TOKEN ------\n{token}\n-----------------");
+                Token = token,
+                CreatedTime = DateTime.Now.ToShortDateString(),
+                ServerUrl = opts.ServerUrl,
+                User = opts.Username
 
-            }
+            };
+
+            TokenHelper.SaveTokenToFile(filePath, cf);
+
+            log.Info($"set enviroinment configuration: (copy, paste and hit return in console):\nSET RAWCMSCONFIG={filePath}");
+            
             return 0;
         }
 
