@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RawCMSClient.BLL.Core
+namespace RawCMS.Client.BLL.Core
 {
     public class ConfigFile
     {

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RawCMSClient.BLL.Parser
+namespace RawCMS.Client.BLL.Parser
 {
 
     [Verb("delete", HelpText = "delete data inside collection")]

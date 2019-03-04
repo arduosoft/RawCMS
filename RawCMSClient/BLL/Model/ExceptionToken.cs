@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RawCMSClient.BLL.Model
+namespace RawCMS.Client.BLL.Model
 {
     public class ExceptionToken: Exception
     {

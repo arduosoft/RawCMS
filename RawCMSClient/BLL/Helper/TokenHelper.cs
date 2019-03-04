@@ -1,11 +1,11 @@
-﻿using RawCMSClient.BLL.Core;
-using RawCMSClient.BLL.Model;
-using RawCMSClient.BLL.Parser;
+﻿using RawCMS.Client.BLL.Core;
+using RawCMS.Client.BLL.Model;
+using RawCMS.Client.BLL.Parser;
 using RestSharp;
 using System;
 using System.IO;
 
-namespace RawCMSClient.BLL.Helper
+namespace RawCMS.Client.BLL.Helper
 {
     public   class TokenHelper
     {

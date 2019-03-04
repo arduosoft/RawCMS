@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 
-namespace RawCMSClient.BLL.Core
+namespace RawCMS.Client.BLL.Core
 {
     public class LogProvider
     {

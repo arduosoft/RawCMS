@@ -3,11 +3,11 @@ using RestSharp;
 using Newtonsoft.Json;
 using System;
 using System.IO;
-using RawCMSClient;
-using RawCMSClient.BLL.Helper;
-using RawCMSClient.BLL.Core;
+using RawCMS.Client;
+using RawCMS.Client.BLL.Helper;
+using RawCMS.Client.BLL.Core;
 using System.Collections.Generic;
-using RawCMSClient.BLL.Parser;
+using RawCMS.Client.BLL.Parser;
 
 namespace RawCMS.Test
 {

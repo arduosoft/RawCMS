@@ -48,6 +48,17 @@ namespace RawCMS.Library.Lambdas
                 CollectionSchema schema = item.ToObject<CollectionSchema>();
                 if (schema.CollectionName != null && !string.IsNullOrEmpty(schema.CollectionName.ToString()))
                 {
+                    var haveIdField = schema.FieldSettings.Where(x => x.Name.Equals("_id")).Count() > 0;
+                    if (!haveIdField)
+                    {
+                        var field = new Field();
+                        field.Name = "_id";
+                        field.BaseType = FieldBaseType.String;
+                        field.Type = "ObjectId";
+                        field.Required = true;
+                        schema.FieldSettings.Add(field);
+                    }
+
                     entities[schema.CollectionName] = schema;
                 }
             }
@@ -103,6 +114,11 @@ namespace RawCMS.Library.Lambdas
                 errors.AddRange(typeValidator.Validate(input, field));
             }
             return errors;
+        }
+
+        public Dictionary<string,CollectionSchema> GetCollections()
+        {
+            return entities;
         }
 
         public void SetCRUDService(CRUDService service)

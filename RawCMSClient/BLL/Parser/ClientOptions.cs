@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace RawCMSClient.BLL.Parser
+namespace RawCMS.Client.BLL.Parser
 {
 
     [Verb("client", HelpText = "set client configuration")]

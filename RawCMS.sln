@@ -22,19 +22,26 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6F40-4D56-ACAD-03F3C8E08137}"
 	ProjectSection(SolutionItems) = preProject
 		docs\Authentication.md = docs\Authentication.md
-		docs\Client.md = docs\Client.md
 		docs\Configurable-Plugins.md = docs\Configurable-Plugins.md
 		docs\Custom-Field-Validation.md = docs\Custom-Field-Validation.md
 		docs\Custom-Validation.md = docs\Custom-Validation.md
 		docs\Data-process-Lambda.md = docs\Data-process-Lambda.md
 		docs\Data-Schema.md = docs\Data-Schema.md
 		docs\Define-net-lambda.md = docs\Define-net-lambda.md
+		docs\Docker.md = docs\Docker.md
 		docs\Dynamic-Crud-Controller.md = docs\Dynamic-Crud-Controller.md
 		docs\Dynamic-Lambda-Controller.md = docs\Dynamic-Lambda-Controller.md
+		docs\GraphQL.md = docs\GraphQL.md
+		docs\Home.md = docs\Home.md
 		docs\index.md = docs\index.md
+		docs\Plugin.md = docs\Plugin.md
+		docs\RawCMS.postman_collection.json = docs\RawCMS.postman_collection.json
+		docs\TestBook.md = docs\TestBook.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMSClient", "RawCMSClient\RawCMSClient.csproj", "{2BB731D6-72F7-48FA-8300-5A47E7500102}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.GraphQL", "Plugins\RawCMS.Plugins.GraphQL\RawCMS.Plugins.GraphQL.csproj", "{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Client", "RawCMSClient\RawCMS.Client.csproj", "{6B7F0201-0A70-4C00-A64D-F83B95351CE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,10 +65,14 @@ Global
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2BB731D6-72F7-48FA-8300-5A47E7500102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2BB731D6-72F7-48FA-8300-5A47E7500102}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2BB731D6-72F7-48FA-8300-5A47E7500102}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2BB731D6-72F7-48FA-8300-5A47E7500102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B7F0201-0A70-4C00-A64D-F83B95351CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B7F0201-0A70-4C00-A64D-F83B95351CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B7F0201-0A70-4C00-A64D-F83B95351CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B7F0201-0A70-4C00-A64D-F83B95351CE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +80,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
 		{18F5053A-6F40-4D56-ACAD-03F3C8E08137} = {E88BB72F-C866-4D24-8D1B-DD6B237D376E}
+		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE0F5781-A4C7-4C01-8B4C-4AE7A10908CF}

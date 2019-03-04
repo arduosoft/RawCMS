@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
 using System;
+using System.Collections.Generic;
 
 namespace RawCMS.Library.Lambdas
 {
@@ -10,7 +11,7 @@ namespace RawCMS.Library.Lambdas
 
         public override string Description => "Add audit settings";
 
-        public override void Execute(string collection, ref JObject Item)
+        public override void Execute(string collection, ref JObject Item, ref Dictionary<string, object> dataContext)
         {
             if (!Item.ContainsKey("_id") || string.IsNullOrEmpty(Item["_id"].ToString()))
             {

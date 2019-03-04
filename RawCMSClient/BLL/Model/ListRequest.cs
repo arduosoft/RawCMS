@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RawCMSClient.BLL.Model
+namespace RawCMS.Client.BLL.Model
 {
     public class ListRequest:BaseRequest
     {

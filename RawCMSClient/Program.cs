@@ -1,14 +1,14 @@
 ﻿using CommandLine;
-using RawCMSClient.BLL.Parser;
-using RawCMSClient.BLL.Core;
-using RawCMSClient.BLL.Helper;
-using RawCMSClient.BLL.Model;
+using RawCMS.Client.BLL.Parser;
+using RawCMS.Client.BLL.Core;
+using RawCMS.Client.BLL.Helper;
+using RawCMS.Client.BLL.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace RawCMSClient
+namespace RawCMS.Client
 {
     class Program
     {

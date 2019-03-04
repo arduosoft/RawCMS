@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RawCMS.Library\RawCMS.Library.csproj" />
-    <ProjectReference Include="..\RawCMSClient\RawCMSClient.csproj" />
+    <ProjectReference Include="..\RawCMSClient\RawCMS.Client.csproj" />
   </ItemGroup>
 
 </Project>

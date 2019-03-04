@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace RawCMSClient.BLL.Parser
+namespace RawCMS.Client.BLL.Parser
 {
     [Verb("list", HelpText = "list data from collection: with -id params, get element by id")]
     public class ListOptions

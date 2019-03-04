@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace RawCMSClient.BLL.Parser
+namespace RawCMS.Client.BLL.Parser
 {
     [Verb("login", HelpText = "Login. Required also (-u) username, (-p) password, (-i) client id, (-t) client secret")]
     public class LoginOptions

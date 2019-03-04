@@ -3,7 +3,7 @@
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace RawCMSClient.BLL.Core
+namespace RawCMS.Client.BLL.Core
 {
     public class ClientConfig
     {
