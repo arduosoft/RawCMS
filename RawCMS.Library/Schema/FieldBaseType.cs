@@ -11,6 +11,7 @@ namespace RawCMS.Library.Schema
         String,
         Boolean,
         ID,
-        Date
+        Date,
+        Object
     }
 }

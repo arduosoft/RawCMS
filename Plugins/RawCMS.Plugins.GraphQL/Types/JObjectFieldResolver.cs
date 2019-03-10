@@ -103,11 +103,11 @@ namespace RawCMS.Plugins.GraphQL.Types
                                 ["$regex"] = $"/*{arguments[key]}/*",
                                 ["$options"] = "si"
                             };
-                            dictionary[key.ToPascalCase()] = reg;
+                            dictionary[key.ToPascalCase().Replace("_",".")] = reg;
                         }
                         else
                         {
-                            dictionary[key.ToPascalCase()] = arguments[key];
+                            dictionary[key.ToPascalCase().Replace("_", ".")] = arguments[key];
                         }
                     }
                     query = JsonConvert.SerializeObject(dictionary, jSettings);
