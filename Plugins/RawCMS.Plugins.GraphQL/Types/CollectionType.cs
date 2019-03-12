@@ -8,9 +8,12 @@
 //******************************************************************************
 using GraphQL;
 using GraphQL.Types;
+using Newtonsoft.Json.Linq;
 using RawCMS.Library.Schema;
+using RawCMS.Plugins.GraphQL.Classes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RawCMS.Plugins.GraphQL.Types
 {
@@ -36,7 +39,8 @@ namespace RawCMS.Plugins.GraphQL.Types
                         { FieldBaseType.Float, typeof(float) },
                         { FieldBaseType.ID, typeof(Guid) },
                         { FieldBaseType.Int, typeof(int) },
-                        { FieldBaseType.String, typeof(string) }
+                        { FieldBaseType.String, typeof(string) },
+                        { FieldBaseType.Object, typeof(JObject) }
                     };
                 }
 
@@ -54,26 +58,48 @@ namespace RawCMS.Plugins.GraphQL.Types
             return typeof(string);
         }
 
-        public CollectionType(CollectionSchema collectionSchema)
+        public CollectionType(CollectionSchema collectionSchema, Dictionary<string, CollectionSchema> collections = null, GraphQLService graphQLService = null)
         {
             Name = collectionSchema.CollectionName;
 
             foreach (Field field in collectionSchema.FieldSettings)
             {
-                InitGraphField(field);
+                InitGraphField(field, collections, graphQLService);
             }
         }
 
-        private void InitGraphField(Field field)
+        private void InitGraphField(Field field, Dictionary<string, CollectionSchema> collections = null, GraphQLService graphQLService = null)
         {
-            Type graphQLType = (ResolveFieldMetaType(field.BaseType)).GetGraphTypeFromType(!field.Required);
-            FieldType columnField = Field(
+            Type graphQLType;
+            if (field.BaseType == FieldBaseType.Object)
+            {
+                var relatedObject = collections[field.Type];
+                var relatedCollection = new CollectionType(relatedObject, collections);
+                var listType = new ListGraphType(relatedCollection);
+                graphQLType = relatedCollection.GetType();
+                FieldType columnField = Field(
                 graphQLType,
-                field.Name
-            );
+                relatedObject.CollectionName);
 
-            columnField.Resolver = new NameFieldResolver();
-            FillArgs(field.Name, graphQLType);
+                columnField.Resolver = new NameFieldResolver();
+                columnField.Arguments = new QueryArguments(relatedCollection.TableArgs);
+                foreach(var arg in columnField.Arguments.Where(x=>!(new string[] { "pageNumber", "pageSize", "rawQuery", "_id" }.Contains(x.Name))).ToList())
+                {
+                    arg.Name = $"{relatedObject.CollectionName}_{arg.Name}";
+                    TableArgs.Add(arg);
+                }
+            }
+            else
+            {
+                //graphQLType = (ResolveFieldMetaType(field.BaseType)).GetGraphTypeFromType(!field.Required);
+                graphQLType = (ResolveFieldMetaType(field.BaseType)).GetGraphTypeFromType(true);
+                FieldType columnField = Field(
+                graphQLType,
+                field.Name);
+
+                columnField.Resolver = new NameFieldResolver();
+                FillArgs(field.Name, graphQLType);
+            }
         }
 
         private void FillArgs(string name, Type graphType)

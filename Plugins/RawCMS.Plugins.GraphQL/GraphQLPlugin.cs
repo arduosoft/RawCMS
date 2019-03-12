@@ -41,10 +41,8 @@ namespace RawCMS.Plugins.GraphQL
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
-            //services.AddSingleton<ICollectionMetadata, CollectionMetadataService>();
             services.AddScoped<ISchema, GraphQLSchema>();
             services.AddSingleton<GraphQLQuery>();
-            //services.AddSingleton<GraphQLService>();
             services.AddSingleton(x => graphService);
         }
 
@@ -59,16 +57,6 @@ namespace RawCMS.Plugins.GraphQL
             graphService.SetAppEngine(appEngine);
 
             base.Configure(app, appEngine);
-
-            app.UseMiddleware<GraphQLMiddleware>();
-            //app.UseMiddleware<GraphQLMiddleware>(new GraphQLSettings
-            //{
-            //    BuildUserContext = ctx => new GraphQLUserContext
-            //    {
-            //        User = ctx.User
-            //    },
-            //    EnableMetrics = this.config.EnableMetrics
-            //});
 
             app.UseGraphiQl(config.GraphiQLPath, config.Path);
         }
