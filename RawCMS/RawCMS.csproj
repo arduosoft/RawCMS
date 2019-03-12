@@ -10,12 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Lambdas\AuditLambda.cs" />
+    <Compile Remove="Controllers\**" />
+    <Compile Remove="Middlewares\**" />
+    <Content Remove="Controllers\**" />
+    <Content Remove="Middlewares\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="Middlewares\**" />
+    <None Remove="Controllers\**" />
+    <None Remove="Middlewares\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Middlewares\" />
+    <Compile Remove="Lambdas\AuditLambda.cs" />
   </ItemGroup>
 
   <ItemGroup>
