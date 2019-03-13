@@ -39,10 +39,16 @@ namespace RawCMS.Plugins.Core
 
             Logger.LogInformation(configuration["MongoSettings:ConnectionString"]);
 
+
+            var envConnectionString = Environment.GetEnvironmentVariable("MongoSettings:ConnectionString") ?? Environment.GetEnvironmentVariable("MongoSettingsConnectionString") ?? configuration["MongoSettings:ConnectionString"];
+            var envDBName = Environment.GetEnvironmentVariable("MongoSettings:DBName") ?? Environment.GetEnvironmentVariable("MongoSettingsDBName")?? configuration["MongoSettings:DBName"];
+           
+
+
             MongoSettings instance = new MongoSettings
             {
-                ConnectionString = configuration["MongoSettings:ConnectionString"],
-                DBName = configuration["MongoSettings:DBName"]
+                ConnectionString = envConnectionString,
+                DBName = envDBName
             };
 
             IOptions<MongoSettings> settingsOptions = Options.Create<MongoSettings>(instance);
