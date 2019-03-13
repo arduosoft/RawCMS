@@ -28,7 +28,7 @@ Actually RawCMS is in progress, but the target is to be:
 Actually you have 3 options to start using RawCMS:
 - run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhu page](https://hub.docker.com/r/arduosoft/rawcms-preview) to get more options like docker compose file.
 - download the **zip and deploy** a a regular asp.net core application from [github releases](https://github.com/arduosoft/RawCMS/releases)
-- **fork** the repository and customize (the deplpoy as you want)
+- **fork** the repository and customize (the deploy as you want)
 
 ## Tecnical documentation
 You can find all we have on [Github wiki](https://github.com/arduosoft/RawCMS/wiki). There is user documentation for user, developer and contributors.
