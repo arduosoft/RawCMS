@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-alpine
 WORKDIR /app
 COPY  dist .
 #ENTRYPOINT ["dotnet", "RawCMS.dll"]
