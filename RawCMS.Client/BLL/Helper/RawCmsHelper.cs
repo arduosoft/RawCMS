@@ -14,17 +14,66 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.NetworkInformation;
+using System.Text;
 
 namespace RawCMS.Client.BLL.Helper
 {
     public class RawCmsHelper
     {
         private static Runner log = LogProvider.Runner;
-        private static readonly string baseUrl = ClientConfig.GetValue<string>("BaseUrl");
+       
+
+        public static bool Ping(string url)
+        {
+            // TODO fix ping
+            return true;
+
+            //Ping pingSender = new Ping();
+            //PingOptions options = new PingOptions();
+
+            //// Use the default Ttl value which is 128,
+            //// but change the fragmentation behavior.
+            //options.DontFragment = true;
+
+            //// Create a buffer of 32 bytes of data to be transmitted.
+            //string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            //byte[] buffer = Encoding.ASCII.GetBytes(data);
+
+            //int timeout = 120;
+
+            //try
+            //{
+            //    PingReply reply = pingSender.Send(url, timeout);
+
+            //    if (reply.Status == IPStatus.Success)
+            //    {
+            //        log.Debug($"Address: {reply.Address.ToString()}");
+            //        log.Debug($"RoundTrip time: {reply.RoundtripTime}");
+            //        log.Debug($"Time to live: {reply.Options.Ttl}");
+            //        log.Debug($"Don't fragment: {reply.Options.DontFragment}");
+            //        log.Debug($"Buffer size: { reply.Buffer.Length}");
+
+            //    }
+            //    else
+            //    {
+            //        log.Error($"unable to ping host:\n\t{url}");
+            //        return false;
+            //    }
+            //}
+            //catch(Exception e )
+            //{
+            //    log.Error($"error on ping url: {url}.\nerror: {e.Message}");
+            //    return false;
+            //}
+
+            //return true;
+
+        }
 
         public static IRestResponse GetData(ListRequest req)
         {
-            string url = $"{baseUrl}/api/CRUD/{req.Collection}";
+            string url = $"{req.Url}/api/CRUD/{req.Collection}";
 
             log.Debug($"Service url: {url}");
 
@@ -52,7 +101,7 @@ namespace RawCMS.Client.BLL.Helper
 
         public static IRestResponse CreateElement(CreateRequest req)
         {
-            string url = $"{baseUrl}/api/CRUD/{req.Collection}";
+            string url = $"{req.Url}/api/CRUD/{req.Collection}";
 
             log.Debug($"Server URL: {url}");
             RestClient client = new RestClient(url);

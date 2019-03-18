@@ -130,11 +130,11 @@ namespace RawCMS.Client.BLL.Core
 
         internal void _logDataCall(string content, string direction)
         {
-            string ret = string.Empty;
+            string ret = content;
 
-            if (string.IsNullOrEmpty(content))
+            if (string.IsNullOrEmpty(ret))
             {
-                Debug("Request has no data.");
+                Debug($"{direction} has no data.");
                 return;
             }
 

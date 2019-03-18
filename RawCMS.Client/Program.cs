@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace RawCMS.Client
 {
@@ -83,7 +84,9 @@ namespace RawCMS.Client
             log.SetPretty(Pretty);
 
             // check token befare action..
-            string token = TokenHelper.getTokenFromFile();
+            ConfigFile config = ConfigFile.Load();
+
+            string token = config.Token;
 
             if (string.IsNullOrEmpty(token))
             {
@@ -150,13 +153,13 @@ namespace RawCMS.Client
                 return 0;
             }
 
-            elaborateQueue(listFile, token, Pretty);
+            elaborateQueue(listFile, config, Pretty);
 
             log.Info($"Processing file complete.");
             return 0;
         }
 
-        private static void elaborateQueue(Dictionary<string, List<string>> listFile, string token, bool pretty)
+        private static void elaborateQueue(Dictionary<string, List<string>> listFile, ConfigFile config, bool pretty)
         {
             int totalfile = listFile.Sum(x => x.Value.Count);
             int partialOfTotal = 0;
@@ -177,7 +180,8 @@ namespace RawCMS.Client
                     {
                         Collection = c.Key,
                         Data = contentFile,
-                        Token = token
+                        Token = config.Token,
+                        Url = config.ServerUrl
                     });
 
                     log.Debug($"RawCMS response code: {responseRawCMS.StatusCode}");
@@ -230,7 +234,9 @@ namespace RawCMS.Client
             string collection = opts.Collection;
 
             // check token befare action..
-            string token = TokenHelper.getTokenFromFile();
+            ConfigFile config = ConfigFile.Load();
+
+            string token = config.Token;
 
             if (string.IsNullOrEmpty(token))
             {
@@ -247,6 +253,7 @@ namespace RawCMS.Client
                 PageNumber = PageNumber < 1 ? 1 : PageNumber,
                 PageSize = PageSize < 1 ? 10 : PageSize,
                 RawQuery = RawQuery,
+                Url = config.ServerUrl
             };
 
             if (!string.IsNullOrEmpty(id))
@@ -330,9 +337,22 @@ namespace RawCMS.Client
                 User = opts.Username
             };
 
-            TokenHelper.SaveTokenToFile(filePath, cf);
+            cf.Save(filePath);
 
-            log.Info($"set enviroinment configuration: (copy, paste and hit return in console):\nSET RAWCMSCONFIG={filePath}");
+            var win  = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            var lin = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+            var osx = System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+            string SetEnv = "SET";
+            if (lin || osx)
+            {
+                SetEnv = "export";
+            }
+
+            var os = System.Environment.OSVersion.Platform;
+            log.Info($"os: {os.ToString()}");
+
+            log.Info($"set enviroinment configuration: (copy, paste and hit return in console):\n\n{SetEnv} RAWCMSCONFIG={filePath}\n");
 
             return 0;
         }
