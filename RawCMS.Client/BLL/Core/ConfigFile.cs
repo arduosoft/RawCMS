@@ -46,8 +46,7 @@ namespace RawCMS.Client.BLL.Core
             log.Debug("get config from file...");
 
             string filePath = Environment.GetEnvironmentVariable("RAWCMSCONFIG", EnvironmentVariableTarget.Process);
-            filePath = "/Users/dengo/RawCMS.bob.config";
-
+           
             log.Debug($"Config file: {filePath}");
 
             if (string.IsNullOrEmpty(filePath))
