@@ -41,7 +41,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.GraphQL", "Plugins\RawCMS.Plugins.GraphQL\RawCMS.Plugins.GraphQL.csproj", "{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCMS.Client", "RawCMS.Client\RawCMS.Client.csproj", "{4F469A2E-821C-4604-B686-040E165082D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Client", "RawCMS.Client\RawCMS.Client.csproj", "{4F469A2E-821C-4604-B686-040E165082D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCMS.Library.Shared", "RawCMS.Library.Shared\RawCMS.Library.Shared.csproj", "{324BAB71-7502-457E-A5DC-59B6BFA19D1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{4F469A2E-821C-4604-B686-040E165082D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F469A2E-821C-4604-B686-040E165082D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F469A2E-821C-4604-B686-040E165082D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{324BAB71-7502-457E-A5DC-59B6BFA19D1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{324BAB71-7502-457E-A5DC-59B6BFA19D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{324BAB71-7502-457E-A5DC-59B6BFA19D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{324BAB71-7502-457E-A5DC-59B6BFA19D1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
