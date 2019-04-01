@@ -8,9 +8,9 @@
 //******************************************************************************
 using CommandLine;
 
-namespace RawCMS.Client.BLL.Parser
+namespace RawCMS.Client.BLL.CommandLineParser
 {
-    [Verb("list", HelpText = "list data from collection: with -id params, get element by id")]
+    [Verb("list", HelpText = "List data from collection. Type list for more help.")]
     public class ListOptions
     {
         [Verb("users", HelpText = "users collections")]

@@ -31,4 +31,8 @@
     <PackageReference Include="RestSharp" Version="106.5.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BLL\Services\" />
+    <Folder Include="BLL\Interfaces\" />
+  </ItemGroup>
 </Project>
