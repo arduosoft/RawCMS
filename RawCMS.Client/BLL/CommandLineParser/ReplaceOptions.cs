@@ -8,9 +8,9 @@
 //******************************************************************************
 using CommandLine;
 
-namespace RawCMS.Client.BLL.Parser
+namespace RawCMS.Client.BLL.CommandLineParser
 {
-    [Verb("replace", HelpText = "replace data inside collection")]
+    [Verb("replace", HelpText = "Replace data inside collection. Type replace for more help.")]
     public class ReplaceOptions
     {
         [Option('v', "verbose", Default = false, HelpText = "Prints all messages to standard output.")]

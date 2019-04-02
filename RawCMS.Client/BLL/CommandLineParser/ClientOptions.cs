@@ -8,9 +8,9 @@
 //******************************************************************************
 using CommandLine;
 
-namespace RawCMS.Client.BLL.Parser
+namespace RawCMS.Client.BLL.CommandLineParser
 {
-    [Verb("client", HelpText = "set client configuration")]
+    [Verb("client", HelpText = "Set client configuration. Type client form more help.")]
     public class ClientOptions
     {
         //[Option('s', "syncronize", Required = false,  HelpText = "File path to synchronize the db.")]

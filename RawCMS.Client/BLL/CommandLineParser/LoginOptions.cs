@@ -8,9 +8,9 @@
 //******************************************************************************
 using CommandLine;
 
-namespace RawCMS.Client.BLL.Parser
+namespace RawCMS.Client.BLL.CommandLineParser
 {
-    [Verb("login", HelpText = "Login. Required also (-u) username, (-p) password, (-i) client id, (-t) client secret")]
+    [Verb("login", HelpText = "Perform login. Type login for more help.")]
     public class LoginOptions
     {
         [Option('v', "verbose", Default = false, HelpText = "Prints all messages to standard output.")]
