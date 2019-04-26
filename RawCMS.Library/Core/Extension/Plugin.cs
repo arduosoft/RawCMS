@@ -28,7 +28,7 @@ namespace RawCMS.Library.Core.Extension
         private AppEngine engine;
         private ILogger logger;
 
-        public void SetAppEngine(AppEngine manager)
+        public virtual void SetAppEngine(AppEngine manager)
         {
             engine = manager;
             Logger = Engine.GetLogger(this);

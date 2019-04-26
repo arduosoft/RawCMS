@@ -31,6 +31,18 @@ namespace RawCMS.Plugins.Core
             Logger.LogInformation("Core plugin loaded");
         }
 
+        
+        public override void OnApplicationStart()
+        {
+
+            base.OnApplicationStart();
+        }
+
+        public override void SetAppEngine(AppEngine manager)
+        {
+            base.SetAppEngine(manager);
+        }
+
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
