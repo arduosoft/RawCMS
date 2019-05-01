@@ -36,7 +36,6 @@ namespace RawCMS.Plugins.GraphQL
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            base.ConfigureServices(services);
 
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
@@ -56,7 +55,6 @@ namespace RawCMS.Plugins.GraphQL
             graphService.SetSettings(config);
             graphService.SetAppEngine(appEngine);
 
-            base.Configure(app, appEngine);
 
             app.UseGraphiQl(config.GraphiQLPath, config.Path);
         }
@@ -65,7 +63,6 @@ namespace RawCMS.Plugins.GraphQL
 
         public override void Setup(IConfigurationRoot configuration)
         {
-            base.Setup(configuration);
             this.configuration = configuration;
         }
 

@@ -97,10 +97,7 @@ namespace RawCMS.Library.Core
             RecoursiveAddAssembly(Assembly.GetEntryAssembly(), assembly);
             RecoursiveAddAssembly(Assembly.GetCallingAssembly(), assembly);
             RecoursiveAddAssembly(Assembly.GetExecutingAssembly(), assembly);
-
-
-
-
+            assembly = assembly.Distinct().ToList();
 
             List<Type> typesToAdd = new List<Type>();
             foreach (var ass in assembly)
@@ -117,9 +114,7 @@ namespace RawCMS.Library.Core
                 typesToAdd.AddRange(types);
             }
 
-            typesToAdd.AddRange(new Type[] { typeof(IConfigurationRoot), typeof(IApplicationBuilder)});
-
-
+            typesToAdd = typesToAdd.Distinct().ToList();
             // create plugin loaders
             var pluginsDir = pluginFolder ?? Path.Combine(AppContext.BaseDirectory, "plugins");
 

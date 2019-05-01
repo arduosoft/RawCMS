@@ -39,7 +39,6 @@ namespace RawCMS.Plugins.Core
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            base.ConfigureServices(services);
 
             services.Configure<ConfigurationOptions>(configuration);
 
@@ -123,7 +122,6 @@ namespace RawCMS.Plugins.Core
 
         public override void Setup(IConfigurationRoot configuration)
         {
-            base.Setup(configuration);
             this.configuration = configuration;
         }
 
@@ -136,8 +134,6 @@ namespace RawCMS.Plugins.Core
             userStore.SetCRUDService(this.appEngine.Service);
             userStore.SetLogger(this.appEngine.GetLogger(this));
             userStore.InitData().Wait();
-
-            base.Configure(app, appEngine);
 
             //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 

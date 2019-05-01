@@ -38,14 +38,14 @@ namespace RawCMS.Plugins.Core
             base.OnApplicationStart();
         }
 
-        public override void SetAppEngine(AppEngine manager)
-        {
-            base.SetAppEngine(manager);
-        }
+        //public override void SetAppEngine(AppEngine manager)
+        //{
+        //    base.SetAppEngine(manager);
+        //}
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            base.ConfigureServices(services);
+            
 
             services.AddOptions();
 
@@ -120,7 +120,7 @@ namespace RawCMS.Plugins.Core
 
         public override void Configure(IApplicationBuilder app, AppEngine appEngine)
         {
-            base.Configure(app, appEngine);
+            
         }
 
         private IConfigurationRoot configuration;
