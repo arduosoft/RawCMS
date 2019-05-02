@@ -5,6 +5,10 @@
     <IsPlugin>true</IsPlugin>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>G:\projects\RawCMS\RawCMS\Plugins\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="GraphiQL" Version="1.2.0" />
     <PackageReference Include="GraphQL" Version="2.4.0" />
