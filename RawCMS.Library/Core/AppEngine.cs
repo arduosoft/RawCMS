@@ -69,12 +69,13 @@ namespace RawCMS.Library.Core
         //}
 
         string pluginFolder = null;
-        public AppEngine(ILoggerFactory loggerFactory, string pluginFolder)
+        public AppEngine(ILoggerFactory loggerFactory, Func<string,string> pluginPathLocator)
         {
+            
             _logger = loggerFactory.CreateLogger(typeof(AppEngine));
             this.loggerFactory = loggerFactory;
 
-            this.pluginFolder = pluginFolder;
+            this.pluginFolder = pluginPathLocator.Invoke(AppContext.BaseDirectory);
 
             LoadAllAssembly();
             LoadPlugins();

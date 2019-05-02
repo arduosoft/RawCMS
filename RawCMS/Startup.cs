@@ -47,7 +47,18 @@ namespace RawCMS
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
 
-            appEngine = new AppEngine(loggerFactory, Directory.GetDirectories(AppContext.BaseDirectory + "..\\..\\..\\..\\").Single(x => x.EndsWith("Plugins")));//Hardcoded for dev
+            appEngine = new AppEngine(loggerFactory,basedir=> {
+                var pluginPath = Configuration.GetValue<string>("PluginPath");
+
+                var folder= basedir + pluginPath;
+                if (Path.IsPathRooted(pluginPath))
+                {
+                    folder = pluginPath;
+                }
+
+                return Directory.GetDirectories(folder).FirstOrDefault();
+
+            } );//Hardcoded for dev
             logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
         }
 

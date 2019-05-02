@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>G:\projects\RawCMS\RawCMS\Plugins\</OutputPath>
+    <OutputPath>..\..\RawCMS\Plugins\RawCMS.Plugins.Core</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
