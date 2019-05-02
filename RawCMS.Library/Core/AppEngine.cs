@@ -94,9 +94,9 @@ namespace RawCMS.Library.Core
             List<Assembly> assembly = new List<Assembly>();
             assembly.Add(typeof(AppEngine).Assembly);
             RecoursiveAddAssembly(typeof(AppEngine).Assembly,assembly);
-            RecoursiveAddAssembly(Assembly.GetEntryAssembly(), assembly);
-            RecoursiveAddAssembly(Assembly.GetCallingAssembly(), assembly);
-            RecoursiveAddAssembly(Assembly.GetExecutingAssembly(), assembly);
+            //RecoursiveAddAssembly(Assembly.GetEntryAssembly(), assembly);
+            //RecoursiveAddAssembly(Assembly.GetCallingAssembly(), assembly);
+            //RecoursiveAddAssembly(Assembly.GetExecutingAssembly(), assembly);
             assembly = assembly.Distinct().ToList();
 
             List<Type> typesToAdd = new List<Type>();

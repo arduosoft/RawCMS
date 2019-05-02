@@ -75,6 +75,7 @@ namespace RawCMS
 
             app.UseMvc();
 
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -102,7 +103,14 @@ namespace RawCMS
                 x.Setup(Configuration);
             });
 
-            services.AddMvc();
+            var builder=services.AddMvc();
+
+
+
+            appEngine.Plugins.ForEach(x =>
+               builder
+                .AddApplicationPart(x.GetType().Assembly)    
+               );
 
             services.AddSwaggerGen(c =>
             {
@@ -111,7 +119,8 @@ namespace RawCMS
                 c.IgnoreObsoleteProperties();
                 c.IgnoreObsoleteActions();
                 c.DescribeAllEnumsAsStrings();
-            });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+        });
 
             //Invoke appEngine
 
