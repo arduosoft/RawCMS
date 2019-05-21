@@ -25,8 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GraphiQL" Version="1.2.0" />
-    <PackageReference Include="GraphQL" Version="2.4.0" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="0.2.4" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />
@@ -60,7 +58,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RawCMS.Library.Shared\RawCMS.Library.Shared.csproj" />
     <ProjectReference Include="..\RawCMS.Library\RawCMS.Library.csproj" />
   </ItemGroup>
 

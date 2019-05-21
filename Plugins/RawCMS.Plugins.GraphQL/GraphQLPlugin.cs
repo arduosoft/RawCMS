@@ -82,5 +82,9 @@ namespace RawCMS.Plugins.GraphQL
         {
             this.config = config;
         }
+
+        public override void ConfigureMvc(IMvcBuilder builder)
+        {
+        }
     }
 }

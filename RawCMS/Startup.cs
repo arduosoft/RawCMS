@@ -16,8 +16,10 @@ using NLog.Web;
 using RawCMS.Library.Core;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace RawCMS
 {
@@ -56,7 +58,7 @@ namespace RawCMS
                     folder = pluginPath;
                 }
 
-                return Directory.GetDirectories(folder).FirstOrDefault();
+                return Path.GetFullPath(folder);//Directory.GetDirectories(folder).FirstOrDefault();
 
             } );//Hardcoded for dev
             logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
@@ -108,21 +110,22 @@ namespace RawCMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var ass = new List<Assembly>();
+            var builder = services.AddMvc();
+            
             appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
             {
-
                 x.Setup(Configuration);
+                x.ConfigureMvc(builder);
+                ass.Add(x.GetType().Assembly);
             });
 
-            var builder=services.AddMvc();
+            foreach (var a in ass.Distinct())
+            {
+                builder.AddApplicationPart(a).AddControllersAsServices();
+            }
 
-
-
-            appEngine.Plugins.ForEach(x =>
-               builder
-                .AddApplicationPart(x.GetType().Assembly)    
-               );
-
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Web API", Version = "v1" });

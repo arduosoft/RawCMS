@@ -129,5 +129,9 @@ namespace RawCMS.Plugins.Core
         {
             this.configuration = configuration;
         }
+
+        public override void ConfigureMvc(IMvcBuilder builder)
+        {
+        }
     }
 }

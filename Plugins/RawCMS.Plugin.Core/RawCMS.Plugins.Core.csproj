@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GraphQL" Version="2.4.0" />
     <PackageReference Include="IdentityServer4" Version="2.2.0" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.1.0" />
@@ -55,7 +54,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RawCMS.Library.Shared\RawCMS.Library.Shared.csproj" />
     <ProjectReference Include="..\..\RawCMS.Library\RawCMS.Library.csproj" />
   </ItemGroup>
 

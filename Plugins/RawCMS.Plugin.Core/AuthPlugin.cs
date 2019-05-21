@@ -112,10 +112,7 @@ namespace RawCMS.Plugins.Core
                  });
             }
 
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new RawAuthorizationAttribute(config.ApiKey, config.AdminApiKey));
-            });
+           
         }
 
         private IConfigurationRoot configuration;
@@ -160,6 +157,14 @@ namespace RawCMS.Plugins.Core
         public void SetActualConfig(AuthConfig config)
         {
             this.config = config;
+        }
+
+        public override void ConfigureMvc(IMvcBuilder builder)
+        {
+            builder.AddMvcOptions(options =>
+            {
+                options.Filters.Add(new RawAuthorizationAttribute(config.ApiKey, config.AdminApiKey));
+            });
         }
     }
 }

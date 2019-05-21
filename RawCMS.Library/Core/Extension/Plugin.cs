@@ -64,6 +64,12 @@ namespace RawCMS.Library.Core.Extension
         /// </summary>
         /// <param name="configuration"></param>
         public abstract void Setup(IConfigurationRoot configuration);
+
+        /// <summary>
+        /// this method allow mvc configuration
+        /// </summary>
+        /// <param name="builder"></param>
+        public abstract void ConfigureMvc(IMvcBuilder builder);
        
     }
 }

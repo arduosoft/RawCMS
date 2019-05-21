@@ -77,7 +77,6 @@ namespace RawCMS.Library.Core
 
             this.pluginFolder = pluginPathLocator.Invoke(AppContext.BaseDirectory);
 
-            LoadAllAssembly();
             LoadPlugins();
         }
 
@@ -95,9 +94,6 @@ namespace RawCMS.Library.Core
             List<Assembly> assembly = new List<Assembly>();
             assembly.Add(typeof(AppEngine).Assembly);
             RecoursiveAddAssembly(typeof(AppEngine).Assembly,assembly);
-            //RecoursiveAddAssembly(Assembly.GetEntryAssembly(), assembly);
-            //RecoursiveAddAssembly(Assembly.GetCallingAssembly(), assembly);
-            //RecoursiveAddAssembly(Assembly.GetExecutingAssembly(), assembly);
             assembly = assembly.Distinct().ToList();
 
             List<Type> typesToAdd = new List<Type>();
@@ -195,38 +191,6 @@ namespace RawCMS.Library.Core
         private void LoadLambdas()
         {
             DiscoverLambdasInBundle();
-        }
-
-        public List<string> GetAllAssembly()
-        {
-            _logger.LogDebug("Get all assembly");
-            List<string> dlls = new List<string>();
-            // dlls.AddRange(Directory.GetFiles(".\\bin", "*.dll", SearchOption.AllDirectories));
-
-            if (_logger.IsEnabled(LogLevel.Debug))
-            {
-                dlls.ForEach(x =>
-                {
-                    _logger.LogDebug("Plugin enabled {0}", x);
-                });
-            }
-            return dlls;
-        }
-
-        public void LoadAllAssembly()
-        {
-            //foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
-            //{
-            //    foreach (var method in type.GetMethods(BindingFlags.DeclaredOnly |
-            //                        BindingFlags.NonPublic |
-            //                        BindingFlags.Public | BindingFlags.Instance |
-            //                        BindingFlags.Static))
-            //    {
-            //        System.Runtime.CompilerServices.RuntimeHelpers.PrepareMethod(method.MethodHandle);
-            //    }
-            //}
-
-            GetAllAssembly().ForEach(x => Assembly.LoadFrom(x));
         }
 
         public T GetInstance<T>(params object[] args) where T : class

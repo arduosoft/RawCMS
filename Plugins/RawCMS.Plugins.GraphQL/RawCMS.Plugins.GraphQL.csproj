@@ -14,11 +14,10 @@
     <PackageReference Include="GraphQL" Version="2.4.0" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="0.2.4" />
     <PackageReference Include="McMaster.NETCore.Plugins.Sdk" Version="0.2.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RawCMS.Library.Shared\RawCMS.Library.Shared.csproj" />
     <ProjectReference Include="..\..\RawCMS.Library\RawCMS.Library.csproj" />
     <ProjectReference Include="..\RawCMS.Plugin.Core\RawCMS.Plugins.Core.csproj" />
   </ItemGroup>
