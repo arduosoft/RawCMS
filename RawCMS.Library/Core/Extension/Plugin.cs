@@ -48,28 +48,28 @@ namespace RawCMS.Library.Core.Extension
         /// this allow plugin to register its own services
         /// </summary>
         /// <param name="services"></param>
-        public virtual void ConfigureServices(IServiceCollection services)
-        {
-            //DO NOTHING
-        }
+        public abstract void ConfigureServices(IServiceCollection services);
+
 
         /// <summary>
         /// this allow the plugin to interact with appengine and application builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="appEngine"></param>
-        public virtual void Configure(IApplicationBuilder app, AppEngine appEngine)
-        {
-            //DO NOTHING
-        }
+        public abstract void Configure(IApplicationBuilder app, AppEngine appEngine);
+
 
         /// <summary>
         /// this metod receive configuration to allow plugin configure itself
         /// </summary>
         /// <param name="configuration"></param>
-        public virtual void Setup(IConfigurationRoot configuration)
-        {
-            //DO NOTHING
-        }
+        public abstract void Setup(IConfigurationRoot configuration);
+
+        /// <summary>
+        /// this method allow mvc configuration
+        /// </summary>
+        /// <param name="builder"></param>
+        public abstract void ConfigureMvc(IMvcBuilder builder);
+       
     }
 }
