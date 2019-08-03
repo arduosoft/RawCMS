@@ -31,9 +31,21 @@ namespace RawCMS.Plugins.Core
             Logger.LogInformation("Core plugin loaded");
         }
 
+        
+        public override void OnApplicationStart()
+        {
+
+            base.OnApplicationStart();
+        }
+
+        //public override void SetAppEngine(AppEngine manager)
+        //{
+        //    base.SetAppEngine(manager);
+        //}
+
         public override void ConfigureServices(IServiceCollection services)
         {
-            base.ConfigureServices(services);
+            
 
             services.AddOptions();
 
@@ -108,7 +120,7 @@ namespace RawCMS.Plugins.Core
 
         public override void Configure(IApplicationBuilder app, AppEngine appEngine)
         {
-            base.Configure(app, appEngine);
+            
         }
 
         private IConfigurationRoot configuration;
@@ -116,6 +128,10 @@ namespace RawCMS.Plugins.Core
         public override void Setup(IConfigurationRoot configuration)
         {
             this.configuration = configuration;
+        }
+
+        public override void ConfigureMvc(IMvcBuilder builder)
+        {
         }
     }
 }

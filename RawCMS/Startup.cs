@@ -14,21 +14,23 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using RawCMS.Library.Core;
-using RawCMS.Plugins.Core;
-using RawCMS.Plugins.GraphQL;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace RawCMS
 {
     public class Startup
     {
-        private readonly CorePlugin cp = new CorePlugin();
+        //private readonly CorePlugin cp = new CorePlugin();
 
-        //TODO: this forces module reload. Fix it to avoid this manual step.
-        private readonly AuthPlugin dd = new AuthPlugin();
+        ////TODO: this forces module reload. Fix it to avoid this manual step.
+        //private readonly AuthPlugin dd = new AuthPlugin();
 
-        private readonly GraphQLPlugin df = new GraphQLPlugin();
+        //private readonly GraphQLPlugin df = new GraphQLPlugin();
 
         
 
@@ -49,6 +51,18 @@ namespace RawCMS
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
 
+            appEngine = new AppEngine(loggerFactory,basedir=> {
+                var pluginPath = Configuration.GetValue<string>("PluginPath");
+
+                var folder= basedir + pluginPath;
+                if (Path.IsPathRooted(pluginPath))
+                {
+                    folder = pluginPath;
+                }
+
+                return Path.GetFullPath(folder);//Directory.GetDirectories(folder).FirstOrDefault();
+
+            } );//Hardcoded for dev
             logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
         }
 
@@ -57,6 +71,7 @@ namespace RawCMS
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            
             // loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
@@ -74,6 +89,7 @@ namespace RawCMS
             });
 
             app.UseMvc();
+
 
             app.UseMvc(routes =>
             {
@@ -96,15 +112,22 @@ namespace RawCMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            appEngine = new AppEngine(loggerFactory);
-
+            var ass = new List<Assembly>();
+            var builder = services.AddMvc();
+            
             appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
             {
                 x.Setup(Configuration);
+                x.ConfigureMvc(builder);
+                ass.Add(x.GetType().Assembly);
             });
 
-            services.AddMvc();
+            foreach (var a in ass.Distinct())
+            {
+                builder.AddApplicationPart(a).AddControllersAsServices();
+            }
 
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Web API", Version = "v1" });
@@ -112,7 +135,8 @@ namespace RawCMS
                 c.IgnoreObsoleteProperties();
                 c.IgnoreObsoleteActions();
                 c.DescribeAllEnumsAsStrings();
-            });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+        });
 
             //Invoke appEngine
 
