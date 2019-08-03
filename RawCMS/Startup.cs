@@ -30,6 +30,8 @@ namespace RawCMS
 
         private readonly GraphQLPlugin df = new GraphQLPlugin();
 
+        
+
         private readonly ILogger logger;
         private readonly ILoggerFactory loggerFactory;
         private AppEngine appEngine;
