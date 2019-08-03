@@ -25,14 +25,7 @@ namespace RawCMS
 {
     public class Startup
     {
-        //private readonly CorePlugin cp = new CorePlugin();
-
-        ////TODO: this forces module reload. Fix it to avoid this manual step.
-        //private readonly AuthPlugin dd = new AuthPlugin();
-
-        //private readonly GraphQLPlugin df = new GraphQLPlugin();
-
-        
+               
 
         private readonly ILogger logger;
         private readonly ILoggerFactory loggerFactory;

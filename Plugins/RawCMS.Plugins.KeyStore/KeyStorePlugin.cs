@@ -37,7 +37,7 @@ namespace RawCMS.Plugins.GraphQL
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            base.ConfigureServices(services);
+          
 
             services.AddSingleton<KeyStoreService, KeyStoreService>();
         }
@@ -48,7 +48,6 @@ namespace RawCMS.Plugins.GraphQL
         {
             this.appEngine = appEngine;
 
-            base.Configure(app, appEngine);
             
         }
 
@@ -56,7 +55,7 @@ namespace RawCMS.Plugins.GraphQL
 
         public override void Setup(IConfigurationRoot configuration)
         {
-            base.Setup(configuration);
+        
             this.configuration = configuration;
         }
 
@@ -73,6 +72,11 @@ namespace RawCMS.Plugins.GraphQL
         public void SetActualConfig(KeyStoreSettings config)
         {
             this.config = config;
+        }
+
+        public override void ConfigureMvc(IMvcBuilder builder)
+        {
+          
         }
     }
 }

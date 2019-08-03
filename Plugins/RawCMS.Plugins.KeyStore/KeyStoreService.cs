@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using RawCMS.Plugins.KeyStore.Model;
 
 namespace RawCMS.Plugins.KeyStore
 {
     public class KeyStoreService
     {
-        Dictionary<string, object> db = new Dictionary<string, object>();
+       static Dictionary<string, object> db = new Dictionary<string, object>();
 
         public object Get(string key)
         {
@@ -14,9 +15,11 @@ namespace RawCMS.Plugins.KeyStore
         }
 
 
-        public void Set(string key, object value)
+       
+
+        internal void Set(KeyStoreInsertModel insert)
         {
-            db[key] = value;
+            db[insert.Key] = insert.Value;
         }
     }
 }
