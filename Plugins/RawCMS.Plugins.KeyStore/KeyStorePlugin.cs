@@ -16,7 +16,7 @@ using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.KeyStore;
 
-namespace RawCMS.Plugins.GraphQL
+namespace RawCMS.Plugins.KeyStore
 {
 
     public class KeyStoreSettings
@@ -33,7 +33,7 @@ namespace RawCMS.Plugins.GraphQL
             Logger.LogInformation("KeyStore plugin loaded");
         }
 
-        private KeyStoreService graphService = new KeyStoreService();
+        private KeyStoreService keyStoreService = new KeyStoreService();
 
         public override void ConfigureServices(IServiceCollection services)
         {
