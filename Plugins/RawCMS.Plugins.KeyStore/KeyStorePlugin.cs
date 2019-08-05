@@ -13,16 +13,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
-using RawCMS.Library.Service;
-using RawCMS.Plugins.KeyStore;
 
 namespace RawCMS.Plugins.KeyStore
 {
-
     public class KeyStoreSettings
     {
     }
-        public class KeyStorePlugin : RawCMS.Library.Core.Extension.Plugin, IConfigurablePlugin<KeyStoreSettings>
+
+    public class KeyStorePlugin : RawCMS.Library.Core.Extension.Plugin, IConfigurablePlugin<KeyStoreSettings>
     {
         public override string Name => "KeyStore";
 
@@ -37,8 +35,6 @@ namespace RawCMS.Plugins.KeyStore
 
         public override void ConfigureServices(IServiceCollection services)
         {
-          
-
             services.AddSingleton<KeyStoreService, KeyStoreService>();
         }
 
@@ -47,15 +43,12 @@ namespace RawCMS.Plugins.KeyStore
         public override void Configure(IApplicationBuilder app, AppEngine appEngine)
         {
             this.appEngine = appEngine;
-
-            
         }
 
         private IConfigurationRoot configuration;
 
         public override void Setup(IConfigurationRoot configuration)
         {
-        
             this.configuration = configuration;
         }
 
@@ -63,7 +56,6 @@ namespace RawCMS.Plugins.KeyStore
         {
             return new KeyStoreSettings
             {
-               
             };
         }
 
@@ -76,7 +68,6 @@ namespace RawCMS.Plugins.KeyStore
 
         public override void ConfigureMvc(IMvcBuilder builder)
         {
-          
         }
     }
 }
