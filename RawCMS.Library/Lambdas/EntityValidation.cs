@@ -22,6 +22,8 @@ namespace RawCMS.Library.Lambdas
 
         public override string Description => "Provide generic entity validation, based on configuration";
 
+        public static Dictionary<string, CollectionSchema> Entities { get => entities; set => entities = value; }
+
         private static Dictionary<string, CollectionSchema> entities = new Dictionary<string, CollectionSchema>();
         private static List<FieldTypeValidator> typeValidators = new List<FieldTypeValidator>();
 
@@ -67,7 +69,7 @@ namespace RawCMS.Library.Lambdas
                         schema.FieldSettings.Add(field);
                     }
 
-                    entities[schema.CollectionName] = schema;
+                    Entities[schema.CollectionName] = schema;
                 }
             }
         }
@@ -75,7 +77,7 @@ namespace RawCMS.Library.Lambdas
         public override List<Error> Validate(JObject input, string collection)
         {
             List<Error> errors = new List<Error>();
-            if (entities.TryGetValue(collection, out CollectionSchema settings))
+            if (Entities.TryGetValue(collection, out CollectionSchema settings))
             {
                 //do validation!
 
@@ -126,7 +128,7 @@ namespace RawCMS.Library.Lambdas
 
         public Dictionary<string,CollectionSchema> GetCollections()
         {
-            return entities;
+            return Entities;
         }
 
         public void SetCRUDService(CRUDService service)
