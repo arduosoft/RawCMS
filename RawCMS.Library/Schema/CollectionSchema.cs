@@ -28,5 +28,7 @@ namespace RawCMS.Library.Schema
         public bool AllowNonMappedFields { get; set; }
 
         public List<Field> FieldSettings { get; set; } = new List<Field>();
+
+        public string PresaveScript {get;set;}
     }
 }
