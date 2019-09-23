@@ -65,5 +65,9 @@
   <ItemGroup>
     <None Update="C:\Users\Daniele\.nuget\packages\nlog.config\4.5.4\contentFiles\any\any\NLog.config" Link="conf\NLog.config" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="for /f %%a in ('dir/b /s $(SolutionDir)\*plugins*.csproj') do (dotnet build %%a --output $(ProjectDir)\Plugins\%%~na)" />
+  </Target>
  
 </Project>
