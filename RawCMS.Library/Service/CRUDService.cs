@@ -24,23 +24,24 @@ using System.Text.RegularExpressions;
 
 namespace RawCMS.Library.Service
 {
-    public class CRUDService : IRequireApp
+    public class CRUDService 
     {
         private readonly MongoService _mongoService;
         private readonly MongoSettings _settings;
         private readonly List<string> collectionNames = new List<string>();
-        private AppEngine lambdaManager;
-
+        private readonly AppEngine lambdaManager;
+         
         private readonly JsonWriterSettings js = new JsonWriterSettings()
         {
             OutputMode = JsonOutputMode.Strict,
             GuidRepresentation = GuidRepresentation.CSharpLegacy
         };
 
-        public CRUDService(MongoService mongoService, IOptions<MongoSettings> settings)
+        public CRUDService(MongoService mongoService, MongoSettings settings, AppEngine lambdaManager)
         {
             _mongoService = mongoService;
-            _settings = settings.Value;
+            _settings = settings;
+            this.lambdaManager = lambdaManager;
             LoadCollectionNames();
         }
 
@@ -296,9 +297,7 @@ namespace RawCMS.Library.Service
             return result;
         }
 
-        public void SetAppEngine(AppEngine manager)
-        {
-            lambdaManager = manager;
-        }
+       
+       
     }
 }

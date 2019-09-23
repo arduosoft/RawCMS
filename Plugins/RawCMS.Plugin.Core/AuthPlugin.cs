@@ -35,37 +35,42 @@ namespace RawCMS.Plugins.Core
             Logger.LogInformation("Authorization plugin loaded");
         }
 
-        private RawUserStore userStore = new RawUserStore();
+        public AuthPlugin(AppEngine appEngine, AuthConfig config) : base(appEngine)
+        {
+
+        }
+
+        private readonly AuthConfig config;
+
 
         public override void ConfigureServices(IServiceCollection services)
         {
 
             services.Configure<ConfigurationOptions>(configuration);
 
-            services.AddSingleton<IUserStore<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IUserPasswordStore<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IPasswordValidator<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IUserClaimStore<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IPasswordHasher<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IProfileService>(x => { return userStore; });
+            services.AddSingleton<IUserStore<IdentityUser>, RawUserStore>();
+            services.AddSingleton<IUserPasswordStore<IdentityUser>, RawUserStore>();
+            services.AddSingleton<IPasswordValidator<IdentityUser>, RawUserStore>();
+            services.AddSingleton<IUserClaimStore<IdentityUser>, RawUserStore>();
+            services.AddSingleton<IPasswordHasher<IdentityUser>, RawUserStore>();
+            services.AddSingleton<IProfileService>();
             services.AddSingleton<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
 
-            //Add apikey authentication
 
-            RawRoleStore roleStore = new RawRoleStore();
-            services.AddSingleton<IRoleStore<IdentityRole>>(x => { return roleStore; });
 
+            services.AddSingleton<RawRoleStore>();
+            services.AddSingleton<IRoleStore<IdentityRole>, RawRoleStore>();
             services.AddIdentity<IdentityUser, IdentityRole>();
 
             // configure identity server with in-memory stores, keys, clients and scopes
             services.AddIdentityServer()
             .AddDeveloperSigningCredential()
             .AddInMemoryPersistedGrants()
-            .AddInMemoryIdentityResources(config.GetIdentityResources())
+            .AddInMemoryIdentityResources(this.config.GetIdentityResources())
             .AddInMemoryApiResources(config.GetApiResources())
             .AddInMemoryClients(config.GetClients())
             .AddAspNetIdentity<IdentityUser>()
-            .AddProfileServiceCustom(userStore);
+            .AddProfileServiceCustom();
 
             if (config.Mode == OAuthMode.External)
             {
@@ -128,11 +133,9 @@ namespace RawCMS.Plugins.Core
         {
             this.appEngine = appEngine;
 
-            userStore.SetCRUDService(this.appEngine.Service);
-            userStore.SetLogger(this.appEngine.GetLogger(this));
-            userStore.InitData().Wait();
-
-            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            
+           
+            
 
             app.UseAuthentication();
             app.UseIdentityServer();
@@ -151,13 +154,8 @@ namespace RawCMS.Plugins.Core
                 ApiResource = "rawcms"
             };
         }
-
-        private AuthConfig config;
-
-        public void SetActualConfig(AuthConfig config)
-        {
-            this.config = config;
-        }
+        
+      
 
         public override void ConfigureMvc(IMvcBuilder builder)
         {

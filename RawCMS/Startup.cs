@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Extension;
+using RawCMS.Library.Core.Helpers;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
@@ -44,19 +46,8 @@ namespace RawCMS
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
 
-            appEngine = new AppEngine(loggerFactory,basedir=> {
-                var pluginPath = Configuration.GetValue<string>("PluginPath");
 
-                var folder= basedir + pluginPath;
-                if (Path.IsPathRooted(pluginPath))
-                {
-                    folder = pluginPath;
-                }
-
-                return Path.GetFullPath(folder);//Directory.GetDirectories(folder).FirstOrDefault();
-
-            } );//Hardcoded for dev
-            logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
+          
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -64,8 +55,8 @@ namespace RawCMS
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            
-            // loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+
+            logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
             env.ConfigureNLog($"./conf/NLog.{env.EnvironmentName}.config");
@@ -107,20 +98,24 @@ namespace RawCMS
         {
             var ass = new List<Assembly>();
             var builder = services.AddMvc();
-            
-            appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
-            {
-                x.Setup(Configuration);
-                x.ConfigureMvc(builder);
-                ass.Add(x.GetType().Assembly);
-            });
+
+            List<Assembly> allAssembly = AssemblyHelper.GetAllAssembly();
+
+            ReflectionManager rm = new ReflectionManager(allAssembly);
+
+            appEngine = AppEngine.Create(
+                Configuration.GetValue<string>("PluginPath"),
+                loggerFactory.CreateLogger<AppEngine>(),
+                rm);
+
+            appEngine.InvokeConfigureServices(ass, builder, Configuration);
 
             foreach (var a in ass.Distinct())
             {
                 builder.AddApplicationPart(a).AddControllersAsServices();
             }
 
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Web API", Version = "v1" });
@@ -129,16 +124,16 @@ namespace RawCMS
                 c.IgnoreObsoleteActions();
                 c.DescribeAllEnumsAsStrings();
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-        });
-
-            //Invoke appEngine
-
-            appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
-            {
-                x.ConfigureServices(services);
             });
+
+            //Invoke appEngine after service configuration
+
+            appEngine.InvokePostConfigureServices(services);
 
             appEngine.Init();
         }
+
+        
+
     }
 }

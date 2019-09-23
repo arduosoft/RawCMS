@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace RawCMS.Library.Lambdas
 {
-    public class EntityValidation : SchemaValidationLambda, IRequireCrudService, IInitable, IRequireApp
+    public class EntityValidation : SchemaValidationLambda, IInitable
     {
         public override string Name => "Entity Validation";
 
@@ -26,11 +26,16 @@ namespace RawCMS.Library.Lambdas
 
         private static Dictionary<string, CollectionSchema> entities = new Dictionary<string, CollectionSchema>();
         private static List<FieldTypeValidator> typeValidators = new List<FieldTypeValidator>();
+    
+        
 
-        private CRUDService service;
+        private readonly AppEngine appEngine;
+        private readonly CRUDService service;
 
-        public EntityValidation()
+        public EntityValidation(AppEngine appEngine, CRUDService service)
         {
+            this.appEngine = appEngine;
+            this.service = service;
         }
 
         public void Init()
@@ -41,7 +46,7 @@ namespace RawCMS.Library.Lambdas
 
         private void InitValidators()
         {
-            typeValidators = manager.GetAssignablesInstances<FieldTypeValidator>();
+            typeValidators = appEngine.GetFieldTypeValidators();
         }
 
         private void InitSchema()
@@ -131,16 +136,9 @@ namespace RawCMS.Library.Lambdas
             return Entities;
         }
 
-        public void SetCRUDService(CRUDService service)
-        {
-            this.service = service;
-        }
+        
 
-        private AppEngine manager;
+       
 
-        public void SetAppEngine(AppEngine manager)
-        {
-            this.manager = manager;
-        }
     }
 }

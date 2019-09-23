@@ -32,7 +32,7 @@ namespace RawCMS.Plugins.GraphQL
             Logger.LogInformation("GraphQL plugin loaded");
         }
 
-        private GraphQLService graphService = new GraphQLService();
+        
 
         public override void ConfigureServices(IServiceCollection services)
         {
@@ -42,19 +42,14 @@ namespace RawCMS.Plugins.GraphQL
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
             services.AddScoped<ISchema, GraphQLSchema>();
             services.AddSingleton<GraphQLQuery>();
-            services.AddSingleton(x => graphService);
+            services.AddSingleton<GraphQLService>();
         }
 
         private AppEngine appEngine;
 
         public override void Configure(IApplicationBuilder app, AppEngine appEngine)
         {
-            this.appEngine = appEngine;
-            graphService.SetCRUDService(this.appEngine.Service);
-            graphService.SetLogger(this.appEngine.GetLogger(this));
-            graphService.SetSettings(config);
-            graphService.SetAppEngine(appEngine);
-
+            this.appEngine = appEngine;                       
 
             app.UseGraphiQl(config.GraphiQLPath, config.Path);
         }
@@ -77,6 +72,11 @@ namespace RawCMS.Plugins.GraphQL
         }
 
         private GraphQLSettings config;
+
+        public GraphQLPlugin(AppEngine appEngine):base (appEngine)
+        {
+            
+        }
 
         public void SetActualConfig(GraphQLSettings config)
         {

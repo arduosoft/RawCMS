@@ -84,34 +84,28 @@ namespace RawCMS.Plugins.Core.Stores
     }
 
     public class RawUserStore : IUserStore<IdentityUser>,
-        IRequireApp,
-        IRequireCrudService,
+       
         IUserPasswordStore<IdentityUser>,
         IPasswordValidator<IdentityUser>,
         IUserClaimStore<IdentityUser>,
         IPasswordHasher<IdentityUser>,
-        IProfileService,
-        IRequireLog
+        IProfileService
     {
-        private ILogger logger;
-        private CRUDService service;
+        private readonly ILogger logger;
+        private readonly AppEngine appEngine;
+        private readonly CRUDService service;
         private const string collection = "_users";
 
-        private AppEngine appEngine;
+        
 
-        public void SetAppEngine(AppEngine manager)
-        {
-            appEngine = manager;
-        }
 
-        public void SetCRUDService(CRUDService service)
+        public RawUserStore(AppEngine appEngine, ILogger logger, CRUDService service)
         {
-            this.service = service;
-        }
-
-        public void SetLogger(ILogger logger)
-        {
+            this.appEngine = appEngine;
             this.logger = logger;
+            this.service = service;
+
+            InitData().Wait();
         }
 
         public async Task<IdentityResult> CreateAsync(IdentityUser user, CancellationToken cancellationToken)

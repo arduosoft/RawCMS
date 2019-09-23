@@ -20,8 +20,10 @@ namespace RawCMS.Plugins.GraphQL.Classes
     public class GraphQLService
     {
 
-        public GraphQLService()
+        public GraphQLService(AppEngine appEngine, GraphQLSettings settings)
         {
+            this.Settings = settings;
+            this.appEngine = appEngine;
         }
 
         private ILogger logger;

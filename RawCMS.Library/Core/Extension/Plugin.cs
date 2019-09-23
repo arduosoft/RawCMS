@@ -17,7 +17,7 @@ namespace RawCMS.Library.Core.Extension
     /// <summary>
     /// RawCMS plugin definitio
     /// </summary>
-    public abstract class Plugin : IRequireApp, IInitable
+    public abstract class Plugin :  IInitable
     {
         public virtual int Priority { get; internal set; } = 1;
         public abstract string Name { get; }
@@ -28,11 +28,11 @@ namespace RawCMS.Library.Core.Extension
         private AppEngine engine;
         private ILogger logger;
 
-        public void SetAppEngine(AppEngine manager)
+        public Plugin(AppEngine engine)
         {
-            engine = manager;
-            Logger = Engine.GetLogger(this);
+            this.engine = engine;
         }
+
 
         /// <summary>
         /// startup application event

@@ -26,6 +26,12 @@ namespace RawCMS.Plugins.Core
 
         public override string Description => "Add core CMS capabilities";
 
+
+        public CorePlugin(AppEngine appEngine) : base(appEngine)
+        {
+
+        }
+
         public override void Init()
         {
             Logger.LogInformation("Core plugin loaded");
@@ -63,22 +69,14 @@ namespace RawCMS.Plugins.Core
                 DBName = envDBName
             };
 
-            IOptions<MongoSettings> settingsOptions = Options.Create<MongoSettings>(instance);
-            MongoService mongoService = new MongoService(settingsOptions, Logger);
-            CRUDService crudService = new CRUDService(mongoService, settingsOptions);
+            services.AddSingleton<MongoSettings>(x => instance);            
 
-            Engine.Service = crudService;
-
-            services.AddSingleton<MongoService>(mongoService);
-            services.AddSingleton<CRUDService>(crudService);
-            services.AddSingleton<AppEngine>(Engine);
+            services.AddSingleton<MongoService>();
+            services.AddSingleton<CRUDService>();
+            services.AddSingleton<AppEngine>();
             services.AddHttpContextAccessor();
 
-            crudService.EnsureCollection("_configuration");
-
-            Engine.Plugins.ForEach(x => SetConfiguration(x, crudService));
-
-            crudService.EnsureCollection("_schema");
+           
         }
 
         private void SetConfiguration(Plugin plugin, CRUDService crudService)
@@ -120,7 +118,13 @@ namespace RawCMS.Plugins.Core
 
         public override void Configure(IApplicationBuilder app, AppEngine appEngine)
         {
-            
+            var crudService= app.ApplicationServices.GetService<CRUDService>();
+
+            crudService.EnsureCollection("_configuration");
+
+            Engine.Plugins.ForEach(x => SetConfiguration(x, crudService));
+
+            crudService.EnsureCollection("_schema");
         }
 
         private IConfigurationRoot configuration;

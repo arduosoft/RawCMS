@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace RawCMS.Plugins.Core.Data
 {
-    public class UserPresaveLambda : PreSaveLambda, IRequireCrudService
+    public class UserPresaveLambda : PreSaveLambda
     {
         public override string Name => "User Presave lambda";
 

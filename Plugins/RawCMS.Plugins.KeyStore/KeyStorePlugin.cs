@@ -26,6 +26,8 @@ namespace RawCMS.Plugins.KeyStore
 
         public override string Description => "Add KeyStore capabilities";
 
+        public KeyStorePlugin(AppEngine appEngine) : base(appEngine)
+        { }
         public override void Init()
         {
             Logger.LogInformation("KeyStore plugin loaded");

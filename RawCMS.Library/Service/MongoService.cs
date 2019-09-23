@@ -19,10 +19,10 @@ namespace RawCMS.Library.Service
         private readonly ILogger logger;
         private readonly MongoClient client;
 
-        public MongoService(IOptions<MongoSettings> settings, ILogger logger)
+        public MongoService(MongoSettings settings, ILogger logger)
         {
             this.logger = logger;
-            _settings = settings.Value;
+            _settings = settings;
             client = new MongoClient(_settings.ConnectionString);
             if (string.IsNullOrEmpty(_settings.DBName))
             {
