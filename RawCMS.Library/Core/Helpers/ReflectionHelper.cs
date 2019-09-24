@@ -17,19 +17,15 @@ namespace RawCMS.Library.Core.Helpers
 
         public ReflectionManager(List<Assembly> assemblies)
         {
-            ///// <summary>
-            ///// Get all assemblies that may contains T instances
-            ///// </summary>
-            ///// <typeparam name="T"></typeparam>
-            ///// <returns></returns>
-            //public List<Assembly> GetAssemblyInScope()
-            //{
-            //    List<Assembly> plugins = new List<Assembly>();
-            //    plugins.AddRange(GetAssemblyWithInstance<Plugin>());
-            //    plugins.Add(Assembly.GetExecutingAssembly());
-            //    plugins.Add(Assembly.GetEntryAssembly());
-            //    return plugins;
-            //}
+            _logger.LogInformation("Creating reflectionManager");
+            foreach (var ass in assemblies)
+            {
+                if (!AssemblyScope.Any(x => x.FullName == ass.FullName))
+                {
+                    _logger.LogInformation($" > Added {ass.FullName}");
+                    AssemblyScope.Add(ass);
+                }
+            }
         }
 
 

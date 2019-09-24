@@ -35,29 +35,30 @@ namespace RawCMS.Plugins.Core
             Logger.LogInformation("Authorization plugin loaded");
         }
 
-        public AuthPlugin(AppEngine appEngine, AuthConfig config) : base(appEngine)
-        {
+        private readonly AuthConfig config;
+        private AppEngine appEngine;
 
+
+        public AuthPlugin(AppEngine appEngine, AuthConfig config, ILogger logger) : base(appEngine, logger)
+        {
+            this.appEngine = appEngine;
+            this.config = config;
         }
 
-        private readonly AuthConfig config;
+
 
 
         public override void ConfigureServices(IServiceCollection services)
-        {
-
-            services.Configure<ConfigurationOptions>(configuration);
+        {         
 
             services.AddSingleton<IUserStore<IdentityUser>, RawUserStore>();
             services.AddSingleton<IUserPasswordStore<IdentityUser>, RawUserStore>();
             services.AddSingleton<IPasswordValidator<IdentityUser>, RawUserStore>();
             services.AddSingleton<IUserClaimStore<IdentityUser>, RawUserStore>();
             services.AddSingleton<IPasswordHasher<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IProfileService>();
+            services.AddSingleton<IProfileService, RawUserStore>();
             services.AddSingleton<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
-
-
-
+                       
             services.AddSingleton<RawRoleStore>();
             services.AddSingleton<IRoleStore<IdentityRole>, RawRoleStore>();
             services.AddIdentity<IdentityUser, IdentityRole>();
@@ -117,45 +118,22 @@ namespace RawCMS.Plugins.Core
                  });
             }
 
-           
+
         }
 
-        private IConfigurationRoot configuration;
 
-        public override void Setup(IConfigurationRoot configuration)
+
+
+        public override void Configure(IApplicationBuilder app)
         {
-            this.configuration = configuration;
-        }
-
-        private AppEngine appEngine;
-
-        public override void Configure(IApplicationBuilder app, AppEngine appEngine)
-        {
-            this.appEngine = appEngine;
-
-            
-           
-            
-
             app.UseAuthentication();
             app.UseIdentityServer();
-
             app.UseMvc();
         }
 
-        public AuthConfig GetDefaultConfig()
-        {
-            return new AuthConfig()
-            {
-                Mode = OAuthMode.Standalone,
-                Authority = "http://localhost:50093",
-                ClientId = "raw.client",
-                ClientSecret = "raw.secret",
-                ApiResource = "rawcms"
-            };
-        }
-        
-      
+
+
+
 
         public override void ConfigureMvc(IMvcBuilder builder)
         {
@@ -163,6 +141,11 @@ namespace RawCMS.Plugins.Core
             {
                 options.Filters.Add(new RawAuthorizationAttribute(config.ApiKey, config.AdminApiKey));
             });
+        }
+
+        public override void Setup(IConfigurationRoot configuration)
+        {
+            
         }
     }
 }

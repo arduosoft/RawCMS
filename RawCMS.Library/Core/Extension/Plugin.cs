@@ -22,15 +22,16 @@ namespace RawCMS.Library.Core.Extension
         public virtual int Priority { get; internal set; } = 1;
         public abstract string Name { get; }
         public abstract string Description { get; }
-        public ILogger Logger { get => logger; private set => logger = value; }
+        public ILogger Logger { get => logger;}
         public AppEngine Engine => engine;
 
-        private AppEngine engine;
-        private ILogger logger;
+        private readonly AppEngine engine;
+        private readonly ILogger logger;
 
-        public Plugin(AppEngine engine)
+        public Plugin(AppEngine engine, ILogger logger)
         {
             this.engine = engine;
+            this.logger = logger;
         }
 
 
@@ -56,7 +57,7 @@ namespace RawCMS.Library.Core.Extension
         /// </summary>
         /// <param name="app"></param>
         /// <param name="appEngine"></param>
-        public abstract void Configure(IApplicationBuilder app, AppEngine appEngine);
+        public abstract void Configure(IApplicationBuilder app);
 
 
         /// <summary>

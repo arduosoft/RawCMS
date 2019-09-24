@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core.Extension;
 using RawCMS.Library.Core.Helpers;
 using RawCMS.Library.Core.Interfaces;
+using RawCMS.Library.DataModel;
 using RawCMS.Library.Schema;
 using RawCMS.Library.Service;
 using System;
@@ -26,11 +28,13 @@ namespace RawCMS.Library.Core
 {
     public class AppEngine
     {
-       
-        private  ILogger _logger;        
 
-        
 
+
+
+        private readonly string pluginFolder = null;
+        private readonly IConfigurationRoot configuration;
+        private readonly ILogger _logger;
         private readonly ReflectionManager reflectionManager;
         
 
@@ -38,34 +42,34 @@ namespace RawCMS.Library.Core
       
 
         public List<Plugin> Plugins { get; set; } = new List<Plugin>();
-      
 
-        string pluginFolder = null;
-        public AppEngine(ILogger _logger, Func<string,string> pluginPathLocator,ReflectionManager reflectionManager)
+
+        
+        public AppEngine(ILogger _logger, Func<string,string> pluginPathLocator,ReflectionManager reflectionManager, IConfigurationRoot configuration)
         {
 
             this._logger = _logger;
-
             this.pluginFolder = pluginPathLocator.Invoke(AppContext.BaseDirectory);
             this.reflectionManager = reflectionManager;
+            this.configuration = configuration;
 
-            LoadPlugins();
+            
         }
 
         public  List<FieldTypeValidator> GetFieldTypeValidators()
         {
-          return   this.reflectionManager.GetAssignablesInstances<FieldTypeValidator>();
+            return   this.reflectionManager.GetAssignablesInstances<FieldTypeValidator>();
         }
 
         public void Init()
         {
-            LoadLambdas();
+            
         }
 
         List<PluginLoader> loaders = new List<PluginLoader>();
         private void LoadPluginAssemblies()
         {
-
+            _logger.LogInformation("LoadPluginAssemblies");
             loaders.Clear();
 
             List<Assembly> assembly = new List<Assembly>();
@@ -76,11 +80,13 @@ namespace RawCMS.Library.Core
             List<Type> typesToAdd = new List<Type>();
             foreach (var ass in assembly)
             {
+                _logger.LogDebug($"scanning {ass.FullName}..");
                 Type[] types = ass.GetTypes();
                 foreach (var type in types)
                 {
                     if (type.IsPublic)
                     {
+                        _logger.LogDebug($"Added {type.FullName}..");
                         typesToAdd.Add(type);
                     }
                 }
@@ -89,24 +95,36 @@ namespace RawCMS.Library.Core
             }
 
             typesToAdd = typesToAdd.Distinct().ToList();
+
+            _logger.LogInformation($"ASSEMBLY LOAD COMPLETED");
+
+
+            
             // create plugin loaders
             var pluginsDir = pluginFolder ?? Path.Combine(AppContext.BaseDirectory, "plugins");
 
+            _logger.LogInformation($"Loading plugin using {pluginsDir}");
+
             var pluginFiles = Directory.GetFiles(pluginsDir, "plugin.config", SearchOption.AllDirectories);
+
+            _logger.LogDebug($"Found  {string.Join(",",pluginFiles)}");
+
             foreach (var pluginInfo in pluginFiles)
             {
+                _logger.LogInformation($"Loading plugin  {pluginInfo}");
                 var loader = PluginLoader.CreateFromConfigFile(
                 filePath: pluginInfo,
                 sharedTypes: typesToAdd.ToArray());
-
                 loaders.Add(loader);
 
             }
 
         }
-
-        public static AppEngine Create(string pluginPath, ILogger logger, ReflectionManager reflectionManager)
+        
+        public static AppEngine Create(string pluginPath, ILogger logger, ReflectionManager reflectionManager, IServiceCollection services, IConfigurationRoot configuration)
         {
+            
+            logger.LogInformation("CREATING RAWCMS APPENGINE");
             var appEngine = new AppEngine(
                   logger,
                   basedir => {                      
@@ -119,18 +137,28 @@ namespace RawCMS.Library.Core
 
                       return Path.GetFullPath(folder);//Directory.GetDirectories(folder).FirstOrDefault();
                     },
-                  reflectionManager
+                  reflectionManager,
+                  configuration
               );//Hardcoded for dev
+
+            appEngine.Init();
+
+            services.AddSingleton<ILogger>(x => logger);
+            services.AddSingleton<AppEngine>(x => appEngine);
+            appEngine.LoadPlugins(services);
             return appEngine;
         }
 
-        private static void RecoursiveAddAssembly(Assembly assembly,List<Assembly> assemblyList)
+        private  void RecoursiveAddAssembly(Assembly assembly,List<Assembly> assemblyList)
         {
             foreach (AssemblyName assName in assembly.GetReferencedAssemblies())
-            {
-               
+            { 
                 if (!assemblyList.Any(x=>x.FullName==assName.FullName))
                 {
+                    if (_logger.IsEnabled(LogLevel.Trace))
+                    {
+                        _logger.LogTrace($"Adding {assName.FullName}");
+                    }
 
                     Assembly.Load(assName);
                     var ass = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.GetName(false).Name == assName.Name);
@@ -141,20 +169,38 @@ namespace RawCMS.Library.Core
             }
         }
 
-        private void LoadPlugins()
+        private void LoadPlugins(IServiceCollection services)
         {
             _logger.LogDebug("Load plugins");
             LoadPluginAssemblies();
-            Plugins = GetPlugins();//GetAnnotatedInstances<Plugin>();
+          
+            var pluginTypes = GetPluginsTypes();//GetAnnotatedInstances<Plugin>();
 
             if (_logger.IsEnabled(LogLevel.Debug))
             {
                 Plugins.ForEach(x =>
                 {
-                    _logger.LogDebug("Plugin enabled {0}", x.Name);
+                    _logger.LogDebug("Plugin found {0}", x.Name);
                 });
             }
-            
+
+            foreach (var pluginType in pluginTypes)
+            {
+                services.AddSingleton(pluginType);
+            }
+
+            LoadPluginSettings(pluginTypes, configuration, services);
+
+            var sp=services.BuildServiceProvider();
+
+
+            _logger.LogDebug("Create plugin instances");
+            foreach (var pluginType in pluginTypes)
+            {
+                _logger.LogDebug($" Create plugin instance  {pluginType.Name}");
+                var plugin=sp.GetService(pluginType) as Plugin;
+                Plugins.Add(plugin);
+            }
 
             //Core plugin must be the first to be called. This ensure it also in case thirdy party define malicius priority.
             int minPriority = 0;
@@ -163,47 +209,170 @@ namespace RawCMS.Library.Core
             corePlugin.Priority = minPriority;
         }
 
-        private List<Plugin> GetPlugins()
+        private void LoadPluginSettings(List<Type> pluginTypes, IConfigurationRoot configuration, IServiceCollection services)
         {
-            List<Plugin> plugins = new List<Plugin>();
+            _logger.LogDebug($"LoadPluginSettings");
+
+            MongoSettings instance = MongoSettings.GetMongoSettings(configuration);
+            var tmpService = new CRUDService(new MongoService(instance, _logger), instance, this);
+
+
+
+            foreach (var plugin in pluginTypes)
+            {
+                _logger.LogDebug($"checking {plugin.FullName}");
+                Type confitf = plugin.GetInterface("IConfigurablePlugin`1");//TODO: remove hardcoded reference to generic
+                if (confitf != null)
+                {
+                    _logger.LogDebug($" {plugin.FullName} need a configuration");
+                    Type confType = confitf.GetGenericArguments()[0];
+                  
+
+                    ItemList confItem = tmpService.Query("_configuration", new DataQuery()
+                    {
+                        PageNumber = 1,
+                        PageSize = 1,
+                        RawQuery = @"{""plugin_name"":""" + plugin.FullName + @"""}"
+                    });
+
+                    JObject confToSave = null;
+
+                    if (confItem.TotalCount == 0)
+                    {
+                        _logger.LogDebug($" {plugin.FullName} no persisted configuration found. Using default");
+                        confToSave = new JObject
+                        {
+                            ["plugin_name"] = plugin.FullName,
+                            ["data"] = JToken.FromObject(Activator.CreateInstance(confType))
+                        };
+                        tmpService.Insert("_configuration", confToSave);
+                        _logger.LogDebug($" {plugin.FullName} default config saved to database");
+                    }
+                    else
+                    {
+                        confToSave = confItem.Items.First as JObject;
+                        _logger.LogDebug($" {plugin.FullName} configuration found");
+                    }
+
+                    object objData = confToSave["data"].ToObject(confType);
+
+
+                    _logger.LogDebug($" {plugin.FullName} configuration added to container");
+                    services.AddSingleton(confType, objData);
+
+                    
+                }
+            }
+            
+        }
+
+        private List<Type> GetPluginsTypes()
+        {
+            _logger.LogInformation($" Getting all plugin types");
+            List<Type> plugins = new List<Type>();
             // Create an instance of plugin types
             foreach (var loader in loaders)
-            {
+            {                
                 foreach (var pluginType in loader
                     .LoadDefaultAssembly()
                     .GetTypes()
                     .Where(t => typeof(Plugin).IsAssignableFrom(t) && !t.IsAbstract))
-                {
-                    // This assumes the implementation of IPlugin has a parameterless constructor
-                    Plugin plugin = (Plugin)Activator.CreateInstance(pluginType);
-                    plugins.Add(plugin);
+                {                   
+                    plugins.Add(pluginType);
                 }
             }
             return plugins;
         }
 
-        
 
-        private void LoadLambdas()
+
+        private void LoadLambdas(IApplicationBuilder applicationBuilder)
         {
-            DiscoverLambdasInBundle();
+
+            _logger.LogDebug("Discover Lambdas in Bundle");
+
+            List<Type> lambdas = this.reflectionManager.GetImplementors<Lambda>();
+
+            foreach (var lambda in lambdas)
+            {
+                try
+                {
+                    _logger.LogDebug($"loading Lambdas {lambda} ");
+                    var lambdaInstance = applicationBuilder.ApplicationServices.GetService(lambda) as Lambda;
+                    if (lambdaInstance != null)
+                    {
+                        _logger.LogDebug($"loading Lambdas {lambdaInstance.Name} - {lambdaInstance.Description} - {lambdaInstance.GetType().FullName} ");
+                        this.Lambdas.Add(lambdaInstance);
+                    }
+                    else
+                    {
+                        _logger.LogDebug($"error during lambda init {lambda} ");
+                    }
+                }
+                catch (Exception err)
+                {
+                    _logger.LogWarning($"error during lambda, lambda skipped {lambda} {err.Message}");
+                    _logger.LogError(err,"");
+                }
+            }
+
+            if (_logger.IsEnabled(LogLevel.Debug))
+            {
+                DumpLambdaInfo();
+            }
         }
 
-
-        public void InvokeConfigureServices(List<Assembly> ass, IMvcBuilder builder, IConfigurationRoot configuration)
+        private void DumpLambdaInfo()
         {
+            var types=this.Lambdas.Select(x => x.GetType().BaseType).Distinct().ToList();
+
+            foreach (var type in types)
+            {
+                _logger.LogDebug("");
+                _logger.LogDebug($"For type {type.FullName}");
+
+                this.Lambdas.Where(x => x.GetType().BaseType == type).ToList().ForEach(x =>
+                {
+                    _logger.LogDebug($">> {x.Name} - {x.Description} -  {x.GetType().FullName}");
+                });
+            }
+        }
+
+        public void InvokeConfigure(IApplicationBuilder app)
+        {
+            _logger.LogDebug($"invoking configuraton");
+            this.LoadLambdas(app);
+
             this.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
             {
+                _logger.LogDebug($" > invoking configuraton on plugin {x.Name}");
+                x.Configure(app);
+            });
+
+            
+        }
+
+        public void InvokeConfigureServices(List<Assembly> ass, IMvcBuilder builder, IServiceCollection services,IConfigurationRoot configuration)
+        {
+            _logger.LogDebug($"invoking InvokeConfigureServices");
+
+            this.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
+            {
+                _logger.LogDebug($" > invoking configuraton on plugin {x.Name}");
                 x.Setup(configuration);
                 x.ConfigureMvc(builder);
                 ass.Add(x.GetType().Assembly);
             });
+
+            this.DiscoverLambdasInBundle(services);
         }
 
         public void InvokePostConfigureServices(IServiceCollection services)
         {
+            _logger.LogDebug($"invoking InvokePostConfigureServices");
             this.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
             {
+                _logger.LogDebug($" > invoking configuraton on plugin {x.Name}");
                 x.ConfigureServices(services);
             });
         }
@@ -211,28 +380,22 @@ namespace RawCMS.Library.Core
         /// <summary>
         /// Find and load all lambas already loaded with main bundle (no dinamycs)
         /// </summary>
-        private void DiscoverLambdasInBundle()
-        {
+        private void DiscoverLambdasInBundle(IServiceCollection services)
+        {           
+
             _logger.LogDebug("Discover Lambdas in Bundle");
 
-            List<Lambda> lambdas = this.reflectionManager.GetAnnotatedInstances<Lambda>();
-
-            foreach (Lambda instance in lambdas)
+            List<Type> lambdas = this.reflectionManager.GetImplementors<Lambda>();
+                       
+            foreach (Type type in lambdas)
             {
-                if (instance != null)
-                {                 
-                   
 
-                    if (instance is IInitable)
-                    {
-                        ((IInitable)instance).Init();
-                    }
+                _logger.LogDebug($"Lambda found {type.FullName}");
+                services.AddSingleton(type);
+               
+                
+            }          
 
-                    Lambdas.Add(instance);
-
-                    _logger.LogInformation("-" + instance.Name + " | " + instance.GetType().FullName);
-                }
-            }
         }
     }
 }

@@ -45,11 +45,10 @@ namespace RawCMS.Plugins.GraphQL
             services.AddSingleton<GraphQLService>();
         }
 
-        private AppEngine appEngine;
+      
 
-        public override void Configure(IApplicationBuilder app, AppEngine appEngine)
-        {
-            this.appEngine = appEngine;                       
+        public override void Configure(IApplicationBuilder app)
+        {                            
 
             app.UseGraphiQl(config.GraphiQLPath, config.Path);
         }
@@ -61,27 +60,16 @@ namespace RawCMS.Plugins.GraphQL
             this.configuration = configuration;
         }
 
-        public GraphQLSettings GetDefaultConfig()
-        {
-            return new GraphQLSettings
-            {
-                Path = "/api/graphql",
-                EnableMetrics = false,
-                GraphiQLPath = "/graphql"
-            };
-        }
 
-        private GraphQLSettings config;
+        private readonly AppEngine appEngine;
+        private readonly GraphQLSettings config;
 
-        public GraphQLPlugin(AppEngine appEngine):base (appEngine)
+        public GraphQLPlugin(AppEngine appEngine, GraphQLSettings config, ILogger logger) :base (appEngine, logger)
         {
-            
-        }
-
-        public void SetActualConfig(GraphQLSettings config)
-        {
+            this.appEngine = appEngine;
             this.config = config;
         }
+        
 
         public override void ConfigureMvc(IMvcBuilder builder)
         {

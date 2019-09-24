@@ -26,10 +26,9 @@ namespace RawCMS.Plugins.Core
 
         public override string Description => "Add core CMS capabilities";
 
-
-        public CorePlugin(AppEngine appEngine) : base(appEngine)
-        {
-
+        
+        public CorePlugin(AppEngine appEngine, ILogger logger) : base(appEngine, logger)
+        {            
         }
 
         public override void Init()
@@ -51,78 +50,31 @@ namespace RawCMS.Plugins.Core
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            
+
 
             services.AddOptions();
 
             Logger.LogInformation(configuration["MongoSettings:ConnectionString"]);
 
+            MongoSettings instance = MongoSettings.GetMongoSettings(configuration);
 
-            var envConnectionString = Environment.GetEnvironmentVariable("MongoSettings:ConnectionString") ?? Environment.GetEnvironmentVariable("MongoSettingsConnectionString") ?? configuration["MongoSettings:ConnectionString"];
-            var envDBName = Environment.GetEnvironmentVariable("MongoSettings:DBName") ?? Environment.GetEnvironmentVariable("MongoSettingsDBName")?? configuration["MongoSettings:DBName"];
-           
-
-
-            MongoSettings instance = new MongoSettings
-            {
-                ConnectionString = envConnectionString,
-                DBName = envDBName
-            };
-
-            services.AddSingleton<MongoSettings>(x => instance);            
+            services.AddSingleton<MongoSettings>(x => instance);
 
             services.AddSingleton<MongoService>();
             services.AddSingleton<CRUDService>();
-            services.AddSingleton<AppEngine>();
             services.AddHttpContextAccessor();
 
-           
+
         }
 
-        private void SetConfiguration(Plugin plugin, CRUDService crudService)
-        {
-            Type confitf = plugin.GetType().GetInterface("IConfigurablePlugin`1");
-            if (confitf != null)
-            {
-                Type confType = confitf.GetGenericArguments()[0];
-                Type pluginType = plugin.GetType();
+     
 
-                ItemList confItem = crudService.Query("_configuration", new DataQuery()
-                {
-                    PageNumber = 1,
-                    PageSize = 1,
-                    RawQuery = @"{""plugin_name"":""" + pluginType.FullName + @"""}"
-                });
 
-                JObject confToSave = null;
-
-                if (confItem.TotalCount == 0)
-                {
-                    confToSave = new JObject
-                    {
-                        ["plugin_name"] = plugin.GetType().FullName,
-                        ["data"] = JToken.FromObject(pluginType.GetMethod("GetDefaultConfig").Invoke(plugin, new object[] { }))
-                    };
-                    crudService.Insert("_configuration", confToSave);
-                }
-                else
-                {
-                    confToSave = confItem.Items.First as JObject;
-                }
-
-                object objData = confToSave["data"].ToObject(confType);
-
-                pluginType.GetMethod("SetActualConfig").Invoke(plugin, new object[] { objData });
-            }
-        }
-
-        public override void Configure(IApplicationBuilder app, AppEngine appEngine)
+        public override void Configure(IApplicationBuilder app)
         {
             var crudService= app.ApplicationServices.GetService<CRUDService>();
 
-            crudService.EnsureCollection("_configuration");
-
-            Engine.Plugins.ForEach(x => SetConfiguration(x, crudService));
+            crudService.EnsureCollection("_configuration");           
 
             crudService.EnsureCollection("_schema");
         }

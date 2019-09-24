@@ -13,6 +13,12 @@ namespace RawCMS.Plugins.GraphQL.Classes
 {
     public class GraphQLSettings
     {
+        public GraphQLSettings()
+        {
+            Path = "/api/graphql";
+            EnableMetrics = false;
+            GraphiQLPath = "/graphql";
+        }
         public string Path { get; set; }
 
         public string GraphiQLPath { get; set; }

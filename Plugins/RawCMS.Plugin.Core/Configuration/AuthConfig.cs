@@ -21,6 +21,15 @@ namespace RawCMS.Plugins.Core.Configuration
 
     public class AuthConfig
     {
+
+        public AuthConfig()
+        {
+            Mode = OAuthMode.Standalone;
+                Authority = "http://localhost:50093";
+                ClientId = "raw.client";
+                ClientSecret = "raw.secret";
+            ApiResource = "rawcms";
+        }
         public OAuthMode Mode { get; set; }
 
         public string ClientId { get; set; }

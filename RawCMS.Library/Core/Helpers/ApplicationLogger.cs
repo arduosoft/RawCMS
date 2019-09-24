@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace RawCMS.Library.Core.Helpers
 {
     public class ApplicationLogger
@@ -26,7 +27,21 @@ namespace RawCMS.Library.Core.Helpers
             return LoggerFactory.CreateLogger( name);
         }
 
-        
 
+        public static NLog.Logger CreateRawLogger(string env)
+        {
+            var path = GetConfigPath(env);
+            return NLog.Web.NLogBuilder.ConfigureNLog(path).GetCurrentClassLogger();
+        }
+
+        public static string GetConfigPath(string env)
+        {
+            if (env != null)
+            {
+                env = "." + env;
+            }
+            var path = $"./conf/NLog{env}.config";
+            return path;
+        }
     }
 }

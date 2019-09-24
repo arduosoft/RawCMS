@@ -10,6 +10,7 @@ namespace RawCMS.Library.Core.Interfaces
 {
     public interface IConfigurablePlugin<T>
     {
-        T GetDefaultConfig();       
+        
     }
+    
 }

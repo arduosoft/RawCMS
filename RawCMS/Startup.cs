@@ -33,17 +33,25 @@ namespace RawCMS
         private readonly ILoggerFactory loggerFactory;
         private AppEngine appEngine;
 
-        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory, ILogger<Startup> logger)
         {
             this.loggerFactory = loggerFactory;
-            loggerFactory.AddConsole(LogLevel.Trace);
-            logger = loggerFactory.CreateLogger(typeof(Startup));
+            this.logger = logger;
+
+            var path = ApplicationLogger.GetConfigPath(env.EnvironmentName);
+            loggerFactory.AddDebug();
+            loggerFactory.AddNLog();
+            logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
+            env.ConfigureNLog(path);
+
+            ApplicationLogger.SetLogFactory(loggerFactory);
 
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
             Configuration = builder.Build();
 
 
@@ -55,11 +63,15 @@ namespace RawCMS
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+         
 
-            logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
-            loggerFactory.AddDebug();
-            loggerFactory.AddNLog();
-            env.ConfigureNLog($"./conf/NLog.{env.EnvironmentName}.config");
+            
+            
+
+            appEngine.InvokeConfigure(app);
+
+        
+
 
             if (env.IsDevelopment())
             {
@@ -67,10 +79,7 @@ namespace RawCMS
                 app.UseBrowserLink();
             }
 
-            appEngine.Plugins.OrderBy(x => x.Priority).ToList().ForEach(x =>
-            {
-                x.Configure(app, appEngine);
-            });
+           
 
             app.UseMvc();
 
@@ -93,6 +102,8 @@ namespace RawCMS
             app.UseWelcomePage();
         }
 
+       
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -106,9 +117,11 @@ namespace RawCMS
             appEngine = AppEngine.Create(
                 Configuration.GetValue<string>("PluginPath"),
                 loggerFactory.CreateLogger<AppEngine>(),
-                rm);
+                rm, services, Configuration);
 
-            appEngine.InvokeConfigureServices(ass, builder, Configuration);
+            
+
+            appEngine.InvokeConfigureServices(ass, builder,services, Configuration);
 
             foreach (var a in ass.Distinct())
             {
@@ -130,7 +143,7 @@ namespace RawCMS
 
             appEngine.InvokePostConfigureServices(services);
 
-            appEngine.Init();
+            
         }
 
         
