@@ -17,12 +17,12 @@ namespace RawCMS.Library.Core.Extension
     /// <summary>
     /// RawCMS plugin definitio
     /// </summary>
-    public abstract class Plugin :  IInitable
+    public abstract class Plugin : IInitable
     {
         public virtual int Priority { get; internal set; } = 1;
         public abstract string Name { get; }
         public abstract string Description { get; }
-        public ILogger Logger { get => logger;}
+        public ILogger Logger { get => logger; }
         public AppEngine Engine => engine;
 
         private readonly AppEngine engine;
@@ -33,7 +33,6 @@ namespace RawCMS.Library.Core.Extension
             this.engine = engine;
             this.logger = logger;
         }
-
 
         /// <summary>
         /// startup application event
@@ -51,14 +50,12 @@ namespace RawCMS.Library.Core.Extension
         /// <param name="services"></param>
         public abstract void ConfigureServices(IServiceCollection services);
 
-
         /// <summary>
         /// this allow the plugin to interact with appengine and application builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="appEngine"></param>
         public abstract void Configure(IApplicationBuilder app);
-
 
         /// <summary>
         /// this metod receive configuration to allow plugin configure itself
@@ -71,6 +68,5 @@ namespace RawCMS.Library.Core.Extension
         /// </summary>
         /// <param name="builder"></param>
         public abstract void ConfigureMvc(IMvcBuilder builder);
-       
     }
 }

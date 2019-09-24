@@ -19,6 +19,7 @@ namespace RawCMS.Plugins.GraphQL.Classes
             EnableMetrics = false;
             GraphiQLPath = "/graphql";
         }
+
         public string Path { get; set; }
 
         public string GraphiQLPath { get; set; }

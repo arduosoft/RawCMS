@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace RawCMS.Library.Core.Helpers
 {
@@ -15,6 +14,5 @@ namespace RawCMS.Library.Core.Helpers
             allAssembly.Add(Assembly.GetEntryAssembly());
             return allAssembly;
         }
-
     }
 }

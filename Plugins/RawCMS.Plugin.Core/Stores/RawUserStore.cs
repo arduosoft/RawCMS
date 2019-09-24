@@ -14,7 +14,6 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
-using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Model;
@@ -84,7 +83,7 @@ namespace RawCMS.Plugins.Core.Stores
     }
 
     public class RawUserStore : IUserStore<IdentityUser>,
-       
+
         IUserPasswordStore<IdentityUser>,
         IPasswordValidator<IdentityUser>,
         IUserClaimStore<IdentityUser>,
@@ -95,9 +94,6 @@ namespace RawCMS.Plugins.Core.Stores
         private readonly AppEngine appEngine;
         private readonly CRUDService service;
         private const string collection = "_users";
-
-        
-
 
         public RawUserStore(AppEngine appEngine, ILogger logger, CRUDService service)
         {

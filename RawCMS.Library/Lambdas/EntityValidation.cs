@@ -26,8 +26,6 @@ namespace RawCMS.Library.Lambdas
 
         private static Dictionary<string, CollectionSchema> entities = new Dictionary<string, CollectionSchema>();
         private static List<FieldTypeValidator> typeValidators = new List<FieldTypeValidator>();
-    
-        
 
         private readonly AppEngine appEngine;
         private readonly CRUDService service;
@@ -131,14 +129,9 @@ namespace RawCMS.Library.Lambdas
             return errors;
         }
 
-        public Dictionary<string,CollectionSchema> GetCollections()
+        public Dictionary<string, CollectionSchema> GetCollections()
         {
             return Entities;
         }
-
-        
-
-       
-
     }
 }

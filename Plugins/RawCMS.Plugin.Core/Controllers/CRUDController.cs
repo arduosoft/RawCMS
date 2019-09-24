@@ -29,7 +29,7 @@ namespace RawCMS.Plugins.Core.Controllers
 
         public CRUDController(AppEngine manager, CRUDService service)
         {
-            this.service = service;   
+            this.service = service;
         }
 
         // GET api/CRUD/{collection}

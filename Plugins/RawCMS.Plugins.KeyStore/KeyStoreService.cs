@@ -5,7 +5,7 @@ namespace RawCMS.Plugins.KeyStore
 {
     public class KeyStoreService
     {
-        private static Dictionary<string, object> db = new Dictionary<string, object>();
+        private static readonly Dictionary<string, object> db = new Dictionary<string, object>();
 
         public object Get(string key)
         {

@@ -10,13 +10,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
-using RawCMS.Library.Core.Extension;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Service;
-using System;
 
 namespace RawCMS.Plugins.Core
 {
@@ -26,9 +22,8 @@ namespace RawCMS.Plugins.Core
 
         public override string Description => "Add core CMS capabilities";
 
-        
         public CorePlugin(AppEngine appEngine, ILogger logger) : base(appEngine, logger)
-        {            
+        {
         }
 
         public override void Init()
@@ -36,10 +31,8 @@ namespace RawCMS.Plugins.Core
             Logger.LogInformation("Core plugin loaded");
         }
 
-        
         public override void OnApplicationStart()
         {
-
             base.OnApplicationStart();
         }
 
@@ -50,8 +43,6 @@ namespace RawCMS.Plugins.Core
 
         public override void ConfigureServices(IServiceCollection services)
         {
-
-
             services.AddOptions();
 
             Logger.LogInformation(configuration["MongoSettings:ConnectionString"]);
@@ -63,18 +54,13 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<MongoService>();
             services.AddSingleton<CRUDService>();
             services.AddHttpContextAccessor();
-
-
         }
-
-     
-
 
         public override void Configure(IApplicationBuilder app)
         {
-            var crudService= app.ApplicationServices.GetService<CRUDService>();
+            var crudService = app.ApplicationServices.GetService<CRUDService>();
 
-            crudService.EnsureCollection("_configuration");           
+            crudService.EnsureCollection("_configuration");
 
             crudService.EnsureCollection("_schema");
         }

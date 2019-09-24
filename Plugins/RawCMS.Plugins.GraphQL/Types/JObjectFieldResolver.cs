@@ -84,26 +84,25 @@ namespace RawCMS.Plugins.GraphQL.Types
                 if (arguments.ContainsKey("rawQuery"))
                 {
                     query = Convert.ToString(arguments["rawQuery"]);
-                }else if (arguments.ContainsKey("_id"))
+                }
+                else if (arguments.ContainsKey("_id"))
                 {
                     query = "{_id: ObjectId(\"" + Convert.ToString(arguments["_id"]) + "\")}";
                 }
                 else
                 {
-
                     jSettings.ContractResolver = new DefaultContractResolver();
                     Dictionary<string, object> dictionary = new Dictionary<string, object>();
                     foreach (string key in arguments.Keys)
                     {
                         if (arguments[key] is string)
                         {
-
                             JObject reg = new JObject
                             {
                                 ["$regex"] = $"/*{arguments[key]}/*",
                                 ["$options"] = "si"
                             };
-                            dictionary[key.ToPascalCase().Replace("_",".")] = reg;
+                            dictionary[key.ToPascalCase().Replace("_", ".")] = reg;
                         }
                         else
                         {

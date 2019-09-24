@@ -11,7 +11,6 @@ using RawCMS.Library.Core;
 using RawCMS.Library.Lambdas;
 using RawCMS.Library.Schema;
 using RawCMS.Library.Service;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,7 +18,6 @@ namespace RawCMS.Plugins.GraphQL.Classes
 {
     public class GraphQLService
     {
-
         public GraphQLService(AppEngine appEngine, GraphQLSettings settings)
         {
             this.Settings = settings;
@@ -30,7 +28,6 @@ namespace RawCMS.Plugins.GraphQL.Classes
         public CRUDService CrudService { get; private set; }
 
         public Dictionary<string, CollectionSchema> Collections { get; private set; }
-
 
         private AppEngine appEngine;
 

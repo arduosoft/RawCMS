@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Model;
@@ -25,13 +24,11 @@ namespace RawCMS.Plugins.Core.Stores
         private readonly CRUDService service;
         private const string collection = "_roles";
 
-        public  RawRoleStore(CRUDService service, ILogger logger)
+        public RawRoleStore(CRUDService service, ILogger logger)
         {
             this.service = service;
             this.logger = logger;
         }
-
-       
 
         public async Task<IdentityResult> CreateAsync(IdentityRole role, CancellationToken cancellationToken)
         {

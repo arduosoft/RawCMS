@@ -1,16 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.Extensions.Logging;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
 
 namespace RawCMS.Library.Core.Helpers
 {
     public class ReflectionManager
     {
-
         private static ILogger _logger = ApplicationLogger.CreateLogger<ReflectionManager>();
 
         public List<Assembly> AssemblyScope { get; set; } = new List<Assembly>();
@@ -18,7 +15,7 @@ namespace RawCMS.Library.Core.Helpers
         public ReflectionManager(List<Assembly> assemblies)
         {
             _logger.LogInformation("Creating reflectionManager");
-            foreach (var ass in assemblies)
+            foreach (Assembly ass in assemblies)
             {
                 if (!AssemblyScope.Any(x => x.FullName == ass.FullName))
                 {
@@ -27,11 +24,6 @@ namespace RawCMS.Library.Core.Helpers
                 }
             }
         }
-
-
-
-
-
 
         public List<Assembly> GetAssemblyWithInstance<T>()
         {
@@ -49,7 +41,6 @@ namespace RawCMS.Library.Core.Helpers
             }
             return result;
         }
-
 
         public T GetInstance<T>(params object[] args) where T : class
         {
@@ -116,8 +107,6 @@ namespace RawCMS.Library.Core.Helpers
             return GetImplementors(typeof(T), AssemblyScope);
         }
 
-
-
         /// <summary>
         /// give instances of a list of types
         /// </summary>
@@ -135,8 +124,6 @@ namespace RawCMS.Library.Core.Helpers
 
             return result;
         }
-
-
 
         private List<Type> GetImplementors(Type t, List<Assembly> bundledAssemblies)
         {

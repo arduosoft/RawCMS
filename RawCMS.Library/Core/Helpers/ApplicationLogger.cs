@@ -1,8 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 
 namespace RawCMS.Library.Core.Helpers
 {
@@ -24,13 +20,12 @@ namespace RawCMS.Library.Core.Helpers
 
         public static ILogger CreateLogger(string name)
         {
-            return LoggerFactory.CreateLogger( name);
+            return LoggerFactory.CreateLogger(name);
         }
-
 
         public static NLog.Logger CreateRawLogger(string env)
         {
-            var path = GetConfigPath(env);
+            string path = GetConfigPath(env);
             return NLog.Web.NLogBuilder.ConfigureNLog(path).GetCurrentClassLogger();
         }
 
@@ -40,7 +35,7 @@ namespace RawCMS.Library.Core.Helpers
             {
                 env = "." + env;
             }
-            var path = $"./conf/NLog{env}.config";
+            string path = $"./conf/NLog{env}.config";
             return path;
         }
     }

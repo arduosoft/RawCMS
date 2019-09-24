@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
-using RawCMS.Library.Service;
 using RawCMS.Plugins.GraphQL.Classes;
 
 namespace RawCMS.Plugins.GraphQL
@@ -32,11 +31,8 @@ namespace RawCMS.Plugins.GraphQL
             Logger.LogInformation("GraphQL plugin loaded");
         }
 
-        
-
         public override void ConfigureServices(IServiceCollection services)
         {
-
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
@@ -45,11 +41,8 @@ namespace RawCMS.Plugins.GraphQL
             services.AddSingleton<GraphQLService>();
         }
 
-      
-
         public override void Configure(IApplicationBuilder app)
-        {                            
-
+        {
             app.UseGraphiQl(config.GraphiQLPath, config.Path);
         }
 
@@ -60,16 +53,14 @@ namespace RawCMS.Plugins.GraphQL
             this.configuration = configuration;
         }
 
-
         private readonly AppEngine appEngine;
         private readonly GraphQLSettings config;
 
-        public GraphQLPlugin(AppEngine appEngine, GraphQLSettings config, ILogger logger) :base (appEngine, logger)
+        public GraphQLPlugin(AppEngine appEngine, GraphQLSettings config, ILogger logger) : base(appEngine, logger)
         {
             this.appEngine = appEngine;
             this.config = config;
         }
-        
 
         public override void ConfigureMvc(IMvcBuilder builder)
         {

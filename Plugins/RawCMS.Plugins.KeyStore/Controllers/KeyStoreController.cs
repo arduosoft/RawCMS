@@ -22,7 +22,7 @@ namespace RawCMS.Plugins.KeyStore.Controllers
         public void Get(string key)
         {
             // var content = new OkResult();
-            var result = new StringValues(new string[] { this.service.Get(key) as string });
+            StringValues result = new StringValues(new string[] { service.Get(key) as string });
             Response.Headers.Add("r", result);
             //return content;
         }
@@ -30,7 +30,7 @@ namespace RawCMS.Plugins.KeyStore.Controllers
         [HttpPost()]
         public void Set([FromBody]KeyStoreInsertModel insert)
         {
-            this.service.Set(insert);
+            service.Set(insert);
         }
     }
 }

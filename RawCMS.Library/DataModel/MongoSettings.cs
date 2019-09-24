@@ -21,8 +21,6 @@ namespace RawCMS.Library.DataModel
             var envConnectionString = Environment.GetEnvironmentVariable("MongoSettings:ConnectionString") ?? Environment.GetEnvironmentVariable("MongoSettingsConnectionString") ?? configuration["MongoSettings:ConnectionString"];
             var envDBName = Environment.GetEnvironmentVariable("MongoSettings:DBName") ?? Environment.GetEnvironmentVariable("MongoSettingsDBName") ?? configuration["MongoSettings:DBName"];
 
-
-
             MongoSettings instance = new MongoSettings
             {
                 ConnectionString = envConnectionString,

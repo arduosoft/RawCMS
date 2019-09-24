@@ -38,19 +38,14 @@ namespace RawCMS.Plugins.Core
         private readonly AuthConfig config;
         private AppEngine appEngine;
 
-
         public AuthPlugin(AppEngine appEngine, AuthConfig config, ILogger logger) : base(appEngine, logger)
         {
             this.appEngine = appEngine;
             this.config = config;
         }
 
-
-
-
         public override void ConfigureServices(IServiceCollection services)
-        {         
-
+        {
             services.AddSingleton<IUserStore<IdentityUser>, RawUserStore>();
             services.AddSingleton<IUserPasswordStore<IdentityUser>, RawUserStore>();
             services.AddSingleton<IPasswordValidator<IdentityUser>, RawUserStore>();
@@ -58,7 +53,7 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<IPasswordHasher<IdentityUser>, RawUserStore>();
             services.AddSingleton<IProfileService, RawUserStore>();
             services.AddSingleton<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
-                       
+
             services.AddSingleton<RawRoleStore>();
             services.AddSingleton<IRoleStore<IdentityRole>, RawRoleStore>();
             services.AddIdentity<IdentityUser, IdentityRole>();
@@ -117,12 +112,7 @@ namespace RawCMS.Plugins.Core
                      options.NameClaimType = ClaimTypes.NameIdentifier;
                  });
             }
-
-
         }
-
-
-
 
         public override void Configure(IApplicationBuilder app)
         {
@@ -130,10 +120,6 @@ namespace RawCMS.Plugins.Core
             app.UseIdentityServer();
             app.UseMvc();
         }
-
-
-
-
 
         public override void ConfigureMvc(IMvcBuilder builder)
         {
@@ -145,7 +131,6 @@ namespace RawCMS.Plugins.Core
 
         public override void Setup(IConfigurationRoot configuration)
         {
-            
         }
     }
 }

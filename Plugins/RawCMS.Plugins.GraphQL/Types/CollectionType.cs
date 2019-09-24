@@ -83,7 +83,7 @@ namespace RawCMS.Plugins.GraphQL.Types
 
                 columnField.Resolver = new NameFieldResolver();
                 columnField.Arguments = new QueryArguments(relatedCollection.TableArgs);
-                foreach(var arg in columnField.Arguments.Where(x=>!(new string[] { "pageNumber", "pageSize", "rawQuery", "_id" }.Contains(x.Name))).ToList())
+                foreach (var arg in columnField.Arguments.Where(x => !(new string[] { "pageNumber", "pageSize", "rawQuery", "_id" }.Contains(x.Name))).ToList())
                 {
                     arg.Name = $"{relatedObject.CollectionName}_{arg.Name}";
                     TableArgs.Add(arg);

@@ -9,7 +9,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
-using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Stores;
@@ -29,7 +28,6 @@ namespace RawCMS.Plugins.Core.Data
         {
             this.service = service;
         }
-
 
         public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
@@ -72,7 +70,5 @@ namespace RawCMS.Plugins.Core.Data
                 }
             }
         }
-
-        
     }
 }

@@ -20,7 +20,7 @@ namespace RawCMS.Plugins.Core.Controllers.Controllers.admin
     [ParameterValidator("collection", "_(.*)", false)]
     public class AdminController : CRUDController
     {
-        public AdminController(AppEngine manager, CRUDService service) : base(manager,service)
+        public AdminController(AppEngine manager, CRUDService service) : base(manager, service)
         {
         }
     }

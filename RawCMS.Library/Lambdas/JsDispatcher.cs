@@ -1,11 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Jint;
+using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using RawCMS.Library.Schema;
-using Jint;
+using System.Collections.Generic;
 
 namespace RawCMS.Library.Lambdas
 {
@@ -21,8 +18,8 @@ namespace RawCMS.Library.Lambdas
             {
                 if (!string.IsNullOrEmpty(settings.PresaveScript))
                 {
-                    var input = item.ToObject<Dictionary<string, object>>();
-                    var add = new Engine()
+                    Dictionary<string, object> input = item.ToObject<Dictionary<string, object>>();
+                    Engine add = new Engine()
                       .SetValue("item", input)
                      .Execute(settings.PresaveScript);
                     item = JObject.FromObject(input);
