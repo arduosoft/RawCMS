@@ -89,13 +89,13 @@ namespace RawCMS
         {
             var ass = new List<Assembly>();
             var builder = services.AddMvc();
-
+            var pluginPath = Configuration.GetValue<string>("PluginPath");
             List<Assembly> allAssembly = AssemblyHelper.GetAllAssembly();
 
             ReflectionManager rm = new ReflectionManager(allAssembly);
 
             appEngine = AppEngine.Create(
-                Configuration.GetValue<string>("PluginPath"),
+                pluginPath,
                 loggerFactory.CreateLogger<AppEngine>(),
                 rm, services, Configuration);
 

@@ -125,7 +125,7 @@ namespace RawCMS.Library.Core.Helpers
             return result;
         }
 
-        private List<Type> GetImplementors(Type t, List<Assembly> bundledAssemblies)
+        public List<Type> GetImplementors(Type t, List<Assembly> bundledAssemblies)
         {
             _logger.LogDebug("Get implementors for {0} in {1}", t,
                 string.Join(",", bundledAssemblies.Select(x => x.FullName).ToArray()));
