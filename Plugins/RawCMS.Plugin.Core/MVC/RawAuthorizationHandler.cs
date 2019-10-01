@@ -38,7 +38,7 @@ namespace RawCMS.Plugins.Core.MVC
             bool requiresPublicKey = !isAdmin && !string.IsNullOrWhiteSpace(apikey);
             bool requiresAuth = requiresPublicKey || requiresAdminKey;
 
-            if  (requiresPublicKey && context.HttpContext.Request.Headers["Authorization"] == apikey)
+            if (requiresPublicKey && context.HttpContext.Request.Headers["Authorization"] == apikey)
             {
                 SetUser("ApiKeyUser", "Authenticated", context.HttpContext);
             }
@@ -61,7 +61,7 @@ namespace RawCMS.Plugins.Core.MVC
             httpContext.Response.StatusCode = 401;
             httpContext.Response.Clear();
             httpContext.Response.WriteAsync("user not athenticated and api missing.");
-            
+
             throw new Exception("user not athenticated and api missing.");
         }
 

@@ -26,8 +26,11 @@ namespace RawCMS.Plugins.KeyStore
 
         public override string Description => "Add KeyStore capabilities";
 
-        public override void Init()
+        private readonly KeyStoreSettings config;
+
+        public KeyStorePlugin(AppEngine appEngine, KeyStoreSettings config, ILogger logger) : base(appEngine, logger)
         {
+            this.config = config;
             Logger.LogInformation("KeyStore plugin loaded");
         }
 
@@ -40,33 +43,15 @@ namespace RawCMS.Plugins.KeyStore
 
         private AppEngine appEngine;
 
-        public override void Configure(IApplicationBuilder app, AppEngine appEngine)
+        public override void Configure(IApplicationBuilder app)
         {
-            this.appEngine = appEngine;
-        }
-
-        private IConfigurationRoot configuration;
-
-        public override void Setup(IConfigurationRoot configuration)
-        {
-            this.configuration = configuration;
-        }
-
-        public KeyStoreSettings GetDefaultConfig()
-        {
-            return new KeyStoreSettings
-            {
-            };
-        }
-
-        private KeyStoreSettings config;
-
-        public void SetActualConfig(KeyStoreSettings config)
-        {
-            this.config = config;
         }
 
         public override void ConfigureMvc(IMvcBuilder builder)
+        {
+        }
+
+        public override void Setup(IConfigurationRoot configuration)
         {
         }
     }

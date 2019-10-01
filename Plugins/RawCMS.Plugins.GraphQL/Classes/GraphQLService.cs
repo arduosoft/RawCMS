@@ -11,7 +11,6 @@ using RawCMS.Library.Core;
 using RawCMS.Library.Lambdas;
 using RawCMS.Library.Schema;
 using RawCMS.Library.Service;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,41 +18,24 @@ namespace RawCMS.Plugins.GraphQL.Classes
 {
     public class GraphQLService
     {
-
-        public GraphQLService()
-        {
-        }
-
         private ILogger logger;
         public CRUDService CrudService { get; private set; }
 
         public Dictionary<string, CollectionSchema> Collections { get; private set; }
 
-
         private AppEngine appEngine;
 
         public GraphQLSettings Settings { get; private set; }
 
-        public void SetAppEngine(AppEngine manager)
+        public GraphQLService(AppEngine appEngine, GraphQLSettings settings, CRUDService service, ILogger logger)
         {
-            appEngine = manager;
-            var lambda = manager.Lambdas.Where(x => x.Name == "Entity Validation").First() as EntityValidation;
+            this.Settings = settings;
+            this.appEngine = appEngine;
+            this.CrudService = service;
+            this.logger = logger;
+            var lambda = appEngine.Lambdas.Where(x => x.Name == "Entity Validation").First() as EntityValidation;
             Collections = lambda.GetCollections();
         }
 
-        public void SetCRUDService(CRUDService service)
-        {
-            this.CrudService = service;
-        }
-
-        public void SetLogger(ILogger logger)
-        {
-            this.logger = logger;
-        }
-
-        public void SetSettings(GraphQLSettings settings)
-        {
-            Settings = settings;
-        }
     }
 }

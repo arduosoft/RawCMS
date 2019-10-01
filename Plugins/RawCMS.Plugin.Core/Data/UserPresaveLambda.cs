@@ -8,14 +8,13 @@
 //******************************************************************************
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
-using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Stores;
 using System.Collections.Generic;
 
 namespace RawCMS.Plugins.Core.Data
 {
-    public class UserPresaveLambda : PreSaveLambda, IRequireCrudService
+    public class UserPresaveLambda : PreSaveLambda
     {
         public override string Name => "User Presave lambda";
 

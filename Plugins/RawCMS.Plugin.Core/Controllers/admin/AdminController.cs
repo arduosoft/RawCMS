@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
+using RawCMS.Library.Service;
 
 namespace RawCMS.Plugins.Core.Controllers.Controllers.admin
 {
@@ -19,7 +20,7 @@ namespace RawCMS.Plugins.Core.Controllers.Controllers.admin
     [ParameterValidator("collection", "_(.*)", false)]
     public class AdminController : CRUDController
     {
-        public AdminController(AppEngine manager) : base(manager)
+        public AdminController(AppEngine manager, CRUDService service) : base(manager, service)
         {
         }
     }

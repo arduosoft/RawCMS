@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Model;
@@ -19,19 +18,15 @@ using System.Threading.Tasks;
 
 namespace RawCMS.Plugins.Core.Stores
 {
-    public class RawRoleStore : IRoleStore<IdentityRole>, IRequireCrudService, IRequireLog
+    public class RawRoleStore : IRoleStore<IdentityRole>
     {
-        private ILogger logger;
-        private CRUDService service;
+        private readonly ILogger logger;
+        private readonly CRUDService service;
         private const string collection = "_roles";
 
-        public void SetCRUDService(CRUDService service)
+        public RawRoleStore(CRUDService service, ILogger logger)
         {
             this.service = service;
-        }
-
-        public void SetLogger(ILogger logger)
-        {
             this.logger = logger;
         }
 

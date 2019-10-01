@@ -14,9 +14,9 @@ namespace RawCMS.Plugins.Core.Extensions
 {
     public static class IdentityServerExtensions
     {
-        public static IIdentityServerBuilder AddProfileServiceCustom(this IIdentityServerBuilder builder, RawUserStore instance)
+        public static IIdentityServerBuilder AddProfileServiceCustom(this IIdentityServerBuilder builder)
         {
-            builder.Services.AddTransient<IProfileService, RawUserStore>(x => { return instance; });
+            builder.Services.AddTransient<IProfileService, RawUserStore>();
 
             return builder;
         }

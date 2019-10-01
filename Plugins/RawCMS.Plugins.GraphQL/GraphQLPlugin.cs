@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
-using RawCMS.Library.Service;
 using RawCMS.Plugins.GraphQL.Classes;
 
 namespace RawCMS.Plugins.GraphQL
@@ -27,35 +26,19 @@ namespace RawCMS.Plugins.GraphQL
 
         public override string Description => "Add GraphQL CMS capabilities";
 
-        public override void Init()
-        {
-            Logger.LogInformation("GraphQL plugin loaded");
-        }
-
-        private GraphQLService graphService = new GraphQLService();
-
         public override void ConfigureServices(IServiceCollection services)
         {
-
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
             services.AddScoped<ISchema, GraphQLSchema>();
             services.AddSingleton<GraphQLQuery>();
-            services.AddSingleton(x => graphService);
+            services.AddSingleton<GraphQLService>();
+            Logger.LogInformation("GraphQL plugin loaded");
         }
 
-        private AppEngine appEngine;
-
-        public override void Configure(IApplicationBuilder app, AppEngine appEngine)
+        public override void Configure(IApplicationBuilder app)
         {
-            this.appEngine = appEngine;
-            graphService.SetCRUDService(this.appEngine.Service);
-            graphService.SetLogger(this.appEngine.GetLogger(this));
-            graphService.SetSettings(config);
-            graphService.SetAppEngine(appEngine);
-
-
             app.UseGraphiQl(config.GraphiQLPath, config.Path);
         }
 
@@ -66,20 +49,12 @@ namespace RawCMS.Plugins.GraphQL
             this.configuration = configuration;
         }
 
-        public GraphQLSettings GetDefaultConfig()
-        {
-            return new GraphQLSettings
-            {
-                Path = "/api/graphql",
-                EnableMetrics = false,
-                GraphiQLPath = "/graphql"
-            };
-        }
+        private readonly AppEngine appEngine;
+        private readonly GraphQLSettings config;
 
-        private GraphQLSettings config;
-
-        public void SetActualConfig(GraphQLSettings config)
+        public GraphQLPlugin(AppEngine appEngine, GraphQLSettings config, ILogger logger) : base(appEngine, logger)
         {
+            this.appEngine = appEngine;
             this.config = config;
         }
 

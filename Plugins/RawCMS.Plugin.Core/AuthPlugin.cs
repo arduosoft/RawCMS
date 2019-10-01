@@ -30,42 +30,39 @@ namespace RawCMS.Plugins.Core
 
         public override string Description => "Add authorizaton capabilities";
 
-        public override void Init()
+        private readonly AuthConfig config;
+        private AppEngine appEngine;
+
+        public AuthPlugin(AppEngine appEngine, AuthConfig config, ILogger logger) : base(appEngine, logger)
         {
+            this.appEngine = appEngine;
+            this.config = config;
             Logger.LogInformation("Authorization plugin loaded");
         }
 
-        private RawUserStore userStore = new RawUserStore();
-
         public override void ConfigureServices(IServiceCollection services)
         {
-
-            services.Configure<ConfigurationOptions>(configuration);
-
-            services.AddSingleton<IUserStore<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IUserPasswordStore<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IPasswordValidator<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IUserClaimStore<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IPasswordHasher<IdentityUser>>(x => { return userStore; });
-            services.AddSingleton<IProfileService>(x => { return userStore; });
+            services.AddSingleton<IUserStore<IdentityUser>, RawUserStore>();
+            services.AddSingleton<IUserPasswordStore<IdentityUser>, RawUserStore>();
+            services.AddSingleton<IPasswordValidator<IdentityUser>, RawUserStore>();
+            services.AddSingleton<IUserClaimStore<IdentityUser>, RawUserStore>();
+            services.AddSingleton<IPasswordHasher<IdentityUser>, RawUserStore>();
+            services.AddSingleton<IProfileService, RawUserStore>();
             services.AddSingleton<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
 
-            //Add apikey authentication
-
-            RawRoleStore roleStore = new RawRoleStore();
-            services.AddSingleton<IRoleStore<IdentityRole>>(x => { return roleStore; });
-
+            services.AddSingleton<RawRoleStore>();
+            services.AddSingleton<IRoleStore<IdentityRole>, RawRoleStore>();
             services.AddIdentity<IdentityUser, IdentityRole>();
 
             // configure identity server with in-memory stores, keys, clients and scopes
             services.AddIdentityServer()
             .AddDeveloperSigningCredential()
             .AddInMemoryPersistedGrants()
-            .AddInMemoryIdentityResources(config.GetIdentityResources())
+            .AddInMemoryIdentityResources(this.config.GetIdentityResources())
             .AddInMemoryApiResources(config.GetApiResources())
             .AddInMemoryClients(config.GetClients())
             .AddAspNetIdentity<IdentityUser>()
-            .AddProfileServiceCustom(userStore);
+            .AddProfileServiceCustom();
 
             if (config.Mode == OAuthMode.External)
             {
@@ -111,52 +108,13 @@ namespace RawCMS.Plugins.Core
                      options.NameClaimType = ClaimTypes.NameIdentifier;
                  });
             }
-
-           
         }
 
-        private IConfigurationRoot configuration;
-
-        public override void Setup(IConfigurationRoot configuration)
+        public override void Configure(IApplicationBuilder app)
         {
-            this.configuration = configuration;
-        }
-
-        private AppEngine appEngine;
-
-        public override void Configure(IApplicationBuilder app, AppEngine appEngine)
-        {
-            this.appEngine = appEngine;
-
-            userStore.SetCRUDService(this.appEngine.Service);
-            userStore.SetLogger(this.appEngine.GetLogger(this));
-            userStore.InitData().Wait();
-
-            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
             app.UseAuthentication();
             app.UseIdentityServer();
-
             app.UseMvc();
-        }
-
-        public AuthConfig GetDefaultConfig()
-        {
-            return new AuthConfig()
-            {
-                Mode = OAuthMode.Standalone,
-                Authority = "http://localhost:50093",
-                ClientId = "raw.client",
-                ClientSecret = "raw.secret",
-                ApiResource = "rawcms"
-            };
-        }
-
-        private AuthConfig config;
-
-        public void SetActualConfig(AuthConfig config)
-        {
-            this.config = config;
         }
 
         public override void ConfigureMvc(IMvcBuilder builder)
@@ -165,6 +123,10 @@ namespace RawCMS.Plugins.Core
             {
                 options.Filters.Add(new RawAuthorizationAttribute(config.ApiKey, config.AdminApiKey));
             });
+        }
+
+        public override void Setup(IConfigurationRoot configuration)
+        {
         }
     }
 }

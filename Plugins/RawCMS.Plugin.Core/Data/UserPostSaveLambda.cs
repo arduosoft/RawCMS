@@ -9,7 +9,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
-using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Stores;
@@ -17,13 +16,18 @@ using System.Collections.Generic;
 
 namespace RawCMS.Plugins.Core.Data
 {
-    public class UserPostsaveLambda : PostSaveLambda, IRequireCrudService
+    public class UserPostsaveLambda : PostSaveLambda
     {
         public override string Name => "User Presave lambda";
 
         public override string Description => "provide normalized name and prevent password change";
 
-        private CRUDService service;
+        private readonly CRUDService service;
+
+        public UserPostsaveLambda(CRUDService service)
+        {
+            this.service = service;
+        }
 
         public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
@@ -65,11 +69,6 @@ namespace RawCMS.Plugins.Core.Data
                     }
                 }
             }
-        }
-
-        public void SetCRUDService(CRUDService service)
-        {
-            this.service = service;
         }
     }
 }

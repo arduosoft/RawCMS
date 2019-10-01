@@ -22,7 +22,7 @@ namespace RawCMS.Plugins.GraphQL.Classes
                 Library.Schema.CollectionSchema metaColl = graphQLService.Collections[key];
                 CollectionType type = new CollectionType(metaColl, graphQLService.Collections, graphQLService);
                 ListGraphType listType = new ListGraphType(type);
-                
+
                 AddField(new FieldType
                 {
                     Name = metaColl.CollectionName,

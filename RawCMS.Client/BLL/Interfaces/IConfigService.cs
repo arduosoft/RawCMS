@@ -13,6 +13,7 @@ namespace RawCMS.Client.BLL.Interfaces
     public interface IConfigService
     {
         ConfigFile Load();
+
         ConfigFile Save(string filePath);
     }
 }

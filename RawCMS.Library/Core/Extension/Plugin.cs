@@ -17,21 +17,21 @@ namespace RawCMS.Library.Core.Extension
     /// <summary>
     /// RawCMS plugin definitio
     /// </summary>
-    public abstract class Plugin : IRequireApp, IInitable
+    public abstract class Plugin
     {
         public virtual int Priority { get; internal set; } = 1;
         public abstract string Name { get; }
         public abstract string Description { get; }
-        public ILogger Logger { get => logger; private set => logger = value; }
+        public ILogger Logger { get => logger; }
         public AppEngine Engine => engine;
 
-        private AppEngine engine;
-        private ILogger logger;
+        private readonly AppEngine engine;
+        private readonly ILogger logger;
 
-        public void SetAppEngine(AppEngine manager)
+        public Plugin(AppEngine engine, ILogger logger)
         {
-            engine = manager;
-            Logger = Engine.GetLogger(this);
+            this.engine = engine;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -42,22 +42,18 @@ namespace RawCMS.Library.Core.Extension
             Logger.LogInformation($"Plugin {Name} is notified about app starts");
         }
 
-        public abstract void Init();
-
         /// <summary>
         /// this allow plugin to register its own services
         /// </summary>
         /// <param name="services"></param>
         public abstract void ConfigureServices(IServiceCollection services);
 
-
         /// <summary>
         /// this allow the plugin to interact with appengine and application builder
         /// </summary>
         /// <param name="app"></param>
         /// <param name="appEngine"></param>
-        public abstract void Configure(IApplicationBuilder app, AppEngine appEngine);
-
+        public abstract void Configure(IApplicationBuilder app);
 
         /// <summary>
         /// this metod receive configuration to allow plugin configure itself
@@ -70,6 +66,5 @@ namespace RawCMS.Library.Core.Extension
         /// </summary>
         /// <param name="builder"></param>
         public abstract void ConfigureMvc(IMvcBuilder builder);
-       
     }
 }
