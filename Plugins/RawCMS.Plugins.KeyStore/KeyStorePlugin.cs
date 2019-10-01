@@ -31,10 +31,6 @@ namespace RawCMS.Plugins.KeyStore
         public KeyStorePlugin(AppEngine appEngine, KeyStoreSettings config, ILogger logger) : base(appEngine, logger)
         {
             this.config = config;
-        }
-
-        public override void Init()
-        {
             Logger.LogInformation("KeyStore plugin loaded");
         }
 

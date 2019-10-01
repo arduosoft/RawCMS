@@ -24,10 +24,6 @@ namespace RawCMS.Plugins.Core
 
         public CorePlugin(AppEngine appEngine, ILogger logger) : base(appEngine, logger)
         {
-        }
-
-        public override void Init()
-        {
             Logger.LogInformation("Core plugin loaded");
         }
 

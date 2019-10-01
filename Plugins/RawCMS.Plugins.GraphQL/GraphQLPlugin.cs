@@ -26,11 +26,6 @@ namespace RawCMS.Plugins.GraphQL
 
         public override string Description => "Add GraphQL CMS capabilities";
 
-        public override void Init()
-        {
-            Logger.LogInformation("GraphQL plugin loaded");
-        }
-
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
@@ -39,6 +34,7 @@ namespace RawCMS.Plugins.GraphQL
             services.AddScoped<ISchema, GraphQLSchema>();
             services.AddSingleton<GraphQLQuery>();
             services.AddSingleton<GraphQLService>();
+            Logger.LogInformation("GraphQL plugin loaded");
         }
 
         public override void Configure(IApplicationBuilder app)

@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace RawCMS.Library.Lambdas
 {
-    public class EntityValidation : SchemaValidationLambda, IInitable
+    public class EntityValidation : SchemaValidationLambda
     {
         public override string Name => "Entity Validation";
 
@@ -34,10 +34,6 @@ namespace RawCMS.Library.Lambdas
         {
             this.appEngine = appEngine;
             this.service = service;
-        }
-
-        public void Init()
-        {
             InitSchema();
             InitValidators();
         }

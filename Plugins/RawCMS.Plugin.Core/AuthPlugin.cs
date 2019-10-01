@@ -30,11 +30,6 @@ namespace RawCMS.Plugins.Core
 
         public override string Description => "Add authorizaton capabilities";
 
-        public override void Init()
-        {
-            Logger.LogInformation("Authorization plugin loaded");
-        }
-
         private readonly AuthConfig config;
         private AppEngine appEngine;
 
@@ -42,6 +37,7 @@ namespace RawCMS.Plugins.Core
         {
             this.appEngine = appEngine;
             this.config = config;
+            Logger.LogInformation("Authorization plugin loaded");
         }
 
         public override void ConfigureServices(IServiceCollection services)

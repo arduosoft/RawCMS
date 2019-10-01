@@ -17,7 +17,7 @@ namespace RawCMS.Library.Core.Extension
     /// <summary>
     /// RawCMS plugin definitio
     /// </summary>
-    public abstract class Plugin : IInitable
+    public abstract class Plugin
     {
         public virtual int Priority { get; internal set; } = 1;
         public abstract string Name { get; }
@@ -41,8 +41,6 @@ namespace RawCMS.Library.Core.Extension
         {
             Logger.LogInformation($"Plugin {Name} is notified about app starts");
         }
-
-        public abstract void Init();
 
         /// <summary>
         /// this allow plugin to register its own services
