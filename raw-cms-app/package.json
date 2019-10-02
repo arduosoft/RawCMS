@@ -1,0 +1,18 @@
+{
+  "name": "raw-cms-app",
+  "version": "0.0.1",
+  "description": "Web app/GUI for Raw CMS.",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "serve": "cd src && ws --spa index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cpx": "^1.5.0",
+    "local-web-server": "^3.0.7"
+  },
+  "dependencies": {
+    "vue": "^2.6.10"
+  }
+}

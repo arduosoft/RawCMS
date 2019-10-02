@@ -1,0 +1,10 @@
+{
+  "core": {
+    "home": {
+      "helpText": "Welcome! Please select a menu entry on the left."
+    },
+    "entities": {
+      "title": "Entities"
+    }
+  }
+}
