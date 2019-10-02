@@ -18,7 +18,7 @@ RawCMS is a headless CMS written in asp.net core build for developers that embra
 6. **Caller Friendly** Produce data in many formats to help integration (Odata, GraphQL)
 
 
-**__If you are interested in contriubuting just open an issue to start a converstion. Helps wanted.__**
+**__If you are interested in contributing. just open an issue to start a conversion. Help wanted.__**
 
 ## Download
 Actually, you have 3 options to start using RawCMS:
@@ -26,7 +26,7 @@ Actually, you have 3 options to start using RawCMS:
 - download the **zip and deploy** a regular asp.net core application from [github releases](https://github.com/arduosoft/RawCMS/releases)
 - **fork** the repository and customize (the deploy as you want)
 
-## Tecnical documentation
+## Technical documentation
 You can find all we have on [Github wiki](https://github.com/arduosoft/RawCMS/wiki). There is user documentation for users, developers, and contributors.
 
 ## Features
@@ -43,13 +43,13 @@ You can find all we have on [Github wiki](https://github.com/arduosoft/RawCMS/wi
 
 ## LIMITATIONS
 - CRUD controller must manage exceptions and errors
-- No UI to manange entities
+- No UI to manage entities
 - No data data relation
 ## ROADMAP
 
 ### PHASE 1 - POC
 
-- [x] Dynamic entity managment
+- [x] Dynamic entity management
 - [x] Expose with regular web api services and swagger
 - [x] Lambda
 - [x] Schema definition and validation
@@ -65,8 +65,8 @@ You can find all we have on [Github wiki](https://github.com/arduosoft/RawCMS/wi
 ### PHASE 3 - Ready to send rocket on Mars
 - [ ] Expose with Odata
 - [ ] Test and client sample
-- [ ] design UI for schema managment
-- [ ] design UI for data managment
+- [ ] design UI for schema management
+- [ ] design UI for data management
 
 
 ## License
