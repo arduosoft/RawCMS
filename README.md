@@ -1,6 +1,6 @@
 <img align="left"  src="https://github.com/arduosoft/RawCMS/blob/develop/asset/logo_horizzontal.png?raw=true">
 
-RawCMS is a headless CMS written in asp.net core build for developers that embrace API first technology. RawCMS uses MongoDB as data storage and is ready to be hosted on Docker containers.
+RawCMS is a headless CMS written in ASP.NET Core, built for developers that embrace API-first technology. RawCMS uses MongoDB as its data storage and is ready to be hosted on Docker containers.
 
 [![CodeFactor](https://www.codefactor.io/repository/github/arduosoft/rawcms/badge?style=flat-square)](https://www.codefactor.io/repository/github/arduosoft/rawcms/)
 [![Build status](https://ci.appveyor.com/api/projects/status/65b7mnf0bop393u7/branch/develop?svg=true)](https://ci.appveyor.com/project/zeppaman/rawcms)
@@ -10,33 +10,33 @@ RawCMS is a headless CMS written in asp.net core build for developers that embra
 
 ## The mission of RawCMS
 
-1. **Modular** Each module is shipped into a NuGet package that can be added to the system to gain new features
-2. **Headless** RawCMS doesn't include any presentation logic. All is delegated to the caller. This aims to create a scalable and reusable system
-3. **Packaged** RawCMS must be shipped into a single deployable package or added into an existent asp.net core application as NuGet package.
+1. **Modular** Each module is shipped in a NuGet package that can be added to the system to gain new features
+2. **Headless** RawCMS doesn't include any presentation logic. All presentation is delegated to the caller. This aims to create a scalable and reusable system
+3. **Packaged** RawCMS must be shipped into a single deployable package or added into an existent ASP.NET core application as NuGet package.
 4. **Extensible** RawCMS must be customized by the user through extension only. So, no changes to the code will be done. Just adding new packages.
-5. **Buildless** RawCMS must give the possibility to manage an installation without the need to manage a codebase or a code repository. Will be possible to add lambdas code at runtime.
+5. **Buildless** RawCMS must give the possibility to manage an installation without the need to manage a codebase or a code repository. It will be possible to add lambdas code at runtime.
 6. **Caller Friendly** Produce data in many formats to help integration (Odata, GraphQL)
 
 
 **__If you are interested in contributing. just open an issue to start a conversion. Help wanted.__**
 
-## Download
-Actually, you have 3 options to start using RawCMS:
-- run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhu page](https://hub.docker.com/r/arduosoft/rawcms-preview) to get more options like docker-compose file.
-- download the **zip and deploy** a regular asp.net core application from [github releases](https://github.com/arduosoft/RawCMS/releases)
-- **fork** the repository and customize (the deploy as you want)
+## Run
+You have 3 options to start using RawCMS:
+- Run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhu page](https://hub.docker.com/r/arduosoft/rawcms-preview) to get more options like docker-compose file.
+- Download the **zip and deploy** a regular ASP.NET core application from [github releases](https://github.com/arduosoft/RawCMS/releases)
+- **fork** the repository and customize (then deploy as you want)
 
 ## Technical documentation
 You can find all we have on [Github wiki](https://github.com/arduosoft/RawCMS/wiki). There is user documentation for users, developers, and contributors.
 
 ## Features
-- store and filter any data using MongoDB expression
-- docker container ready
-- data validation
-- possibility to add business logic on the backend
-- authentication against external Oauth2 server
-- provide Oauth2 tokens and store users into local DB
-- possibility to create a custom endpoint
+- Store and filter any data using MongoDB expression
+- Docker container ready
+- Data validation
+- Possibility to add business logic on the backend
+- Authentication against external Oauth2 server
+- Provide Oauth2 tokens and store users into local DB
+- Possibility to create a custom endpoint
 - Upsert and incremental update
 - GraphQL data query
 
