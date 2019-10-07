@@ -1,4 +1,5 @@
 <v-navigation-drawer v-model="isVisible" :clipped="$vuetify.breakpoint.lgAndUp" app>
+  <link rel="stylesheet" href="/modules/core/components/left-menu/left-menu.css" />
   <v-list dense>
     <template v-for="item in items">
       <v-row v-if="item.heading" :key="item.heading" align="center">
@@ -23,7 +24,12 @@
             </v-list-item-content>
           </v-list-item>
         </template>
-        <v-list-item v-for="(child, i) in item.children" :key="i" @click.stop="goTo(item)">
+        <v-list-item
+          v-for="(child, i) in item.children"
+          :key="i"
+          :class="{ 'router-link-active': isActive(item)}"
+          @click.stop="goTo(item)"
+        >
           <v-list-item-action v-if="child.icon">
             <v-icon>{{ child.icon }}</v-icon>
           </v-list-item-action>
@@ -32,7 +38,12 @@
           </v-list-item-content>
         </v-list-item>
       </v-list-group>
-      <v-list-item v-else :key="item.text" @click.stop="goTo(item)">
+      <v-list-item
+        v-else
+        :key="item.text"
+        :class="{ 'router-link-active': isActive(item)}"
+        @click.stop="goTo(item)"
+      >
         <v-list-item-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-action>
@@ -43,3 +54,9 @@
     </template>
   </v-list>
 </v-navigation-drawer>
+<style>
+  .router-link-active {
+    opacity: 0.4;
+    color: red;
+  }
+</style>
