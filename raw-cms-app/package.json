@@ -4,7 +4,7 @@
   "description": "Web app/GUI for Raw CMS.",
   "scripts": {
     "build": "node scripts/build.js",
-    "serve": "cd src && ws --spa index.html"
+    "serve": "cd src && ws --spa index.html --hostname localhost --open"
   },
   "author": "",
   "license": "ISC",
