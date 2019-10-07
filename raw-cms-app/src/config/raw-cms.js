@@ -1,17 +1,21 @@
-const _RawCMS = window.RawCMS || {};
+class RawCms {
+  plugins = {};
+  utils = {};
 
-_RawCMS.plugins = _RawCMS.plugins || {};
+  vuexStore;
+  env = {};
 
-_RawCMS.loadComponentTpl = path => {
-  return axios({
-    url: path,
-    method: 'get',
-  }).then(x => {
-    return x.data;
-  });
-};
+  eventBus = new Vue();
 
-_RawCMS.eventBus = new Vue();
+  loadComponentTpl = path => {
+    return axios.get(path).then(x => {
+      return x.data;
+    });
+  };
+}
 
-window.RawCMS = _RawCMS;
-export const RawCMS = _RawCMS;
+const _rawCms = new RawCms();
+
+window.RawCMS = _rawCms;
+export const RawCMS = _rawCms;
+export default _rawCms;
