@@ -4,7 +4,7 @@ const _i18n = new VueI18n({
   messages: { en: {} },
 });
 
-class _I18nHelper {
+class I18nHelper {
   filesLoaded = [];
 
   load(lang, path) {
@@ -30,5 +30,5 @@ class _I18nHelper {
   }
 }
 
-export const i18nHelper = new _I18nHelper();
+export const i18nHelper = new I18nHelper();
 export const i18n = _i18n;
