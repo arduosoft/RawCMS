@@ -1,4 +1,4 @@
-const HomeDef = async (res, rej) => {
+const _Home = async (res, rej) => {
   res({
     template: `
       <v-row align="center" justify="center">
@@ -8,4 +8,5 @@ const HomeDef = async (res, rej) => {
   });
 };
 
-export default HomeDef;
+export const Home = _Home;
+export default _Home;

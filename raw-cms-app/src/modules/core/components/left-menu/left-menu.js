@@ -1,8 +1,10 @@
-import { evtToggleDrawer } from '../events.js';
-import { RawCMS } from '/config/raw-cms.js';
+import { RawCMS } from '../../../../config/raw-cms.js';
+import { evtToggleDrawer } from '../../events.js';
 
-const LeftMenuDef = async (resolve, reject) => {
-  const tpl = await RawCMS.loadComponentTpl('/modules/core/left-menu/left-menu.tpl.html');
+const _LeftMenu = async (resolve, reject) => {
+  const tpl = await RawCMS.loadComponentTpl(
+    '/modules/core/components/left-menu/left-menu.tpl.html'
+  );
 
   resolve({
     data: () => {
@@ -16,7 +18,13 @@ const LeftMenuDef = async (resolve, reject) => {
         this.isVisible = !this.isVisible;
       },
       goTo: function(item) {
+        if (this.isActive(item)) {
+          return;
+        }
         this.$router.replace(item.route);
+      },
+      isActive: function(item) {
+        return item.route === this.$route.name;
       },
     },
     mounted: function() {
@@ -28,4 +36,5 @@ const LeftMenuDef = async (resolve, reject) => {
   });
 };
 
-export default LeftMenuDef;
+export const LeftMenu = _LeftMenu;
+export default _LeftMenu;
