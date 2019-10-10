@@ -74,7 +74,10 @@ namespace RawCMS.Library.Core
                 {
                     if (type.IsPublic)
                     {
-                        _logger.LogDebug($"Added {type.FullName}..");
+                        if (_logger.IsEnabled(LogLevel.Trace))
+                        {
+                            _logger.LogDebug($"Added {type.FullName}..");
+                        }
                         typesToAdd.Add(type);
                     }
                 }
