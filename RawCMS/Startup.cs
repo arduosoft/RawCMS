@@ -79,6 +79,9 @@ namespace RawCMS
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
+            appEngine.RegisterPluginsMiddleweares(app);
+
             app.UseStaticFiles();
 
             app.UseWelcomePage();
