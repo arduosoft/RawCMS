@@ -23,7 +23,7 @@ class LoginService {
 
   async login(username, password) {
     return axios
-      .post(`${RawCMS.env.api.baseUrl}/web-app-login`, {
+      .post(`${RawCMS.env.api.baseUrl}/api/web-app-login`, {
         username,
         password,
       })
