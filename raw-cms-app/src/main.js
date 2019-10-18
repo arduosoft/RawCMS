@@ -5,6 +5,7 @@ import { router } from './config/router.js';
 import { vuelidate, vuelidateValidators } from './config/vuelidate.js';
 import { vuetify } from './config/vuetify.js';
 import { vuexStore } from './config/vuex.js';
+import { epicSpinners } from './utils/spinners.js';
 
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
@@ -20,6 +21,7 @@ RawCMS.vuexStore = vuexStore;
 
 // Add utilities
 RawCMS.utils.vuelidateValidators = vuelidateValidators;
+RawCMS.utils.epicSpinners = epicSpinners;
 
 // Add env and start app
 axios({
