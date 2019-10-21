@@ -9,9 +9,9 @@ namespace RawCMS.Plugins.ApiGateway.Classes
     {
         public ApiGatewayConfig()
         {
-            Balancer.Add(new BalancerOptions
+            Balancer.Add(new BalancerOption
             {
-                Enable = true,
+                Enable = false,
                 Host = "localhost:64516",
                 Nodes = new Node[] {
                     new Node {
@@ -32,8 +32,24 @@ namespace RawCMS.Plugins.ApiGateway.Classes
                 Port = 64516,
                 Scheme = "http"
             });
+
+            Proxy.Add(new ProxyOption
+            {
+                Enable = true,
+                Host = "localhost:64516",
+                Node = new Node
+                {
+                    Host = "google.com",
+                    Port = 443,
+                    Scheme = "https"
+                },
+                Path = "^(.*)$",
+                Port = 64516,
+                Scheme = "http"
+            });
         }
 
-        public List<BalancerOptions> Balancer { get; set; } = new List<BalancerOptions>();
+        public List<BalancerOption> Balancer { get; set; } = new List<BalancerOption>();
+        public List<ProxyOption> Proxy { get; set; } = new List<ProxyOption>();
     }
 }

@@ -46,6 +46,10 @@ namespace RawCMS.Plugins.ApiGateway.Middleware
                                          x.Port == port && x.Enable).ToList();
             // TODO: get regex that not contains other regex
             var vhost = vhosts?.OrderByDescending(x => x.Path?.Length).FirstOrDefault();
+            if(vhost != null)
+            {
+                vhost.Nodes = vhost.Nodes.Where(x => x.Enable).ToArray();
+            }
             context.Items["bal-host"] = host;
             context.Items["bal-vhost"] = vhost;
             var policy = dispatcher.GetActiveBalancerPolicy(context);

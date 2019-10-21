@@ -22,7 +22,7 @@ namespace RawCMS.Plugins.ApiGateway.Classes.Policy
 
         public bool IsEnable(HttpContext context)
         {
-            var vhost = context.Items["bal-vhost"] as BalancerOptions;
+            var vhost = context.Items["bal-vhost"] as BalancerOption;
             return vhost!= null && string.Compare(vhost.Policy, Name, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 

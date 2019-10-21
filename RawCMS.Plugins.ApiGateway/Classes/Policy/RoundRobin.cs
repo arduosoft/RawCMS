@@ -18,7 +18,7 @@ namespace RawCMS.Plugins.ApiGateway.Classes.Policy
 
         public async override Task<object> Execute(BalancerData balancerData, HttpContext context, RawHandler handler)
         {
-            var vhost = context.Items["bal-vhost"] as BalancerOptions;
+            var vhost = context.Items["bal-vhost"] as BalancerOption;
             balancerData.LastServed = (balancerData.LastServed + 1) % vhost.Nodes.Length;
             var node = vhost.Nodes[balancerData.LastServed];
             await handler.HandleRequest(context, node);
