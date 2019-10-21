@@ -12,8 +12,6 @@ namespace RawCMS.Library.Core.Interfaces
 
         string Description { get; }
 
-        int Priority { get; set; }
-
         Task InvokeAsync(HttpContext context);
     }
 }

@@ -25,8 +25,6 @@ namespace RawCMS.Library.Core.Extension
 
         public abstract string Description { get; }
 
-        public int Priority { get; set; } = 1;
-
         public abstract Task InvokeAsync(HttpContext context);
     }
 }

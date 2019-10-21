@@ -11,9 +11,12 @@ namespace RawCMS.Plugins.ApiGateway.Interfaces
 {
     public abstract class GatewayMiddleware : Middleware<ApiGatewayConfig>
     {
-        public GatewayMiddleware(RequestDelegate requestDelegate, ILogger logger, ApiGatewayConfig config) :
+        internal IEnumerable<RawHandler> handlers { get; set; }
+
+        public GatewayMiddleware(RequestDelegate requestDelegate, ILogger logger, ApiGatewayConfig config, IEnumerable<RawHandler> handlers) :
             base(requestDelegate, logger, config)
         {
+            this.handlers = handlers;
         }
     }
 }

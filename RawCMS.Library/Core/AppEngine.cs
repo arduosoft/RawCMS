@@ -289,22 +289,12 @@ namespace RawCMS.Library.Core
             _logger.LogDebug("Discover Middleware in Bundle");
 
             var middlewears = this.reflectionManager.GetImplementors(typeof(IConfigurableMiddleware<>));
+            middlewears = middlewears.OrderBy(x => (Attribute.GetCustomAttribute(x, typeof(MiddlewarePriorityAttribute)) as MiddlewarePriorityAttribute)?.Order ?? 1000).ToList();
             foreach (var mid in middlewears)
             {
                 try
                 {
                     applicationBuilder.UseMiddleware(mid);
-                    //_logger.LogDebug($"Register Middleware {mid} ");
-                    //var midInstance = applicationBuilder.ApplicationServices.GetService(mid);
-                    //if (midInstance != null)
-                    //{
-                    //    //_logger.LogDebug($"loading Lambdas {midInstance.Name} - {midInstance.Description} - {midInstance.GetType().FullName} ");
-                    //    applicationBuilder.UseMiddleware(midInstance.GetType());
-                    //}
-                    //else
-                    //{
-                    //    _logger.LogDebug($"error during Middleware init {mid} ");
-                    //}
                 }
                 catch (Exception err)
                 {
@@ -354,7 +344,6 @@ namespace RawCMS.Library.Core
                 ass.Add(x.GetType().Assembly);
             });
 
-            //this.DiscoverMiddlewareInBundle(services);
             this.DiscoverLambdasInBundle(services);
         }
 
@@ -380,22 +369,6 @@ namespace RawCMS.Library.Core
             foreach (Type type in lambdas)
             {
                 _logger.LogDebug($"Lambda found {type.FullName}");
-                services.AddSingleton(type);
-            }
-        }
-
-        // <summary>
-        // Find and load all middleware already loaded with main bundle(no dinamycs)
-        // </summary>
-        private void DiscoverMiddlewareInBundle(IServiceCollection services)
-        {
-            _logger.LogDebug("Discover Middleware in Bundle");
-
-            List<Type> middlewares = this.reflectionManager.GetImplementors(typeof(IConfigurableMiddleware<>));
-
-            foreach (Type type in middlewares)
-            {
-                _logger.LogDebug($"Middleware found {type.FullName}");
                 services.AddSingleton(type);
             }
         }

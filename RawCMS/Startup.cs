@@ -57,6 +57,7 @@ namespace RawCMS
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             appEngine.InvokeConfigure(app);
+            appEngine.RegisterPluginsMiddleweares(app);
 
             if (env.IsDevelopment())
             {
@@ -80,7 +81,6 @@ namespace RawCMS
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            appEngine.RegisterPluginsMiddleweares(app);
 
             app.UseStaticFiles();
 

@@ -160,10 +160,6 @@ namespace RawCMS.Library.Core.Helpers
             foreach (Assembly assembly in bundledAssemblies)
             {
                 _logger.LogDebug("loading from" + assembly.FullName);
-                if(assembly.FullName.Contains("s.ApiGateway"))
-                {
-                    var r = "";
-                }
                 Type[] types = assembly.GetTypes();
                 foreach (Type type in types)
                 {
