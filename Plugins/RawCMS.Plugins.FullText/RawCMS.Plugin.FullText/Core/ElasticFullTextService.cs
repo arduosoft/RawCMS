@@ -50,7 +50,7 @@ namespace RawCMS.Plugins.FullText.Core
                     jobj["Id"] = Guid.NewGuid();
                 }
             }
-            client.LowLevel.Index<JObjectResponse>(indexname,  jobj["Id"].ToString(), PostData.String(jobj.ToString()));
+            var resp=client.LowLevel.Index<JObjectResponse>(indexname,  jobj["Id"].ToString(), PostData.String(jobj.ToString()));
         }
 
         public override void CreateIndex(string name)
@@ -66,7 +66,7 @@ namespace RawCMS.Plugins.FullText.Core
         {
             var response = client.LowLevel.Get< JObjectResponse > (indexname, docId);
             var json=Encoding.UTF8.GetString(response.ResponseBodyInBytes);
-            return JObject.Parse(json);
+            return (JObject)JObject.Parse(json)["_source"];
         }
 
         public override bool IndexExists(string name)
@@ -80,11 +80,14 @@ namespace RawCMS.Plugins.FullText.Core
             var searchResponse = client.Search<JObject>(s => s
                          .Size(size)
                          .Skip(start)
+                         .Index(indexname)
+                      //   .FilterPath(new string[] { "_source" })
                          .Query(q => q.QueryString(
 
                              qs => qs.Query(searchQuery)
                              .AllowLeadingWildcard(true)
                              )
+                             
 
                          )
                      );

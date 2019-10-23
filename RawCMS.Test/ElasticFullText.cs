@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
+using Newtonsoft.Json;
+using Nest.JsonNetSerializer;
 
 namespace RawCMS.Test
 {
@@ -17,13 +19,38 @@ namespace RawCMS.Test
             public string Body { get; set; }
         }
 
+        //public class MyFirstCustomJsonNetSerializer : ConnectionSettingsAwareSerializerBase
+        //{
+        //    public MyFirstCustomJsonNetSerializer(IElasticsearchSerializer builtinSerializer, IConnectionSettingsValues connectionSettings)
+        //        : base(builtinSerializer, connectionSettings) { }
+
+        //    protected override JsonSerializerSettings CreateJsonSerializerSettings() =>
+        //        new JsonSerializerSettings
+        //        {
+        //            NullValueHandling = NullValueHandling.Include
+        //        };
+
+        //    protected override void ModifyContractResolver(ConnectionSettingsAwareContractResolver resolver) =>
+        //        resolver.NamingStrategy = new SnakeCaseNamingStrategy();
+        //}
+
         [Fact]
         public void CRUD()
         {
 
-            var uri = new Uri("http://localhost:9300");
-            var connectionConfiguration = new ConnectionSettings(uri)
+            var pool = new SingleNodeConnectionPool(new Uri("http://localhost:9300"));
+            var connection = new HttpConnection();
+            var connectionSettings =
+            new ConnectionSettings(pool, connection, (serializer, settings) =>
+            {
+
+
+                //return new MyFirstCustomJsonNetSerializer(serializer, settings);
+                return JsonNetSerializer.Default(serializer, settings);
+            })
+           // new ConnectionSettings(pool, connection)
             .DisableAutomaticProxyDetection()
+            
             .EnableHttpCompression()
             .DisableDirectStreaming()
             .PrettyJson()
@@ -31,7 +58,7 @@ namespace RawCMS.Test
             
             
 
-            var client = new ElasticClient(connectionConfiguration);
+            var client = new ElasticClient(connectionSettings);
             
             var service = new ElasticFullTextService(client);
 
@@ -39,15 +66,29 @@ namespace RawCMS.Test
 
             service.CreateIndex(indexName);
 
-            var doc = new LogDocument()
-            {
-                Body = "My first document into index"
-            };
+            LogDocument doc=null;
+            for (int i = 0; i < 500; i++)
 
-            service.AddDocument(indexName, doc);
+            {
+
+                doc = new LogDocument()
+                {
+                    Body = $"My first document into index, position is number{i}"
+                };
+                service.AddDocument(indexName, doc);
+            }
+
+            
 
             var item = service.GetDocumentRaw(indexName, doc.Id.ToString());
             Assert.Equal(item["Id"],doc.Id.ToString());
+
+            //search
+
+
+
+            var items = service.SearchDocumentsRaw(indexName, "number1*", 0,140);
+            Assert.Equal(items.Count, 111);
 
         }
     }
