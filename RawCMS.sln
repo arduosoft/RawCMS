@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 		docs\Docker.md = docs\Docker.md
 		docs\Dynamic-Crud-Controller.md = docs\Dynamic-Crud-Controller.md
 		docs\Dynamic-Lambda-Controller.md = docs\Dynamic-Lambda-Controller.md
+		docs\FullText.md = docs\FullText.md
 		docs\GraphQL.md = docs\GraphQL.md
 		docs\Home.md = docs\Home.md
 		docs\index.md = docs\index.md
@@ -45,7 +46,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Client", "RawCMS.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.KeyStore", "Plugins\RawCMS.Plugins.KeyStore\RawCMS.Plugins.KeyStore.csproj", "{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCMS.Plugins.FullText", "Plugins\RawCMS.Plugins.FullText\RawCMS.Plugin.FullText\RawCMS.Plugins.FullText.csproj", "{802B37DD-6166-404F-825D-D0A0460C2F12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.FullText", "Plugins\RawCMS.Plugins.FullText\RawCMS.Plugin.FullText\RawCMS.Plugins.FullText.csproj", "{802B37DD-6166-404F-825D-D0A0460C2F12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
