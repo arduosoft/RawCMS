@@ -49,8 +49,7 @@ namespace RawCMS.Test
                 return JsonNetSerializer.Default(serializer, settings);
             })
            // new ConnectionSettings(pool, connection)
-            .DisableAutomaticProxyDetection()
-            
+            .DisableAutomaticProxyDetection()            
             .EnableHttpCompression()
             .DisableDirectStreaming()
             .PrettyJson()

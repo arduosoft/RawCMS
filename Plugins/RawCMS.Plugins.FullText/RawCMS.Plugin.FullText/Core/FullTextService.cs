@@ -38,5 +38,7 @@ namespace RawCMS.Plugins.FullText.Core
         }
 
         public abstract List<JObject> SearchDocumentsRaw(string indexname, string searchQuery, int start, int size);
+
+        public abstract void DeleteDocument(string index, string id);
     }
 }

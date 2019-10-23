@@ -55,11 +55,25 @@ namespace RawCMS.Plugins.FullText.Core
 
         public override void CreateIndex(string name)
         {
-            var resp=client.Indices.Create(name);
-            if (!resp.IsValid && resp.ServerError != null && resp.ServerError.Status != 200)
+            var resp = client.Indices.Create(name);
+            ThrowOnError(resp);
+        }
+
+        private static void ThrowOnError(IElasticsearchResponse resp)
+        {
+            if (!resp.ApiCall.Success)
             {
-                throw new Exception($"Error during init {resp.ServerError.Error.ToString()}");//TODO: check if the string commutation of error prduces a nice message
+                if (resp.TryGetServerErrorReason(out string reason))
+                {
+                    throw new Exception($"Error during init {reason}");//TODO: check if the string commutation of error prduces a nice message
+                }
             }
+        }
+
+        public override void DeleteDocument(string index, string id)
+        {
+            var response = client.LowLevel.Delete<JObjectResponse>(index, id);
+            ThrowOnError(response);
         }
 
         public override JObject GetDocumentRaw(string indexname, string docId)

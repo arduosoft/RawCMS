@@ -114,6 +114,8 @@ namespace RawCMS
                 c.IgnoreObsoleteActions();
                 c.DescribeAllEnumsAsStrings();
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                c.CustomSchemaIds(t => t.FullName);
+                
             });
 
             //Invoke appEngine after service configuration

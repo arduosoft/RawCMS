@@ -36,6 +36,7 @@
     <PackageReference Include="MongoDB.Driver" Version="2.6.0" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.6.0" />
     <PackageReference Include="NEST" Version="7.3.1" />
+    <PackageReference Include="NEST.JsonNetSerializer" Version="7.3.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
 
 
@@ -65,5 +66,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\RawCMS.Library\RawCMS.Library.csproj" />
+    <ProjectReference Include="..\..\RawCMS.Plugins.Core\RawCMS.Plugins.Core.csproj" />
   </ItemGroup>
 </Project>
