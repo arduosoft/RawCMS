@@ -288,3 +288,4 @@ __pycache__/
 *.xsd.cs
 dist/
 RawCMS/Plugins/
+Plugins/RawCMS/Plugins/RawCMS.Plugins.FullText/netcoreapp2.1
