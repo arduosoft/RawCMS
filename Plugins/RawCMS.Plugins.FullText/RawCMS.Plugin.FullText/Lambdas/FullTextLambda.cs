@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
 
 namespace RawCMS.Plugins.FullText.Lambdas
 {
@@ -36,10 +37,24 @@ namespace RawCMS.Plugins.FullText.Lambdas
             if (CrudFilters.TryGetValue(collection, out FullTextFilter filter))
             {
                 JObject searchDocument = new JObject();
+
+                var list = new List<string>()
+                {
+                    "_id" //id is alway neededs
+                };
+
+                //if empty add all
+                if (filter.IncludedField == null || filter.IncludedField.Count == 0)
+                {
+                    list.AddRange(item.Properties().Select(p => p.Name).Distinct().ToList());
+                }
+
                 foreach (var field in filter.IncludedField)
                 {
                     searchDocument[field] = item[field];
                 }
+
+                
                 this.fullTextService.AddDocumentRaw(GetIndexName(collection), searchDocument);
             }
         }
@@ -48,17 +63,26 @@ namespace RawCMS.Plugins.FullText.Lambdas
         private static string GetIndexName(string collection)
         {            
             
-            return "dix_" + System.Text.Encoding.UTF8.GetString(md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes( collection.ToLower())));
+            var str= "dix_" +Convert.ToBase64String(md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes( collection.ToLower()))).Replace("=","");
+            return str.ToLower().Replace("=", "");
         }
 
         private void LoadCrudFilters()
         {
+            this.CrudFilters = new Dictionary<string, FullTextFilter>();
 
-            foreach(var collection  in EntityValidation.Entities.Values)
+            foreach (var collection  in EntityValidation.Entities.Values)
             { 
                 if (collection.PluginConfiguration.TryGetValue("FullTextPlugin", out JObject textSettings))
                 {
                     this.CrudFilters[collection.CollectionName] = textSettings.ToObject<FullTextFilter>();
+                }
+
+
+                var indexName = GetIndexName(collection.CollectionName);
+                if (!this.fullTextService.IndexExists(indexName))
+                {
+                    this.fullTextService.CreateIndex(indexName);
                 }
             }
         }

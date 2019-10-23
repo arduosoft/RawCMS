@@ -8,6 +8,9 @@ using System.Text;
 using Xunit;
 using Newtonsoft.Json;
 using Nest.JsonNetSerializer;
+using RawCMS.Library.Schema;
+using Newtonsoft.Json.Linq;
+using RawCMS.Plugins.FullText.Lambdas;
 
 namespace RawCMS.Test
 {
@@ -88,6 +91,30 @@ namespace RawCMS.Test
 
             var items = service.SearchDocumentsRaw(indexName, "number1*", 0,140);
             Assert.Equal(items.Count, 111);
+
+        }
+
+        [Fact]
+        public void Serialize()
+        {
+            var coll = new CollectionSchema()
+            {
+                PluginConfiguration = new Dictionary<string, Newtonsoft.Json.Linq.JObject>()
+                {
+                    { "prova",JObject.FromObject(new FullTextFilter(){
+                        CollectionName="PROC",
+                        IncludedField=new List<string>()
+                        {
+                             "dd",
+                            "dd"
+                        }
+
+                    }) }
+                }
+            };
+
+            var obj=JObject.FromObject(coll);
+            var result=obj.ToString();
 
         }
     }
