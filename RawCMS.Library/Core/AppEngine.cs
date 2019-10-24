@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core.Extension;
 using RawCMS.Library.Core.Helpers;
+using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Schema;
 using RawCMS.Library.Service;
@@ -60,10 +61,7 @@ namespace RawCMS.Library.Core
             _logger.LogInformation("LoadPluginAssemblies");
             loaders.Clear();
 
-            List<Assembly> assembly = new List<Assembly>();
-            assembly.Add(typeof(AppEngine).Assembly);
-            RecoursiveAddAssembly(typeof(AppEngine).Assembly, assembly);
-            assembly = assembly.Distinct().ToList();
+            List<Assembly> assembly = reflectionManager.AssemblyScope;
 
             List<Type> typesToAdd = new List<Type>();
             foreach (var ass in assembly)
@@ -105,6 +103,11 @@ namespace RawCMS.Library.Core
                 filePath: pluginInfo,
                 sharedTypes: typesToAdd.ToArray());
                 loaders.Add(loader);
+            }
+
+            foreach (var loader in loaders)
+            {
+                reflectionManager.AppendAssemblyToScope(loader.LoadDefaultAssembly());
             }
         }
 
@@ -246,10 +249,7 @@ namespace RawCMS.Library.Core
         private List<Type> GetPluginsTypes()
         {
             _logger.LogInformation($" Getting all plugin types");
-            List<Type> plugins = new List<Type>();
-            // Create an instance of plugin types
-            plugins.AddRange(GetPluginTypes<Plugin>());
-            return plugins;
+            return this.reflectionManager.GetImplementors<Plugin>();
         }
 
         private void LoadLambdas(IApplicationBuilder applicationBuilder)
@@ -257,7 +257,6 @@ namespace RawCMS.Library.Core
             _logger.LogDebug("Discover Lambdas in Bundle");
 
             List<Type> lambdas = this.reflectionManager.GetImplementors<Lambda>();
-            lambdas.AddRange(GetPluginTypes<Lambda>());
 
             foreach (var lambda in lambdas)
             {
@@ -288,21 +287,24 @@ namespace RawCMS.Library.Core
             }
         }
 
-        private List<Type> GetPluginTypes<T>()
+        public void RegisterPluginsMiddleweares(IApplicationBuilder applicationBuilder)
         {
-            var result = new List<Type>();
-            foreach (var loader in loaders)
+            _logger.LogDebug("Discover Middleware in Bundle");
+
+            var middlewears = this.reflectionManager.GetImplementors(typeof(IConfigurableMiddleware<>));
+            middlewears = middlewears.OrderBy(x => (Attribute.GetCustomAttribute(x, typeof(MiddlewarePriorityAttribute)) as MiddlewarePriorityAttribute)?.Order ?? 1000).ToList();
+            foreach (var mid in middlewears)
             {
-                foreach (var type in loader
-                    .LoadDefaultAssembly()
-                    .GetTypes()
-                    .Where(t => typeof(T).IsAssignableFrom(t) && !t.IsAbstract))
+                try
                 {
-                    result.Add(type);
+                    applicationBuilder.UseMiddleware(mid);
+                }
+                catch (Exception err)
+                {
+                    _logger.LogWarning($"error during Middleware loading, Middleware skipped {mid} {err.Message}");
+                    _logger.LogError(err, "");
                 }
             }
-
-            return result;
         }
 
         private void DumpLambdaInfo()
@@ -366,8 +368,6 @@ namespace RawCMS.Library.Core
             _logger.LogDebug("Discover Lambdas in Bundle");
 
             List<Type> lambdas = this.reflectionManager.GetImplementors<Lambda>();
-
-            lambdas.AddRange(GetPluginTypes<Lambda>());
 
             foreach (Type type in lambdas)
             {

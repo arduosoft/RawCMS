@@ -114,7 +114,7 @@ namespace RawCMS.Plugins.Core
         {
             app.UseAuthentication();
             app.UseIdentityServer();
-            app.UseMvc();
+            //app.UseMvc();
         }
 
         public override void ConfigureMvc(IMvcBuilder builder)
