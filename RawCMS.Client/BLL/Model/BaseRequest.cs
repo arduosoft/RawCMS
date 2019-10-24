@@ -13,5 +13,6 @@ namespace RawCMS.Client.BLL.Model
         public string Token { get; set; }
         public string Collection { get; set; }
         public string RawQuery { get; set; }
+        public string Url { get; set; }
     }
 }

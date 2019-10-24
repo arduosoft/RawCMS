@@ -1,0 +1,8 @@
+<v-app>
+  <rawcms-top-bar v-if="showMenus"></rawcms-top-bar>
+  <rawcms-left-menu v-if="showMenus"></rawcms-left-menu>
+
+  <v-content>
+    <router-view></router-view>
+  </v-content>
+</v-app>

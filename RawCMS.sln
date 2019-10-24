@@ -9,15 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Library", "RawCMS.Li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Test", "RawCMS.Test\RawCMS.Test.csproj", "{F354CC2D-3C98-499D-AB1F-E790E7925B70}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{E88BB72F-C866-4D24-8D1B-DD6B237D376E}"
-	ProjectSection(SolutionItems) = preProject
-		LICENSE = LICENSE
-		README.md = README.md
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{6DA8883F-F42E-4FDC-A93A-1D41549F6C05}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.Core", "Plugins\RawCMS.Plugin.Core\RawCMS.Plugins.Core.csproj", "{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.Core", "Plugins\RawCMS.Plugins.Core\RawCMS.Plugins.Core.csproj", "{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6F40-4D56-ACAD-03F3C8E08137}"
 	ProjectSection(SolutionItems) = preProject
@@ -31,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 		docs\Docker.md = docs\Docker.md
 		docs\Dynamic-Crud-Controller.md = docs\Dynamic-Crud-Controller.md
 		docs\Dynamic-Lambda-Controller.md = docs\Dynamic-Lambda-Controller.md
+		docs\FullText.md = docs\FullText.md
+		docs\Gateway-Plugin.md = docs\Gateway-Plugin.md
 		docs\GraphQL.md = docs\GraphQL.md
 		docs\Home.md = docs\Home.md
 		docs\index.md = docs\index.md
@@ -41,7 +37,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.GraphQL", "Plugins\RawCMS.Plugins.GraphQL\RawCMS.Plugins.GraphQL.csproj", "{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCMS.Client", "RawCMS.Client\RawCMS.Client.csproj", "{4F469A2E-821C-4604-B686-040E165082D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Client", "RawCMS.Client\RawCMS.Client.csproj", "{4F469A2E-821C-4604-B686-040E165082D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.KeyStore", "Plugins\RawCMS.Plugins.KeyStore\RawCMS.Plugins.KeyStore.csproj", "{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.FullText", "Plugins\RawCMS.Plugins.FullText\RawCMS.Plugin.FullText\RawCMS.Plugins.FullText.csproj", "{802B37DD-6166-404F-825D-D0A0460C2F12}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.ApiGateway", "Plugins\RawCMS.Plugins.ApiGateway\RawCMS.Plugins.ApiGateway.csproj", "{AB934622-977A-471A-854C-B905AB9F5174}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,14 +75,28 @@ Global
 		{4F469A2E-821C-4604-B686-040E165082D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F469A2E-821C-4604-B686-040E165082D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F469A2E-821C-4604-B686-040E165082D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{802B37DD-6166-404F-825D-D0A0460C2F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{802B37DD-6166-404F-825D-D0A0460C2F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{802B37DD-6166-404F-825D-D0A0460C2F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{802B37DD-6166-404F-825D-D0A0460C2F12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB934622-977A-471A-854C-B905AB9F5174}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB934622-977A-471A-854C-B905AB9F5174}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB934622-977A-471A-854C-B905AB9F5174}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB934622-977A-471A-854C-B905AB9F5174}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
-		{18F5053A-6F40-4D56-ACAD-03F3C8E08137} = {E88BB72F-C866-4D24-8D1B-DD6B237D376E}
 		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
+		{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
+		{802B37DD-6166-404F-825D-D0A0460C2F12} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
+		{AB934622-977A-471A-854C-B905AB9F5174} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE0F5781-A4C7-4C01-8B4C-4AE7A10908CF}

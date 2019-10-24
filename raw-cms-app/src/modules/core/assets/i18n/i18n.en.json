@@ -1,0 +1,18 @@
+{
+  "core": {
+    "login": {
+      "title": "Login to RawCMS",
+      "loginBtn": "Login",
+      "wrongCredentials": "Cannot login, please check your credentials."
+    },
+    "home": {
+      "helpText": "Welcome! Please select a menu entry on the left."
+    },
+    "entities": {
+      "title": "Entities"
+    },
+    "common": {
+      "requiredField": "This field is required."
+    }
+  }
+}
