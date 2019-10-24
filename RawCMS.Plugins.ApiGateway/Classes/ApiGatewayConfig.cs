@@ -35,7 +35,7 @@ namespace RawCMS.Plugins.ApiGateway.Classes
 
             Proxy.Add(new ProxyOption
             {
-                Enable = true,
+                Enable = false,
                 Host = "localhost:64516",
                 Node = new Node
                 {
@@ -47,9 +47,18 @@ namespace RawCMS.Plugins.ApiGateway.Classes
                 Port = 64516,
                 Scheme = "http"
             });
+            Cache = new CacheOption
+            {
+                Enable = true,
+                Duration = 600,
+                MaximumBodySize = 100 * 1024 * 1024,
+                SizeLimit = 64 * 1024 * 1024,
+                UseCaseSensitivePaths = false
+            };
         }
 
         public List<BalancerOption> Balancer { get; set; } = new List<BalancerOption>();
         public List<ProxyOption> Proxy { get; set; } = new List<ProxyOption>();
+        public CacheOption Cache { get; set; }
     }
 }

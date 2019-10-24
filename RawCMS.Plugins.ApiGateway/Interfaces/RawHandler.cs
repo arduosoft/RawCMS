@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using RawCMS.Plugins.ApiGateway.Classes.Handles;
+using RawCMS.Plugins.ApiGateway.Classes.Balancer.Handles;
 using RawCMS.Plugins.ApiGateway.Classes.Settings;
 using System;
 using System.Collections.Generic;

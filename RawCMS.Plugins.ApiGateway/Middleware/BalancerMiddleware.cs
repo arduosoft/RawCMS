@@ -2,7 +2,8 @@
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core.Extension;
 using RawCMS.Plugins.ApiGateway.Classes;
-using RawCMS.Plugins.ApiGateway.Classes.Handles;
+using RawCMS.Plugins.ApiGateway.Classes.Balancer;
+using RawCMS.Plugins.ApiGateway.Classes.Balancer.Handles;
 using RawCMS.Plugins.ApiGateway.Classes.Settings;
 using RawCMS.Plugins.ApiGateway.Interfaces;
 using System;

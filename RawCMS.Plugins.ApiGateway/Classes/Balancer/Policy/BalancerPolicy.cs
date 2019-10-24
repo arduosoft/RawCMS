@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RawCMS.Plugins.ApiGateway.Classes.Policy
+namespace RawCMS.Plugins.ApiGateway.Classes.Balancer.Policy
 {
     public abstract class BalancerPolicy
     {

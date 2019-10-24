@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RawCMS.Plugins.ApiGateway.Classes.Policy
+namespace RawCMS.Plugins.ApiGateway.Classes.Balancer.Policy
 {
     public class RequestCount : BalancerPolicy
     {

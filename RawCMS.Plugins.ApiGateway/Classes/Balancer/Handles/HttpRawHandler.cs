@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RawCMS.Plugins.ApiGateway.Classes.Handles
+namespace RawCMS.Plugins.ApiGateway.Classes.Balancer.Handles
 {
     public class HttpRawHandler : RawHandler
     {

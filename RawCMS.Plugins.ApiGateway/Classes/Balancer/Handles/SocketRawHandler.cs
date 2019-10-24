@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RawCMS.Plugins.ApiGateway.Classes.Handles
+namespace RawCMS.Plugins.ApiGateway.Classes.Balancer.Handles
 {
     public class SocketRawHandler : RawHandler
     {
