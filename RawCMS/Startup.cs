@@ -41,6 +41,7 @@ namespace RawCMS
             env.ConfigureNLog(path);
 
             ApplicationLogger.SetLogFactory(loggerFactory);
+           
 
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -97,7 +98,7 @@ namespace RawCMS
 
             ReflectionManager rm = new ReflectionManager(allAssembly);
 
-            appEngine = AppEngine.Create(
+             appEngine = AppEngine.Create(
                 pluginPath,
                 loggerFactory.CreateLogger<AppEngine>(),
                 rm, services, Configuration);
@@ -117,6 +118,8 @@ namespace RawCMS
                 c.IgnoreObsoleteActions();
                 c.DescribeAllEnumsAsStrings();
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                c.CustomSchemaIds(t => t.FullName);
+                
             });
 
             //Invoke appEngine after service configuration
