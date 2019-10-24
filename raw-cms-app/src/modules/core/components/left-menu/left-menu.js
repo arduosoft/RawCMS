@@ -21,7 +21,7 @@ const _LeftMenu = async (resolve, reject) => {
         if (this.isActive(item)) {
           return;
         }
-        this.$router.replace(item.route);
+        this.$router.push(item.route);
       },
       isActive: function(item) {
         return item.route === this.$route.name;
