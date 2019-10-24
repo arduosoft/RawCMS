@@ -32,7 +32,6 @@ namespace RawCMS.Library.Core.Helpers
             }
         }
         
-
         public static void RegisterAllTypes<T>(this IServiceCollection services, Assembly[] assemblies,
         ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
