@@ -49,16 +49,21 @@ namespace RawCMS.Plugins.ApiGateway.Classes
             });
             Cache = new CacheOption
             {
-                Enable = true,
+                Enable = false,
                 Duration = 600,
                 MaximumBodySize = 100 * 1024 * 1024,
                 SizeLimit = 64 * 1024 * 1024,
                 UseCaseSensitivePaths = false
+            };
+            Logging = new LoggingOption
+            {
+                Enable = false
             };
         }
 
         public List<BalancerOption> Balancer { get; set; } = new List<BalancerOption>();
         public List<ProxyOption> Proxy { get; set; } = new List<ProxyOption>();
         public CacheOption Cache { get; set; }
+        public LoggingOption Logging { get; set; }
     }
 }
