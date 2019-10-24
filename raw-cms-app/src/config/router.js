@@ -24,11 +24,28 @@ const _router = new VueRouter({
     },
     {
       path: '/entities',
-      name: 'entities',
       component: async (res, rej) => {
         const cmp = await import('/modules/core/views/entities/entities.js');
         await cmp.default(res, rej);
       },
+      children: [
+        {
+          path: '/',
+          name: 'entities',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/components/entities-list/entities-list.js');
+            await cmp.default(res, rej);
+          },
+        },
+        {
+          path: ':id',
+          name: 'entity-details',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/components/entity-details/entity-details.js');
+            await cmp.default(res, rej);
+          },
+        },
+      ],
     },
   ],
 });
