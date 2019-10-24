@@ -1,15 +1,11 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 
 namespace RawCMS.Plugins.FullText.Core
 {
     public abstract class FullTextService
     {
-
         public abstract void CreateIndex(string name);
 
         public abstract bool IndexExists(string name);
@@ -27,7 +23,7 @@ namespace RawCMS.Plugins.FullText.Core
             return raw.ToObject<T>();
         }
 
-        public abstract JObject  GetDocumentRaw(string indexname, string docId);
+        public abstract JObject GetDocumentRaw(string indexname, string docId);
 
         public virtual List<T> SearchDocuments<T>(string indexname, string searchQuery, int start, int size)
         {

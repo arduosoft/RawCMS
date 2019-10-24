@@ -1,13 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
 using RawCMS.Library.Lambdas;
-using RawCMS.Library.Schema;
 using RawCMS.Plugins.FullText.Core;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace RawCMS.Plugins.FullText.Lambdas
 {
@@ -17,7 +15,7 @@ namespace RawCMS.Plugins.FullText.Lambdas
 
         public override string Description => this.Name;
 
-        public  Dictionary<string,FullTextFilter> CrudFilters { get; set; }
+        public Dictionary<string, FullTextFilter> CrudFilters { get; set; }
 
         protected readonly FullTextService fullTextService;
 
@@ -32,7 +30,6 @@ namespace RawCMS.Plugins.FullText.Lambdas
             {
                 LoadCrudFilters();
             }
-
 
             if (CrudFilters.TryGetValue(collection, out FullTextFilter filter))
             {
@@ -54,16 +51,15 @@ namespace RawCMS.Plugins.FullText.Lambdas
                     searchDocument[field] = item[field];
                 }
 
-                
                 this.fullTextService.AddDocumentRaw(GetIndexName(collection), searchDocument);
             }
         }
 
-        static MD5 md5 = MD5.Create();
+        private static MD5 md5 = MD5.Create();
+
         private static string GetIndexName(string collection)
-        {            
-            
-            var str= "dix_" +Convert.ToBase64String(md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes( collection.ToLower()))).Replace("=","");
+        {
+            var str = "dix_" + Convert.ToBase64String(md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(collection.ToLower()))).Replace("=", "");
             return str.ToLower().Replace("=", "");
         }
 
@@ -71,13 +67,12 @@ namespace RawCMS.Plugins.FullText.Lambdas
         {
             this.CrudFilters = new Dictionary<string, FullTextFilter>();
 
-            foreach (var collection  in EntityValidation.Entities.Values)
-            { 
+            foreach (var collection in EntityValidation.Entities.Values)
+            {
                 if (collection.PluginConfiguration.TryGetValue("FullTextPlugin", out JObject textSettings))
                 {
                     this.CrudFilters[collection.CollectionName] = textSettings.ToObject<FullTextFilter>();
                 }
-
 
                 var indexName = GetIndexName(collection.CollectionName);
                 if (!this.fullTextService.IndexExists(indexName))

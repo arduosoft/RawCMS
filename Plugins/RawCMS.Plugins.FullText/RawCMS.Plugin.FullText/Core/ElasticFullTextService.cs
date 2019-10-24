@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Elasticsearch.Net;
+﻿using Elasticsearch.Net;
 using Nest;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace RawCMS.Plugins.FullText.Core
 {
-
     public class JObjectResponse : ElasticsearchResponse<JObject>
     {
-
     }
-
 
     public class StringResponse : ElasticsearchResponse<string>
-    {        
+    {
     }
-
-
 
     public class ElasticFullTextService : FullTextService
     {
@@ -26,15 +21,14 @@ namespace RawCMS.Plugins.FullText.Core
 
         public ElasticFullTextService(ElasticClient client)
         {
-            this.client = client;    
+            this.client = client;
         }
 
-       
         public override void AddDocumentRaw(string indexname, object data)
         {
             var jobj = JObject.FromObject(data);
 
-            //Resolve object id. elastic whant an "id" field, mongo uses _id... 
+            //Resolve object id. elastic whant an "id" field, mongo uses _id...
             if (!jobj.ContainsKey("Id"))
             {
                 if (jobj.ContainsKey("_id"))
@@ -45,12 +39,12 @@ namespace RawCMS.Plugins.FullText.Core
                 {
                     jobj["Id"] = jobj["id"];
                 }
-                else 
+                else
                 {
                     jobj["Id"] = Guid.NewGuid();
                 }
             }
-            var resp=client.LowLevel.Index<JObjectResponse>(indexname,  jobj["Id"].ToString(), PostData.String(jobj.ToString()));
+            var resp = client.LowLevel.Index<JObjectResponse>(indexname, jobj["Id"].ToString(), PostData.String(jobj.ToString()));
         }
 
         public override void CreateIndex(string name)
@@ -78,14 +72,14 @@ namespace RawCMS.Plugins.FullText.Core
 
         public override JObject GetDocumentRaw(string indexname, string docId)
         {
-            var response = client.LowLevel.Get< JObjectResponse > (indexname, docId);
-            var json=Encoding.UTF8.GetString(response.ResponseBodyInBytes);
+            var response = client.LowLevel.Get<JObjectResponse>(indexname, docId);
+            var json = Encoding.UTF8.GetString(response.ResponseBodyInBytes);
             return (JObject)JObject.Parse(json)["_source"];
         }
 
         public override bool IndexExists(string name)
         {
-            var ex= this.client.Indices.Exists(name);
+            var ex = this.client.Indices.Exists(name);
             return ex.Exists;
         }
 
@@ -95,13 +89,12 @@ namespace RawCMS.Plugins.FullText.Core
                          .Size(size)
                          .Skip(start)
                          .Index(indexname)
-                      //   .FilterPath(new string[] { "_source" })
+                         //   .FilterPath(new string[] { "_source" })
                          .Query(q => q.QueryString(
 
                              qs => qs.Query(searchQuery)
                              .AllowLeadingWildcard(true)
                              )
-                             
 
                          )
                      );

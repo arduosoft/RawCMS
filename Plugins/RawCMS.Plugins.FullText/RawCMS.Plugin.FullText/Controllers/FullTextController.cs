@@ -6,18 +6,15 @@ using RawCMS.Plugins.Core.Model;
 using RawCMS.Plugins.FullText.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace RawCMS.Plugins.FullText.Controllers
 {
-
     public class LocalError
     {
         public string Code { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
     }
-
 
     //TO BE FIXED ON PLUGIN LOADING
     public class LocalRestMessage<T>
@@ -36,7 +33,6 @@ namespace RawCMS.Plugins.FullText.Controllers
         }
     }
 
-
     [AllowAnonymous]
     [RawAuthentication]
     [Route("api/[controller]")]
@@ -48,7 +44,6 @@ namespace RawCMS.Plugins.FullText.Controllers
         {
             this.service = service;
         }
-
 
         [HttpGet()]
         [Route("index/{index}")]
@@ -72,11 +67,9 @@ namespace RawCMS.Plugins.FullText.Controllers
             return result;
         }
 
-
-
         [HttpPost()]
         [Route("doc/{index}")]
-        public LocalRestMessage<bool> IndexDocument([FromRoute]string index,[FromBody] JObject item)
+        public LocalRestMessage<bool> IndexDocument([FromRoute]string index, [FromBody] JObject item)
         {
             var result = new LocalRestMessage<bool>(true);
             try
@@ -96,8 +89,6 @@ namespace RawCMS.Plugins.FullText.Controllers
             return result;
         }
 
-
-
         [HttpGet()]
         [Route("doc/{index}/{id}")]
         public LocalRestMessage<JObject> GetDocument([FromRoute]string index, [FromRoute]string id)
@@ -109,7 +100,6 @@ namespace RawCMS.Plugins.FullText.Controllers
             }
             catch (Exception err)
             {
-
                 result.Errors.Add(new LocalError()
                 {
                     Code = "001",
@@ -120,11 +110,7 @@ namespace RawCMS.Plugins.FullText.Controllers
             return result;
         }
 
-
-
-
-
-       [HttpGet]
+        [HttpGet]
         [Route("doc/search/{index}")]
         public LocalRestMessage<List<JObject>> Search([FromRoute] string index, string searchQuery, int start = 0, int size = 20)
         {
@@ -135,7 +121,6 @@ namespace RawCMS.Plugins.FullText.Controllers
             }
             catch (Exception err)
             {
-
                 result.Errors.Add(new LocalError()
                 {
                     Code = "001",
@@ -145,8 +130,6 @@ namespace RawCMS.Plugins.FullText.Controllers
             }
             return result;
         }
-
-
 
         [HttpDelete]
         [Route("doc/{index}/{id}")]
