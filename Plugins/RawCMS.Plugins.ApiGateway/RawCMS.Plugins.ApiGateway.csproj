@@ -50,6 +50,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="4.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RawCMS.Library\RawCMS.Library.csproj" />
+    <ProjectReference Include="..\..\RawCMS.Library\RawCMS.Library.csproj" />
   </ItemGroup>
 </Project>
