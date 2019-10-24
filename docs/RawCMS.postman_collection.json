@@ -1,0 +1,893 @@
+{
+	"info": {
+		"_postman_id": "b903c8c9-71b4-4fe2-b8c6-1e2aca1fa420",
+		"name": "RawCMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth - Get Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "raw.client",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "raw.secret",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "prova",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "bobby",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:28436/connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth - introspect",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXBpMTpzZWNyZXQ="
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjQzMTEwNTc0ODJhZmMyODgyZDllYzVmNWEzYmIzOGJhIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1Mzg0MTQ3NzEsImV4cCI6MTUzODQxODM3MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyODQzNiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6Mjg0MzYvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoicm8uY2xpZW50Iiwic3ViIjoiQk9CIiwiYXV0aF90aW1lIjoxNTM4NDE0NzcxLCJpZHAiOiJsb2NhbCIsInNjb3BlIjpbIm9wZW5pZCJdLCJhbXIiOlsicHdkIl19.sMYm5SUATySB7vz7aqPSdcNyo1d4ii5mVE8SNXAwURTN5f1X0q3ijtVpkpYO6q19mdeCuICltMM4V0gnQuyIgX8JrrQgD-VrkWIFOvcaT-D4SZAJ_U45kofPolFzBbhltBMVDBPiKgX8WMv3NB_-65CXtqToZ1A2EdoiAXC2EXBt_ikxiDlkQwG0TWqOXd8J_J1ky_7nDxlkqblf79XUZguo97eLSBKYNDN03AWIrtSQJGRNPEwrlJnUm3rpWD9nopw8TtfqQBQngwliiJ947pq3zfUKPR_Wi1UT8Ouy9VT5AxyiT3VL1xeAM3kIwh0j9yehr4jARh_8IbHHRMoiSQ",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:28436/connect/introspect",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"connect",
+						"introspect"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth - UserList",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:28436/system/Admin/_users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"system",
+						"Admin",
+						"_users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth - update user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:28436/system/Admin/_users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"system",
+						"Admin",
+						"_users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth - openid-configuration",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:28436/.well-known/openid-configuration",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						".well-known",
+						"openid-configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth - Get Token proxied",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"leo\",\n\t\"password\": \"leo\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/web-app-login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"web-app-login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schema  - list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:28436/system/admin/_schema",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"system",
+						"admin",
+						"_schema"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schema - DELETE",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:28436/system/admin/_schema/5c716d426cfcfa66d4da065f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"system",
+						"admin",
+						"_schema",
+						"5c716d426cfcfa66d4da065f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schema - Schema upsert",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n                \"_id\": \"5d4d768e7dde63419c9892ac\",\n                \"CollectionName\": \"Items\",\n                \"AllowNonMappedFields\": false,\n                \"FieldSettings\": [\n                    {\n                        \"Name\": \"MyField\",\n                        \"Required\": true,\n                        \"Type\": \"String\",\n                        \"BaseType\": \"String\",\n                        \"Options\": {\n                            \"maxlength\": 200,\n                            \"regexp\": \"allowed(.*)\"\n                        }\n                    },\n                    {\n                        \"name\": \"_id\",\n                        \"Type\": \"String\",\n                        \"BaseType\": \"ObjectId\"\n                    },\n                    {\n                        \"Name\": \"MyNumberField\",\n                        \"Required\": false,\n                        \"Type\": \"number\",\n                        \"BaseType\": \"Int\",\n                        \"Options\": {\n                            \"max\": 200,\n                            \"min\": \"allowed(.*)\"\n                        }\n                    }\n                ],\n                \"PresaveScript\": \"item.Prova=23; item.MyNumberField=item.MyNumberField+10;\",\n            }"
+				},
+				"url": {
+					"raw": "http://localhost:28436/system/admin/_schema/5d4d768e7dde63419c9892ac",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"system",
+						"admin",
+						"_schema",
+						"5d4d768e7dde63419c9892ac"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schema - Schema ADD",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n               \n                \"CollectionName\": \"Items\",\n                \"AllowNonMappedFields\": false,\n                \"FieldSettings\": [\n                    {\n                        \"Name\": \"MyField\",\n                        \"Required\": true,\n                        \"Type\": \"String\",\n                        \"BaseType\": \"ObjectId\",\n                        \"Options\": {\n                            \"maxlength\": 200,\n                            \"regexp\": \"allowed(.*)\"\n                        }\n                    },\n                    {\n                        \"name\": \"_id\",\n                        \"Type\": \"String\",\n                        \"BaseTyp\": \"String\"\n                    },\n                    {\n                        \"Name\": \"MyNumberField\",\n                        \"Required\": false,\n                        \"Type\": \"number\",\n                        \"BaseType\": \"Int\",\n                        \"Options\": {\n                            \"max\": 200,\n                            \"min\": \"allowed(.*)\"\n                        }\n                    }\n                ],\n             \n                \"PresaveScript\": \"item.Prova=23; item.MyNumberField=item.MyNumberField+10;\",\n            }"
+				},
+				"url": {
+					"raw": "http://localhost:28436/system/admin/_schema/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"system",
+						"admin",
+						"_schema",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Users - Add new User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{token}}",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"UserName\": \"leo\",\n\t\"Email\": \"leo@test.it\",\n\t\"NewPassword\": \"leo\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:28436/system/admin/_users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"system",
+						"admin",
+						"_users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CRUD - LIST",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:28436/api/CRUD/Items/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"CRUD",
+						"Items",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CRUD - POST",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"MyField\":\"value\",\n\t\"MyNumberField\":10\n}"
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/CRUD/Items/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"CRUD",
+						"Items",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CRUD - UPDATE",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t \"MyField\": \"Prova1\",\n}"
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/CRUD/Items/5c7173ff4090c4599c0205f9/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"CRUD",
+						"Items",
+						"5c7173ff4090c4599c0205f9",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CRUD - GET",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:28436/api/CRUD/Items/5c7173ff4090c4599c0205f9/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"CRUD",
+						"Items",
+						"5c7173ff4090c4599c0205f9",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lambda - Dummy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:28436/api/Lambda/DummyRest/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"Lambda",
+						"DummyRest",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lambda - userinfo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjQzMTEwNTc0ODJhZmMyODgyZDllYzVmNWEzYmIzOGJhIiwidHlwIjoiSldUIn0.eyJuYmYiOjE1Mzg0MTQ3NzEsImV4cCI6MTUzODQxODM3MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyODQzNiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6Mjg0MzYvcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoicm8uY2xpZW50Iiwic3ViIjoiQk9CIiwiYXV0aF90aW1lIjoxNTM4NDE0NzcxLCJpZHAiOiJsb2NhbCIsInNjb3BlIjpbIm9wZW5pZCJdLCJhbXIiOlsicHdkIl19.sMYm5SUATySB7vz7aqPSdcNyo1d4ii5mVE8SNXAwURTN5f1X0q3ijtVpkpYO6q19mdeCuICltMM4V0gnQuyIgX8JrrQgD-VrkWIFOvcaT-D4SZAJ_U45kofPolFzBbhltBMVDBPiKgX8WMv3NB_-65CXtqToZ1A2EdoiAXC2EXBt_ikxiDlkQwG0TWqOXd8J_J1ky_7nDxlkqblf79XUZguo97eLSBKYNDN03AWIrtSQJGRNPEwrlJnUm3rpWD9nopw8TtfqQBQngwliiJ947pq3zfUKPR_Wi1UT8Ouy9VT5AxyiT3VL1xeAM3kIwh0j9yehr4jARh_8IbHHRMoiSQ",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/Lambda/UserInfo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"Lambda",
+						"UserInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GraphQL -Query",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\nQuery:\"{items(myField:\\\"\\\") {  _id\r\n  myNumberField\r\n}}\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+        {
+			"name": "FT - IndexCreate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cef21286-0ee4-4971-9de7-9ac19347192b",
+						"exec": [
+							"",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/FullText/index/indexname",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"FullText",
+						"index",
+						"indexname"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FT - DOCUMENT ADD",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cef21286-0ee4-4971-9de7-9ac19347192b",
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n\t\"campo\":\"valore\",\n\t\"id\":\"docid\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/FullText/doc/indexname",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"FullText",
+						"doc",
+						"indexname"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FT - DOCUMENT GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cef21286-0ee4-4971-9de7-9ac19347192b",
+						"exec": [
+							"",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/FullText/doc/indexname/docid",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"FullText",
+						"doc",
+						"indexname",
+						"docid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FT - DOCUMENT DELETE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cef21286-0ee4-4971-9de7-9ac19347192b",
+						"exec": [
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/FullText/doc/indexname/docid",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"FullText",
+						"doc",
+						"indexname",
+						"docid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FT - DOCUMENT Search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cef21286-0ee4-4971-9de7-9ac19347192b",
+						"exec": [
+							"",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:28436/api/FullText/doc/search/indexname?searchQuery=*&start=0&size=20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "28436",
+					"path": [
+						"api",
+						"FullText",
+						"doc",
+						"search",
+						"indexname"
+					],
+					"query": [
+						{
+							"key": "searchQuery",
+							"value": "*"
+						},
+						{
+							"key": "start",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
