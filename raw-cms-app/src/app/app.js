@@ -1,5 +1,6 @@
 import { RawCMS } from '../config/raw-cms.js';
 import { vuexStore } from '../config/vuex.js';
+import { evtSnackbarMessage } from './events.js';
 
 const _App = Vue.component('rawcms-app', (resolve, reject) => {
   RawCMS.loadComponentTpl('/app/app.tpl.html').then(tpl => {
@@ -18,6 +19,23 @@ const _App = Vue.component('rawcms-app', (resolve, reject) => {
         showMenus() {
           return vuexStore.state.isLoggedIn;
         },
+      },
+      data: () => {
+        return {
+          showSnackbar: false,
+          snackbarConfig: {},
+        };
+      },
+      methods: {
+        closeSnackbar: function() {
+          this.showSnackbar = false;
+        },
+      },
+      mounted: function() {
+        RawCMS.eventBus.$on(evtSnackbarMessage, snackbarConfig => {
+          this.snackbarConfig = Object.assign({ message: '<MSG NOT SET>' }, snackbarConfig);
+          this.showSnackbar = true;
+        });
       },
       template: tpl,
     });
