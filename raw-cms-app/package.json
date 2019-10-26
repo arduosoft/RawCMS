@@ -9,10 +9,17 @@
   },
   "author": "",
   "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "devDependencies": {
     "cpx": "^1.5.0",
+    "husky": "^3.0.9",
     "local-web-server": "^3.0.7",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "pretty-quick": "^2.0.0"
   },
   "dependencies": {
     "vue": "^2.6.10"
