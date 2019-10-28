@@ -4,13 +4,22 @@
   "description": "Web app/GUI for Raw CMS.",
   "scripts": {
     "build": "node scripts/build.js",
-    "serve": "cd src && ws --spa index.html --hostname localhost --open"
+    "serve": "cd src && ws --spa index.html --hostname localhost --open",
+    "prettier": "prettier --write \"src/**/*.{css,js,json,html}\""
   },
   "author": "",
   "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "devDependencies": {
     "cpx": "^1.5.0",
-    "local-web-server": "^3.0.7"
+    "husky": "^3.0.9",
+    "local-web-server": "^3.0.7",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^2.0.0"
   },
   "dependencies": {
     "vue": "^2.6.10"

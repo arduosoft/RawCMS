@@ -4,5 +4,11 @@
 
   <v-content>
     <router-view></router-view>
+    <v-snackbar v-model="showSnackbar" :color="snackbarConfig.color">
+      {{ snackbarConfig.message }}
+      <v-btn icon @click="closeSnackbar()">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-content>
 </v-app>

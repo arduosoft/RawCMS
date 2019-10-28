@@ -12,6 +12,16 @@ class EntitiesSchemaService {
     const res = await this._apiClient.get('/system/admin/_schema');
     return res.data.data.items;
   }
+
+  async deleteEntity(entityId) {
+    if (!entityId) {
+      console.error(`Unable to delete entity from schema: given id is invalid (${entityId})`);
+      return;
+    }
+
+    const res = await this._apiClient.delete(`/system/admin/_schema/${entityId}`);
+    return res.data.data === true;
+  }
 }
 
 export const entitiesSchemaService = new EntitiesSchemaService();

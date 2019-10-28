@@ -9,10 +9,17 @@
       "helpText": "Welcome! Please select a menu entry on the left."
     },
     "entities": {
-      "title": "Entities"
+      "title": "Entities",
+      "emptyMsg": "There are no entities yet. Add some with the button below!",
+      "deletedMsgTpl": "Entity {entityName} was deleted.",
+      "deleteErrorMsgTpl": "An error occurred while deleting entity {entityName}."
     },
     "common": {
-      "requiredField": "This field is required."
+      "requiredField": "This field is required.",
+      "okBtnText": "Ok",
+      "cancelBtnText": "Cancel",
+      "confirmDeleteTitle": "Delete confirmation",
+      "defaultDeleteMsgTpl": "Are you sure you want to delete {name}?"
     }
   }
 }
