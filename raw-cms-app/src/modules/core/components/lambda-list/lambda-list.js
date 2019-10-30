@@ -1,4 +1,5 @@
 import { epicSpinners } from '../../../../utils/spinners.js';
+import { entitiesService } from '../../services/entities.service.js';
 import { snackbarService } from '../../services/snackbar-service.js';
 
 const _LambdasList = async (res, rej) => {
@@ -11,7 +12,7 @@ const _LambdasList = async (res, rej) => {
       AtomSpinner: epicSpinners.AtomSpinner,
     },
     created: function() {
-      this.fetchLambdas();
+      this.fetchData();
     },
     data: () => {
       return {
@@ -22,17 +23,13 @@ const _LambdasList = async (res, rej) => {
       };
     },
     methods: {
-      fetchLambdas: async function() {
-        //GET FROM web service
-        this.lambda = [
-          {
-            _id: '123',
-            Name: 'xccc',
-            Path: '/sss',
-            Code: "var x='y'",
-            _meta_: { isDeleting: false },
-          },
-        ];
+      fetchData: async function() {
+        const res = await entitiesService.list('_js');
+        console.log(res);
+        this.lambda = res.map(x => {
+          return { ...x, _meta_: { isDeleting: false } };
+        });
+
         this.isLoading = false;
         this.isDeleting = false;
       },
@@ -50,7 +47,7 @@ const _LambdasList = async (res, rej) => {
         this.dismissDeleteConfirm();
 
         entity._meta_.isDeleting = true;
-        const res = await lambdaSchemaService.deleteEntity(entity._id);
+        const res = await entitiesService.delete('_js', entity._id);
 
         entity._meta_.isDeleting = false;
         if (!res) {

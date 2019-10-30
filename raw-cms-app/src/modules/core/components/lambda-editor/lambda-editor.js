@@ -1,4 +1,5 @@
 import { epicSpinners } from '../../../../utils/spinners.js';
+import { entitiesService } from '../../services/entities.service.js';
 
 const _CodeEditor = async (res, rej) => {
   const tpl = await RawCMS.loadComponentTpl(
@@ -9,11 +10,15 @@ const _CodeEditor = async (res, rej) => {
     components: {
       AtomSpinner: epicSpinners.AtomSpinner,
     },
+
     created: function() {
       this.isLoading = false;
+      this.id = this.$route.params.id;
+      this.fetchData();
     },
     data: () => {
       return {
+        id: 'new',
         isLoading: true,
         data: { code: 'const noop = () => {}' },
         valid: true,
@@ -25,12 +30,26 @@ const _CodeEditor = async (res, rej) => {
     },
     methods: {
       amdRequire: require,
-      save: function() {
+      save: async function() {
         console.log('saving');
+        if (this.id == 'new') {
+          await entitiesService.post('_js', this.data);
+        } else {
+          await entitiesService.put('_js', this.id, this.data);
+        }
+        this.$router.push({ name: 'lambda-list' });
+      },
+      fetchData: async function() {
+        if (this.id != 'new') {
+          const res = await entitiesService.get('_js', this.id);
+          this.data = res;
+        }
       },
     },
     template: tpl,
-    watch: {},
+    watch: {
+      $route: 'fetchData',
+    },
   });
 };
 

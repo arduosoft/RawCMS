@@ -55,15 +55,15 @@ const _router = new VueRouter({
       },
       children: [
         {
-          path: '',
-          name: 'lambda',
+          path: '/',
+          name: 'lambda-list',
           component: async (res, rej) => {
             const cmp = await import('/modules/core/components/lambda-list/lambda-list.js');
             await cmp.default(res, rej);
           },
         },
         {
-          path: 'editor/:id',
+          path: '/lambda/editor/:id',
           name: 'lambda-editor',
           component: async (res, rej) => {
             const cmp = await import('/modules/core/components/lambda-editor/lambda-editor.js');

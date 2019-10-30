@@ -19,7 +19,8 @@
       "okBtnText": "Ok",
       "cancelBtnText": "Cancel",
       "confirmDeleteTitle": "Delete confirmation",
-      "defaultDeleteMsgTpl": "Are you sure you want to delete {name}?"
+      "defaultDeleteMsgTpl": "Are you sure you want to delete {name}?",
+      "save": "Save"
     },
     "lambdas": {
       "title": "Lambdas"
