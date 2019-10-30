@@ -22,6 +22,8 @@
     "pretty-quick": "^2.0.0"
   },
   "dependencies": {
+    "monaco": "^1.201704190613.0",
+    "monaco-editor": "^0.18.1",
     "vue": "^2.6.10"
   }
 }

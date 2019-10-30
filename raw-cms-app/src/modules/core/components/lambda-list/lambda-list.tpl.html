@@ -1,0 +1,61 @@
+<v-layout class="flex-column">
+  <link rel="stylesheet" href="/modules/core/components/lambda-list/lambda-list.css" />
+
+  <h1>{{ $t('core.lambdas.title') }}</h1>
+
+  <v-layout class="flex-column justify-center align-self-center fill-height" v-if="isLoading">
+    <atom-spinner :animation-duration="1000" :size="80" :color="'#64B5F6'"></atom-spinner>
+  </v-layout>
+
+  <v-layout
+    class="flex-column justify-center align-self-center fill-height"
+    v-if="!isLoading && lambda.length <= 0"
+  >
+    {{ $t('core.lambdas.emptyMsg') }}
+  </v-layout>
+
+  <v-row v-if="!isLoading && lambda.length > 0">
+    <v-col>
+      <v-list class="elevation-1">
+        <v-list-item v-for="ent in lambda" :key="ent._id" @click.stop="goTo(ent._id)">
+          <v-list-item-content>
+            <v-list-item-title v-html="ent.Name"></v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-icon :class="{'force-show': ent._meta_.isDeleting}">
+            <v-btn icon @click.stop="showDeleteConfirm(ent)">
+              <v-icon v-if="!ent._meta_.isDeleting">mdi-delete-outline</v-icon>
+              <v-progress-circular v-if="ent._meta_.isDeleting" indeterminate></v-progress-circular>
+            </v-btn>
+          </v-list-item-icon>
+        </v-list-item>
+      </v-list>
+    </v-col>
+  </v-row>
+
+  <v-dialog persistent v-model="isDeleteConfirmVisible">
+    <v-card>
+      <v-card-title class="headline">
+        {{ $t('core.common.confirmDeleteTitle') }}
+      </v-card-title>
+      <v-card-text>
+        {{ $t('core.common.defaultDeleteMsgTpl', { name: currentEntity.CollectionName }) }}
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" text @click.stop="dismissDeleteConfirm()">
+          {{ $t('core.common.cancelBtnText') }}
+        </v-btn>
+        <v-btn color="error" text @click.stop="deleteEntity(currentEntity)">
+          {{ $t('core.common.okBtnText') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <v-fab-transition>
+    <v-btn color="primary" fab fixed bottom right>
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-fab-transition>
+</v-layout>

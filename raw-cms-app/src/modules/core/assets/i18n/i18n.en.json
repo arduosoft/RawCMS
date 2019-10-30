@@ -20,6 +20,9 @@
       "cancelBtnText": "Cancel",
       "confirmDeleteTitle": "Delete confirmation",
       "defaultDeleteMsgTpl": "Are you sure you want to delete {name}?"
+    },
+    "lambdas": {
+      "title": "Lambdas"
     }
   }
 }

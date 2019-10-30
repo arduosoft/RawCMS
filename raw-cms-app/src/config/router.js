@@ -47,6 +47,31 @@ const _router = new VueRouter({
         },
       ],
     },
+    {
+      path: '/lambda',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/lambdas/lambdas.js');
+        await cmp.default(res, rej);
+      },
+      children: [
+        {
+          path: '',
+          name: 'lambda',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/components/lambda-list/lambda-list.js');
+            await cmp.default(res, rej);
+          },
+        },
+        {
+          path: 'editor/:id',
+          name: 'lambda-editor',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/components/lambda-editor/lambda-editor.js');
+            await cmp.default(res, rej);
+          },
+        },
+      ],
+    },
   ],
 });
 
