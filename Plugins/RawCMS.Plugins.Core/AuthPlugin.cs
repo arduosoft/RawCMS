@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Logging;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Plugins.Core.Configuration;
@@ -42,6 +43,7 @@ namespace RawCMS.Plugins.Core
 
         public override void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
             services.AddSingleton<IUserStore<IdentityUser>, RawUserStore>();
             services.AddSingleton<IUserPasswordStore<IdentityUser>, RawUserStore>();
             services.AddSingleton<IPasswordValidator<IdentityUser>, RawUserStore>();
@@ -114,7 +116,6 @@ namespace RawCMS.Plugins.Core
         {
             app.UseAuthentication();
             app.UseIdentityServer();
-            //app.UseMvc();
         }
 
         public override void ConfigureMvc(IMvcBuilder builder)
