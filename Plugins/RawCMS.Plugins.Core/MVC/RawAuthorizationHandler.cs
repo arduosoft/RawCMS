@@ -9,7 +9,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
+using System.Net;
 using System.Security.Claims;
+using RawCMS.Library.Core.Attributes;
 
 namespace RawCMS.Plugins.Core.MVC
 {
@@ -26,43 +28,37 @@ namespace RawCMS.Plugins.Core.MVC
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            base.OnActionExecuting(context);
             //if user specified, apikey are not used and authentication demandend to roles
             if (context.HttpContext.User != null && context.HttpContext.User.Identity.IsAuthenticated)
             {
-                return;
-            }
-
-            bool isAdmin = context.HttpContext.Request.Path.Value.StartsWith("/system/");
-            bool requiresAdminKey = (isAdmin && !string.IsNullOrWhiteSpace(adminapikey));
-            bool requiresPublicKey = !isAdmin && !string.IsNullOrWhiteSpace(apikey);
-            bool requiresAuth = requiresPublicKey || requiresAdminKey;
-
-            if (requiresPublicKey && context.HttpContext.Request.Headers["Authorization"] == apikey)
+                base.OnActionExecuting(context);
+            }else
             {
-                SetUser("ApiKeyUser", "Authenticated", context.HttpContext);
-            }
+                bool isAdmin = context.HttpContext.Request.Path.Value.StartsWith("/system/");
+                bool requiresAdminKey = (isAdmin && !string.IsNullOrWhiteSpace(adminapikey));
+                bool requiresPublicKey = !isAdmin && !string.IsNullOrWhiteSpace(apikey);
+                bool requiresAuth = requiresPublicKey || requiresAdminKey;
 
-            if (requiresAdminKey && context.HttpContext.Request.Headers["Authorization"] == adminapikey)
-            {
-                SetUser("ApiKeyUser", "Authenticated,Admin", context.HttpContext);
-            }
-            if (requiresAuth)
-            {
-                if (context.HttpContext.User == null || !context.HttpContext.User.Identity.IsAuthenticated)
+                if (requiresPublicKey && context.HttpContext.Request.Headers["Authorization"] == apikey)
                 {
-                    Send401(context.HttpContext);
+                    SetUser("ApiKeyUser", "Authenticated", context.HttpContext);
                 }
+
+                if (requiresAdminKey && context.HttpContext.Request.Headers["Authorization"] == adminapikey)
+                {
+                    SetUser("ApiKeyUser", "Authenticated,Admin", context.HttpContext);
+                }
+                if (requiresAuth)
+                {
+                    if (context.HttpContext.User == null || !context.HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        context.Result = new SendStatusCode(HttpStatusCode.Unauthorized);
+                        return;
+                    }
+                }
+
+                base.OnActionExecuting(context);
             }
-        }
-
-        private void Send401(HttpContext httpContext)
-        {
-            httpContext.Response.StatusCode = 401;
-            httpContext.Response.Clear();
-            httpContext.Response.WriteAsync("user not athenticated and api missing.");
-
-            throw new Exception("user not athenticated and api missing.");
         }
 
         private void SetUser(string username, string roles, HttpContext httpContext)

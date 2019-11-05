@@ -47,6 +47,31 @@ const _router = new VueRouter({
         },
       ],
     },
+    {
+      path: '/users',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/users/users.js');
+        await cmp.default(res, rej);
+      },
+      children: [
+        {
+          path: '/',
+          name: 'users',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/components/users-list/users-list.js');
+            await cmp.default(res, rej);
+          },
+        },
+        {
+          path: ':id',
+          name: 'user-details',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/components/user-details/user-details.js');
+            await cmp.default(res, rej);
+          },
+        },
+      ],
+    },
   ],
 });
 

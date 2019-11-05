@@ -14,8 +14,7 @@ using RawCMS.Library.Service;
 
 namespace RawCMS.Plugins.Core.Controllers.Controllers.admin
 {
-    [AllowAnonymous]
-    [RawAuthentication]
+    [Authorize]
     [Route("system/[controller]")]
     [ParameterValidator("collection", "_(.*)", false)]
     public class AdminController : CRUDController

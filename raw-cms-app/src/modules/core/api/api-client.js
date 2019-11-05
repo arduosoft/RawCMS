@@ -7,7 +7,7 @@ const _apiClient = axios.create({
 
 _apiClient.interceptors.request.use(request => {
   if (loginService.isLoggedIn) {
-    request.headers.common['Authorization'] = `${loginService.auth.access_token}`;
+    request.headers.common['Authorization'] = `bearer ${loginService.auth.access_token}`;
   }
   return request;
 });

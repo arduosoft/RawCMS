@@ -22,17 +22,20 @@ class LoginService {
   }
 
   async login(username, password) {
-    return axios
-      .post(`${RawCMS.env.api.baseUrl}/api/web-app-login`, {
-        username,
-        password,
-      })
-      .then(x => {
-        this._auth = x.data;
-        localStorage.setItem('auth', JSON.stringify(x.data));
-        vuexStore.commit('isLoggedIn', true);
-        RawCMS.eventBus.$emit(evtLogin);
-      });
+    var params = new URLSearchParams();
+    params.append('grant_type', RawCMS.env.login.grant_type);
+    params.append('scope', RawCMS.env.login.scope);
+    params.append('client_id', RawCMS.env.login.client_id);
+    params.append('client_secret', RawCMS.env.login.client_secret);
+    params.append('password', password);
+    params.append('username', username);
+
+    return axios.post(`${RawCMS.env.api.baseUrl}/connect/token`, params).then(x => {
+      this._auth = x.data;
+      localStorage.setItem('auth', JSON.stringify(x.data));
+      vuexStore.commit('isLoggedIn', true);
+      RawCMS.eventBus.$emit(evtLogin);
+    });
   }
 
   _refreshLoginState() {

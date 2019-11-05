@@ -10,7 +10,10 @@ const _LeftMenu = async (resolve, reject) => {
     data: () => {
       return {
         isVisible: false,
-        items: [{ icon: 'mdi-cube', text: 'Entities', route: 'entities' }],
+        items: [
+          { icon: 'mdi-account', text: 'Users', route: 'users' },
+          { icon: 'mdi-cube', text: 'Entities', route: 'entities' },
+        ],
       };
     },
     methods: {
