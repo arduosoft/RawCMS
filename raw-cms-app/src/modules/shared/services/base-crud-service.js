@@ -12,7 +12,7 @@ export class BaseCrudService extends ICrudService {
   }
 
   async getAll() {
-    throw new Error('To be implemented.');
+    throw new Error('To be implemented. This should return all values.');
   }
 
   async getPage({ page = 0 } = {}) {
@@ -22,21 +22,22 @@ export class BaseCrudService extends ICrudService {
   }
 
   async getById() {
-    throw new Error('To be implemented.');
+    throw new Error('To be implemented. This should return the item.');
   }
 
   async create() {
-    throw new Error('To be implemented.');
+    throw new Error('To be implemented. This should return the created item.');
+    retu;
   }
 
   async update() {
-    throw new Error('To be implemented.');
+    throw new Error('To be implemented. This should return the updated item.');
   }
 
   async delete(id) {
     if (!id) {
       console.error(`Unable to delete item: given id is invalid (${id})`);
-      return;
+      return false;
     }
 
     const res = await this._apiClient.delete(`${this._basePath}/${id}`);

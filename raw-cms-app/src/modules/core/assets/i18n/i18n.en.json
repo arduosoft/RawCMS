@@ -11,15 +11,18 @@
     "entities": {
       "title": "Entities",
       "emptyMsg": "There are no entities yet. Add some with the button below!",
-      "deletedMsgTpl": "Entity {entityName} was deleted.",
-      "deleteErrorMsgTpl": "An error occurred while deleting entity {entityName}."
+      "deleteConfirmMsgTpl": "Are you sure you want to delete entity {name}?",
+      "deleteSuccessMsgTpl": "Entity {name} was deleted.",
+      "deleteErrorMsgTpl": "An error occurred while deleting entity {name}."
     },
     "common": {
       "requiredField": "This field is required.",
       "okBtnText": "Ok",
       "cancelBtnText": "Cancel",
-      "confirmDeleteTitle": "Delete confirmation",
-      "defaultDeleteMsgTpl": "Are you sure you want to delete {name}?"
+      "deleteConfirmTitle": "Delete confirmation",
+      "deleteConfirmMsgTpl": "Are you sure you want to delete {id}?",
+      "deleteSuccessMsgTpl": "{id} was deleted.",
+      "deleteErrorMsgTpl": "An error occurred while deleting {id}."
     }
   }
 }
