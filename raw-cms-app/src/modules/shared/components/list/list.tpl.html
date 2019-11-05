@@ -1,0 +1,24 @@
+<v-list class="elevation-1 rawcms-list">
+  <link rel="stylesheet" href="/modules/shared/components/list/list.css" />
+
+  <v-list-item v-for="i of items" :key="i._id" @click.stop="goTo(i._id)">
+    <slot name="content">
+      <v-list-item-content>
+        <v-list-item-title v-html="i._id"></v-list-item-title>
+      </v-list-item-content>
+    </slot>
+    <slot name="action-buttons">
+      <!-- <v-list-item-icon :class="{'force-show': ent._meta_.isDeleting}">
+        <v-btn icon @click.stop="showDeleteConfirm(ent)">
+          <v-icon v-if="!ent._meta_.isDeleting">mdi-delete-outline</v-icon>
+          <v-progress-circular v-if="ent._meta_.isDeleting" indeterminate></v-progress-circular>
+        </v-btn>
+      </v-list-item-icon> -->
+      <v-list-item-icon>
+        <v-btn icon>
+          <v-icon>mdi-delete-outline</v-icon>
+        </v-btn>
+      </v-list-item-icon>
+    </slot>
+  </v-list-item>
+</v-list>

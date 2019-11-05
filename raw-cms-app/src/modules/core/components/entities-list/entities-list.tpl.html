@@ -16,7 +16,7 @@
 
   <v-row v-if="!isLoading && entities.length > 0">
     <v-col>
-      <v-list class="elevation-1">
+      <!-- <v-list class="elevation-1 rawcms-list">
         <v-list-item v-for="ent in entities" :key="ent._id" @click.stop="goTo(ent._id)">
           <v-list-item-content>
             <v-list-item-title v-html="ent.CollectionName"></v-list-item-title>
@@ -28,7 +28,7 @@
             </v-btn>
           </v-list-item-icon>
         </v-list-item>
-      </v-list>
+      </v-list> -->
     </v-col>
   </v-row>
 
