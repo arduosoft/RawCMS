@@ -1,41 +1,8 @@
 <v-layout class="flex-column">
   <h1>{{ $t('core.entities.title') }}</h1>
-
-  <v-layout class="flex-column justify-center align-self-center fill-height" v-if="isLoading">
-    <atom-spinner :animation-duration="1000" :size="80" :color="'#64B5F6'"></atom-spinner>
-  </v-layout>
-
-  <!-- <v-layout
-    class="flex-column justify-center align-self-center fill-height"
-    v-if="!isLoading && entities.length <= 0"
-  >
-    {{ $t('core.entities.emptyMsg') }}
-  </v-layout> -->
-
   <v-row v-if="!isLoading">
-    <!--</v-row> && entities.length > 0">-->
     <v-col>
       <entities-list></entities-list>
-      <!-- <raw-cms-list apiBasePath="/system/admin/_schema">
-        <template v-slot:content="props">
-          <v-list-item-content>
-            <v-list-item-title v-html="props.item.CollectionName"></v-list-item-title>
-          </v-list-item-content>
-        </template>
-      </raw-cms-list> -->
-      <!-- <v-list class="elevation-1 rawcms-list">
-        <v-list-item v-for="ent in entities" :key="ent._id" @click.stop="goTo(ent._id)">
-          <v-list-item-content>
-            <v-list-item-title v-html="ent.CollectionName"></v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-icon :class="{'force-show': ent._meta_.isDeleting}">
-            <v-btn icon @click.stop="showDeleteConfirm(ent)">
-              <v-icon v-if="!ent._meta_.isDeleting">mdi-delete-outline</v-icon>
-              <v-progress-circular v-if="ent._meta_.isDeleting" indeterminate></v-progress-circular>
-            </v-btn>
-          </v-list-item-icon>
-        </v-list-item>
-      </v-list> -->
     </v-col>
   </v-row>
 

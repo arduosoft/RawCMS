@@ -2,6 +2,10 @@ import { epicSpinners } from '../../../../utils/spinners.js';
 import { snackbarService } from '../../../core/services/snackbar-service.js';
 import { BaseCrudService } from '../../../shared/services/base-crud-service.js';
 
+const _rawCmsListEvents = {
+  pageLoaded: 'rawcms_list_page-loaded',
+};
+
 const _rawCmsListName = 'raw-cms-list';
 
 const _RawCmsListDef = async () => {
@@ -11,8 +15,13 @@ const _RawCmsListDef = async () => {
     components: {
       AtomSpinner: epicSpinners.AtomSpinner,
     },
+    computed: {
+      isEmpty: function() {
+        return this.items.length <= 0;
+      },
+    },
     created: function() {
-      this.fetchEntities();
+      this.fetchData();
     },
     data: function() {
       return {
@@ -24,13 +33,14 @@ const _RawCmsListDef = async () => {
       };
     },
     methods: {
-      fetchEntities: async function() {
+      fetchData: async function() {
         // FIXME: Pagination
         const res = await this.apiService.getPage();
         this.items = res.map(x => {
           return { ...x, _meta_: { isDeleting: false } };
         });
         this.isLoading = false;
+        this.$emit(_rawCmsListEvents.pageLoaded, { hasItems: this.items.length > 0 });
       },
       goTo: function(id) {
         if (!this.detailRouteName) {
@@ -92,6 +102,7 @@ const _RawCmsList = async (res, rej) => {
   res(cmpDef);
 };
 
+export const rawCmsListEvents = _rawCmsListEvents;
 export const RawCmsListDef = _RawCmsListDef;
 export const RawCmsList = _RawCmsList;
 export default _RawCmsList;
