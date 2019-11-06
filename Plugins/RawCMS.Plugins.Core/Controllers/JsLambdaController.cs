@@ -5,9 +5,7 @@ using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Service;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace RawCMS.Plugins.Core.Controllers
 {
@@ -16,7 +14,6 @@ namespace RawCMS.Plugins.Core.Controllers
     [Route("api/js")]
     public class JsLambdaController
     {
-
         private readonly AppEngine lambdaManager;
         private readonly CRUDService crudService;
 
@@ -26,22 +23,20 @@ namespace RawCMS.Plugins.Core.Controllers
             this.crudService = crudService;
         }
 
-       
-
         [AllowAnonymous]
         [RawAuthentication]
         [HttpPost("{lambda}")]
-        public JObject Post(string lambda,[FromBody] JObject input)
+        public JObject Post(string lambda, [FromBody] JObject input)
         {
-            var result = this.crudService.Query("_js", new Library.DataModel.DataQuery()
+            Library.DataModel.ItemList result = crudService.Query("_js", new Library.DataModel.DataQuery()
             {
                 PageNumber = 1,
                 PageSize = 1,
                 RawQuery = $"{{\"Path\":\"{lambda}\"}}"
             });
 
-            var js = result.Items[0];
-            var code = js["Code"].ToString();
+            JToken js = result.Items[0];
+            string code = js["Code"].ToString();
 
             Dictionary<string, object> tmpIn = input.ToObject<Dictionary<string, object>>();
             Dictionary<string, object> tmpOur = new Dictionary<string, object>();
@@ -51,6 +46,5 @@ namespace RawCMS.Plugins.Core.Controllers
                     .Execute(code);
             return JObject.FromObject(tmpOur);
         }
-
     }
 }
