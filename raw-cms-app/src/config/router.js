@@ -33,7 +33,9 @@ const _router = new VueRouter({
           path: '/',
           name: 'entities',
           component: async (res, rej) => {
-            const cmp = await import('/modules/core/components/entities-list/entities-list.js');
+            const cmp = await import(
+              '/modules/core/views/entities-list-view/entities-list-view.js'
+            );
             await cmp.default(res, rej);
           },
         },
@@ -42,6 +44,31 @@ const _router = new VueRouter({
           name: 'entity-details',
           component: async (res, rej) => {
             const cmp = await import('/modules/core/components/entity-details/entity-details.js');
+            await cmp.default(res, rej);
+          },
+        },
+      ],
+    },
+    {
+      path: '/users',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/users/users.js');
+        await cmp.default(res, rej);
+      },
+      children: [
+        {
+          path: '/',
+          name: 'users',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/components/users-list/users-list.js');
+            await cmp.default(res, rej);
+          },
+        },
+        {
+          path: ':id',
+          name: 'user-details',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/components/user-details/user-details.js');
             await cmp.default(res, rej);
           },
         },

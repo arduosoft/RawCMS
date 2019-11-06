@@ -11,6 +11,7 @@ const _LeftMenu = async (resolve, reject) => {
       return {
         isVisible: false,
         items: [
+          { icon: 'mdi-account', text: 'Users', route: 'users' },
           { icon: 'mdi-cube', text: 'Entities', route: 'entities' },
           { icon: 'mdi-circle', text: 'Lambdas', route: 'lambda' },
         ],

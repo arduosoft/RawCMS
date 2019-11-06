@@ -1,4 +1,7 @@
-const _optionalChain = (expression, { fallbackValue = undefined, replaceLastUndefined = true }) => {
+const _optionalChain = (
+  expression,
+  { fallbackValue = undefined, replaceLastUndefined = true } = {}
+) => {
   let val;
 
   try {

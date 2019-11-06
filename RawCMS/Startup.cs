@@ -57,6 +57,8 @@ namespace RawCMS
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseCors();
+
             appEngine.InvokeConfigure(app);
             appEngine.RegisterPluginsMiddleweares(app);
 
@@ -65,7 +67,7 @@ namespace RawCMS
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
-
+            
             app.UseMvc();
 
             app.UseMvc(routes =>
@@ -91,6 +93,13 @@ namespace RawCMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(opt => opt.AddDefaultPolicy(p =>
+            {
+                p.AllowAnyHeader();
+                p.AllowAnyMethod();
+                p.AllowAnyOrigin();
+            }));
+
             var ass = new List<Assembly>();
             var builder = services.AddMvc();
             var pluginPath = Configuration.GetValue<string>("PluginPath");
