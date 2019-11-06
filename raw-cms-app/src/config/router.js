@@ -99,6 +99,16 @@ const _router = new VueRouter({
         },
       ],
     },
+    {
+      path: '/testdialog',
+      name: 'testdialog',
+      component: async (res, rej) => {
+        const cmp = await import(
+          '/modules/core/components/config-edit-dialog/config-edit-dialog.js'
+        );
+        await cmp.default(res, rej);
+      },
+    },
   ],
 });
 
