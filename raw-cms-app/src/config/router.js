@@ -43,7 +43,9 @@ const _router = new VueRouter({
           path: ':id',
           name: 'entity-details',
           component: async (res, rej) => {
-            const cmp = await import('/modules/core/components/entity-details/entity-details.js');
+            const cmp = await import(
+              '/modules/core/views/entity-details-view/entity-details-view.js'
+            );
             await cmp.default(res, rej);
           },
         },
@@ -103,9 +105,7 @@ const _router = new VueRouter({
       path: '/testdialog',
       name: 'testdialog',
       component: async (res, rej) => {
-        const cmp = await import(
-          '/modules/core/components/config-edit-dialog/config-edit-dialog.js'
-        );
+        const cmp = await import('/modules/core/components/edit-dialog/edit-dialog.js');
         await cmp.default(res, rej);
       },
     },
