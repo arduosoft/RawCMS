@@ -22,6 +22,12 @@ const _EntitiesListWrapperDef = async () => {
         return this.$t('core.entities.deleteErrorMsgTpl', { name: item.CollectionName });
       },
     },
+    props: {
+      detailRouteName: {
+        typ: String,
+        default: 'entity-details',
+      },
+    },
   };
 };
 
