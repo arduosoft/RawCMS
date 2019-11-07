@@ -1,0 +1,50 @@
+<v-layout class="flex-column justify-center align-center fill-height">
+  <v-tabs
+    dark
+    background-color="tabHeader"
+    class="rawcms-detail-edit elevation-2"
+    centered="true"
+    grow="true"
+    prev-icon="mdi-arrow-left-bold-box-outline"
+    next-icon="mdi-arrow-right-bold-box-outline"
+    icons-and-text="true"
+    v-model="activeTabId"
+    ref="tabs"
+  >
+    <v-tabs-slider></v-tabs-slider>
+
+    <v-tab key="0" ref="tab0">
+      {{ $t('core.common.editText') }}
+      <v-icon>mdi-pen</v-icon>
+    </v-tab>
+
+    <v-tab key="1">
+      {{ $t('core.common.jsonText') }}
+      <v-icon>mdi-json</v-icon>
+    </v-tab>
+
+    <v-tabs-items v-model="activeTabId">
+      <v-tab-item key="0">
+        <v-card flat tile>
+          <!-- custom editor here-->
+          <slot name="custom">
+            Coming soon!
+          </slot>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item key="1">
+        <v-card flat tile>
+          <monaco-editor
+            ref="monaco"
+            class="monaco fill-height"
+            v-model="compCode"
+            :options="monacoOptions"
+            :amdRequire="amdRequire"
+            @editorDidMount="resizeMonaco()"
+          ></monaco-editor>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+  </v-tabs>
+</v-layout>
