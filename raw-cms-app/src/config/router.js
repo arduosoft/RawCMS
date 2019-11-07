@@ -25,7 +25,7 @@ const _router = new VueRouter({
     {
       path: '/entities',
       component: async (res, rej) => {
-        const cmp = await import('/modules/core/views/entities/entities.js');
+        const cmp = await import('/modules/core/views/entities-view/entities-view.js');
         await cmp.default(res, rej);
       },
       children: [
