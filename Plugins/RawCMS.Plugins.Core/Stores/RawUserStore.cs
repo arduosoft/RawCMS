@@ -281,6 +281,16 @@ namespace RawCMS.Plugins.Core.Stores
                 new Claim(ClaimTypes.NameIdentifier, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email)
             };
+
+            if (user.Roles != null)
+            {
+                foreach (var role in user.Roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
+                claims.Add(new Claim("RolesList", string.Join(",", user.Roles)));
+            }
+
             JObject userObj = JObject.FromObject(user);
             foreach (JProperty key in userObj.Properties())
             {
@@ -320,12 +330,7 @@ namespace RawCMS.Plugins.Core.Stores
         public async Task<ClaimsPrincipal> CreateAsync(IdentityUser user)
         {
             ClaimsIdentity id = new ClaimsIdentity(user.UserName, ClaimTypes.NameIdentifier, ClaimTypes.Role);
-            id.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
 
-            if (user.Roles != null)
-            {
-                id.AddClaim(new Claim(ClaimTypes.Role, string.Join(",", user.Roles)));
-            }
             id.AddClaims(await GetClaimsAsync(user, CancellationToken.None));
 
             ClaimsPrincipal userprincipal = new ClaimsPrincipal();

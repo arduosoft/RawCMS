@@ -19,8 +19,7 @@ using System;
 
 namespace RawCMS.Plugins.Core.Controllers
 {
-    [AllowAnonymous]
-    [RawAuthentication]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ParameterValidator("collection", "_(.*)", true)]
     public class CRUDController : Controller
