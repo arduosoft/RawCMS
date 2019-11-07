@@ -280,7 +280,7 @@ namespace RawCMS.Library.Core
                     _logger.LogError(err, "");
                 }
             }
-
+            
             if (_logger.IsEnabled(LogLevel.Debug))
             {
                 DumpLambdaInfo();
@@ -309,11 +309,13 @@ namespace RawCMS.Library.Core
 
         private void DumpLambdaInfo()
         {
+            _logger.LogDebug("DumpLambdaInfo");
+
             var types = this.Lambdas.Select(x => x.GetType().BaseType).Distinct().ToList();
 
             foreach (var type in types)
             {
-                _logger.LogDebug("");
+                
                 _logger.LogDebug($"For type {type.FullName}");
 
                 this.Lambdas.Where(x => x.GetType().BaseType == type).ToList().ForEach(x =>
@@ -368,6 +370,7 @@ namespace RawCMS.Library.Core
             _logger.LogDebug("Discover Lambdas in Bundle");
 
             List<Type> lambdas = this.reflectionManager.GetImplementors<Lambda>();
+            List<Type> _rest = this.reflectionManager.GetImplementors<RestLambda>();
 
             foreach (Type type in lambdas)
             {
