@@ -1,40 +1,5 @@
-<v-tabs
-  background-color=" accent-4"
-  class="elevation-2"
-  dark
-  centered="true"
-  grow="true"
-  prev-icon="mdi-arrow-left-bold-box-outline"
-  next-icon="mdi-arrow-right-bold-box-outline"
-  icons-and-text="true"
->
-  <v-tabs-slider></v-tabs-slider>
-
-  <v-tab key="0">
-    Edit
-    <v-icon>mdi-pen</v-icon>
-  </v-tab>
-
-  <v-tab-item key="0" height="600">
-    <v-card flat tile height="600">
-      <!-- custom editor here-->
-      <slot name="custom"></slot>
-    </v-card>
-  </v-tab-item>
-
-  <v-tab key="1">
-    Json
-    <v-icon>mdi-json</v-icon>
-  </v-tab>
-
-  <v-tab-item key="1">
-    <v-card flat tile height="600">
-      <monaco-editor
-        style=" width:900px;height:600px;"
-        v-model="data.Code"
-        language="javascript"
-        :amdRequire="amdRequire"
-      />
-    </v-card>
-  </v-tab-item>
-</v-tabs>
+<v-container fluid class="fill-height">
+  <v-layout class="flex-column">
+    <raw-cms-detail-edit></raw-cms-detail-edit>
+  </v-layout>
+</v-container>

@@ -1,7 +1,7 @@
 {
   "core": {
     "login": {
-      "title": "Login to RawCMS",
+      "title": "Login to Raw CMS",
       "loginBtn": "Login",
       "wrongCredentials": "Cannot login, please check your credentials."
     },
@@ -17,6 +17,8 @@
     },
     "common": {
       "requiredField": "This field is required.",
+      "editText": "Edit",
+      "jsonText": "JSON",
       "okBtnText": "Ok",
       "cancelBtnText": "Cancel",
       "emptyListMsg": "There are no items yet.",
