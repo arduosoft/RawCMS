@@ -1,7 +1,7 @@
 {
   "core": {
     "login": {
-      "title": "Login to RawCMS",
+      "title": "Login to Raw CMS",
       "loginBtn": "Login",
       "wrongCredentials": "Cannot login, please check your credentials."
     },
@@ -13,17 +13,28 @@
       "emptyMsg": "There are no entities yet. Add some with the button below!",
       "deleteConfirmMsgTpl": "Are you sure you want to delete entity {name}?",
       "deleteSuccessMsgTpl": "Entity {name} was deleted.",
-      "deleteErrorMsgTpl": "An error occurred while deleting entity {name}."
+      "deleteErrorMsgTpl": "An error occurred while deleting entity {name}.",
+      "detail": {
+        "newTitle": "New entity",
+        "updateTitle": "Entity {name}"
+      }
     },
     "common": {
       "requiredField": "This field is required.",
+      "editText": "Edit",
+      "jsonText": "JSON",
       "okBtnText": "Ok",
       "cancelBtnText": "Cancel",
       "emptyListMsg": "There are no items yet.",
       "deleteConfirmTitle": "Delete confirmation",
       "deleteConfirmMsgTpl": "Are you sure you want to delete {id}?",
       "deleteSuccessMsgTpl": "{id} was deleted.",
-      "deleteErrorMsgTpl": "An error occurred while deleting {id}."
+      "deleteErrorMsgTpl": "An error occurred while deleting {id}.",
+      "saveSuccessMsgTpl": "Save was successfull.",
+      "saveErrorMsgTpl": "An error occurred during saving."
+    },
+    "lambdas": {
+      "title": "Lambdas"
     }
   }
 }

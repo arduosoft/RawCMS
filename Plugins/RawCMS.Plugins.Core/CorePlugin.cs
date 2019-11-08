@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using RawCMS.Library.Core;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Service;
@@ -50,6 +51,8 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<MongoService>();
             services.AddSingleton<CRUDService>();
             services.AddHttpContextAccessor();
+            services.AddMvcCore().AddAuthorization() // Note - this is on the IMvcBuilder, not the service collection
+    .AddJsonFormatters(options => options.ContractResolver = new CamelCasePropertyNamesContractResolver());
         }
 
         public override void Configure(IApplicationBuilder app)

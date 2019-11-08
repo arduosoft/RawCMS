@@ -1,3 +1,4 @@
+import { optionalChain } from '../../../utils/object.utils.js';
 import { apiClient } from '../../core/api/api-client.js';
 import { ICrudService } from './crud-service.js';
 
@@ -21,17 +22,30 @@ export class BaseCrudService extends ICrudService {
     return res.data.data.items;
   }
 
-  async getById() {
-    throw new Error('To be implemented. This should return the item.');
+  async getById(id) {
+    if (!id) {
+      console.error(`Unable to get item: id is invalid (${obj})`);
+      return false;
+    }
+
+    const res = await this._apiClient.get(`${this._basePath}/${id}`);
+    return res.data.data;
   }
 
   async create() {
     throw new Error('To be implemented. This should return the created item.');
-    retu;
   }
 
-  async update() {
-    throw new Error('To be implemented. This should return the updated item.');
+  async update(obj) {
+    const id = optionalChain(() => obj._id);
+
+    if (!id) {
+      console.error(`Unable to update item: object has invalid id (${obj})`);
+      return false;
+    }
+
+    const res = await this._apiClient.patch(`${this._basePath}/${id}`, obj);
+    return res.data.data === true;
   }
 
   async delete(id) {

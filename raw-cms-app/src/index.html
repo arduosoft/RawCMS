@@ -25,6 +25,7 @@
       rel="stylesheet"
     />
   </head>
+
   <body>
     <noscript>
       <strong
@@ -43,8 +44,31 @@
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
     <script src="https://cdn.jsdelivr.net/combine/npm/vuelidate@0.7.4/dist/validators.min.js,npm/vuelidate@0.7.4/dist/vuelidate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/epic-spinners@1.1.0/dist/lib/epic-spinners.min.js"></script>
+    <script src="https://unpkg.com/vue-monaco@1.1.0/dist/vue-monaco.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/vs/loader.js"></script>
+
+    <!-- MONACO config-->
+    <script>
+      require.config({
+        paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/vs/' },
+      });
+
+      // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
+      // the default worker url location (used when creating WebWorkers). The problem here is that
+      // HTML5 does not allow cross-domain web workers, so we need to proxy the instantiation of
+      // a web worker through a same-domain script
+      window.MonacoEnvironment = {
+        getWorkerUrl: function(workerId, label) {
+          return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+            self.MonacoEnvironment = {
+              baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/'
+            };
+            importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/vs/base/worker/workerMain.js');`)}`;
+        },
+      };
+    </script>
 
     <!-- Main app files -->
-    <script type="module" src="main.js"></script>
+    <script type="module" src="/main.js"></script>
   </body>
 </html>

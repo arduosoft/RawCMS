@@ -25,7 +25,7 @@ const _router = new VueRouter({
     {
       path: '/entities',
       component: async (res, rej) => {
-        const cmp = await import('/modules/core/views/entities/entities.js');
+        const cmp = await import('/modules/core/views/entities-view/entities-view.js');
         await cmp.default(res, rej);
       },
       children: [
@@ -43,7 +43,9 @@ const _router = new VueRouter({
           path: ':id',
           name: 'entity-details',
           component: async (res, rej) => {
-            const cmp = await import('/modules/core/components/entity-details/entity-details.js');
+            const cmp = await import(
+              '/modules/core/views/entity-details-view/entity-details-view.js'
+            );
             await cmp.default(res, rej);
           },
         },
@@ -73,6 +75,39 @@ const _router = new VueRouter({
           },
         },
       ],
+    },
+    {
+      path: '/lambda',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/lambdas/lambdas.js');
+        await cmp.default(res, rej);
+      },
+      children: [
+        {
+          path: '/',
+          name: 'lambda-list',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/components/lambda-list/lambda-list.js');
+            await cmp.default(res, rej);
+          },
+        },
+        {
+          path: '/lambda/editor/:id',
+          name: 'lambda-editor',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/components/lambda-editor/lambda-editor.js');
+            await cmp.default(res, rej);
+          },
+        },
+      ],
+    },
+    {
+      path: '/testdialog',
+      name: 'testdialog',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/components/edit-dialog/edit-dialog.js');
+        await cmp.default(res, rej);
+      },
     },
   ],
 });
