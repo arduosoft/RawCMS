@@ -12,5 +12,20 @@ _apiClient.interceptors.request.use(request => {
   return request;
 });
 
+_apiClient.interceptors.response.use(
+  function(response) {
+    console.log(response);
+    if (response.status === 401) {
+      loginService.logout();
+    }
+
+    return response;
+  },
+  function(error) {
+    console.log(response);
+    return Promise.reject(error);
+  }
+);
+
 export const apiClient = _apiClient;
 export default apiClient;

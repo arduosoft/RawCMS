@@ -3,7 +3,7 @@ const _Home = async (res, rej) => {
     template: `
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
-          <p>{{ $t('core.home.helpText') }}</p>
+          <img src="/modules/core/assets/rawlogo.png">
         </v-row>
       </v-container>
       `,

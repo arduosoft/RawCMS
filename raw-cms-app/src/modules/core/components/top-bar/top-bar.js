@@ -9,6 +9,9 @@ const _TopBar = async (resolve, reject) => {
       toggleDrawer: function() {
         RawCMS.eventBus.$emit(evtToggleDrawer);
       },
+      logout: async function() {
+        loginService.logout();
+      },
     },
     template: tpl,
   });
