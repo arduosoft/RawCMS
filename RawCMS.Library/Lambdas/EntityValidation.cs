@@ -83,6 +83,8 @@ namespace RawCMS.Library.Lambdas
                 {
                     foreach (JProperty field in input.Properties())
                     {
+                        if (field.Name.StartsWith("_")) continue; //TODO: Add a list of default fields and make it editable by plugin
+
                         if (!settings.FieldSettings.Any(x => x.Name == field.Name))
                         {
                             errors.Add(new Error()

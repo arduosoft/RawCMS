@@ -128,8 +128,20 @@ namespace RawCMS.Library.Service
         public JObject Update(string collection, JObject item, bool replace)
         {
             var dataContext = new Dictionary<string, object>();
-            //TODO: why do not manage validation as a simple presave process?
-            InvokeValidation(item, collection);
+
+            var id = item["_id"].Value<string>();
+            var itemToCheck = item;
+
+            if (replace == false)
+            {
+                itemToCheck = Get(collection, id);
+                itemToCheck.Merge(item, new JsonMergeSettings()
+                {
+                    MergeNullValueHandling = MergeNullValueHandling.Merge,
+                    MergeArrayHandling = MergeArrayHandling.Replace
+                });
+            }
+            InvokeValidation(itemToCheck, collection);
 
             //TODO: create collection if not exists
             EnsureCollection(collection);
@@ -138,7 +150,6 @@ namespace RawCMS.Library.Service
 
             InvokeProcess(collection, ref item, SavePipelineStage.PreSave, DataOperation.Write, dataContext);
 
-            var id = item["_id"].Value<string>();
             //insert id (mandatory)
             BsonDocument doc = BsonDocument.Parse(item.ToString());
             doc["_id"] = BsonObjectId.Create(id);

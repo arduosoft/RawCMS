@@ -16,13 +16,13 @@ namespace RawCMS.Plugins.FullText.Lambdas
 {
     public abstract class BaseFullTextLambda : DataProcessLambda
     {
-        protected readonly FullTextService fullTextService;
-        protected readonly FullTextUtilityService helper;
+        public FullTextService FullTextService { get; private set; }
+        public FullTextUtilityService Helper { get; private set; }
 
         public BaseFullTextLambda(FullTextService fullTextService, FullTextUtilityService helper)
         {
-            this.fullTextService = fullTextService;
-            this.helper = helper;
+            this.FullTextService = fullTextService;
+            this.Helper = helper;
         }
     }
 
@@ -42,14 +42,14 @@ namespace RawCMS.Plugins.FullText.Lambdas
 
         public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
-            var filter = helper.GetFilter(collection);
+            var filter = this.Helper.GetFilter(collection);
             if (filter == null) return;
 
             var id = item["_id"];
             if (id == null) return;
 
-            var index = helper.GetIndexName(collection);
-            this.fullTextService.DeleteDocument(index, id.ToString());
+            var index = Helper.GetIndexName(collection);
+            this.FullTextService.DeleteDocument(index, id.ToString());
         }
     }
 
@@ -72,14 +72,16 @@ namespace RawCMS.Plugins.FullText.Lambdas
 
         public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
-            var filter = helper.GetFilter(collection);
+            var filter = Helper.GetFilter(collection);
             if (filter == null) return;
 
             JObject searchDocument = new JObject();
 
             var list = new List<string>()
                 {
-                    "_id" //id is alway neededs
+                    "_id", //id is alway neededs
+                    "_createdon",
+                    "_modifiedon"
                 };
 
             //if empty add all
@@ -87,13 +89,17 @@ namespace RawCMS.Plugins.FullText.Lambdas
             {
                 list.AddRange(item.Properties().Select(p => p.Name).Distinct().ToList());
             }
+            else
+            {
+                list.AddRange(filter.IncludedField);
+            }
 
-            foreach (var field in filter.IncludedField)
+            foreach (var field in list)
             {
                 searchDocument[field] = item[field];
             }
 
-            this.fullTextService.AddDocumentRaw(this.helper.GetIndexName(collection), searchDocument);
+            this.FullTextService.AddDocumentRaw(this.Helper.GetIndexName(collection), searchDocument);
         }
     }
 }
