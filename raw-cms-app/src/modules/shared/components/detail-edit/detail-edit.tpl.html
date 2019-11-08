@@ -1,4 +1,11 @@
 <v-layout class="flex-column justify-center align-center fill-height">
+  <atom-spinner
+    :animation-duration="1000"
+    :size="80"
+    :color="'#64B5F6'"
+    v-if="isLoading"
+  ></atom-spinner>
+
   <v-tabs
     dark
     background-color="tabHeader"
@@ -9,6 +16,7 @@
     next-icon="mdi-arrow-right-bold-box-outline"
     icons-and-text="true"
     v-model="activeTabId"
+    v-if="!isLoading"
     ref="tabs"
   >
     <v-tabs-slider></v-tabs-slider>
@@ -29,6 +37,9 @@
           <!-- custom editor here-->
           <slot name="custom">
             Coming soon!
+            <br />
+            Current value is:<br />
+            {{ value }}
           </slot>
         </v-card>
       </v-tab-item>
@@ -47,4 +58,11 @@
       </v-tab-item>
     </v-tabs-items>
   </v-tabs>
+
+  <v-fab-transition>
+    <v-btn color="primary" fab fixed bottom right :disabled="isSaving" @click.stop="save()">
+      <v-icon v-if="!isSaving">mdi-floppy</v-icon>
+      <v-progress-circular v-if="isSaving" indeterminate></v-progress-circular>
+    </v-btn>
+  </v-fab-transition>
 </v-layout>

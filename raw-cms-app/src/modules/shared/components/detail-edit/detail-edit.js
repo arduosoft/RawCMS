@@ -1,4 +1,6 @@
+import { RawCMS } from '../../../../config/raw-cms.js';
 import { epicSpinners } from '../../../../utils/spinners.js';
+import { snackbarService } from '../../../core/services/snackbar-service.js';
 import { BaseCrudService } from '../../../shared/services/base-crud-service.js';
 
 const _rawCmsDetailEditEvents = {
@@ -27,32 +29,47 @@ const _RawCmsDetailEditDef = async () => {
           } catch (e) {}
         },
       },
-      isFound: function() {
-        return this.value !== null; // FIXME:
+      isNewEntity: function() {
+        return this.$route.params.id === 'new';
       },
     },
-    created: function() {
-      this.fetchData();
+    created: async function() {
+      if (!this.isNewEntity) {
+        await this.fetchData();
+      }
+
+      this.code = this.formatJson(this.value || {});
+      RawCMS.eventBus.$emit(_rawCmsDetailEditEvents.loaded, {
+        isNewEntity: this.isNewEntity,
+        value: this.value,
+      });
     },
-    data: () => {
+    data: function() {
       return {
         apiService: this.apiBasePath ? new BaseCrudService({ basePath: this.apiBasePath }) : null,
         activeTabId: 1,
         code: '',
         isLoading: true,
+        isSaving: false,
         monacoOptions: {
           language: 'json',
           scrollBeyondLastLine: false,
         },
-        value,
+        value: {},
       };
     },
     methods: {
       amdRequire: require,
+      saveSuccessMsg: function(item) {
+        return this.$t('core.common.saveSuccessMsgTpl');
+      },
+      saveErrorMsg: function(item) {
+        return this.$t('core.common.saveErrorMsgTpl');
+      },
       fetchData: async function() {
-        this.value = await this.apiService.getById(this.id);
+        const id = this.$route.params.id;
+        this.value = await this.apiService.getById(id);
         this.isLoading = false;
-        this.$emit(_rawCmsDetailEditEvents.loaded, { isFound: this.isFound });
       },
       formatJson: function() {
         return JSON.stringify(this.value, null, 4);
@@ -65,12 +82,27 @@ const _RawCmsDetailEditDef = async () => {
           this.$refs.tab0.$el.getBoundingClientRect().height;
         monacoEditor.layout({ width: oldLayout.width, height: newHeight });
       },
-      save: function() {
-        // FIXME:
+      save: async function() {
+        this.isSaving = true;
+        const apiCall = this.isNewEntity
+          ? this.apiService.create(this.value)
+          : this.apiService.update(this.value);
+        const res = await apiCall;
+        this.isSaving = false;
+
+        if (!res) {
+          snackbarService.showMessage({
+            color: 'error',
+            message: this.saveErrorMsg(this.value),
+          });
+          return;
+        }
+
+        snackbarService.showMessage({
+          color: 'success',
+          message: this.saveSuccessMsg(this.value),
+        });
       },
-    },
-    created: function() {
-      this.code = this.formatJson(this.value || {});
     },
     props: {
       apiBasePath: String,
@@ -86,6 +118,7 @@ const _RawCmsDetailEdit = async (res, rej) => {
   res(cmpDef);
 };
 
+export const rawCmsDetailEditEvents = _rawCmsDetailEditEvents;
 export const RawCmsDetailEditDef = _RawCmsDetailEditDef;
 export const RawCmsDetailEdit = _RawCmsDetailEdit;
 export default _RawCmsDetailEdit;

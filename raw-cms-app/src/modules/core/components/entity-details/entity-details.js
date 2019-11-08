@@ -1,9 +1,15 @@
 import { RawCmsDetailEditDef } from '../../../shared/components/detail-edit/detail-edit.js';
+import { entitiesSchemaService } from '../../services/entities-schema.service.js';
 
 const _EntityDetailsWrapperDef = async () => {
   const rawCmsDetailEditDef = await RawCmsDetailEditDef();
 
   return {
+    data: function() {
+      return {
+        apiService: entitiesSchemaService,
+      };
+    },
     extends: rawCmsDetailEditDef,
   };
 };

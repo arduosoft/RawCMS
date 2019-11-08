@@ -1,3 +1,5 @@
+import { optionalChain } from '../../../../utils/object.utils.js';
+import { rawCmsDetailEditEvents } from '../../../shared/components/detail-edit/detail-edit.js';
 import { EntityDetailsDef } from '../../components/entity-details/entity-details.js';
 
 const _EntityDetailsView = async (res, rej) => {
@@ -10,10 +12,27 @@ const _EntityDetailsView = async (res, rej) => {
     components: {
       EntityDetails: entityDetails,
     },
-    data: function() {
-      return {};
+    created: function() {
+      RawCMS.eventBus.$on(rawCmsDetailEditEvents.loaded, ev => {
+        this.updateTitle({
+          isNewEntity: ev.isNewEntity,
+          name: optionalChain(() => ev.value.CollectionName, { fallbackValue: '<NONE>' }),
+        });
+      });
     },
-    methods: {},
+    data: function() {
+      return {
+        title: null,
+      };
+    },
+
+    methods: {
+      updateTitle: function({ isNewEntity, name }) {
+        this.title = isNewEntity
+          ? this.$t('core.entities.detail.newTitle')
+          : this.$t('core.entities.detail.updateTitle', { name: name });
+      },
+    },
     template: tpl,
   });
 };
