@@ -24,6 +24,9 @@
       "deleteConfirmMsgTpl": "Are you sure you want to delete {id}?",
       "deleteSuccessMsgTpl": "{id} was deleted.",
       "deleteErrorMsgTpl": "An error occurred while deleting {id}."
+    },
+    "lambdas": {
+      "title": "Lambdas"
     }
   }
 }

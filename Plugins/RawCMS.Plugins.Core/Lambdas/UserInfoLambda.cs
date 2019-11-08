@@ -8,7 +8,6 @@
 //******************************************************************************
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
-using System;
 
 namespace RawCMS.Plugins.Core.Lambdas
 {
@@ -16,7 +15,7 @@ namespace RawCMS.Plugins.Core.Lambdas
     {
         public override string Name => "UserInfo";
 
-        public override string Description => throw new NotImplementedException();
+        public override string Description => "UserInfo";
 
         public override JObject Rest(JObject input)
         {
@@ -26,7 +25,18 @@ namespace RawCMS.Plugins.Core.Lambdas
             };
             foreach (System.Security.Claims.Claim claim in Request.User.Claims)
             {
-                jj[claim.Type] = claim.Value;
+                int suffix = 0;
+                string uniquekey = claim.Type;
+
+
+                while (jj.ContainsKey(uniquekey))
+                {
+
+                    suffix++;
+                    uniquekey = claim.Type + "[" + suffix +"]";
+                }
+
+                jj[uniquekey] = claim.Value;
             }
             return jj;
         }
