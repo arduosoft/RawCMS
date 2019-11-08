@@ -63,6 +63,7 @@ namespace RawCMS.Plugins.FullText
 
             services.AddSingleton<ElasticClient>(new ElasticClient(connectionSettings));
             services.AddSingleton<FullTextService, ElasticFullTextService>();
+            services.AddSingleton<FullTextUtilityService, FullTextUtilityService>();
         }
 
         public override void Configure(IApplicationBuilder app)

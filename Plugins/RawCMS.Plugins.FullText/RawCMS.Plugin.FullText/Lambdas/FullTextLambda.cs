@@ -8,86 +8,92 @@
 //******************************************************************************
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
-using RawCMS.Library.Lambdas;
 using RawCMS.Plugins.FullText.Core;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 
 namespace RawCMS.Plugins.FullText.Lambdas
 {
-    public class FullTextLambda : PostSaveLambda
+    public abstract class BaseFullTextLambda : DataProcessLambda
+    {
+        protected readonly FullTextService fullTextService;
+        protected readonly FullTextUtilityService helper;
+
+        public BaseFullTextLambda(FullTextService fullTextService, FullTextUtilityService helper)
+        {
+            this.fullTextService = fullTextService;
+            this.helper = helper;
+        }
+    }
+
+    public class DeleteFullTextLambda : BaseFullTextLambda
     {
         public override string Name => "FullTextMapping";
 
         public override string Description => this.Name;
 
-        public Dictionary<string, FullTextFilter> CrudFilters { get; set; }
+        public override SavePipelineStage Stage => SavePipelineStage.PostSave;
 
-        protected readonly FullTextService fullTextService;
+        public override DataOperation Operation => DataOperation.Delete;
 
-        public FullTextLambda(FullTextService fullTextService)
+        public DeleteFullTextLambda(FullTextService fullTextService, FullTextUtilityService helper) : base(fullTextService, helper)
         {
-            this.fullTextService = fullTextService;
         }
 
         public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
-            if (this.CrudFilters == null)
-            {
-                LoadCrudFilters();
-            }
+            var filter = helper.GetFilter(collection);
+            if (filter == null) return;
 
-            if (CrudFilters.TryGetValue(collection, out FullTextFilter filter))
-            {
-                JObject searchDocument = new JObject();
+            var id = item["_id"];
+            if (id == null) return;
 
-                var list = new List<string>()
+            var index = helper.GetIndexName(collection);
+            this.fullTextService.DeleteDocument(index, id.ToString());
+        }
+    }
+
+    public class FullTextLambda : BaseFullTextLambda
+    {
+        public override string Name => "FullTextMapping";
+
+        public override string Description => this.Name;
+
+        public override SavePipelineStage Stage => SavePipelineStage.PostSave;
+
+        public override DataOperation Operation => DataOperation.Write;
+
+        protected readonly FullTextService fullTextService;
+        protected readonly FullTextUtilityService helper;
+
+        public FullTextLambda(FullTextService fullTextService, FullTextUtilityService helper) : base(fullTextService, helper)
+        {
+        }
+
+        public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        {
+            var filter = helper.GetFilter(collection);
+            if (filter == null) return;
+
+            JObject searchDocument = new JObject();
+
+            var list = new List<string>()
                 {
                     "_id" //id is alway neededs
                 };
 
-                //if empty add all
-                if (filter.IncludedField == null || filter.IncludedField.Count == 0)
-                {
-                    list.AddRange(item.Properties().Select(p => p.Name).Distinct().ToList());
-                }
-
-                foreach (var field in filter.IncludedField)
-                {
-                    searchDocument[field] = item[field];
-                }
-
-                this.fullTextService.AddDocumentRaw(GetIndexName(collection), searchDocument);
-            }
-        }
-
-        private static MD5 md5 = MD5.Create();
-
-        private static string GetIndexName(string collection)
-        {
-            var str = "dix_" + Convert.ToBase64String(md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(collection.ToLower()))).Replace("=", "");
-            return str.ToLower().Replace("=", "");
-        }
-
-        private void LoadCrudFilters()
-        {
-            this.CrudFilters = new Dictionary<string, FullTextFilter>();
-
-            foreach (var collection in EntityValidation.Entities.Values)
+            //if empty add all
+            if (filter.IncludedField == null || filter.IncludedField.Count == 0)
             {
-                if (collection.PluginConfiguration.TryGetValue("FullTextPlugin", out JObject textSettings))
-                {
-                    this.CrudFilters[collection.CollectionName] = textSettings.ToObject<FullTextFilter>();
-                }
-
-                var indexName = GetIndexName(collection.CollectionName);
-                if (!this.fullTextService.IndexExists(indexName))
-                {
-                    this.fullTextService.CreateIndex(indexName);
-                }
+                list.AddRange(item.Properties().Select(p => p.Name).Distinct().ToList());
             }
+
+            foreach (var field in filter.IncludedField)
+            {
+                searchDocument[field] = item[field];
+            }
+
+            this.fullTextService.AddDocumentRaw(this.helper.GetIndexName(collection), searchDocument);
         }
     }
 }
