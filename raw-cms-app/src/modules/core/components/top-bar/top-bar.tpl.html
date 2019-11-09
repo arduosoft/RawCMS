@@ -5,8 +5,20 @@
   </v-toolbar-title>
   <div class="flex-grow-1"></div>
   <v-btn icon large>
-    <v-avatar size="32px" item>
-      <v-img src="/modules/core/assets/logo.svg" alt="Raw CMS"></v-img>
-    </v-avatar>
+    <v-menu left bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn icon v-on="on">
+          <v-avatar size="32px" item>
+            <v-img src="/modules/core/assets/logo.svg" alt="Raw CMS"></v-img>
+          </v-avatar>
+        </v-btn>
+      </template>
+
+      <v-list>
+        <v-list-item @click="logout();">
+          <v-list-item-title>logout</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </v-btn>
 </v-app-bar>

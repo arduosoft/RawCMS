@@ -1,4 +1,5 @@
-import { evtLogin } from '../events.js';
+import { router } from '../../../config/router.js';
+import { evtLogin, evtLogout } from '../events.js';
 import { RawCMS } from '/config/raw-cms.js';
 import { vuexStore } from '/config/vuex.js';
 
@@ -36,6 +37,13 @@ class LoginService {
       vuexStore.commit('isLoggedIn', true);
       RawCMS.eventBus.$emit(evtLogin);
     });
+  }
+
+  async logout() {
+    localStorage.clear();
+    vuexStore.commit('isLoggedIn', false);
+    RawCMS.eventBus.$emit(evtLogout);
+    router.push({ name: 'login', params: { return: document.location.href } });
   }
 
   _refreshLoginState() {
