@@ -1,5 +1,3 @@
-// import { snackbarService } from '../../services/snackbar-service.js';
-import { epicSpinners } from '../../../../utils/spinners.js';
 import { EntitiesListDef } from '../../components/entities-list/entities-list.js';
 
 const _EntitiesListView = async (res, rej) => {
@@ -10,13 +8,10 @@ const _EntitiesListView = async (res, rej) => {
 
   res({
     components: {
-      AtomSpinner: epicSpinners.AtomSpinner,
       EntitiesList: entitiesList,
     },
     data: function() {
-      return {
-        isLoading: false,
-      };
+      return {};
     },
     methods: {},
     template: tpl,

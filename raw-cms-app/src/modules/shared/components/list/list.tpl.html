@@ -26,6 +26,9 @@
       </slot>
       <slot name="action-buttons" v-bind:item="i">
         <v-list-item-icon :class="{'force-show': i._meta_.isDeleting}">
+          <v-btn icon @click.stop="goTo(i._id)" v-if="!i._meta_.isDeleting">
+            <v-icon>mdi-pencil-outline</v-icon>
+          </v-btn>
           <v-btn icon @click.stop="showDeleteConfirm(i)">
             <v-icon v-if="!i._meta_.isDeleting">mdi-delete-outline</v-icon>
             <v-progress-circular v-if="i._meta_.isDeleting" indeterminate></v-progress-circular>

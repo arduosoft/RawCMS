@@ -7,7 +7,7 @@
   <template v-slot:delete-confirm-msg="slotProps">
     {{ $t('core.entities.deleteConfirmMsgTpl', { name: slotProps.item.CollectionName }) }}
   </template>
-  <template>
+  <template v-slot:empty-content="slotProps">
     {{ $t('core.entities.emptyMsg') }}
   </template>
 </list-wrapper>
