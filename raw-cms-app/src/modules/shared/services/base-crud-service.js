@@ -32,8 +32,16 @@ export class BaseCrudService extends ICrudService {
     return res.data.data;
   }
 
-  async create() {
-    throw new Error('To be implemented. This should return the created item.');
+  async create(obj) {
+    const id = optionalChain(() => obj._id);
+
+    if (id) {
+      console.error(`Unable to create item: object has an id (${obj})`);
+      return false;
+    }
+
+    const res = await this._apiClient.post(`${this._basePath}`, obj);
+    return res.data.data === true;
   }
 
   async update(obj) {
