@@ -21,20 +21,20 @@
   >
     <v-tabs-slider></v-tabs-slider>
 
-    <v-tab key="0" ref="tab0">
+    <v-tab href="#tabCustom">
       {{ $t('core.common.editText') }}
       <v-icon>mdi-pen</v-icon>
     </v-tab>
 
-    <v-tab key="1">
+    <v-tab ref="tabMonacoRef" href="#tabMonaco">
       {{ $t('core.common.jsonText') }}
       <v-icon>mdi-json</v-icon>
     </v-tab>
 
     <v-tabs-items v-model="activeTabId">
-      <v-tab-item key="0">
+      <v-tab-item value="tabCustom">
         <v-card flat tile>
-          <!-- custom editor here-->
+          <!-- custom editor here -->
           <slot name="custom">
             Coming soon!
             <br />
@@ -44,7 +44,7 @@
         </v-card>
       </v-tab-item>
 
-      <v-tab-item key="1">
+      <v-tab-item value="tabMonaco">
         <v-card flat tile>
           <monaco-editor
             ref="monaco"
