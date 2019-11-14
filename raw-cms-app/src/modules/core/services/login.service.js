@@ -40,7 +40,7 @@ class LoginService {
   }
 
   async logout() {
-    localStorage.clear();
+    localStorage.removeItem('auth');
     vuexStore.commit('isLoggedIn', false);
     RawCMS.eventBus.$emit(evtLogout);
     router.push({ name: 'login', params: { return: document.location.href } });
