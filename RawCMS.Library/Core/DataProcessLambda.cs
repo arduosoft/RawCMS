@@ -17,9 +17,17 @@ namespace RawCMS.Library.Core
         PostSave = 0x1,
     }
 
+    public enum DataOperation
+    {
+        Read,
+        Write,
+        Delete
+    }
+
     public abstract class DataProcessLambda : Lambda
     {
         public abstract SavePipelineStage Stage { get; }
+        public abstract DataOperation Operation { get; }
 
         public abstract void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext);
     }
@@ -27,10 +35,24 @@ namespace RawCMS.Library.Core
     public abstract class PostSaveLambda : DataProcessLambda
     {
         public override SavePipelineStage Stage => SavePipelineStage.PostSave;
+        public override DataOperation Operation => DataOperation.Write;
     }
 
     public abstract class PreSaveLambda : DataProcessLambda
     {
         public override SavePipelineStage Stage => SavePipelineStage.PreSave;
+        public override DataOperation Operation => DataOperation.Write;
+    }
+
+    public abstract class PostDeleteLambda : DataProcessLambda
+    {
+        public override SavePipelineStage Stage => SavePipelineStage.PostSave;
+        public override DataOperation Operation => DataOperation.Delete;
+    }
+
+    public abstract class PreDeleteLambda : DataProcessLambda
+    {
+        public override SavePipelineStage Stage => SavePipelineStage.PreSave;
+        public override DataOperation Operation => DataOperation.Delete;
     }
 }

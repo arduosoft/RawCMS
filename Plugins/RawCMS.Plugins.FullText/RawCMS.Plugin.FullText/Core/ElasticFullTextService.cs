@@ -52,6 +52,12 @@ namespace RawCMS.Plugins.FullText.Core
                     jobj["Id"] = Guid.NewGuid();
                 }
             }
+
+            if (jobj.ContainsKey("_id"))
+            {
+                jobj.Property("_id").Remove();
+            }
+
             var resp = client.LowLevel.Index<JObjectResponse>(indexname, jobj["Id"].ToString(), PostData.String(jobj.ToString()));
         }
 

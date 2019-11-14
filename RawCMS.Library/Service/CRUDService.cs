@@ -58,7 +58,7 @@ namespace RawCMS.Library.Service
 
             EnsureCollection(collection);
 
-            InvokeProcess(collection, ref newitem, SavePipelineStage.PreSave, dataContext);
+            InvokeProcess(collection, ref newitem, SavePipelineStage.PreSave, DataOperation.Write, dataContext);
 
             string json = newitem.ToString();
             BsonDocument itemToAdd = BsonSerializer.Deserialize<BsonDocument>(json);
@@ -74,7 +74,7 @@ namespace RawCMS.Library.Service
 
             var addedItem = JObject.Parse(itemToAdd.ToJson(js));
 
-            InvokeProcess(collection, ref addedItem, SavePipelineStage.PostSave, dataContext);
+            InvokeProcess(collection, ref addedItem, SavePipelineStage.PostSave, DataOperation.Write, dataContext);
 
             return addedItem;
         }
@@ -88,11 +88,12 @@ namespace RawCMS.Library.Service
             }
         }
 
-        private void InvokeProcess(string collection, ref JObject item, SavePipelineStage save, Dictionary<string, object> dataContext)
+        private void InvokeProcess(string collection, ref JObject item, SavePipelineStage save, DataOperation dataOperation, Dictionary<string, object> dataContext)
         {
             List<Lambda> processhandlers = lambdaManager.Lambdas
                 .Where(x => x is DataProcessLambda)
-                .Where(x => ((DataProcessLambda)x).Stage == save)
+                .Where(x => ((DataProcessLambda)x).Stage == save
+                && ((DataProcessLambda)x).Operation == dataOperation)
                 .ToList();
 
             foreach (DataProcessLambda h in processhandlers)
@@ -127,17 +128,28 @@ namespace RawCMS.Library.Service
         public JObject Update(string collection, JObject item, bool replace)
         {
             var dataContext = new Dictionary<string, object>();
-            //TODO: why do not manage validation as a simple presave process?
-            InvokeValidation(item, collection);
+
+            var id = item["_id"].Value<string>();
+            var itemToCheck = item;
+
+            if (replace == false)
+            {
+                itemToCheck = Get(collection, id);
+                itemToCheck.Merge(item, new JsonMergeSettings()
+                {
+                    MergeNullValueHandling = MergeNullValueHandling.Merge,
+                    MergeArrayHandling = MergeArrayHandling.Replace
+                });
+            }
+            InvokeValidation(itemToCheck, collection);
 
             //TODO: create collection if not exists
             EnsureCollection(collection);
 
             FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(item["_id"].Value<string>()));
 
-            InvokeProcess(collection, ref item, SavePipelineStage.PreSave, dataContext);
+            InvokeProcess(collection, ref item, SavePipelineStage.PreSave, DataOperation.Write, dataContext);
 
-            var id = item["_id"].Value<string>();
             //insert id (mandatory)
             BsonDocument doc = BsonDocument.Parse(item.ToString());
             doc["_id"] = BsonObjectId.Create(id);
@@ -158,7 +170,7 @@ namespace RawCMS.Library.Service
                 _mongoService.GetCollection<BsonDocument>(collection).UpdateOne(filter, dbset, o);
             }
             var fullSaved = Get(collection, id);
-            InvokeProcess(collection, ref fullSaved, SavePipelineStage.PostSave, dataContext);
+            InvokeProcess(collection, ref fullSaved, SavePipelineStage.PostSave, DataOperation.Write, dataContext);
             return JObject.Parse(fullSaved.ToJson(js));
         }
 
@@ -175,9 +187,16 @@ namespace RawCMS.Library.Service
         {
             EnsureCollection(collection);
 
+            var old = Get(collection, id);
+            var dataContext = new Dictionary<string, object>();
+
+            InvokeProcess(collection, ref old, SavePipelineStage.PreSave, DataOperation.Delete, dataContext);
+
             FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(id));
 
             DeleteResult result = _mongoService.GetCollection<BsonDocument>(collection).DeleteOne(filter);
+
+            InvokeProcess(collection, ref old, SavePipelineStage.PostSave, DataOperation.Delete, dataContext);
 
             return result.DeletedCount == 1;
         }
