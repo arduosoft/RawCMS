@@ -39,7 +39,8 @@
       "saveErrorMsgTpl": "An error occurred during saving."
     },
     "lambdas": {
-      "title": "Lambdas"
+      "title": "Lambdas",
+      "emptyMsg": "There are no lambdas yet. Add some with the button below!"
     }
   }
 }
