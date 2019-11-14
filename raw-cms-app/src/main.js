@@ -1,4 +1,5 @@
 import { App } from './app/app.js';
+import { tweakConsole } from './config/console.js';
 import { i18n } from './config/i18n.js';
 import { RawCMS } from './config/raw-cms.js';
 import { router } from './config/router.js';
@@ -6,6 +7,8 @@ import { vuelidate, vuelidateValidators } from './config/vuelidate.js';
 import { vuetify } from './config/vuetify.js';
 import { vuexStore } from './config/vuex.js';
 import { epicSpinners } from './utils/spinners.js';
+
+tweakConsole();
 
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
