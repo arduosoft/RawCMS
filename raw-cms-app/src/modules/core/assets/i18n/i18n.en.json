@@ -1,9 +1,7 @@
 {
   "core": {
-    "topbar": {
-      "menu": {
-        "logoutText": "Logout"
-      }
+    "leftMenu": {
+      "logoutText": "Logout"
     },
     "login": {
       "title": "Login to Raw CMS",

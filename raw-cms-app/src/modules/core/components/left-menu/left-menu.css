@@ -1,3 +1,42 @@
-.v-list-item.router-link-active::before {
+.rawcms-left_menu .v-list-item.router-link-active::before {
   opacity: 0.04;
+}
+
+.rawcms-left_menu .user-menu-active {
+  color: white !important;
+}
+
+.user-menu-slide-enter,
+.user-menu-slide-leave-to {
+  max-height: 0px;
+}
+
+.user-menu-slide-enter-active,
+.user-menu-slide-leave-active {
+  transition: max-height 1000s;
+  overflow: hidden;
+}
+
+.user-menu-slide-leave,
+.user-menu-slide-enter-to {
+  max-height: auto;
+}
+
+/* .user-menu-slide-enter-active {
+  animation: slide-in 50s;
+  overflow: hidden;
+}
+
+.user-menu-slide-leave-active {
+  animation: slide-in 50s reverse;
+  overflow: hidden;
+} */
+
+@keyframes slide-in {
+  0% {
+    max-height: 0px;
+  }
+  100% {
+    max-height: auto;
+  }
 }
