@@ -1,4 +1,3 @@
-import { App } from './app/app.js';
 import { tweakConsole } from './config/console.js';
 import { i18n } from './config/i18n.js';
 import { RawCMS } from './config/raw-cms.js';
@@ -35,11 +34,19 @@ axios({
     RawCMS.env = e.data;
   })
   .then(_ => {
-    new Vue({
-      router: router,
-      vuetify: vuetify,
-      i18n: i18n,
-      vuelidate: vuelidate,
-      render: h => h(App),
-    }).$mount('#app');
+    // FIXME: This should be properly handled!
+    const appCmpPromise = import('/app/app.js').then(x => x.App);
+    const moduleConfigsPromise = import('/modules/core/config.js').then(x => x.default());
+
+    Promise.all([appCmpPromise, moduleConfigsPromise]).then(x => {
+      const appCmp = x[0];
+
+      new Vue({
+        router: router,
+        vuetify: vuetify,
+        i18n: i18n,
+        vuelidate: vuelidate,
+        render: h => h(appCmp),
+      }).$mount('#app');
+    });
   });

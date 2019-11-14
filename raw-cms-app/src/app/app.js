@@ -17,7 +17,7 @@ const _App = Vue.component('rawcms-app', (resolve, reject) => {
       },
       computed: {
         showMenus() {
-          return vuexStore.state.isLoggedIn;
+          return vuexStore.state.core.isLoggedIn;
         },
       },
       data: () => {
