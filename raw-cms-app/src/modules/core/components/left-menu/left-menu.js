@@ -26,7 +26,7 @@ const _LeftMenu = async (resolve, reject) => {
         if (this.isActive(item)) {
           return;
         }
-        this.$router.push(item.route);
+        this.$router.push({ name: item.route });
       },
       isActive: function(item) {
         return item.route === this.$route.name;
