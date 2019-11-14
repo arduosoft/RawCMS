@@ -6,8 +6,9 @@ const _tweakConsole = function() {
   _oldConsoleError = window.console.error;
   window.console.error = function() {
     const msg = arguments[0];
+
     if (!msg || typeof msg !== 'string') {
-      return;
+      _oldConsoleError(...arguments);
     }
 
     if (_ignoredMessages.includes(msg)) {
