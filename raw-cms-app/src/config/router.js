@@ -18,7 +18,7 @@ const _router = new VueRouter({
       path: '/',
       name: 'home',
       component: async (res, rej) => {
-        const cmp = await import('/modules/core/views/home.js');
+        const cmp = await import('/modules/core/views/home-view/home-view.js');
         await cmp.default(res, rej);
       },
     },
