@@ -31,8 +31,8 @@
 
   <v-divider></v-divider>
 
-  <transition name="user-menu-slide">
-    <v-list dense v-if="isUserMenuVisible">
+  <transition name="user-menu-tr">
+    <v-list dense ref="userMenu" v-if="isUserMenuVisible">
       <v-list-item @click.stop="logout()">
         <v-list-item-action>
           <v-icon>mdi-logout</v-icon>
@@ -44,7 +44,9 @@
     </v-list>
   </transition>
 
-  <v-divider></v-divider>
+  <transition name="user-menu-divider-tr">
+    <v-divider v-if="isUserMenuVisible"></v-divider>
+  </transition>
 
   <v-list dense>
     <template v-for="item in items">

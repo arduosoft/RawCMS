@@ -6,37 +6,48 @@
   color: white !important;
 }
 
-.user-menu-slide-enter,
-.user-menu-slide-leave-to {
-  max-height: 0px;
-}
-
-.user-menu-slide-enter-active,
-.user-menu-slide-leave-active {
-  transition: max-height 1000s;
+/* User Menu Animation */
+.user-menu-tr-enter,
+.user-menu-tr-leave {
+  transform-origin: top;
   overflow: hidden;
 }
 
-.user-menu-slide-leave,
-.user-menu-slide-enter-to {
-  max-height: auto;
+.user-menu-tr-enter-active {
+  animation: user-menu-slide 0.3s;
 }
 
-/* .user-menu-slide-enter-active {
-  animation: slide-in 50s;
-  overflow: hidden;
+.user-menu-tr-leave-active {
+  animation: user-menu-slide 0.3s reverse;
 }
 
-.user-menu-slide-leave-active {
-  animation: slide-in 50s reverse;
-  overflow: hidden;
-} */
-
-@keyframes slide-in {
+@keyframes user-menu-slide {
   0% {
+    transform: scaleY(0);
+    padding: 0px 0px;
     max-height: 0px;
   }
   100% {
-    max-height: auto;
+    transform: scaleY(1);
+    padding: 8px 0px;
+    max-height: 64px;
+  }
+}
+
+/* User Menu Divider Animation */
+.user-menu-divider-tr-enter-active {
+  animation: user-menu-divider-fade 0.3s;
+}
+
+.user-menu-divider-tr-leave-active {
+  animation: user-menu-divider-fade 0.3s reverse;
+}
+
+@keyframes user-menu-divider-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
