@@ -15,11 +15,11 @@ class LoginService {
   }
 
   get isLoggedIn() {
-    if (vuexStore.state.isLoggedIn === undefined) {
+    if (vuexStore.state.core.isLoggedIn === undefined) {
       this._refreshLoginState();
     }
 
-    return vuexStore.state.isLoggedIn;
+    return vuexStore.state.core.isLoggedIn;
   }
 
   async login(username, password) {
@@ -34,20 +34,20 @@ class LoginService {
     return axios.post(`${RawCMS.env.api.baseUrl}/connect/token`, params).then(x => {
       this._auth = x.data;
       localStorage.setItem('auth', JSON.stringify(x.data));
-      vuexStore.commit('isLoggedIn', true);
+      this._refreshLoginState();
       RawCMS.eventBus.$emit(evtLogin);
     });
   }
 
   async logout() {
-    localStorage.clear();
-    vuexStore.commit('isLoggedIn', false);
+    localStorage.removeItem('auth');
+    this._refreshLoginState();
     RawCMS.eventBus.$emit(evtLogout);
     router.push({ name: 'login', params: { return: document.location.href } });
   }
 
   _refreshLoginState() {
-    vuexStore.commit('isLoggedIn', localStorage.getItem('auth') !== null);
+    vuexStore.dispatch('core/isLoggedIn', localStorage.getItem('auth') !== null);
   }
 }
 

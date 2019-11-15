@@ -38,6 +38,7 @@ const _RawCmsDetailEditDef = async () => {
         await this.fetchData();
       }
 
+      this.isLoading = false;
       this.code = this.formatJson(this.value || {});
       RawCMS.eventBus.$emit(_rawCmsDetailEditEvents.loaded, {
         isNewEntity: this.isNewEntity,
@@ -47,7 +48,7 @@ const _RawCmsDetailEditDef = async () => {
     data: function() {
       return {
         apiService: this.apiBasePath ? new BaseCrudService({ basePath: this.apiBasePath }) : null,
-        activeTabId: 1,
+        activeTabId: 'tabMonaco',
         code: '',
         isLoading: true,
         isSaving: false,
@@ -69,7 +70,6 @@ const _RawCmsDetailEditDef = async () => {
       fetchData: async function() {
         const id = this.$route.params.id;
         this.value = await this.apiService.getById(id);
-        this.isLoading = false;
       },
       formatJson: function() {
         return JSON.stringify(this.value, null, 4);
@@ -79,7 +79,7 @@ const _RawCmsDetailEditDef = async () => {
         const oldLayout = monacoEditor.getLayoutInfo();
         const newHeight =
           this.$refs.tabs.$el.getBoundingClientRect().height -
-          this.$refs.tab0.$el.getBoundingClientRect().height;
+          this.$refs.tabMonacoRef.$el.getBoundingClientRect().height;
         monacoEditor.layout({ width: oldLayout.width, height: newHeight });
       },
       save: async function() {

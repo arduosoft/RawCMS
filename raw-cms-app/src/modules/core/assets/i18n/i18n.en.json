@@ -1,5 +1,8 @@
 {
   "core": {
+    "leftMenu": {
+      "logoutText": "Logout"
+    },
     "login": {
       "title": "Login to Raw CMS",
       "loginBtn": "Login",
@@ -34,7 +37,8 @@
       "saveErrorMsgTpl": "An error occurred during saving."
     },
     "lambdas": {
-      "title": "Lambdas"
+      "title": "Lambdas",
+      "emptyMsg": "There are no lambdas yet. Add some with the button below!"
     }
   }
 }

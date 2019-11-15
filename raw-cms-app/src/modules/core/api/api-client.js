@@ -1,4 +1,5 @@
 import { RawCMS } from '../../../config/raw-cms.js';
+import { optionalChain } from '../../../utils/object.utils.js';
 import { loginService } from '../services/login.service.js';
 
 const _apiClient = axios.create({
@@ -13,17 +14,14 @@ _apiClient.interceptors.request.use(request => {
 });
 
 _apiClient.interceptors.response.use(
-  function(response) {
-    console.log(response);
-    if (response.status === 401) {
+  response => response,
+  error => {
+    const isUnauthorized = optionalChain(() => error.response.status, { fallbackValue: 0 }) === 401;
+    if (isUnauthorized) {
       loginService.logout();
+    } else {
+      Promise.reject(error);
     }
-
-    return response;
-  },
-  function(error) {
-    console.log(response);
-    return Promise.reject(error);
   }
 );
 

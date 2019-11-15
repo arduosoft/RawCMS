@@ -13,7 +13,11 @@ const _EntitiesListView = async (res, rej) => {
     data: function() {
       return {};
     },
-    methods: {},
+    methods: {
+      goToCreateView: function() {
+        this.$router.push({ name: 'entity-details', params: { id: 'new' } });
+      },
+    },
     template: tpl,
   });
 };

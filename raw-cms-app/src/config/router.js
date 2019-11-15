@@ -18,7 +18,7 @@ const _router = new VueRouter({
       path: '/',
       name: 'home',
       component: async (res, rej) => {
-        const cmp = await import('/modules/core/views/home.js');
+        const cmp = await import('/modules/core/views/home-view/home-view.js');
         await cmp.default(res, rej);
       },
     },
@@ -100,14 +100,6 @@ const _router = new VueRouter({
           },
         },
       ],
-    },
-    {
-      path: '/testdialog',
-      name: 'testdialog',
-      component: async (res, rej) => {
-        const cmp = await import('/modules/core/components/edit-dialog/edit-dialog.js');
-        await cmp.default(res, rej);
-      },
     },
   ],
 });
