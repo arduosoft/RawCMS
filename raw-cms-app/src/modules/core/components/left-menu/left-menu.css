@@ -24,12 +24,12 @@
 @keyframes user-menu-slide {
   0% {
     transform: scaleY(0);
-    padding: 0px 0px;
-    max-height: 0px;
+    padding: 0 0;
+    max-height: 0;
   }
   100% {
     transform: scaleY(1);
-    padding: 8px 0px;
+    padding: 8px 0;
     max-height: 64px;
   }
 }
