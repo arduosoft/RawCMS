@@ -35,10 +35,10 @@
   <v-dialog persistent v-model="isDeleteConfirmVisible">
     <v-card>
       <v-card-title class="headline">
-        {{ $t('core.common.confirmDeleteTitle') }}
+        {{ $t('core.common.deleteConfirmTitle') }}
       </v-card-title>
       <v-card-text>
-        {{ $t('core.common.defaultDeleteMsgTpl', { name: currentUser.UserName }) }}
+        {{ $t('core.common.deleteSuccessMsgTpl', { name: currentUser.UserName }) }}
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
