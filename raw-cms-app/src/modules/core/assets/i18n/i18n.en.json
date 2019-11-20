@@ -29,6 +29,7 @@
       "okBtnText": "Ok",
       "cancelBtnText": "Cancel",
       "emptyListMsg": "There are no items yet.",
+      "emptyTableMsg": "There are no items yet.",
       "deleteConfirmTitle": "Delete confirmation",
       "deleteConfirmMsgTpl": "Are you sure you want to delete {id}?",
       "deleteSuccessMsgTpl": "{id} was deleted.",

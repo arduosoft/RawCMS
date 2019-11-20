@@ -1,0 +1,12 @@
+<list-wrapper v-on="$listeners">
+  <template v-slot:content="slotProps">
+    <v-list-item-content>
+      <v-list-item-title v-html="slotProps.item.CollectionName"></v-list-item-title>
+    </v-list-item-content>
+  </template>
+  <template v-slot:action-buttons="slotProps">
+    <v-list-item-icon>
+      <v-icon>mdi-chevron-right</v-icon>
+    </v-list-item-icon>
+  </template>
+</list-wrapper>

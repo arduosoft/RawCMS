@@ -52,6 +52,42 @@ const _router = new VueRouter({
       ],
     },
     {
+      path: '/collections',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/collections-view/collections-view.js');
+        await cmp.default(res, rej);
+      },
+      children: [
+        {
+          path: '/',
+          name: 'collections',
+          component: async (res, rej) => {
+            const cmp = await import(
+              '/modules/core/views/collections-list-view/collections-list-view.js'
+            );
+            await cmp.default(res, rej);
+          },
+        },
+        {
+          path: ':collName',
+          name: 'collection-table',
+          component: async (res, rej) => {
+            const cmp = await import(
+              '/modules/core/views/collection-table-view/collection-table-view.js'
+            );
+            await cmp.default(res, rej);
+          },
+        },
+        {
+          path: ':collName/:id',
+          name: 'collection-details',
+          component: {
+            template: '<span>COLLECTION DETAIL HERE</span>',
+          },
+        },
+      ],
+    },
+    {
       path: '/users',
       component: async (res, rej) => {
         const cmp = await import('/modules/core/views/users/users.js');

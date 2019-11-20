@@ -1,46 +1,54 @@
+import { RawCMS } from '../../../../config/raw-cms.js';
 import { epicSpinners } from '../../../../utils/spinners.js';
+import { delay } from '../../../../utils/time.utils.js';
 import { snackbarService } from '../../../core/services/snackbar-service.js';
 import { BaseCrudService } from '../../../shared/services/base-crud-service.js';
 
-const _rawCmsListEvents = {
-  pageLoaded: 'rawcms_list_page-loaded',
+const _rawCmsDataTableEvents = {
+  loaded: 'rawcms_data-table_loaded',
 };
 
-const _rawCmsListName = 'raw-cms-list';
-
-const _RawCmsListDef = async () => {
-  const tpl = await RawCMS.loadComponentTpl('/modules/shared/components/list/list.tpl.html');
+const _RawCmsDataTableDef = async () => {
+  const tpl = await RawCMS.loadComponentTpl(
+    '/modules/shared/components/data-table/data-table.tpl.html'
+  );
 
   return {
     components: {
       AtomSpinner: epicSpinners.AtomSpinner,
     },
     computed: {
+      headers: function() {
+        return [...this.dataHeaders, { text: 'Actions', value: 'action', sortable: false }];
+      },
       isEmpty: function() {
         return this.items.length <= 0;
       },
     },
-    created: function() {
-      this.fetchData();
+    created: async function() {
+      await this.fetchData();
+      this.isLoading = false;
+      RawCMS.eventBus.$emit(_rawCmsDataTableEvents.loaded);
     },
     data: function() {
       return {
         apiService: this.apiBasePath ? new BaseCrudService({ basePath: this.apiBasePath }) : null,
-        isLoading: true,
         currentItem: {},
+        dataHeaders: [],
         isDeleteConfirmVisible: false,
+        isLoading: true,
+        isSaving: false,
         items: [],
       };
     },
     methods: {
       fetchData: async function() {
-        // FIXME: Pagination
-        const res = await this.apiService.getPage();
-        this.items = res.map(x => {
+        const res = await Promise.all([this.getDataHeaders(), this.apiService.getPage()]);
+
+        this.dataHeaders = res[0];
+        this.items = res[1].map(x => {
           return { ...x, _meta_: { isDeleting: false } };
         });
-        this.isLoading = false;
-        this.$emit(_rawCmsListEvents.pageLoaded, { hasItems: this.items.length > 0 });
       },
       goTo: function(item) {
         if (!this.detailRouteName) {
@@ -66,11 +74,13 @@ const _RawCmsListDef = async () => {
       deleteErrorMsg(item) {
         return this.$t('core.common.deleteErrorMsgTpl', { id: item._id });
       },
-      deleteEntity: async function(item) {
+      deleteItem: async function(item) {
         this.dismissDeleteConfirm();
         item._meta_.isDeleting = true;
-        const res = await this.apiService.delete(item._id);
+        // const res = await this.apiService.delete(item._id); // FIXME: Restore
+        const res = await delay({ millis: 3000, value: true });
         item._meta_.isDeleting = false;
+
         if (!res) {
           snackbarService.showMessage({
             color: 'error',
@@ -78,14 +88,20 @@ const _RawCmsListDef = async () => {
           });
           return;
         }
+
         this.items = this.items.filter(x => x._id !== item._id);
         snackbarService.showMessage({
           color: 'success',
           message: this.deleteSuccessMsg(item),
         });
       },
+      getDataHeaders: async function() {
+        throw new Error('You should implement this!');
+      },
+      getTemplateName: function(header) {
+        return `item.${header.value}`;
+      },
     },
-    name: _rawCmsListName,
     props: {
       apiBasePath: String,
       detailRouteName: String,
@@ -96,13 +112,12 @@ const _RawCmsListDef = async () => {
     },
   };
 };
-
-const _RawCmsList = async (res, rej) => {
-  const cmpDef = _RawCmsListDef();
+const _RawCmsDataTable = async (res, rej) => {
+  const cmpDef = await _RawCmsDataTableDef();
   res(cmpDef);
 };
 
-export const rawCmsListEvents = _rawCmsListEvents;
-export const RawCmsListDef = _RawCmsListDef;
-export const RawCmsList = _RawCmsList;
-export default _RawCmsList;
+export const rawCmsDataTableEvents = _rawCmsDataTableEvents;
+export const RawCmsDataTableDef = _RawCmsDataTableDef;
+export const RawCmsDataTable = _RawCmsDataTable;
+export default _RawCmsDataTable;
