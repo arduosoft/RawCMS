@@ -14,7 +14,7 @@ const _TableWrapperDef = async () => {
     methods: {
       // FIXME: Improve this!
       getDataHeaders: async function() {
-        const res = await this.entitiesSchemaService.getPage();
+        const res = await this.entitiesSchemaService.getAll();
         return res
           .filter(x => x.CollectionName === this.collectionName)[0]
           .FieldSettings.map(x => {

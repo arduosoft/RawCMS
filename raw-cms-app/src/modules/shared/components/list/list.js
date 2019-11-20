@@ -36,7 +36,7 @@ const _RawCmsListDef = async () => {
       fetchData: async function() {
         // FIXME: Pagination
         const res = await this.apiService.getPage();
-        this.items = res.map(x => {
+        this.items = res.items.map(x => {
           return { ...x, _meta_: { isDeleting: false } };
         });
         this.isLoading = false;

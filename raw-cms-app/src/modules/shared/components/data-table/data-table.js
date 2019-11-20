@@ -24,9 +24,31 @@ const _RawCmsDataTableDef = async () => {
       isEmpty: function() {
         return this.items.length <= 0;
       },
+      cmpPageSize: {
+        get: function() {
+          return this.pageSize;
+        },
+        set: function(value) {
+          console.log('pageSize', value);
+          this.pageSize = value;
+          this.fetchData();
+        },
+      },
+      cmpCurrentPage: {
+        get: function() {
+          return this.currentPage;
+        },
+        set: function(value) {
+          console.log('currentPage', value);
+          this.currentPage = value;
+          this.fetchData();
+        },
+      },
     },
     created: async function() {
-      await this.fetchData();
+      const res = await Promise.all([this.getDataHeaders(), this.fetchData()]);
+      this.dataHeaders = res[0];
+
       this.isLoading = false;
       RawCMS.eventBus.$emit(_rawCmsDataTableEvents.loaded);
     },
@@ -34,21 +56,23 @@ const _RawCmsDataTableDef = async () => {
       return {
         apiService: this.apiBasePath ? new BaseCrudService({ basePath: this.apiBasePath }) : null,
         currentItem: {},
+        currentPage: 1,
         dataHeaders: [],
         isDeleteConfirmVisible: false,
         isLoading: true,
         isSaving: false,
         items: [],
+        pageSize: 10,
+        totalItemsCount: 0,
       };
     },
     methods: {
       fetchData: async function() {
-        const res = await Promise.all([this.getDataHeaders(), this.apiService.getPage()]);
-
-        this.dataHeaders = res[0];
-        this.items = res[1].map(x => {
+        const res = await this.apiService.getPage({ page: this.currentPage, size: this.pageSize });
+        this.items = res.items.map(x => {
           return { ...x, _meta_: { isDeleting: false } };
         });
+        this.totalItemsCount = res.totalCount;
       },
       goTo: function(item) {
         if (!this.detailRouteName) {
@@ -96,7 +120,7 @@ const _RawCmsDataTableDef = async () => {
         });
       },
       getDataHeaders: async function() {
-        throw new Error('You should implement this!');
+        throw new Error(`Please provide an implementation for ${this.getDataHeaders.name}`);
       },
       getTemplateName: function(header) {
         return `item.${header.value}`;

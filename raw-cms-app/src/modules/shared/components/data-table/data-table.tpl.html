@@ -23,6 +23,9 @@
     v-if="!isLoading && !isEmpty"
     :headers="headers"
     :items="items"
+    :items-per-page.sync="cmpPageSize"
+    :page.sync="cmpCurrentPage"
+    :server-items-length="totalItemsCount"
     @click:row="goTo($event)"
   >
     <template
