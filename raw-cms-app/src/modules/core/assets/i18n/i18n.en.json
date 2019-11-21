@@ -22,6 +22,15 @@
         "updateTitle": "Entity {name}"
       }
     },
+    "collections": {
+      "title": "Collections",
+      "table": {
+        "title": "Collection {name}",
+        "deleteConfirmMsgTpl": "Are you sure you want to delete the selected item?",
+        "deleteSuccessMsgTpl": "The item was successfully deleted from collection.",
+        "deleteErrorMsgTpl": "An error occurred while deleting item from collection."
+      }
+    },
     "common": {
       "requiredField": "This field is required.",
       "editText": "Edit",
