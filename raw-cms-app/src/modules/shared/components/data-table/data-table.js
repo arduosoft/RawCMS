@@ -1,6 +1,5 @@
 import { RawCMS } from '../../../../config/raw-cms.js';
 import { epicSpinners } from '../../../../utils/spinners.js';
-import { delay } from '../../../../utils/time.utils.js';
 import { snackbarService } from '../../../core/services/snackbar-service.js';
 import { BaseCrudService } from '../../../shared/services/base-crud-service.js';
 
@@ -19,7 +18,10 @@ const _RawCmsDataTableDef = async () => {
     },
     computed: {
       headers: function() {
-        return [...this.dataHeaders, { text: 'Actions', value: 'action', sortable: false }];
+        return [
+          ...this.dataHeaders,
+          { text: 'Actions', value: 'action', align: 'center', divider: true, sortable: false },
+        ];
       },
       isEmpty: function() {
         return this.items.length <= 0;
@@ -29,7 +31,6 @@ const _RawCmsDataTableDef = async () => {
           return this.pageSize;
         },
         set: function(value) {
-          console.log('pageSize', value);
           this.pageSize = value;
           this.fetchData();
         },
@@ -39,17 +40,19 @@ const _RawCmsDataTableDef = async () => {
           return this.currentPage;
         },
         set: function(value) {
-          console.log('currentPage', value);
           this.currentPage = value;
           this.fetchData();
         },
+      },
+      shouldCenter: function() {
+        return (this.isLoading && this.isFirstLoad) || this.isEmpty;
       },
     },
     created: async function() {
       const res = await Promise.all([this.getDataHeaders(), this.fetchData()]);
       this.dataHeaders = res[0];
 
-      this.isLoading = false;
+      this.isFirstLoad = false;
       RawCMS.eventBus.$emit(_rawCmsDataTableEvents.loaded);
     },
     data: function() {
@@ -59,6 +62,7 @@ const _RawCmsDataTableDef = async () => {
         currentPage: 1,
         dataHeaders: [],
         isDeleteConfirmVisible: false,
+        isFirstLoad: true,
         isLoading: true,
         isSaving: false,
         items: [],
@@ -68,11 +72,13 @@ const _RawCmsDataTableDef = async () => {
     },
     methods: {
       fetchData: async function() {
+        this.isLoading = true;
         const res = await this.apiService.getPage({ page: this.currentPage, size: this.pageSize });
         this.items = res.items.map(x => {
           return { ...x, _meta_: { isDeleting: false } };
         });
         this.totalItemsCount = res.totalCount;
+        this.isLoading = false;
       },
       goTo: function(item) {
         if (!this.detailRouteName) {
@@ -101,8 +107,7 @@ const _RawCmsDataTableDef = async () => {
       deleteItem: async function(item) {
         this.dismissDeleteConfirm();
         item._meta_.isDeleting = true;
-        // const res = await this.apiService.delete(item._id); // FIXME: Restore
-        const res = await delay({ millis: 3000, value: true });
+        const res = await this.apiService.delete(item._id);
         item._meta_.isDeleting = false;
 
         if (!res) {
@@ -113,7 +118,8 @@ const _RawCmsDataTableDef = async () => {
           return;
         }
 
-        this.items = this.items.filter(x => x._id !== item._id);
+        this.fetchData();
+
         snackbarService.showMessage({
           color: 'success',
           message: this.deleteSuccessMsg(item),

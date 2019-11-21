@@ -1,6 +1,6 @@
 <v-layout
   class="flex-column justify-center"
-  :class="{'fill-height': isLoading || isEmpty, 'align-center': isLoading || isEmpty }"
+  :class="{'fill-height': shouldCenter, 'align-center': shouldCenter }"
 >
   <link rel="stylesheet" href="/modules/shared/components/data-table/data-table.css" />
 
@@ -8,7 +8,7 @@
     :animation-duration="1000"
     :size="80"
     :color="'#64B5F6'"
-    v-if="isLoading"
+    v-if="isLoading && isFirstLoad"
   ></atom-spinner>
 
   <template v-if="!isLoading && isEmpty">
@@ -20,10 +20,12 @@
   <v-data-table
     light
     class="elevation-1 rawcms-data-table"
-    v-if="!isLoading && !isEmpty"
+    v-if="!isFirstLoad && !isEmpty"
+    item-key="_id"
     :headers="headers"
     :items="items"
     :items-per-page.sync="cmpPageSize"
+    :loading="isLoading"
     :page.sync="cmpCurrentPage"
     :server-items-length="totalItemsCount"
     @click:row="goTo($event)"
@@ -38,17 +40,14 @@
       </slot>
     </template>
 
-    <template v-slot:item.action="slotProps">
+    <template v-slot:item.action="{ item }">
       <slot name="item.action">
-        <v-btn icon @click.stop="goTo(slotProps.item)" v-if="!slotProps.item._meta_.isDeleting">
+        <v-btn icon @click.stop="goTo(item)" v-if="!item._meta_.isDeleting">
           <v-icon>mdi-pencil-outline</v-icon>
         </v-btn>
-        <v-btn icon @click.stop="showDeleteConfirm(slotProps.item)">
-          <v-icon v-if="!slotProps.item._meta_.isDeleting">mdi-delete-outline</v-icon>
-          <v-progress-circular
-            v-if="slotProps.item._meta_.isDeleting"
-            indeterminate
-          ></v-progress-circular>
+        <v-btn icon @click.stop="showDeleteConfirm(item)">
+          <v-icon v-if="!item._meta_.isDeleting">mdi-delete-outline</v-icon>
+          <v-progress-circular v-if="item._meta_.isDeleting" indeterminate></v-progress-circular>
         </v-btn>
       </slot>
     </template>
