@@ -14,6 +14,9 @@ const _CollectionTableView = async (res, rej) => {
       collectionName: function() {
         return this.$route.params.collName;
       },
+      title: function() {
+        return this.$t('core.collections.table.title', { name: this.collectionName });
+      },
     },
     data: function() {
       return {};

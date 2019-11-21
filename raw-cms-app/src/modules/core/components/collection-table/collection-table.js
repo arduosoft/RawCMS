@@ -1,3 +1,4 @@
+import { optionalChain } from '../../../../utils/object.utils.js';
 import { RawCmsDataTableDef } from '../../../shared/components/data-table/data-table.js';
 import { entitiesSchemaService } from '../../services/entities-schema.service.js';
 
@@ -12,14 +13,26 @@ const _TableWrapperDef = async () => {
     },
     extends: rawCmsDataTableDef,
     methods: {
-      // FIXME: Improve this!
+      deleteConfirmMsg(item) {
+        return this.$t('core.collections.table.deleteConfirmMsgTpl');
+      },
+      deleteSuccessMsg(item) {
+        return this.$t('core.collections.table.deleteSuccessMsgTpl');
+      },
+      deleteErrorMsg(item) {
+        return this.$t('core.collections.table.deleteErrorMsgTpl');
+      },
       getDataHeaders: async function() {
-        const res = await this.entitiesSchemaService.getAll();
-        return res
-          .filter(x => x.CollectionName === this.collectionName)[0]
-          .FieldSettings.map(x => {
-            return { text: x.Name, value: x.Name };
-          });
+        const res = await this.entitiesSchemaService.getPage({
+          size: 1,
+          rawQuery: { CollectionName: this.collectionName },
+        });
+
+        return res.items[0].FieldSettings.filter(
+          x => optionalChain(() => x.Options.showOnTable, { fallbackValue: true }) === true
+        ).map(x => {
+          return { text: x.Name, value: x.Name, sortable: false };
+        });
       },
     },
     props: {
