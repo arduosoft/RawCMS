@@ -13,13 +13,17 @@ export class BaseCrudService extends ICrudService {
   }
 
   async getAll() {
-    throw new Error('To be implemented. This should return all values.');
+    const res = await this.getPage({ size: Number.MAX_VALUE });
+    return res.items;
   }
 
-  async getPage({ page = 0 } = {}) {
-    // FIXME: Handle pagination (maybe in api client?)
-    const res = await this._apiClient.get(this._basePath);
-    return res.data.data.items;
+  async getPage({ page = 1, size = 20, rawQuery = undefined } = {}) {
+    const config = { pageSize: size, pageNumber: page };
+    if (rawQuery) {
+      config.rawQuery = rawQuery;
+    }
+    const res = await this._apiClient.get(this._basePath, { params: config });
+    return res.data.data;
   }
 
   async getById(id) {
