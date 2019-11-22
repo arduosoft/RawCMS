@@ -81,8 +81,11 @@ const _router = new VueRouter({
         {
           path: ':collName/:id',
           name: 'collection-details',
-          component: {
-            template: '<span>COLLECTION DETAIL HERE</span>',
+          component: async (res, rej) => {
+            const cmp = await import(
+              '/modules/core/views/collection-item-details-view/collection-item-details-view.js'
+            );
+            await cmp.default(res, rej);
           },
         },
       ],
