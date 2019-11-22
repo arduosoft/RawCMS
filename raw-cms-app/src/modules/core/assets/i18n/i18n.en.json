@@ -24,6 +24,9 @@
     },
     "collections": {
       "title": "Collections",
+      "detail": {
+        "title": "Item data"
+      },
       "table": {
         "title": "Collection {name}",
         "deleteConfirmMsgTpl": "Are you sure you want to delete the selected item?",
