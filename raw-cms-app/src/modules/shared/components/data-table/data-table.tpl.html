@@ -27,6 +27,8 @@
     :items-per-page.sync="cmpPageSize"
     :loading="isLoading"
     :page.sync="cmpCurrentPage"
+    :sort-by.sync="cmpSortBy"
+    :sort-desc.sync="cmpSortDesc"
     :server-items-length="totalItemsCount"
     @click:row="goTo($event)"
   >

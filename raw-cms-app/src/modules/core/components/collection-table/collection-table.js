@@ -28,11 +28,14 @@ const _TableWrapperDef = async () => {
           rawQuery: { CollectionName: this.collectionName },
         });
 
-        return res.items[0].FieldSettings.filter(
+        let result = res.items[0].FieldSettings.filter(
           x => optionalChain(() => x.Options.showOnTable, { fallbackValue: true }) === true
         ).map(x => {
-          return { text: x.Name, value: x.Name, sortable: false };
+          return { text: x.Name, value: x.Name, sortable: true };
         });
+
+        //result.unshift({ text: "_id", value: "_id", sortable: true });
+        return result;
       },
     },
     props: {
