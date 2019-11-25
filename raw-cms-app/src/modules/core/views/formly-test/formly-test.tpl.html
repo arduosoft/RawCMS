@@ -1,10 +1,5 @@
-<v-container>
-  <v-row>
-    <v-col>
-      <v-form @submit.stop="console.log('SUBMIT!'); return false;">
-        <formly-form :form="form" :model="model" :fields="fields"></formly-form>
-        <button>Submit</button>
-      </v-form>
-    </v-col>
-  </v-row>
-</v-container>
+<v-form>
+  <v-container>
+    <formly-form :form="form" :model="model" :fields="fields" tag="v-row"></formly-form>
+  </v-container>
+</v-form>

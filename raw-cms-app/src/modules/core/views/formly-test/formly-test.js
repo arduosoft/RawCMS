@@ -12,18 +12,29 @@ const _FormlyTestiew = async (res, rej) => {
           {
             key: 'name',
             type: 'text',
+            wrapper: '<div class="col-12 col-sm-6"></div>',
           },
           {
-            key: 'name2',
+            key: 'name req',
             type: 'text',
             required: true,
+            wrapper: '<div class="col-12 col-sm-6"></div>',
           },
           {
-            key: 'name3',
+            key: 'name length >3',
             type: 'text',
             validators: {
-              length3: (field, model, next) => next(model[field.key].length > 3),
+              length3: {
+                expression: (field, model, next) => next(model[field.key].length > 3),
+                message: 'This is a test for message override',
+              },
             },
+            wrapper: '<div class="col-12"></div>',
+          },
+          {
+            key: 'num',
+            type: 'number',
+            wrapper: '<div class="col-12"></div>',
           },
         ],
       };
