@@ -44,6 +44,32 @@ const _RawCmsDataTableDef = async () => {
           this.fetchData();
         },
       },
+      cmpSortBy: {
+        get: function() {
+          return this.sortingInfo.FieldName;
+        },
+        set: function(value) {
+          //there is some unplanned case when data tables returns one item in array form
+          if (Array.isArray(value)) {
+            value = value[0];
+          }
+          this.sortingInfo.FieldName = value;
+          this.fetchData();
+        },
+      },
+      cmpSortDesc: {
+        get: function() {
+          return this.sortingInfo.Direction;
+        },
+        set: function(value) {
+          //there is some unplanned case when data tables returns one item in array form
+          if (Array.isArray(value)) {
+            value = value[0];
+          }
+          this.sortingInfo.Direction = value;
+          this.fetchData();
+        },
+      },
       shouldCenter: function() {
         return (this.isLoading && this.isFirstLoad) || this.isEmpty;
       },
@@ -51,6 +77,7 @@ const _RawCmsDataTableDef = async () => {
     created: async function() {
       const res = await Promise.all([this.getDataHeaders(), this.fetchData()]);
       this.dataHeaders = res[0];
+      this.sortingInfo.Field = this.dataHeaders[0].value;
 
       this.isFirstLoad = false;
       RawCMS.eventBus.$emit(_rawCmsDataTableEvents.loaded);
@@ -68,12 +95,27 @@ const _RawCmsDataTableDef = async () => {
         items: [],
         pageSize: 10,
         totalItemsCount: 0,
+        sortingInfo: {},
       };
     },
     methods: {
       fetchData: async function() {
+        let sortArgs = null;
+        if (
+          this.sortingInfo &&
+          this.sortingInfo.FieldName != null &&
+          this.sortingInfo.Direction != null
+        ) {
+          sortArgs = [{}];
+          sortArgs[0].Field = this.sortingInfo.Field;
+          sortArgs[0].Ascending = !this.sortingInfo.Direction;
+        }
         this.isLoading = true;
-        const res = await this.apiService.getPage({ page: this.currentPage, size: this.pageSize });
+        const res = await this.apiService.getPage({
+          page: this.currentPage,
+          size: this.pageSize,
+          sort: sortArgs,
+        });
         this.items = res.items.map(x => {
           return { ...x, _meta_: { isDeleting: false } };
         });

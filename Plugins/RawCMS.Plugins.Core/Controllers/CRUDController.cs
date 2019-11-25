@@ -16,6 +16,7 @@ using RawCMS.Library.DataModel;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Model;
 using System;
+using System.Collections.Generic;
 
 namespace RawCMS.Plugins.Core.Controllers
 {
@@ -33,14 +34,16 @@ namespace RawCMS.Plugins.Core.Controllers
 
         // GET api/CRUD/{collection}
         [HttpGet("{collection}")]
-        public RestMessage<ItemList> Get(string collection, string rawQuery = null, int pageNumber = 1, int pageSize = 20)
+        public RestMessage<ItemList> Get(string collection, string rawQuery = null, int pageNumber = 1, int pageSize = 20, string sort = "")
         {
+            var sortValue = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SortOption>>(sort);
             // CRUDService service = new CRUDService(new MongoService(new MongoSettings() { }));
             ItemList result = service.Query(collection, new Library.DataModel.DataQuery()
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
-                RawQuery = rawQuery
+                RawQuery = rawQuery,
+                Sort = sortValue
             });
 
             return new RestMessage<ItemList>(result);
@@ -56,13 +59,20 @@ namespace RawCMS.Plugins.Core.Controllers
 
         // POST api/CRUD/{collection}
         [HttpPost("{collection}")]
-        public RestMessage<bool> Post(string collection, [FromBody]JObject value)
+        public RestMessage<JObject> Post(string collection, [FromBody]JObject value, bool omitPayload = false)
         {
-            RestMessage<bool> response = new RestMessage<bool>(false);
+            RestMessage<JObject> response = new RestMessage<JObject>(new JObject());
             try
             {
-                service.Insert(collection, value);
-                response.Data = true;
+                var added = service.Insert(collection, value);
+                if (omitPayload)
+                {
+                    response.Data["_id"] = added["_id"];
+                }
+                else
+                {
+                    response.Data = added;
+                }
                 return response;
             }
             catch (ValidationException err)
@@ -84,14 +94,17 @@ namespace RawCMS.Plugins.Core.Controllers
 
         // PUT api/CRUD/{collection}/5
         [HttpPut("{collection}/{id}")]
-        public RestMessage<bool> Put(string collection, string id, [FromBody]JObject value)
+        public RestMessage<JObject> Put(string collection, string id, [FromBody]JObject value, bool omitPayload = false)
         {
-            RestMessage<bool> response = new RestMessage<bool>(false);
+            RestMessage<JObject> response = new RestMessage<JObject>(new JObject());
             try
             {
                 value["_id"] = id;
-                service.Update(collection, value, true);
-                response.Data = true;
+                var updated = service.Update(collection, value, true);
+                if (!omitPayload)
+                {
+                    response.Data = updated;
+                }
                 return response;
             }
             catch (ValidationException err)
@@ -113,14 +126,17 @@ namespace RawCMS.Plugins.Core.Controllers
 
         // PUT api/CRUD/{collection}/5
         [HttpPatch("{collection}/{id}")]
-        public RestMessage<bool> Patch(string collection, string id, [FromBody]JObject value)
+        public RestMessage<JObject> Patch(string collection, string id, [FromBody]JObject value, bool omitPayload = false)
         {
-            RestMessage<bool> response = new RestMessage<bool>(false);
+            RestMessage<JObject> response = new RestMessage<JObject>(new JObject());
             try
             {
                 value["_id"] = id;
-                service.Update(collection, value, false);
-                response.Data = true;
+                var updated = service.Update(collection, value, false);
+                if (!omitPayload)
+                {
+                    response.Data = updated;
+                }
                 return response;
             }
             catch (ValidationException err)

@@ -17,10 +17,13 @@ export class BaseCrudService extends ICrudService {
     return res.items;
   }
 
-  async getPage({ page = 1, size = 20, rawQuery = undefined } = {}) {
+  async getPage({ page = 1, size = 20, rawQuery = undefined, sort = undefined } = {}) {
     const config = { pageSize: size, pageNumber: page };
     if (rawQuery) {
       config.rawQuery = rawQuery;
+    }
+    if (sort) {
+      config.sort = JSON.stringify(sort);
     }
     const res = await this._apiClient.get(this._basePath, { params: config });
     return res.data.data;
