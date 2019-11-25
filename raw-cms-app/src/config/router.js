@@ -140,6 +140,16 @@ const _router = new VueRouter({
         },
       ],
     },
+    {
+      path: '/formly-test',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/formly-test/formly-test.js');
+        await cmp.default(res, rej);
+      },
+      meta: {
+        i18nLoad: ['core', 'formly-material'],
+      },
+    },
   ],
 });
 
