@@ -1,0 +1,131 @@
+import { optionalChain } from '../../../../utils/object.utils.js';
+import { toFirstUpperCase } from '../../../../utils/string.utils.js';
+
+const _BaseField = {
+  computed: {
+    hasError: function() {
+      if (this.form[this.field.key].$dirty == false || this.form[this.field.key].$active == true) {
+        return false;
+      }
+
+      const errors = this.form.$errors[this.field.key];
+      let hasErrors = false;
+      Object.keys(errors).forEach(err => {
+        if (errors[err] !== false) {
+          hasErrors = true;
+        }
+      });
+
+      this.$set(this.form[this.field.key], '$hasError', hasErrors);
+      return hasErrors;
+    },
+    errorMsgs: function() {
+      if (!this.hasError) {
+        return [];
+      }
+
+      const errors = this.form.$errors[this.field.key];
+      const errorMsgs = [];
+      for (const err of Object.keys(errors)) {
+        if (errors[err] === false) {
+          continue;
+        }
+
+        const errMsg =
+          typeof errors[err] === 'string'
+            ? errors[err]
+            : optionalChain(() => this.field.validators[err].message, {
+                fallbackValue: this.$t(`formly.validation.${err}`),
+              });
+        errorMsgs.push(() => errMsg);
+      }
+
+      return errorMsgs;
+    },
+    label: function() {
+      return toFirstUpperCase(
+        optionalChain(() => this.to.label, { fallbackValue: this.field.key })
+      );
+    },
+    value: function() {
+      return optionalChain(() => this.model[this.field.key]);
+    },
+  },
+  created: function() {
+    const state = {
+      $dirty: false,
+      $active: false,
+      $hasError: false,
+    };
+
+    this.$set(this.form, this.field.key, state);
+  },
+  data: function() {
+    return {
+      basicListeners: {
+        blur: this.onBlur,
+        focus: this.onFocus,
+        click: this.onClick,
+        change: this.onChange,
+        input: this.onInput,
+        keyup: this.onKeyup,
+        keydown: this.onKeydown,
+      },
+    };
+  },
+  methods: {
+    booleanValue(value) {
+      return value === 'true' || value === 'false' ? value === 'true' : value;
+    },
+    runFunction: function(action, e) {
+      if (typeof this.to[action] == 'function') this.to[action].call(this, e);
+    },
+    onFocus: function(e) {
+      this.$set(this.form[this.field.key], '$active', true);
+      this.runFunction('onFocus', e);
+    },
+    onBlur: function(e) {
+      this.$set(this.form[this.field.key], '$dirty', true);
+      this.$set(this.form[this.field.key], '$active', false);
+      this.runFunction('onBlur', e);
+    },
+    onClick: function(e) {
+      this.runFunction('onClick', e);
+    },
+    onChange: function(e) {
+      this.$set(this.form[this.field.key], '$dirty', true);
+      this.runFunction('onChange', e);
+    },
+    onInput: function(e) {
+      this.model[this.field.key] = e;
+      this.runFunction('onInput', e);
+    },
+    onKeyup: function(e) {
+      this.runFunction('onKeyup', e);
+    },
+    onKeydown: function(e) {
+      this.runFunction('onKeydown', e);
+    },
+  },
+  props: {
+    form: {
+      type: Object,
+      required: true,
+    },
+    field: {
+      type: Object,
+      required: true,
+    },
+    model: {
+      type: Object,
+      required: true,
+    },
+    to: {
+      type: Object,
+      required: true,
+    },
+  },
+};
+
+export const BaseField = _BaseField;
+export default _BaseField;

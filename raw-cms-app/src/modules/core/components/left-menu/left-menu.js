@@ -16,7 +16,7 @@ const _LeftMenu = async (resolve, reject) => {
     },
     computed: {
       userinfo: function() {
-        return vuexStore.state.core.userInfo;
+        return vuexStore.state.core.userInfo || {};
       },
     },
     data: () => {

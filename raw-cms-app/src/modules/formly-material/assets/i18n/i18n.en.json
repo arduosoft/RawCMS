@@ -1,0 +1,7 @@
+{
+  "formly": {
+    "validation": {
+      "required": "This field is required"
+    }
+  }
+}

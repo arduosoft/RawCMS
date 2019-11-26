@@ -140,12 +140,35 @@ const _router = new VueRouter({
         },
       ],
     },
+    {
+      path: '/formly-test',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/formly-test/formly-test.js');
+        await cmp.default(res, rej);
+      },
+      meta: {
+        i18nLoad: ['core', 'formly-material'],
+      },
+    },
   ],
 });
 
 // Automatically load i18n messages
 _router.beforeEach(async (to, from, next) => {
-  await i18nHelper.load('en', '/modules/core/assets/i18n/i18n.en.json');
+  if (!optionalChain(() => to.matched)) {
+    next();
+    return;
+  }
+
+  let i18nModulesToLoad = to.matched
+    .map(r => optionalChain(() => r.meta.i18nLoad, { fallbackValue: ['core'] }))
+    .reduce((acc, val) => [...acc, ...val]);
+  i18nModulesToLoad = [...new Set(i18nModulesToLoad)];
+
+  for (const mod of i18nModulesToLoad) {
+    await i18nHelper.load('en', `/modules/${mod}/assets/i18n/i18n.en.json`);
+  }
+
   next();
 });
 
