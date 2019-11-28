@@ -6,6 +6,12 @@ const _NumberField = async (res, rej) => {
   );
 
   res({
+    methods: {
+      onInput: function(e) {
+        this.model[this.field.key] = new Number(e);
+        this.runFunction('onInput', e);
+      },
+    },
     mixins: [BaseField],
     template: tpl,
   });

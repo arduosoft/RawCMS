@@ -110,6 +110,12 @@ const _RawCmsDetailEditDef = async () => {
     template: tpl,
     watch: {
       $route: 'fetchData',
+      value: {
+        handler: function(val) {
+          this.code = this.formatJson(val || {});
+        },
+        deep: true,
+      },
     },
   };
 };

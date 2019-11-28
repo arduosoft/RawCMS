@@ -48,7 +48,7 @@ export class BaseCrudService extends ICrudService {
     }
 
     const res = await this._apiClient.post(`${this._basePath}`, obj);
-    return res.data.data === true;
+    return res.data.status === 0;
   }
 
   async update(obj) {
@@ -60,7 +60,7 @@ export class BaseCrudService extends ICrudService {
     }
 
     const res = await this._apiClient.patch(`${this._basePath}/${id}`, obj);
-    return res.data.data === true;
+    return res.data.status === 0;
   }
 
   async delete(id) {
@@ -70,6 +70,6 @@ export class BaseCrudService extends ICrudService {
     }
 
     const res = await this._apiClient.delete(`${this._basePath}/${id}`);
-    return res.data.data === true;
+    return res.data.status === 0;
   }
 }
