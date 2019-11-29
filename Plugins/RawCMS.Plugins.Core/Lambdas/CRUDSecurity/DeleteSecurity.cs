@@ -29,7 +29,7 @@ namespace RawCMS.Plugins.Core.Lambdas.CRUDSecurity
             CheckGeneric(collection, Operation);
         }
 
-        public DeleteSecurity(CRUDService service, IHttpContextAccessor httpContextAccessor) : base(service, httpContextAccessor)
+        public DeleteSecurity(EntityService entityService, IHttpContextAccessor httpContextAccessor) : base(entityService, httpContextAccessor)
         {
         }
     }

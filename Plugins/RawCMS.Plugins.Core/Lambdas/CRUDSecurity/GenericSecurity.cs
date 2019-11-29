@@ -18,13 +18,13 @@ namespace RawCMS.Plugins.Core.Lambdas.CRUDSecurity
 {
     public abstract class GenericSecurity : DataProcessLambda
     {
-        private readonly CRUDService service;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         protected readonly EntityService entityService;
 
-        public GenericSecurity(EntityService entityService)
+        public GenericSecurity(EntityService entityService, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
             this.entityService = entityService;
         }
 
@@ -52,12 +52,6 @@ namespace RawCMS.Plugins.Core.Lambdas.CRUDSecurity
                     }
                 }
             }
-        }
-
-        public GenericSecurity(CRUDService service, IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-            this.service = service;
         }
     }
 }
