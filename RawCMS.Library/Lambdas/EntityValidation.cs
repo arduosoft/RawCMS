@@ -21,61 +21,22 @@ namespace RawCMS.Library.Lambdas
 
         public override string Description => "Provide generic entity validation, based on configuration";
 
-        public static Dictionary<string, CollectionSchema> Entities { get => entities; set => entities = value; }
-
-        private static Dictionary<string, CollectionSchema> entities = new Dictionary<string, CollectionSchema>();
-        private static List<FieldTypeValidator> typeValidators = new List<FieldTypeValidator>();
-
         private readonly AppEngine appEngine;
         private readonly CRUDService service;
+        private readonly EntityService entityService;
 
-        public EntityValidation(AppEngine appEngine, CRUDService service)
+        public EntityValidation(AppEngine appEngine, CRUDService service, EntityService entityService)
         {
             this.appEngine = appEngine;
             this.service = service;
-            InitSchema();
-            InitValidators();
-        }
-
-        private void InitValidators()
-        {
-            typeValidators = appEngine.GetFieldTypeValidators();
-        }
-
-        private void InitSchema()
-        {
-            JArray dbEntities = service.Query("_schema", new DataModel.DataQuery()
-            {
-                PageNumber = 1,
-                PageSize = int.MaxValue,
-                RawQuery = null
-            }).Items;
-
-            foreach (JToken item in dbEntities)
-            {
-                CollectionSchema schema = item.ToObject<CollectionSchema>();
-                if (schema.CollectionName != null && !string.IsNullOrEmpty(schema.CollectionName.ToString()))
-                {
-                    var haveIdField = schema.FieldSettings.Where(x => x.Name.Equals("_id")).Count() > 0;
-                    if (!haveIdField)
-                    {
-                        var field = new Field();
-                        field.Name = "_id";
-                        field.BaseType = FieldBaseType.String;
-                        field.Type = "ObjectId";
-                        field.Required = true;
-                        schema.FieldSettings.Add(field);
-                    }
-
-                    Entities[schema.CollectionName] = schema;
-                }
-            }
+            this.entityService = entityService;
         }
 
         public override List<Error> Validate(JObject input, string collection)
         {
             List<Error> errors = new List<Error>();
-            if (Entities.TryGetValue(collection, out CollectionSchema settings))
+            var settings = entityService.GetByName(collection);
+            if (settings != null)
             {
                 //do validation!
 
@@ -118,17 +79,12 @@ namespace RawCMS.Library.Lambdas
                 });
             }
 
-            FieldTypeValidator typeValidator = typeValidators.FirstOrDefault(x => x.Type == field.Type);
+            FieldTypeValidator typeValidator = this.entityService.GetTypeValidator(field.Type);
             if (typeValidator != null)
             {
                 errors.AddRange(typeValidator.Validate(input, field));
             }
             return errors;
-        }
-
-        public Dictionary<string, CollectionSchema> GetCollections()
-        {
-            return Entities;
         }
     }
 }
