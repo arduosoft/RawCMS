@@ -1,57 +1,68 @@
 {
   "core": {
-    "leftMenu": {
-      "logoutText": "Logout"
-    },
-    "login": {
-      "title": "Login to Raw CMS",
-      "loginBtn": "Login",
-      "wrongCredentials": "Cannot login, please check your credentials."
-    },
-    "home": {
-      "helpText": "Welcome! Please select a menu entry on the left."
-    },
-    "entities": {
-      "title": "Entities",
-      "emptyMsg": "There are no entities yet. Add some with the button below!",
-      "deleteConfirmMsgTpl": "Are you sure you want to delete entity {name}?",
-      "deleteSuccessMsgTpl": "Entity {name} was deleted.",
-      "deleteErrorMsgTpl": "An error occurred while deleting entity {name}.",
-      "detail": {
-        "newTitle": "New entity",
-        "updateTitle": "Entity {name}"
-      }
-    },
     "collections": {
-      "title": "Collections",
       "detail": {
         "title": "Item data"
       },
       "table": {
-        "title": "Collection {name}",
         "deleteConfirmMsgTpl": "Are you sure you want to delete the selected item?",
+        "deleteErrorMsgTpl": "An error occurred while deleting item from collection.",
         "deleteSuccessMsgTpl": "The item was successfully deleted from collection.",
-        "deleteErrorMsgTpl": "An error occurred while deleting item from collection."
-      }
+        "title": "Collection {name}"
+      },
+      "title": "Collections"
     },
     "common": {
-      "requiredField": "This field is required.",
-      "editText": "Edit",
-      "jsonText": "JSON",
-      "okBtnText": "Ok",
       "cancelBtnText": "Cancel",
+      "deleteConfirmMsgTpl": "Are you sure you want to delete {id}?",
+      "deleteConfirmTitle": "Delete confirmation",
+      "deleteErrorMsgTpl": "An error occurred while deleting {id}.",
+      "deleteSuccessMsgTpl": "{id} was deleted.",
+      "editText": "Edit",
       "emptyListMsg": "There are no items yet.",
       "emptyTableMsg": "There are no items yet.",
-      "deleteConfirmTitle": "Delete confirmation",
-      "deleteConfirmMsgTpl": "Are you sure you want to delete {id}?",
-      "deleteSuccessMsgTpl": "{id} was deleted.",
-      "deleteErrorMsgTpl": "An error occurred while deleting {id}.",
-      "saveSuccessMsgTpl": "Save was successfull.",
-      "saveErrorMsgTpl": "An error occurred during saving."
+      "jsonText": "JSON",
+      "okBtnText": "Ok",
+      "requiredField": "This field is required.",
+      "saveErrorMsgTpl": "An error occurred during saving.",
+      "saveSuccessMsgTpl": "Save was successfull."
+    },
+    "entities": {
+      "detail": {
+        "newTitle": "New entity",
+        "updateTitle": "Entity {name}"
+      },
+      "deleteConfirmMsgTpl": "Are you sure you want to delete entity {name}?",
+      "deleteErrorMsgTpl": "An error occurred while deleting entity {name}.",
+      "deleteSuccessMsgTpl": "Entity {name} was deleted.",
+      "emptyMsg": "There are no entities yet. Add some with the button below!",
+      "title": "Entities"
+    },
+    "home": {
+      "helpText": "Welcome! Please select a menu entry on the left."
     },
     "lambdas": {
-      "title": "Lambdas",
-      "emptyMsg": "There are no lambdas yet. Add some with the button below!"
+      "emptyMsg": "There are no lambdas yet. Add some with the button below!",
+      "title": "Lambdas"
+    },
+    "leftMenu": {
+      "logoutText": "Logout"
+    },
+    "login": {
+      "loginBtn": "Login",
+      "title": "Login to Raw CMS",
+      "wrongCredentials": "Cannot login, please check your credentials."
+    },
+    "users": {
+      "detail": {
+        "newTitle": "New user",
+        "updateTitle": "User {name}"
+      },
+      "deleteConfirmMsgTpl": "Are you sure you want to delete user {name}?",
+      "deleteErrorMsgTpl": "An error occurred while deleting user {name}.",
+      "deleteSuccessMsgTpl": "User {name} was deleted.",
+      "emptyMsg": "There are no users yet. Add some with the button below!",
+      "title": "Users"
     }
   }
 }

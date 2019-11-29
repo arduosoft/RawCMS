@@ -93,7 +93,7 @@ const _router = new VueRouter({
     {
       path: '/users',
       component: async (res, rej) => {
-        const cmp = await import('/modules/core/views/users/users.js');
+        const cmp = await import('/modules/core/views/users-view/users-view.js');
         await cmp.default(res, rej);
       },
       children: [
@@ -101,7 +101,7 @@ const _router = new VueRouter({
           path: '/',
           name: 'users',
           component: async (res, rej) => {
-            const cmp = await import('/modules/core/components/users-list/users-list.js');
+            const cmp = await import('/modules/core/views/users-list-view/users-list-view.js');
             await cmp.default(res, rej);
           },
         },
@@ -109,7 +109,7 @@ const _router = new VueRouter({
           path: ':id',
           name: 'user-details',
           component: async (res, rej) => {
-            const cmp = await import('/modules/core/components/user-details/user-details.js');
+            const cmp = await import('/modules/core/views/user-details-view/user-details-view.js');
             await cmp.default(res, rej);
           },
         },
@@ -162,7 +162,7 @@ _router.beforeEach(async (to, from, next) => {
 
   let i18nModulesToLoad = to.matched
     .map(r => optionalChain(() => r.meta.i18nLoad, { fallbackValue: ['core'] }))
-    .reduce((acc, val) => [...acc, ...val]);
+    .reduce((acc, val) => [...acc, ...val], []);
   i18nModulesToLoad = [...new Set(i18nModulesToLoad)];
 
   for (const mod of i18nModulesToLoad) {
