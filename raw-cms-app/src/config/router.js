@@ -141,14 +141,36 @@ const _router = new VueRouter({
       ],
     },
     {
-      path: '/formly-test',
-      component: async (res, rej) => {
-        const cmp = await import('/modules/core/views/formly-test/formly-test.js');
-        await cmp.default(res, rej);
+      path: '/sandbox',
+      component: {
+        template: `<router-view></router-view>`,
       },
-      meta: {
-        i18nLoad: ['core', 'formly-material'],
-      },
+      children: [
+        {
+          path: '/',
+          name: 'sandbox',
+          component: {
+            template: `
+            <v-container>
+              <ul>
+                <li><router-link :to="{ name: 'sandbox-formly' }">Formly</router-link></li>
+              </ul>
+            </v-container>
+            `,
+          },
+        },
+        {
+          path: 'formly',
+          name: 'sandbox-formly',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/views/formly-test/formly-test.js');
+            await cmp.default(res, rej);
+          },
+          meta: {
+            i18nLoad: ['core', 'formly-material'],
+          },
+        },
+      ],
     },
   ],
 });
