@@ -131,10 +131,12 @@ const _router = new VueRouter({
           },
         },
         {
-          path: '/lambda/editor/:id',
-          name: 'lambda-editor',
+          path: ':id',
+          name: 'lambda-details',
           component: async (res, rej) => {
-            const cmp = await import('/modules/core/components/lambda-editor/lambda-editor.js');
+            const cmp = await import(
+              '/modules/core/views/lambda-details-view/lambda-details-view.js'
+            );
             await cmp.default(res, rej);
           },
         },
