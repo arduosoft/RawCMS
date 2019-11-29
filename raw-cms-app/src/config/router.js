@@ -116,17 +116,17 @@ const _router = new VueRouter({
       ],
     },
     {
-      path: '/lambda',
+      path: '/lambdas',
       component: async (res, rej) => {
-        const cmp = await import('/modules/core/views/lambdas/lambdas.js');
+        const cmp = await import('/modules/core/views/lambdas-view/lambdas-view.js');
         await cmp.default(res, rej);
       },
       children: [
         {
           path: '/',
-          name: 'lambda-list',
+          name: 'lambdas',
           component: async (res, rej) => {
-            const cmp = await import('/modules/core/components/lambda-list/lambda-list.js');
+            const cmp = await import('/modules/core/views/lambdas-list-view/lambdas-list-view.js');
             await cmp.default(res, rej);
           },
         },
