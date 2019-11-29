@@ -1,5 +1,7 @@
 const _FormlyTestiew = async (res, rej) => {
-  const tpl = await RawCMS.loadComponentTpl('/modules/core/views/formly-test/formly-test.tpl.html');
+  const tpl = await RawCMS.loadComponentTpl(
+    '/modules/core/views/sandbox/formly-test/formly-test.tpl.html'
+  );
 
   res({
     data: function() {

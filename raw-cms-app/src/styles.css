@@ -2,3 +2,19 @@ fieldset {
   border: none;
   width: 100%;
 }
+
+.add-padding.add-padding--left {
+  padding-left: 12px;
+}
+
+.add-padding.add-padding--right {
+  padding-right: 12px;
+}
+
+.add-padding.add-padding--top {
+  padding-top: 12px;
+}
+
+.add-padding.add-padding--bottom {
+  padding-bottom: 12px;
+}
