@@ -42,8 +42,21 @@
       "helpText": "Welcome! Please select a menu entry on the left."
     },
     "lambdas": {
+      "deleteConfirmMsgTpl": "Are you sure you want to delete lambda {name}?",
+      "deleteErrorMsgTpl": "An error occurred while deleting lambda {name}.",
+      "deleteSuccessMsgTpl": "Lambda {name} was deleted.",
       "emptyMsg": "There are no lambdas yet. Add some with the button below!",
-      "title": "Lambdas"
+      "title": "Lambdas",
+      "details": {
+        "nameLabel": "Name",
+        "nameTooLongMsg": "'Name must be less than 10 characters",
+        "newTitle": "New lambda",
+        "pathLabel": "Path",
+        "pathTooLongMsg": "'Path must be less than 20 characters",
+        "requiredNameMsg": "Name is required",
+        "requiredPathMsg": "Path is required",
+        "updateTitle": "Lambda {name}"
+      }
     },
     "leftMenu": {
       "logoutText": "Logout"
