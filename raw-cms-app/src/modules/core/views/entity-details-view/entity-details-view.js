@@ -15,7 +15,7 @@ const _EntityDetailsView = async (res, rej) => {
     created: function() {
       RawCMS.eventBus.$on(rawCmsDetailEditEvents.loaded, ev => {
         this.updateTitle({
-          isNewEntity: ev.isNewEntity,
+          isNew: ev.isNew,
           name: optionalChain(() => ev.value.CollectionName, { fallbackValue: '<NONE>' }),
         });
       });
@@ -27,8 +27,8 @@ const _EntityDetailsView = async (res, rej) => {
     },
 
     methods: {
-      updateTitle: function({ isNewEntity, name }) {
-        this.title = isNewEntity
+      updateTitle: function({ isNew, name }) {
+        this.title = isNew
           ? this.$t('core.entities.detail.newTitle')
           : this.$t('core.entities.detail.updateTitle', { name: name });
       },

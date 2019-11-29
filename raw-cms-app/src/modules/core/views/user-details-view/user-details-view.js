@@ -15,7 +15,7 @@ const _UserDetailsView = async (res, rej) => {
     created: function() {
       RawCMS.eventBus.$on(rawCmsDetailEditEvents.loaded, ev => {
         this.updateTitle({
-          isNewEntity: ev.isNewEntity,
+          isNew: ev.isNew,
           name: optionalChain(() => ev.value.UserName, { fallbackValue: '<NONE>' }),
         });
       });
@@ -27,8 +27,8 @@ const _UserDetailsView = async (res, rej) => {
     },
 
     methods: {
-      updateTitle: function({ isNewEntity, name }) {
-        this.title = isNewEntity
+      updateTitle: function({ isNew, name }) {
+        this.title = isNew
           ? this.$t('core.users.detail.newTitle')
           : this.$t('core.users.detail.updateTitle', { name: name });
       },

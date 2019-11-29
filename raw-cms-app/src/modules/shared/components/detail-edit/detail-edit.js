@@ -29,19 +29,19 @@ const _RawCmsDetailEditDef = async () => {
           } catch (e) {}
         },
       },
-      isNewEntity: function() {
+      isNew: function() {
         return this.$route.params.id === 'new';
       },
     },
     created: async function() {
-      if (!this.isNewEntity) {
+      if (!this.isNew) {
         await this.fetchData();
       }
 
       this.isLoading = false;
       this.code = this.formatJson(this.value || {});
       RawCMS.eventBus.$emit(_rawCmsDetailEditEvents.loaded, {
-        isNewEntity: this.isNewEntity,
+        isNew: this.isNew,
         value: this.value,
       });
     },
@@ -84,7 +84,7 @@ const _RawCmsDetailEditDef = async () => {
       },
       save: async function() {
         this.isSaving = true;
-        const apiCall = this.isNewEntity
+        const apiCall = this.isNew
           ? this.apiService.create(this.value)
           : this.apiService.update(this.value);
         const res = await apiCall;
