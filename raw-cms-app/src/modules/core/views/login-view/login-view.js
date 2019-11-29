@@ -1,8 +1,8 @@
 import { RawCMS } from '../../../../config/raw-cms.js';
 import { loginService } from '../../services/login.service.js';
 
-const _Login = async (res, rej) => {
-  const tpl = await RawCMS.loadComponentTpl('/modules/core/views/login/login.tpl.html');
+const _LoginView = async (res, rej) => {
+  const tpl = await RawCMS.loadComponentTpl('/modules/core/views/login-view/login-view.tpl.html');
 
   res({
     computed: {
@@ -67,5 +67,5 @@ const _Login = async (res, rej) => {
   });
 };
 
-export const Login = _Login;
-export default _Login;
+export const LoginView = _LoginView;
+export default _LoginView;

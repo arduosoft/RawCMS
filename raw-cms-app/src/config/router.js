@@ -1,6 +1,6 @@
 import { i18nHelper } from '../config/i18n.js';
 import { loginService } from '../modules/core/services/login.service.js';
-import { Login } from '../modules/core/views/login/login.js';
+import { LoginView } from '../modules/core/views/login-view/login-view.js';
 import { optionalChain } from '../utils/object.utils.js';
 
 const _router = new VueRouter({
@@ -9,7 +9,7 @@ const _router = new VueRouter({
     {
       path: '/login',
       name: 'login',
-      component: async (res, rej) => await Login(res, rej),
+      component: async (res, rej) => await LoginView(res, rej),
       meta: {
         requiresAuth: false,
       },
@@ -183,7 +183,9 @@ _router.beforeEach(async (to, from, next) => {
   }
 
   let i18nModulesToLoad = to.matched
-    .map(r => optionalChain(() => r.meta.i18nLoad, { fallbackValue: ['core'] }))
+    .map(r =>
+      optionalChain(() => r.meta.i18nLoad, { fallbackValue: ['core'], replaceLastUndefined: true })
+    )
     .reduce((acc, val) => [...acc, ...val], []);
   i18nModulesToLoad = [...new Set(i18nModulesToLoad)];
 
