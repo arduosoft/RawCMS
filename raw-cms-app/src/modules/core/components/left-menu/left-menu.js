@@ -27,7 +27,7 @@ const _LeftMenu = async (resolve, reject) => {
           { icon: 'mdi-account', text: 'Users', route: 'users' },
           { icon: 'mdi-cube', text: 'Entities', route: 'entities' },
           { icon: 'mdi-book-open', text: 'Collections', route: 'collections' },
-          { icon: 'mdi-circle', text: 'Lambdas', route: 'lambda-list' },
+          { icon: 'mdi-circle', text: 'Lambdas', route: 'lambdas' },
         ],
       };
     },

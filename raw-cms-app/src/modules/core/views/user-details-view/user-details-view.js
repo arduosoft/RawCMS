@@ -1,22 +1,22 @@
 import { optionalChain } from '../../../../utils/object.utils.js';
 import { rawCmsDetailEditEvents } from '../../../shared/components/detail-edit/detail-edit.js';
-import { EntityDetailsDef } from '../../components/entity-details/entity-details.js';
+import { UserDetailsDef } from '../../components/user-details/user-details.js';
 
-const _EntityDetailsView = async (res, rej) => {
+const _UserDetailsView = async (res, rej) => {
   const tpl = await RawCMS.loadComponentTpl(
-    '/modules/core/views/entity-details-view/entity-details-view.tpl.html'
+    '/modules/core/views/user-details-view/user-details-view.tpl.html'
   );
-  const entityDetails = await EntityDetailsDef();
+  const details = await UserDetailsDef();
 
   res({
     components: {
-      EntityDetails: entityDetails,
+      UserDetails: details,
     },
     created: function() {
       RawCMS.eventBus.$on(rawCmsDetailEditEvents.loaded, ev => {
         this.updateTitle({
           isNew: ev.isNew,
-          name: optionalChain(() => ev.value.CollectionName, { fallbackValue: '<NONE>' }),
+          name: optionalChain(() => ev.value.UserName, { fallbackValue: '<NONE>' }),
         });
       });
     },
@@ -29,13 +29,13 @@ const _EntityDetailsView = async (res, rej) => {
     methods: {
       updateTitle: function({ isNew, name }) {
         this.title = isNew
-          ? this.$t('core.entities.detail.newTitle')
-          : this.$t('core.entities.detail.updateTitle', { name: name });
+          ? this.$t('core.users.detail.newTitle')
+          : this.$t('core.users.detail.updateTitle', { name: name });
       },
     },
     template: tpl,
   });
 };
 
-export const EntityDetailsView = _EntityDetailsView;
-export default _EntityDetailsView;
+export const UserDetailsView = _UserDetailsView;
+export default _UserDetailsView;
