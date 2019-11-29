@@ -10,12 +10,13 @@
     <v-tab-item value="tabFormly">
       <v-card flat tile>
         <v-form>
-          <v-container>
+          <v-container fluid>
             <formly-form
               :form="formState"
               :model="value"
               :fields="formFields"
               tag="v-row"
+              class="add-padding add-padding--left add-padding--right"
             ></formly-form>
           </v-container>
         </v-form>
