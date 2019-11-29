@@ -1,5 +1,8 @@
+import { vuexStore } from '../../../../config/vuex.js';
+import { optionalChain } from '../../../../utils/object.utils.js';
 import { RawCmsDetailEditDef } from '../../../shared/components/detail-edit/detail-edit.js';
 import { entitiesSchemaService } from '../../services/entities-schema.service.js';
+import { validationService } from '../../services/validation.service.js';
 
 const _CollectionItemDetailsWrapperDef = async () => {
   const rawCmsDetailEditDef = await RawCmsDetailEditDef();
@@ -23,6 +26,12 @@ const _CollectionItemDetailsDef = async () => {
       apiBasePath: function() {
         return `/api/CRUD/${this.collectionName}`;
       },
+      fieldsMetadata: function() {
+        return optionalChain(() => vuexStore.state.core.fieldsMetadata, {
+          fallbackValue: [],
+          replaceLastUndefined: true,
+        });
+      },
     },
     created: async function() {
       this.formFields = await this.getFormFields();
@@ -40,27 +49,38 @@ const _CollectionItemDetailsDef = async () => {
           size: 1,
           rawQuery: { CollectionName: this.collectionName },
         });
+        const schema = res.items[0];
 
-        const result = res.items[0].FieldSettings.map(x => {
-          return {
-            key: x.Name,
-            type: this.getFormlyType(x.Type),
-            wrapper: '<div class="col-12 col-sm-6"></div>',
-          };
+        const result = schema.FieldSettings.map(x => {
+          return this.applyFieldMetadata(
+            {
+              key: x.Name,
+              type: x.Type,
+              validators: {},
+              templateOptions: { validation: {} },
+              wrapper: '<div class="col-12 col-sm-6"></div>',
+            },
+            x
+          );
         });
 
         return result;
       },
-      getFormlyType: function(beType) {
-        switch (beType) {
-          case 'String':
-          case 'string':
-            return 'text';
-          case 'number':
-            return 'number';
-          default:
-            return 'text';
-        }
+      applyFieldMetadata: function(formlyField, schemaField) {
+        const optionParameters = this.fieldsMetadata[schemaField.Type].optionParameter;
+        optionParameters.forEach(x => {
+          const option = optionalChain(() => schemaField.Options[x.name]);
+
+          if (option === undefined) {
+            return;
+          }
+
+          const key = `${schemaField.Type}.${x.name}`;
+          formlyField.validators[key] = validationService.getValidationFn(key, option);
+          formlyField.templateOptions.validation[key] = { optionValue: option };
+        });
+
+        return formlyField;
       },
     },
     props: {

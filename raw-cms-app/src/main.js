@@ -45,12 +45,15 @@ axios({
     Promise.all([appCmpPromise, moduleConfigsPromise]).then(x => {
       const appCmp = x[0];
 
-      new Vue({
+      const vue = new Vue({
         router: router,
         vuetify: vuetify,
         i18n: i18n,
         vuelidate: vuelidate,
         render: h => h(appCmp),
-      }).$mount('#app');
+      });
+
+      RawCMS.vue = vue;
+      vue.$mount('#app');
     });
   });
