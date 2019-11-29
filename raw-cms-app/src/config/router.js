@@ -163,7 +163,7 @@ const _router = new VueRouter({
           path: 'formly',
           name: 'sandbox-formly',
           component: async (res, rej) => {
-            const cmp = await import('/modules/core/views/formly-test/formly-test.js');
+            const cmp = await import('/modules/core/views/sandbox/formly-test/formly-test.js');
             await cmp.default(res, rej);
           },
           meta: {
