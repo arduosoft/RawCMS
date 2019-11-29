@@ -40,7 +40,6 @@ namespace RawCMS
             env.ConfigureNLog(path);
 
             ApplicationLogger.SetLogFactory(loggerFactory);
-           
 
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -66,7 +65,7 @@ namespace RawCMS
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
-            
+
             app.UseMvc();
 
             app.UseMvc(routes =>
@@ -82,7 +81,6 @@ namespace RawCMS
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
 
             app.UseStaticFiles();
 
@@ -100,16 +98,20 @@ namespace RawCMS
             }));
 
             var ass = new List<Assembly>();
-            var builder = services.AddMvc();
+            var builder = services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            });
             var pluginPath = Configuration.GetValue<string>("PluginPath");
             List<Assembly> allAssembly = AssemblyHelper.GetAllAssembly();
 
             ReflectionManager rm = new ReflectionManager(allAssembly);
 
-             appEngine = AppEngine.Create(
-                pluginPath,
-                loggerFactory.CreateLogger<AppEngine>(),
-                rm, services, Configuration);
+            appEngine = AppEngine.Create(
+               pluginPath,
+               loggerFactory.CreateLogger<AppEngine>(),
+               rm, services, Configuration);
 
             appEngine.InvokeConfigureServices(ass, builder, services, Configuration);
 
@@ -127,7 +129,6 @@ namespace RawCMS
                 c.DescribeAllEnumsAsStrings();
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
                 c.CustomSchemaIds(t => t.FullName);
-                
             });
 
             //Invoke appEngine after service configuration

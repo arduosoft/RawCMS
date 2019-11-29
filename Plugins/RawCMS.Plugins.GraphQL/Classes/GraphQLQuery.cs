@@ -8,19 +8,20 @@
 //******************************************************************************
 using GraphQL.Types;
 using Newtonsoft.Json.Linq;
+using RawCMS.Library.Service;
 using RawCMS.Plugins.GraphQL.Types;
 
 namespace RawCMS.Plugins.GraphQL.Classes
 {
     public class GraphQLQuery : ObjectGraphType<JObject>
     {
-        public GraphQLQuery(GraphQLService graphQLService)
+        public GraphQLQuery(GraphQLService graphQLService, EntityService entityService)
         {
             Name = "Query";
-            foreach (var key in graphQLService.Collections.Keys)
+            var schemas = entityService.GetCollectionSchemas();
+            foreach (var metaColl in schemas)
             {
-                Library.Schema.CollectionSchema metaColl = graphQLService.Collections[key];
-                CollectionType type = new CollectionType(metaColl, graphQLService.Collections, graphQLService);
+                CollectionType type = new CollectionType(metaColl, schemas, graphQLService);
                 ListGraphType listType = new ListGraphType(type);
 
                 AddField(new FieldType

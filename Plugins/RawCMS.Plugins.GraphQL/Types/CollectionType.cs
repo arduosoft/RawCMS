@@ -14,6 +14,7 @@ using RawCMS.Plugins.GraphQL.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FieldType = GraphQL.Types.FieldType;
 
 namespace RawCMS.Plugins.GraphQL.Types
 {
@@ -58,7 +59,7 @@ namespace RawCMS.Plugins.GraphQL.Types
             return typeof(string);
         }
 
-        public CollectionType(CollectionSchema collectionSchema, Dictionary<string, CollectionSchema> collections = null, GraphQLService graphQLService = null)
+        public CollectionType(CollectionSchema collectionSchema, List<CollectionSchema> collections = null, GraphQLService graphQLService = null)
         {
             Name = collectionSchema.CollectionName;
 
@@ -68,18 +69,18 @@ namespace RawCMS.Plugins.GraphQL.Types
             }
         }
 
-        private void InitGraphField(Field field, Dictionary<string, CollectionSchema> collections = null, GraphQLService graphQLService = null)
+        private void InitGraphField(Field field, List<CollectionSchema> collections = null, GraphQLService graphQLService = null)
         {
             Type graphQLType;
             if (field.BaseType == FieldBaseType.Object)
             {
-                var relatedObject = collections[field.Type];
+                var relatedObject = collections.FirstOrDefault(x => x.CollectionName == field.Type);
                 var relatedCollection = new CollectionType(relatedObject, collections);
                 var listType = new ListGraphType(relatedCollection);
                 graphQLType = relatedCollection.GetType();
                 FieldType columnField = Field(
-                graphQLType,
-                relatedObject.CollectionName);
+                 graphQLType,
+                 relatedObject.CollectionName);
 
                 columnField.Resolver = new NameFieldResolver();
                 columnField.Arguments = new QueryArguments(relatedCollection.TableArgs);

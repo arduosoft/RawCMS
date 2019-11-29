@@ -50,6 +50,11 @@ namespace RawCMS.Library.Core
             return this.reflectionManager.GetAssignablesInstances<FieldTypeValidator>();
         }
 
+        public List<FieldType> GetFieldTypes()
+        {
+            return this.reflectionManager.GetAssignablesInstances<FieldType>();
+        }
+
         public void Init()
         {
         }
@@ -280,7 +285,7 @@ namespace RawCMS.Library.Core
                     _logger.LogError(err, "");
                 }
             }
-            
+
             if (_logger.IsEnabled(LogLevel.Debug))
             {
                 DumpLambdaInfo();
@@ -315,7 +320,6 @@ namespace RawCMS.Library.Core
 
             foreach (var type in types)
             {
-                
                 _logger.LogDebug($"For type {type.FullName}");
 
                 this.Lambdas.Where(x => x.GetType().BaseType == type).ToList().ForEach(x =>
