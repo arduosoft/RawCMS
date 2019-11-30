@@ -24,13 +24,12 @@ const _FieldEditDef = async () => {
       },
     },
     created: function() {
-      this.updateFieldOptions(optionalChain(() => this.field.Type));
+      this.setField(this.field);
     },
     data: function() {
       return {
-        currentField: this.field || {},
+        currentField: {},
         optionsFormState: {},
-        optionsModel: {},
         optionsFields: [],
       };
     },
@@ -40,6 +39,12 @@ const _FieldEditDef = async () => {
       },
       onFieldTypeChanged: function(evt) {
         this.updateFieldOptions(evt);
+      },
+      setField: function(field) {
+        this.currentField = field || {};
+        this.currentField.Options = this.currentField.Options || {};
+
+        this.updateFieldOptions(optionalChain(() => this.currentField.Type));
       },
       updateFieldOptions: function(fieldTypeName) {
         if (fieldTypeName === undefined) {
@@ -81,7 +86,7 @@ const _FieldEditDef = async () => {
     template: tpl,
     watch: {
       field: function(newVal, oldVal) {
-        this.currentField = newVal;
+        this.setField(newVal);
       },
     },
   };

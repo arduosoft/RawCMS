@@ -1,3 +1,4 @@
+import { deepClone } from '../../../../utils/object.utils.js';
 import { RawCmsDetailEditDef } from '../../../shared/components/detail-edit/detail-edit.js';
 import { entitiesSchemaService } from '../../services/entities-schema.service.js';
 import { FieldEditDef } from '../field-edit/field-edit.js';
@@ -59,8 +60,8 @@ const _EntityDetailsDef = async () => {
       removeField: function(field) {
         // FIXME: entity.FieldSettings = entity.FieldSettings.filter(x => x.Name !== field.Name);
       },
-      showFieldDialog: function(field) {
-        this.currentFieldCopy = { ...field } || {};
+      showFieldDialog: function(field = {}) {
+        this.currentFieldCopy = deepClone(field);
         this.isFieldDialogVisible = true;
       },
     },

@@ -29,9 +29,16 @@
               </v-btn>
             </v-list-item-icon>
           </v-list-item>
-        </v-list>
 
-        <v-btn @click.stop="showFieldDialog()">Add new field</v-btn>
+          <v-list-item @click.stop="showFieldDialog()">
+            <v-list-item-content>
+              <v-list-item-title>Add new field</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon>mdi-plus</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-list>
 
         <v-dialog persistent v-model="isFieldDialogVisible">
           <field-edit :field="currentFieldCopy" @closed="onFieldEdited(value, $event)"></field-edit>
