@@ -12,8 +12,11 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
+using RawCMS.Library.JavascriptClient;
 using RawCMS.Library.Service;
+using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 namespace RawCMS.Plugins.Core.Controllers
 {
@@ -48,10 +51,23 @@ namespace RawCMS.Plugins.Core.Controllers
 
             Dictionary<string, object> tmpIn = input.ToObject<Dictionary<string, object>>();
             Dictionary<string, object> tmpOur = new Dictionary<string, object>();
-            Engine add = new Engine()
-                     .SetValue("input", tmpIn)
-                     .SetValue("output", tmpOur)
-                    .Execute(code);
+
+
+            Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); });
+
+            engine.SetValue("input", tmpIn);
+            engine.SetValue("RestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
+            engine.SetValue("output", tmpOur);
+            try
+            {
+                engine.Execute(code);
+
+            }
+            catch (Exception e)
+            {
+                // TODO: log error...
+            }
+
             return JObject.FromObject(tmpOur);
         }
     }
