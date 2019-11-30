@@ -2,7 +2,6 @@ import { vuexStore } from '../../../../config/vuex.js';
 import { optionalChain } from '../../../../utils/object.utils.js';
 import { RawCmsDetailEditDef } from '../../../shared/components/detail-edit/detail-edit.js';
 import { entitiesSchemaService } from '../../services/entities-schema.service.js';
-import { validationService } from '../../services/validation.service.js';
 
 const _CollectionItemDetailsWrapperDef = async () => {
   const rawCmsDetailEditDef = await RawCmsDetailEditDef();
@@ -67,16 +66,47 @@ const _CollectionItemDetailsDef = async () => {
         return result;
       },
       applyFieldMetadata: function(formlyField, schemaField) {
-        const optionParameters = this.fieldsMetadata[schemaField.Type].optionParameter;
-        optionParameters.forEach(x => {
-          const option = optionalChain(() => schemaField.Options[x.name]);
+        const validators = this.fieldsMetadata[schemaField.Type].validations;
+        validators.forEach(x => {
+          const key = `${schemaField.Type}.${x.name}`;
+          var option = optionalChain(() => schemaField.Options[x.name]);
 
           if (option === undefined) {
-            return;
+            option = {};
           }
 
-          const key = `${schemaField.Type}.${x.name}`;
-          formlyField.validators[key] = validationService.getValidationFn(key, option);
+          formlyField.validators[key] = function(field, model, next) {
+            var item = model;
+            var errors = [];
+            var options = schemaField.Options;
+            var name = field.key;
+            var Type = schemaField.Type;
+            var value = model[field.key];
+            var fnValidator = Function(
+              'item',
+              'errors',
+              'options',
+              'name',
+              'Type',
+              'value',
+              x.function
+            );
+            var t = fnValidator(item, errors, options, name, Type, value);
+
+            if (errors.length == 0) {
+              return next(true);
+            } else {
+              return next(
+                false,
+                errors
+                  .map(function(item) {
+                    return item.Code + ' - ' + item.Title;
+                  })
+                  .join(' <br/> ')
+              );
+            }
+          };
+
           formlyField.templateOptions.validation[key] = { optionValue: option };
         });
 
