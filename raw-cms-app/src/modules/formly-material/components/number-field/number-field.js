@@ -6,6 +6,7 @@ const _NumberField = async (res, rej) => {
   );
 
   res({
+    data: function() {},
     methods: {
       onInput: function(e) {
         this.model[this.field.key] = new Number(e);
@@ -13,6 +14,16 @@ const _NumberField = async (res, rej) => {
       },
     },
     mixins: [BaseField],
+    props: {
+      max: {
+        type: Number,
+        default: null,
+      },
+      min: {
+        type: Number,
+        default: null,
+      },
+    },
     template: tpl,
   });
 };
