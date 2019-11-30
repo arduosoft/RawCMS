@@ -1,5 +1,5 @@
 import { apiClient } from '../api/api-client.js';
-import { snackbarService } from '../services/snackbar-service.js';
+import { snackbarService } from '../services/snackbar.service.js';
 
 class UserInfoService {
   async getUserInfo() {
