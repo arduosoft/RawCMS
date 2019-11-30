@@ -13,4 +13,9 @@ const _optionalChain = (
   return val === undefined && replaceLastUndefined ? fallbackValue : val;
 };
 
+const _deepClone = obj => {
+  return JSON.parse(JSON.stringify(obj));
+};
+
 export const optionalChain = _optionalChain;
+export const deepClone = _deepClone;

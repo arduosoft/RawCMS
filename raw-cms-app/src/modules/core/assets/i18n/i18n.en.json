@@ -76,6 +76,11 @@
       "deleteSuccessMsgTpl": "User {name} was deleted.",
       "emptyMsg": "There are no users yet. Add some with the button below!",
       "title": "Users"
+    },
+    "validation": {
+      "text": {
+        "maxlength": "Maximum length should be {maxLength}"
+      }
     }
   }
 }

@@ -31,11 +31,18 @@ const _BaseField = {
           continue;
         }
 
+        const errKey = err.replace('$async_', '');
+        const validator = this.field.validators[errKey];
+        const tplOptions = this.field.templateOptions;
+
         const errMsg =
-          typeof errors[err] === 'string'
-            ? errors[err]
-            : optionalChain(() => this.field.validators[err].message, {
-                fallbackValue: this.$t(`formly.validation.${err}`),
+          typeof errors[errKey] === 'string'
+            ? errors[errKey]
+            : optionalChain(() => validator.message, {
+                fallbackValue: this.$t(
+                  `formly.validation.${errKey}`,
+                  optionalChain(() => tplOptions.validation[errKey])
+                ),
               });
         errorMsgs.push(() => errMsg);
       }

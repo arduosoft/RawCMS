@@ -1,1 +1,49 @@
-<detail-wrapper v-on="$listeners" v-bind="$props"></detail-wrapper>
+<detail-wrapper v-on="$listeners" v-bind="$props" class="rawcms-entity-details">
+  <template slot="custom-tabs">
+    <link rel="stylesheet" href="/modules/core/components/entity-details/entity-details.css" />
+
+    <v-tab href="#tabFormly">
+      {{ $t('core.common.editText') }}
+      <v-icon>mdi-pen</v-icon>
+    </v-tab>
+  </template>
+
+  <template v-slot:custom-tab-items="{ value }">
+    <v-tab-item value="tabFormly">
+      <v-card flat tile>
+        <v-list class="elevation-1">
+          <v-list-item
+            v-for="i of value.FieldSettings"
+            :key="i.Name"
+            @click.stop="showFieldDialog(i)"
+          >
+            <v-list-item-content>
+              <v-list-item-title>{{ i.Name }}</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-btn icon @click.stop="showFieldDialog(i)">
+                <v-icon>mdi-pencil-outline</v-icon>
+              </v-btn>
+              <v-btn icon @click.stop="removeField(i)">
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
+            </v-list-item-icon>
+          </v-list-item>
+
+          <v-list-item @click.stop="showFieldDialog()">
+            <v-list-item-content>
+              <v-list-item-title>Add new field</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon>mdi-plus</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-list>
+
+        <v-dialog persistent v-model="isFieldDialogVisible">
+          <field-edit :field="currentFieldCopy" @closed="onFieldEdited(value, $event)"></field-edit>
+        </v-dialog>
+      </v-card>
+    </v-tab-item>
+  </template>
+</detail-wrapper>
