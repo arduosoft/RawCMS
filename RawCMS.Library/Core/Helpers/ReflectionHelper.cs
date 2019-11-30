@@ -27,7 +27,7 @@ namespace RawCMS.Library.Core.Helpers
             {
                 if (!AssemblyScope.Any(x => x.FullName == ass.FullName))
                 {
-                    _logger.LogInformation($" > Added {ass.FullName}");
+                    //_logger.LogInformation($" > Added {ass.FullName}");
                     AssemblyScope.Add(ass);
                 }
             }
@@ -35,7 +35,7 @@ namespace RawCMS.Library.Core.Helpers
 
         public void AppendAssembliesToScope(List<Assembly> assemblies)
         {
-            foreach(var ass in assemblies)
+            foreach (var ass in assemblies)
             {
                 AppendAssemblyToScope(ass);
             }
@@ -43,11 +43,12 @@ namespace RawCMS.Library.Core.Helpers
 
         public void AppendAssemblyToScope(Assembly assembly)
         {
-            if(!AssemblyScope.Contains(assembly))
+            if (!AssemblyScope.Contains(assembly))
             {
                 AssemblyScope.Add(assembly);
             }
         }
+
         public List<Assembly> GetAssemblyWithInstance<T>()
         {
             _logger.LogDebug("Get all assembly with instance");
@@ -167,13 +168,13 @@ namespace RawCMS.Library.Core.Helpers
 
             foreach (Assembly assembly in bundledAssemblies)
             {
-                _logger.LogDebug("loading from" + assembly.FullName);
+                // _logger.LogDebug("loading from" + assembly.FullName);
                 Type[] types = assembly.GetTypes();
                 foreach (Type type in types)
                 {
                     try
                     {
-                        if ((t.IsAssignableFrom(type) || (type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == t))) 
+                        if ((t.IsAssignableFrom(type) || (type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == t)))
                             && !type.IsAbstract && !type.IsInterface && !type.IsGenericType)
                         {
                             result.Add(type);
