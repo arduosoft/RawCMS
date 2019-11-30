@@ -9,13 +9,13 @@
             OptionParameter.Add(new OptionParameter()
             {
                 Name = "max",
-                Type = FieldBaseType.Int
+                Type = "number"
             });
 
             OptionParameter.Add(new OptionParameter()
             {
                 Name = "min",
-                Type = FieldBaseType.Int
+                Type = "number"
             });
         }
     }
