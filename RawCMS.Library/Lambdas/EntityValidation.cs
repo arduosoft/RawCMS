@@ -79,10 +79,10 @@ namespace RawCMS.Library.Lambdas
                 });
             }
 
-            FieldTypeValidator typeValidator = this.entityService.GetTypeValidator(field.Type);
-            if (typeValidator != null)
+            var typeValidator = this.entityService.GetTypeValidator(field.Type);
+            foreach (var validator in typeValidator)
             {
-                errors.AddRange(typeValidator.Validate(input, field));
+                errors.AddRange(validator.Validate(input, field));
             }
             return errors;
         }

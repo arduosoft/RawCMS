@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Schema;
+using RawCMS.Library.Schema.Validation;
 using RawCMS.Library.Service;
+using RawCMS.Plugins.Core.Model;
 using System.Collections.Generic;
 
 namespace RawCMS.Plugins.Core.Controllers.admin
@@ -19,11 +21,34 @@ namespace RawCMS.Plugins.Core.Controllers.admin
             this.entityService = entityService;
         }
 
-        [HttpGet()]
-        public List<FieldType> GetFieldTypes()
+        [HttpGet("fieldinfo")]
+        public List<FieldInfo> GetFieldTypes()
         {
             List<FieldType> types = entityService.GetTypes();
-            return types;
+            List<FieldInfo> result = new List<FieldInfo>();
+            foreach (FieldType type in types)
+            {
+                FieldInfo field = new FieldInfo
+                {
+                    Type = type,
+                    Validations = new List<FieldClientValidation>()
+                };
+
+                List<FieldTypeValidator> validators = entityService.GetTypeValidator(type.TypeName);
+                validators.ForEach(x =>
+                {
+                    if (x is BaseJavascriptValidator validator)
+                    {
+                        field.Validations.Add(new FieldClientValidation()
+                        {
+                            Function = validator.Javascript,
+                            Name = validator.GetType().Name
+                        });
+                    }
+                });
+                result.Add(field);
+            }
+            return result;
         }
     }
 }

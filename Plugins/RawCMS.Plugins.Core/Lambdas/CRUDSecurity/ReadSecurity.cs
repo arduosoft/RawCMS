@@ -27,7 +27,7 @@ namespace RawCMS.Plugins.Core.Lambdas.CRUDSecurity
             CheckGeneric(collection, Operation);
         }
 
-        public ReadSecurity(CRUDService service, IHttpContextAccessor httpContextAccessor) : base(service, httpContextAccessor)
+        public ReadSecurity(EntityService entityService, IHttpContextAccessor httpContextAccessor) : base(entityService, httpContextAccessor)
         { }
     }
 }

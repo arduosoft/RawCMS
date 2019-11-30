@@ -171,7 +171,7 @@ namespace RawCMS.Library.Service
             }
             var fullSaved = Get(collection, id);
             InvokeProcess(collection, ref fullSaved, SavePipelineStage.PostSave, DataOperation.Write, dataContext);
-            return JObject.Parse(fullSaved.ToJson(js));
+            return fullSaved;
         }
 
         public void EnsureCollection(string collection)
