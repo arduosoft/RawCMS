@@ -9,13 +9,13 @@
             OptionParameter.Add(new OptionParameter()
             {
                 Name = "regexp",
-                Type = FieldBaseType.String
+                Type = "text"
             });
 
             OptionParameter.Add(new OptionParameter()
             {
                 Name = "maxlength",
-                Type = FieldBaseType.Int
+                Type = "text"
             });
         }
     }

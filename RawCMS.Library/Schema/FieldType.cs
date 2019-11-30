@@ -4,7 +4,7 @@ namespace RawCMS.Library.Schema
 {
     public class OptionParameter
     {
-        public FieldBaseType Type { get; set; }
+        public string Type { get; set; }
         public string Name { get; set; }
     }
 

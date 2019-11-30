@@ -18,18 +18,23 @@ namespace RawCMS.Library.Schema.Validation
             get
             {
                 return @"
-
-
+if(value!=null){
 //code starts here
-value=parseInt(value);
- if(isNaN(value) || value  === NaN)
+intVal=parseInt(value);
+ if(isNaN(intVal) || intVal  === NaN )
  {
    errors.push({""Code"":""INT - 01"", ""Title"":""Not a number""});
  }
 
+if(!(parseFloat(value)===intVal))
+{
+    var err=""Value ""+value+""not an INT number"";
+   errors.push({""Code"":""INT - 04"", ""Title"":err});
+}
+
 if(options.min !==undefined)
  {
-   if(options.min>value)
+   if(options.min>intVal)
      {
        errors.push({""Code"":""INT-02"", ""Title"":""less than minimum"",""Description"":""ddd""});
      }
@@ -37,12 +42,12 @@ if(options.min !==undefined)
 
 if(options.max !==undefined)
  {
-   if(options.max<value)
+   if(options.max<intVal)
      {
       errors.push({""Code"":""INT-03"", ""Title"":""greater than max"",""Description"":""ddd""});
      }
  }
-
+}
 var backendResult=JSON.stringify(errors);
             ";
             }

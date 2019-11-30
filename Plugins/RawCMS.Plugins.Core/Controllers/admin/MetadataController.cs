@@ -4,6 +4,7 @@ using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Schema;
 using RawCMS.Library.Schema.Validation;
 using RawCMS.Library.Service;
+using RawCMS.Plugins.Core.Model;
 using System.Collections.Generic;
 
 namespace RawCMS.Plugins.Core.Controllers.admin
@@ -18,18 +19,6 @@ namespace RawCMS.Plugins.Core.Controllers.admin
         public MetadataController(EntityService entityService)
         {
             this.entityService = entityService;
-        }
-
-        public class FieldClientValidation
-        {
-            public string Name { get; set; }
-            public string Function { get; set; }
-        }
-
-        public class FieldInfo
-        {
-            public FieldType Type { get; set; }
-            public List<FieldClientValidation> Validations { get; set; }
         }
 
         [HttpGet("fieldinfo")]
