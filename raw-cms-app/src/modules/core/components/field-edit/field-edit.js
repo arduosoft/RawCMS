@@ -17,6 +17,11 @@ const _FieldEditDef = async () => {
           return { text: x, value: x };
         });
       },
+      areOptionsAvailable: function() {
+        return optionalChain(() => this.optionsFields.length > 0, {
+          fallbackValue: false,
+        });
+      },
     },
     created: function() {
       this.updateFieldOptions(optionalChain(() => this.field.Type));
@@ -54,7 +59,6 @@ const _FieldEditDef = async () => {
           return;
         }
 
-        optionParams.forEach(x => console.log(x));
         const result = optionParams.map(x => {
           return {
             key: x.name,
@@ -65,8 +69,7 @@ const _FieldEditDef = async () => {
           };
         });
 
-        console.log(result);
-        // this.optionsFields = fieldDef.optionParameter;
+        this.optionsFields = result;
       },
     },
     props: {

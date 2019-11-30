@@ -1,16 +1,18 @@
-import { NumberField } from '../number-field/number-field.js';
+import { NumberFieldDef } from '../number-field/number-field.js';
 
-const _IntField = async (res, rej) => {
-  const tpl = await RawCMS.loadComponentTpl(
-    '/modules/formly-material/components/number-field/number-field.tpl.html'
-  );
+const _IntFieldDef = async () => {
+  const baseDef = await NumberFieldDef();
 
-  res({
-    extends: [NumberField],
-    methods: {},
-    template: tpl,
-  });
+  return {
+    extends: baseDef,
+  };
 };
 
+const _IntField = async (res, rej) => {
+  const cmpDef = await _IntFieldDef();
+  res(cmpDef);
+};
+
+export const IntFieldDef = _IntFieldDef;
 export const IntField = _IntField;
 export default _IntField;

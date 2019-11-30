@@ -3,7 +3,6 @@
     Edit field
   </v-card-title>
   <v-card-text>
-    {{ currentField }}
     <v-form>
       <v-row>
         <v-col cols="12" sm="6">
@@ -18,11 +17,17 @@
           ></v-select>
         </v-col>
       </v-row>
+
+      <v-row v-if="areOptionsAvailable">
+        <v-col cols="12 text--primary">Options:</v-col>
+      </v-row>
+
       <formly-form
         :form="optionsFormState"
-        :model="optionsModel"
+        :model="currentField.Options"
         :fields="optionsFields"
         tag="v-row"
+        v-if="areOptionsAvailable"
       ></formly-form>
     </v-form>
   </v-card-text>

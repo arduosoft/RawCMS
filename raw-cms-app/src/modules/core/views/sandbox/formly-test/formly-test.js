@@ -38,6 +38,11 @@ const _FormlyTestiew = async (res, rej) => {
             type: 'number',
             wrapper: '<div class="col-12"></div>',
           },
+          {
+            key: 'myint',
+            type: 'int',
+            wrapper: '<div class="col-12"></div>',
+          },
         ],
       };
     },
