@@ -79,7 +79,7 @@ namespace RawCMS.Library.Core
                     {
                         if (_logger.IsEnabled(LogLevel.Trace))
                         {
-                            _logger.LogDebug($"Added {type.FullName}..");
+                            //   _logger.LogDebug($"Added {type.FullName}..");
                         }
                         typesToAdd.Add(type);
                     }

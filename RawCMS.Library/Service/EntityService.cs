@@ -86,9 +86,9 @@ namespace RawCMS.Library.Service
             return null;
         }
 
-        public FieldTypeValidator GetTypeValidator(string type)
+        public List<FieldTypeValidator> GetTypeValidator(string type)
         {
-            return typeValidators.FirstOrDefault(x => x.Type == type);
+            return typeValidators.Where(x => x.Type == type).ToList();
         }
     }
 }
