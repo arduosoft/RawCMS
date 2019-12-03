@@ -7,9 +7,12 @@ const _NumberFieldDef = async () => {
 
   return {
     methods: {
-      onInput: function(e) {
-        this.model[this.field.key] = new Number(e);
-        this.runFunction('onInput', e);
+      setValue: function(val) {
+        if (val === undefined || val === '') {
+          this.model[this.field.key] = undefined;
+        } else {
+          this.model[this.field.key] = new Number(val);
+        }
       },
     },
     mixins: [BaseField],

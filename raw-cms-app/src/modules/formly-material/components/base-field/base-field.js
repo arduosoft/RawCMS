@@ -54,8 +54,21 @@ const _BaseField = {
         optionalChain(() => this.to.label, { fallbackValue: this.field.key })
       );
     },
-    value: function() {
-      return optionalChain(() => this.model[this.field.key]);
+    value: {
+      get: function() {
+        const currentValue = this.model[this.field.key];
+        if (
+          this.form[this.field.key].$dirty === false &&
+          (currentValue === undefined || currentValue === '')
+        ) {
+          this.$set(this.model, this.field.key, undefined);
+        }
+
+        return this.model[this.field.key];
+      },
+      set: function(value) {
+        this.$set(this.model, this.field.key, value);
+      },
     },
   },
   created: function() {
@@ -104,7 +117,7 @@ const _BaseField = {
       this.runFunction('onChange', e);
     },
     onInput: function(e) {
-      this.model[this.field.key] = e;
+      this.setValue(e);
       this.runFunction('onInput', e);
     },
     onKeyup: function(e) {
@@ -112,6 +125,9 @@ const _BaseField = {
     },
     onKeydown: function(e) {
       this.runFunction('onKeydown', e);
+    },
+    setValue: function(val) {
+      this.model[this.field.key] = val;
     },
   },
   props: {

@@ -1,3 +1,4 @@
+import { addOrReplace } from '../../../../utils/immutable.utils.js';
 import { deepClone } from '../../../../utils/object.utils.js';
 import { RawCmsDetailEditDef } from '../../../shared/components/detail-edit/detail-edit.js';
 import { entitiesSchemaService } from '../../services/entities-schema.service.js';
@@ -49,16 +50,14 @@ const _EntityDetailsDef = async () => {
           return;
         }
 
-        const actualFieldIndex = entity.FieldSettings.findIndex(x => x.Name === evt.field.Name);
-
-        if (actualFieldIndex >= 0) {
-          entity.FieldSettings[actualFieldIndex] = evt.field;
-        } else {
-          entity.FieldSettings.push(evt.field);
-        }
+        entity.FieldSettings = addOrReplace({
+          array: entity.FieldSettings,
+          element: evt.field,
+          findFn: a => a.Name === evt.field.Name,
+        });
       },
-      removeField: function(field) {
-        // FIXME: entity.FieldSettings = entity.FieldSettings.filter(x => x.Name !== field.Name);
+      removeField: function(entity, field) {
+        entity.FieldSettings = entity.FieldSettings.filter(x => x.Name !== field.Name);
       },
       showFieldDialog: function(field = {}) {
         this.currentFieldCopy = deepClone(field);
