@@ -1,17 +1,20 @@
 <v-card v-on="$listeners">
   <v-card-title class="headline">
-    Edit field
+    {{ $t('core.entities.detail.fieldEdit.title') }}
   </v-card-title>
   <v-card-text>
     <v-form>
       <v-row>
         <v-col cols="12" sm="6">
-          <v-text-field label="Name" v-model="currentField.Name"></v-text-field>
+          <v-text-field
+            :label="$t('core.entities.detail.fieldEdit.nameLabel')"
+            v-model="currentField.Name"
+          ></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
           <v-select
             :items="availableFieldTypes"
-            label="Field type"
+            :label="$t('core.entities.detail.fieldEdit.typeLabel')"
             v-model="currentField.Type"
             @change="onFieldTypeChanged($event)"
           ></v-select>
@@ -19,7 +22,9 @@
       </v-row>
 
       <v-row v-if="areOptionsAvailable">
-        <v-col cols="12 text--primary">Options:</v-col>
+        <v-col cols="12 text--primary">
+          {{ $t('core.entities.detail.fieldEdit.optionsText') }}
+        </v-col>
       </v-row>
 
       <formly-form
