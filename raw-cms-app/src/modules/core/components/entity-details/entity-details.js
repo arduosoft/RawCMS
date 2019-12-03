@@ -37,9 +37,6 @@ const _EntityDetailsDef = async () => {
       };
     },
     methods: {
-      addNewField: function() {
-        console.log('TODO');
-      },
       dismissFieldDialog: function() {
         this.isFieldDialogVisible = false;
       },

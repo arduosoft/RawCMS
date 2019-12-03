@@ -15,7 +15,7 @@
             OptionParameter.Add(new OptionParameter()
             {
                 Name = "maxlength",
-                Type = "text"
+                Type = "int"
             });
         }
     }

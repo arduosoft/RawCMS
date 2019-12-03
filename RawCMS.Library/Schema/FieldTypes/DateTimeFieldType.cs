@@ -9,13 +9,13 @@
             OptionParameter.Add(new OptionParameter()
             {
                 Name = "max",
-                Type = "int"
+                Type = "date"
             });
 
             OptionParameter.Add(new OptionParameter()
             {
                 Name = "min",
-                Type = "int"
+                Type = "date"
             });
         }
     }
