@@ -18,6 +18,8 @@ namespace RawCMS.Library.Schema.Validation
             get
             {
                 return @"
+if(value!=null)
+{
 if(!(value instanceof Date))
 {
     errors.push({""Code"":""DATE-01"", ""Title"":""Not a date""});
@@ -48,7 +50,7 @@ if(options.max !==undefined )
        errors.push({""Code"":""DATE-05"", ""Title"":""more than max""});
      }
  }
-
+}
 var backendResult=JSON.stringify(errors);
             ";
             }
