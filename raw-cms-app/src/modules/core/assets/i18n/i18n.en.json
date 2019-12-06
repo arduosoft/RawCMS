@@ -84,6 +84,7 @@
       "title": "Users"
     },
     "validation": {
+      "required": "This field is required",
       "text": {
         "maxlength": "Maximum length should be {maxLength}"
       }

@@ -8,6 +8,7 @@
         <v-col cols="12" sm="6">
           <v-text-field
             :label="$t('core.entities.detail.fieldEdit.nameLabel')"
+            :rules="nameRules"
             v-model="currentField.Name"
           ></v-text-field>
         </v-col>

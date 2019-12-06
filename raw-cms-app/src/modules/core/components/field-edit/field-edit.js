@@ -22,6 +22,11 @@ const _FieldEditDef = async () => {
           fallbackValue: false,
         });
       },
+      nameRules: function() {
+        return [
+          val => (val !== undefined && val !== '' ? true : this.$t('core.validation.required')),
+        ];
+      },
     },
     created: function() {
       this.setField(this.field);
