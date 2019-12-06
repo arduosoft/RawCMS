@@ -47,8 +47,6 @@ class ValidationService {
         const context = { item, errors, options, name, Type, value };
         fnValidator(context);
 
-        console.log(context);
-
         if (errors.length == 0) {
           return next(true);
         } else {

@@ -51,7 +51,7 @@ const _FieldEditDef = async () => {
         this.updateFieldOptions(evt);
       },
       setField: function(field) {
-        this.currentField = field || {};
+        this.$set(this, 'currentField', field || {});
         this.$set(this.currentField, 'Options', this.currentField.Options || {});
 
         this.updateFieldOptions(optionalChain(() => this.currentField.Type));
@@ -81,7 +81,6 @@ const _FieldEditDef = async () => {
               type: x.type,
               validators: {},
               templateOptions: { validation: {} },
-              wrapper: '<div class="col-12 col-sm-6"></div>',
             },
             {
               fieldType: x.type,

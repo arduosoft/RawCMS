@@ -69,7 +69,7 @@ const _CollectionItemDetailsDef = async () => {
       applyFieldMetadata: function(formlyField, schemaField) {
         return validationService.applyFieldMetadataToFormlyInput(formlyField, {
           fieldType: schemaField.Type,
-          options: schemaField.Options,
+          fieldOptions: schemaField.Options,
         });
       },
     },

@@ -1,0 +1,19 @@
+<v-menu
+  :close-on-content-click="false"
+  transition="scale-transition"
+  offset-y
+  v-model="isMenuVisible"
+>
+  <template v-slot:activator="{ on }">
+    <v-text-field
+      prepend-icon="mdi-calendar"
+      :id="to.id"
+      :label="label"
+      :rules="errorMsgs"
+      readonly
+      v-on="{ ...basicListeners, ...on }"
+      v-model="dateFormatted"
+    ></v-text-field>
+  </template>
+  <v-date-picker v-model="datepickerValue" @input="closeMenu()"></v-date-picker>
+</v-menu>
