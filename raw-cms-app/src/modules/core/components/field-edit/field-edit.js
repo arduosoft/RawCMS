@@ -1,5 +1,6 @@
 import { vuexStore } from '../../../../config/vuex.js';
 import { optionalChain } from '../../../../utils/object.utils.js';
+import { validationService } from '../../services/validation.service.js';
 
 const _fieldEditEvents = {
   closed: 'closed',
@@ -22,6 +23,9 @@ const _FieldEditDef = async () => {
           fallbackValue: false,
         });
       },
+      isAllValid: function() {
+        return this.isValid && this.optionsFormState.$valid;
+      },
       nameRules: function() {
         return [
           val => (val !== undefined && val !== '' ? true : this.$t('core.validation.required')),
@@ -33,6 +37,7 @@ const _FieldEditDef = async () => {
     },
     data: function() {
       return {
+        isValid: true,
         currentField: {},
         optionsFormState: {},
         optionsFields: [],

@@ -3,7 +3,7 @@
     {{ $t('core.entities.detail.fieldEdit.title') }}
   </v-card-title>
   <v-card-text>
-    <v-form>
+    <v-form v-model="isValid" ref="form">
       <v-row>
         <v-col cols="12" sm="6">
           <v-text-field
@@ -43,7 +43,7 @@
     <v-btn color="primary" text @click.stop="close(false)">
       {{ $t('core.common.cancelBtnText') }}
     </v-btn>
-    <v-btn color="error" text @click.stop="close(true)">
+    <v-btn color="error" text @click.stop="close(true)" :disabled="!isAllValid">
       {{ $t('core.common.okBtnText') }}
     </v-btn>
   </v-card-actions>
