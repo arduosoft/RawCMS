@@ -47,7 +47,7 @@ const _FieldEditDef = async () => {
       },
       setField: function(field) {
         this.currentField = field || {};
-        this.currentField.Options = this.currentField.Options || {};
+        this.$set(this.currentField, 'Options', this.currentField.Options || {});
 
         this.updateFieldOptions(optionalChain(() => this.currentField.Type));
       },
@@ -70,13 +70,18 @@ const _FieldEditDef = async () => {
         }
 
         const result = optionParams.map(x => {
-          return {
-            key: x.name,
-            type: x.type,
-            validators: {},
-            templateOptions: { validation: {} },
-            wrapper: '<div class="col-12 col-sm-6"></div>',
-          };
+          return validationService.applyFieldMetadataToFormlyInput(
+            {
+              key: x.name,
+              type: x.type,
+              validators: {},
+              templateOptions: { validation: {} },
+              wrapper: '<div class="col-12 col-sm-6"></div>',
+            },
+            {
+              fieldType: x.type,
+            }
+          );
         });
 
         this.optionsFields = result;

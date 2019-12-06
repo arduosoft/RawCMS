@@ -61,13 +61,13 @@ const _BaseField = {
           this.form[this.field.key].$dirty === false &&
           (currentValue === undefined || currentValue === '')
         ) {
-          this.$set(this.model, this.field.key, undefined);
+          this.setValue(undefined);
         }
 
         return this.model[this.field.key];
       },
       set: function(value) {
-        this.$set(this.model, this.field.key, value);
+        this.setValue(value);
       },
     },
   },
@@ -127,7 +127,7 @@ const _BaseField = {
       this.runFunction('onKeydown', e);
     },
     setValue: function(val) {
-      this.model[this.field.key] = val;
+      this.$set(this.model, this.field.key, val);
     },
   },
   props: {

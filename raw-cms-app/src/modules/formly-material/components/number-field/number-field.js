@@ -9,13 +9,18 @@ const _NumberFieldDef = async () => {
     methods: {
       setValue: function(val) {
         if (val === undefined || val === '') {
-          this.model[this.field.key] = undefined;
+          this.$set(this.model, this.field.key, undefined);
         } else {
-          this.model[this.field.key] = new Number(val);
+          this.$set(this.model, this.field.key, new Number(val));
         }
       },
     },
     mixins: [BaseField],
+    props: {
+      step: {
+        default: 'any',
+      },
+    },
     template: tpl,
   };
 };

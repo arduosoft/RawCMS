@@ -1,4 +1,5 @@
 import { RawCMS } from '../../../config/raw-cms.js';
+import { vuexStore } from '../../../config/vuex.js';
 import { optionalChain } from '../../../utils/object.utils.js';
 
 class ValidationService {
@@ -18,6 +19,47 @@ class ValidationService {
       key.split('.').reduce((acc, curr) => acc[curr], this._validations)
     );
     return validation(obj);
+  }
+
+  applyFieldMetadataToFormlyInput(formlyField, { fieldType, fieldOptions = {} }) {
+    const fieldsMetadata = optionalChain(() => vuexStore.state.core.fieldsMetadata, {
+      fallbackValue: [],
+      replaceLastUndefined: true,
+    });
+
+    const validators = fieldsMetadata[fieldType].validations;
+    validators.forEach(x => {
+      const key = `${fieldType}.${x.name}`;
+      var option = optionalChain(() => fieldOptions[x.name]);
+
+      if (option === undefined) {
+        option = {};
+      }
+
+      formlyField.validators[key] = function(field, model, next) {
+        const item = model;
+        const errors = [];
+        const options = fieldOptions;
+        const name = field.key;
+        const Type = fieldType;
+        const value = model[field.key];
+        const fnValidator = Function('{ item, errors, options, name, Type, value }', x.function);
+        const context = { item, errors, options, name, Type, value };
+        fnValidator(context);
+
+        console.log(context);
+
+        if (errors.length == 0) {
+          return next(true);
+        } else {
+          return next(false, errors.map(item => item.Title).join('\n'));
+        }
+      };
+
+      formlyField.templateOptions.validation[key] = { optionValue: option };
+    });
+
+    return formlyField;
   }
 }
 

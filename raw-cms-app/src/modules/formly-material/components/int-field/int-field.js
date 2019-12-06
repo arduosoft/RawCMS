@@ -5,6 +5,11 @@ const _IntFieldDef = async () => {
 
   return {
     extends: baseDef,
+    props: {
+      step: {
+        default: 1,
+      },
+    },
   };
 };
 
