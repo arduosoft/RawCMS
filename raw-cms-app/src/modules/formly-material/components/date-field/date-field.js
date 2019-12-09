@@ -11,46 +11,49 @@ const _DateFieldDef = async () => {
     }),
     computed: {
       dateFormatted: function() {
-        return this.formatDate(this.date);
-      },
-      datepickerValue: {
-        get() {
-          return this.value;
-        },
-        set(val) {
-          this.value = val;
-        },
+        return this.toTextValue(this.modelValue);
       },
     },
     methods: {
       closeMenu: function() {
         this.isMenuVisible = false;
       },
-      formatDate: date => {
-        if (!date) return null;
+      toTextValue: function(date) {
+        if (!(date instanceof Date)) {
+          return undefined;
+        }
 
-        const [year, month, day] = date.split('-');
-        return `${month}/${day}/${year}`;
+        return date.toLocaleDateString(undefined, { timeZone: 'UTC' });
       },
-      parseDate: value => {},
-      setValue: function(val) {
-        console.log(val);
-        BaseField.methods.setValue.call(this, val);
+      preProcessValueForGet: function(date) {
+        if (!(date instanceof Date)) {
+          return undefined;
+        }
 
-        // if (val === undefined || val === '') {
-        //   this.$set(this.model, this.field.key, undefined);
-        // } else {
-        //   this.$set(this.model, this.field.key, new Number(val));
-        // }
+        return `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
+      },
+      preProcessValueForSet: function(dateStr) {
+        if (dateStr === undefined || dateStr === '') {
+          return undefined;
+        }
+
+        const [year, month, day] = dateStr.split('-');
+        return new Date(Date.UTC(year, month - 1, day));
       },
     },
     mixins: [BaseField],
-    props: {
-      step: {
-        default: 'any',
-      },
-    },
     template: tpl,
+    updated: function() {
+      if (this.modelValue === undefined || this.modelValue instanceof Date) {
+        return;
+      }
+
+      const fixedValue =
+        this.modelValue === undefined || this.modelValue === ''
+          ? undefined
+          : new Date(this.modelValue);
+      this.setValue(fixedValue, { applyDirectly: true });
+    },
   };
 };
 

@@ -49,6 +49,9 @@ const _BaseField = {
 
       return errorMsgs;
     },
+    modelValue: function() {
+      return this.model[this.field.key];
+    },
     label: function() {
       return toFirstUpperCase(
         optionalChain(() => this.to.label, { fallbackValue: this.field.key })
@@ -64,7 +67,7 @@ const _BaseField = {
           this.setValue(undefined);
         }
 
-        return this.model[this.field.key];
+        return this.preProcessValueForGet(this.modelValue);
       },
       set: function(value) {
         this.setValue(value);
@@ -97,9 +100,6 @@ const _BaseField = {
     booleanValue(value) {
       return value === 'true' || value === 'false' ? value === 'true' : value;
     },
-    runFunction: function(action, e) {
-      if (typeof this.to[action] == 'function') this.to[action].call(this, e);
-    },
     onFocus: function(e) {
       this.$set(this.form[this.field.key], '$active', true);
       this.runFunction('onFocus', e);
@@ -126,8 +126,18 @@ const _BaseField = {
     onKeydown: function(e) {
       this.runFunction('onKeydown', e);
     },
-    setValue: function(val) {
-      this.$set(this.model, this.field.key, val);
+    preProcessValueForGet: function(val) {
+      return val;
+    },
+    preProcessValueForSet: function(val) {
+      return val;
+    },
+    runFunction: function(action, e) {
+      if (typeof this.to[action] == 'function') this.to[action].call(this, e);
+    },
+    setValue: function(val, { applyDirectly } = { applyDirectly: false }) {
+      const newValue = applyDirectly ? val : this.preProcessValueForSet(val);
+      this.$set(this.model, this.field.key, newValue);
     },
   },
   props: {

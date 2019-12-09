@@ -7,12 +7,8 @@ const _NumberFieldDef = async () => {
 
   return {
     methods: {
-      setValue: function(val) {
-        if (val === undefined || val === '') {
-          this.$set(this.model, this.field.key, undefined);
-        } else {
-          this.$set(this.model, this.field.key, new Number(val));
-        }
+      preProcessValueForSet: function(val) {
+        return val === undefined || val === '' ? undefined : new Number(val);
       },
     },
     mixins: [BaseField],

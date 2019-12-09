@@ -14,6 +14,7 @@
       v-on="{ ...basicListeners, ...on }"
       v-model="dateFormatted"
     ></v-text-field>
+    {{ typeof(value) }} {{ value }} {{ modelValue }}<br />
   </template>
-  <v-date-picker v-model="datepickerValue" @input="closeMenu()"></v-date-picker>
+  <v-date-picker v-model="value" @input="closeMenu()"></v-date-picker>
 </v-menu>
