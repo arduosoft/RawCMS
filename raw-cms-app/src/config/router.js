@@ -50,6 +50,9 @@ const _router = new VueRouter({
           },
         },
       ],
+      meta: {
+        i18nLoad: ['core', 'formly-material'],
+      },
     },
     {
       path: '/collections',
