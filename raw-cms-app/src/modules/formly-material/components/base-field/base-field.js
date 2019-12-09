@@ -49,13 +49,29 @@ const _BaseField = {
 
       return errorMsgs;
     },
+    modelValue: function() {
+      return this.model[this.field.key];
+    },
     label: function() {
       return toFirstUpperCase(
         optionalChain(() => this.to.label, { fallbackValue: this.field.key })
       );
     },
-    value: function() {
-      return optionalChain(() => this.model[this.field.key]);
+    value: {
+      get: function() {
+        const currentValue = this.model[this.field.key];
+        if (
+          this.form[this.field.key].$dirty === false &&
+          (currentValue === undefined || currentValue === '')
+        ) {
+          this.setValue(undefined);
+        }
+
+        return this.preProcessValueForGet(this.modelValue);
+      },
+      set: function(value) {
+        this.setValue(value);
+      },
     },
   },
   created: function() {
@@ -84,9 +100,6 @@ const _BaseField = {
     booleanValue(value) {
       return value === 'true' || value === 'false' ? value === 'true' : value;
     },
-    runFunction: function(action, e) {
-      if (typeof this.to[action] == 'function') this.to[action].call(this, e);
-    },
     onFocus: function(e) {
       this.$set(this.form[this.field.key], '$active', true);
       this.runFunction('onFocus', e);
@@ -104,7 +117,7 @@ const _BaseField = {
       this.runFunction('onChange', e);
     },
     onInput: function(e) {
-      this.model[this.field.key] = e;
+      this.setValue(e);
       this.runFunction('onInput', e);
     },
     onKeyup: function(e) {
@@ -112,6 +125,19 @@ const _BaseField = {
     },
     onKeydown: function(e) {
       this.runFunction('onKeydown', e);
+    },
+    preProcessValueForGet: function(val) {
+      return val;
+    },
+    preProcessValueForSet: function(val) {
+      return val;
+    },
+    runFunction: function(action, e) {
+      if (typeof this.to[action] == 'function') this.to[action].call(this, e);
+    },
+    setValue: function(val, { applyDirectly } = { applyDirectly: false }) {
+      const newValue = applyDirectly ? val : this.preProcessValueForSet(val);
+      this.$set(this.model, this.field.key, newValue);
     },
   },
   props: {

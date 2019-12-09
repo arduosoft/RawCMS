@@ -48,7 +48,7 @@
   </v-tabs>
 
   <v-fab-transition>
-    <v-btn color="primary" fab fixed bottom right :disabled="isSaving" @click.stop="save()">
+    <v-btn color="primary" fab fixed bottom right :disabled="isSaveDisabled" @click.stop="save()">
       <v-icon v-if="!isSaving">mdi-floppy</v-icon>
       <v-progress-circular v-if="isSaving" indeterminate></v-progress-circular>
     </v-btn>
