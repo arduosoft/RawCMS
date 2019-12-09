@@ -47,7 +47,7 @@ const innerValidation = function() {
             errors.push({""Code"":""DATE-04"", ""Title"":""min parameter not a date""});
         }
 
-        if (maxdate > value) {
+        if (value > maxdate) {
             errors.push({""Code"":""DATE-05"", ""Title"":""more than max""});
         }
     }
