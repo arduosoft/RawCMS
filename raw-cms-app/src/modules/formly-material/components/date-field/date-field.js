@@ -14,9 +14,26 @@ const _DateFieldDef = async () => {
         return this.toTextValue(this.modelValue);
       },
     },
+    created: function() {
+      this.fixModelValue();
+    },
     methods: {
+      clearValue: function() {
+        this.setValue(undefined);
+      },
       closeMenu: function() {
         this.isMenuVisible = false;
+      },
+      fixModelValue: function() {
+        if (this.modelValue === undefined || this.modelValue instanceof Date) {
+          return;
+        }
+
+        const fixedValue =
+          this.modelValue === undefined || this.modelValue === ''
+            ? undefined
+            : new Date(this.modelValue);
+        this.setValue(fixedValue, { applyDirectly: true });
       },
       toTextValue: function(date) {
         if (!(date instanceof Date)) {
@@ -44,15 +61,7 @@ const _DateFieldDef = async () => {
     mixins: [BaseField],
     template: tpl,
     updated: function() {
-      if (this.modelValue === undefined || this.modelValue instanceof Date) {
-        return;
-      }
-
-      const fixedValue =
-        this.modelValue === undefined || this.modelValue === ''
-          ? undefined
-          : new Date(this.modelValue);
-      this.setValue(fixedValue, { applyDirectly: true });
+      this.fixModelValue();
     },
   };
 };

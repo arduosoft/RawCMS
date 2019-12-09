@@ -8,7 +8,19 @@ const _CollectionItemDetailsWrapperDef = async () => {
   const rawCmsDetailEditDef = await RawCmsDetailEditDef();
 
   return {
+    computed: {
+      isSaveDisabled: function() {
+        return rawCmsDetailEditDef.computed.isSaveDisabled.call(this) || !this.canSave;
+      },
+    },
     extends: rawCmsDetailEditDef,
+    props: {
+      canSave: {
+        type: Boolean,
+        required: true,
+        default: true,
+      },
+    },
   };
 };
 
@@ -31,6 +43,9 @@ const _CollectionItemDetailsDef = async () => {
           fallbackValue: [],
           replaceLastUndefined: true,
         });
+      },
+      isValid: function() {
+        return optionalChain(() => this.formState.$valid, { fallbackValue: true });
       },
     },
     created: async function() {

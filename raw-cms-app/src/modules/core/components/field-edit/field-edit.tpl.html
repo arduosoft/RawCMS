@@ -39,10 +39,10 @@
   <v-divider></v-divider>
   <v-card-actions>
     <v-spacer></v-spacer>
-    <v-btn color="primary" text @click.stop="close(false)">
+    <v-btn color="error" text @click.stop="close(false)">
       {{ $t('core.common.cancelBtnText') }}
     </v-btn>
-    <v-btn color="error" text @click.stop="close(true)" :disabled="!isAllValid">
+    <v-btn color="primary" text @click.stop="close(true)" :disabled="!isAllValid">
       {{ $t('core.common.okBtnText') }}
     </v-btn>
   </v-card-actions>
