@@ -1,0 +1,58 @@
+﻿using MongoDB.Bson;
+using Newtonsoft.Json.Linq;
+using RawCMS.Library.Schema;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace RawCMS.Library.Service
+{
+    public class RelationInfo
+    {
+        public bool IsMultiple { get; set; }
+        public string LookupCollection { get; set; }
+        public List<BsonObjectId> Values { get; set; }
+    }
+
+    public class RelationInfoService
+    {
+        public RelationInfo GetFromOptions(Field field, JObject input)
+        {
+            RelationInfo relation = new RelationInfo()
+            {
+                IsMultiple = IsMultiple(field),
+                LookupCollection = GetLookupCollectionName(field),
+                Values = GetLookupValue(input)
+            };
+            return relation;
+        }
+
+        private List<BsonObjectId> GetLookupValue(JObject input)
+        {
+            if (input.Type == JTokenType.Array)
+            {
+                return input.Value<List<string>>().Select(x => BsonObjectId.Create(x)).ToList();
+            }
+            return new List<BsonObjectId>() { BsonObjectId.Create(input.Value<string>()) };
+        }
+
+        private bool IsMultiple(Field field)
+        {
+            string[] positiveMatch = new string[] { "1", "true" };
+            if (field.Options["Multiple"].HasValues)
+            {
+                return positiveMatch.Any(x => x.Equals(field.Options["Multiple"].ToString(), StringComparison.InvariantCultureIgnoreCase));
+            }
+            return false;
+        }
+
+        private string GetLookupCollectionName(Field field)
+        {
+            if (field.Options["Collection"].HasValues)
+            {
+                return field.Options["Collection"].ToString();
+            }
+            return null;
+        }
+    }
+}

@@ -34,7 +34,7 @@ namespace RawCMS.Plugins.Core.Controllers
 
         // GET api/CRUD/{collection}
         [HttpGet("{collection}")]
-        public RestMessage<ItemList> Get(string collection, string rawQuery = null, int pageNumber = 1, int pageSize = 20, string sort = "")
+        public RestMessage<ItemList> Get(string collection, string rawQuery = null, string[] expando = null, int pageNumber = 1, int pageSize = 20, string sort = "")
         {
             var sortValue = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SortOption>>(sort);
             // CRUDService service = new CRUDService(new MongoService(new MongoSettings() { }));
@@ -43,7 +43,8 @@ namespace RawCMS.Plugins.Core.Controllers
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 RawQuery = rawQuery,
-                Sort = sortValue
+                Sort = sortValue,
+                Expando = new List<string>(expando)
             });
 
             return new RestMessage<ItemList>(result);
