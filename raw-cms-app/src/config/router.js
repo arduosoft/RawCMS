@@ -146,6 +146,35 @@ const _router = new VueRouter({
       ],
     },
     {
+      path: '/configuration',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/configuration-view/configuration-view.js');
+        await cmp.default(res, rej);
+      },
+      children: [
+        {
+          path: '/',
+          name: 'plugins',
+          component: async (res, rej) => {
+            const cmp = await import(
+              '/modules/core/views/configuration-list-view/configuration-list-view.js'
+            );
+            await cmp.default(res, rej);
+          },
+        },
+        {
+          path: ':id',
+          name: 'configuration-details',
+          component: async (res, rej) => {
+            const cmp = await import(
+              '/modules/core/views/configuration-details-view/configuration-details-view.js'
+            );
+            await cmp.default(res, rej);
+          },
+        },
+      ],
+    },
+    {
       path: '/sandbox',
       component: {
         template: `<router-view></router-view>`,
