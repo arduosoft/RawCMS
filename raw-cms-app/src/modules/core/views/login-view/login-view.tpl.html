@@ -6,7 +6,7 @@
         <div class="flex-grow-1"></div>
       </v-toolbar>
       <v-card-text>
-        <v-form ref="loginForm">
+        <v-form ref="loginForm" @keyup.native.enter="login()">
           <v-text-field
             label="Login"
             name="login"
