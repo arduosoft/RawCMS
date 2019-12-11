@@ -88,6 +88,17 @@
       "text": {
         "maxlength": "Maximum length should be {maxLength}"
       }
+    },
+    "configuration": {
+      "detail": {
+        "newTitle": "New configuration",
+        "updateTitle": "Configuration {name}"
+      },
+      "deleteConfirmMsgTpl": "Are you sure you want to delete configuration {name}?",
+      "deleteErrorMsgTpl": "An error occurred while deleting configuration {name}.",
+      "deleteSuccessMsgTpl": "Configuration {name} was deleted.",
+      "emptyMsg": "There are no plugins yet. Add some with the button below!",
+      "title": "Configuration"
     }
   }
 }
