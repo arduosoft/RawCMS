@@ -1,5 +1,6 @@
 import { vuexStore } from '../../../../config/vuex.js';
 import { optionalChain } from '../../../../utils/object.utils.js';
+import { validationService } from '../../services/validation.service.js';
 
 const _fieldEditEvents = {
   closed: 'closed',
@@ -22,12 +23,21 @@ const _FieldEditDef = async () => {
           fallbackValue: false,
         });
       },
+      isAllValid: function() {
+        return this.isValid && this.optionsFormState.$valid;
+      },
+      nameRules: function() {
+        return [
+          val => (val !== undefined && val !== '' ? true : this.$t('core.validation.required')),
+        ];
+      },
     },
     created: function() {
       this.setField(this.field);
     },
     data: function() {
       return {
+        isValid: true,
         currentField: {},
         optionsFormState: {},
         optionsFields: [],
@@ -41,8 +51,8 @@ const _FieldEditDef = async () => {
         this.updateFieldOptions(evt);
       },
       setField: function(field) {
-        this.currentField = field || {};
-        this.currentField.Options = this.currentField.Options || {};
+        this.$set(this, 'currentField', field || {});
+        this.$set(this.currentField, 'Options', this.currentField.Options || {});
 
         this.updateFieldOptions(optionalChain(() => this.currentField.Type));
       },
@@ -65,13 +75,17 @@ const _FieldEditDef = async () => {
         }
 
         const result = optionParams.map(x => {
-          return {
-            key: x.name,
-            type: x.type,
-            validators: {},
-            templateOptions: { validation: {} },
-            wrapper: '<div class="col-12 col-sm-6"></div>',
-          };
+          return validationService.applyFieldMetadataToFormlyInput(
+            {
+              key: x.name,
+              type: x.type,
+              validators: {},
+              templateOptions: { validation: {} },
+            },
+            {
+              fieldType: x.type,
+            }
+          );
         });
 
         this.optionsFields = result;

@@ -7,12 +7,16 @@ const _NumberFieldDef = async () => {
 
   return {
     methods: {
-      onInput: function(e) {
-        this.model[this.field.key] = new Number(e);
-        this.runFunction('onInput', e);
+      preProcessValueForSet: function(val) {
+        return val === undefined || val === '' ? undefined : new Number(val);
       },
     },
     mixins: [BaseField],
+    props: {
+      step: {
+        default: 'any',
+      },
+    },
     template: tpl,
   };
 };

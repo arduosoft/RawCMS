@@ -1,0 +1,26 @@
+<v-menu
+  :close-on-content-click="false"
+  min-width="auto"
+  offset-y
+  transition="scale-transition"
+  v-model="isMenuVisible"
+>
+  <template v-slot:activator="{ on }">
+    <v-text-field
+      prepend-icon="mdi-calendar"
+      :id="to.id"
+      :label="label"
+      :rules="errorMsgs"
+      readonly
+      v-on="{ ...basicListeners, ...on }"
+      v-model="dateFormatted"
+    ></v-text-field>
+  </template>
+  <v-date-picker v-model="value" @input="closeMenu()">
+    <v-spacer></v-spacer>
+    <v-btn color="primary" @click="clearValue(); closeMenu()">
+      <v-icon left>mdi-close</v-icon>
+      {{ $t('formly.clearBtn') }}
+    </v-btn>
+  </v-date-picker>
+</v-menu>

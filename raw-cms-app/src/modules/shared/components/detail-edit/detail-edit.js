@@ -17,6 +17,9 @@ const _RawCmsDetailEditDef = async () => {
       AtomSpinner: epicSpinners.AtomSpinner,
     },
     computed: {
+      isSaveDisabled: function() {
+        return this.isSaving;
+      },
       compCode: {
         get: function() {
           return this.code;

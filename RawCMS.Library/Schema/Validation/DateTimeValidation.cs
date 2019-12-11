@@ -18,38 +18,44 @@ namespace RawCMS.Library.Schema.Validation
             get
             {
                 return @"
-if(!(value instanceof Date))
-{
-    errors.push({""Code"":""DATE-01"", ""Title"":""Not a date""});
-}
-
-if(options.min !==undefined )
- {
-   var mindate=new Date(options.min);
-   if(!(mindate instanceof Date) || mindate == undefined)
-    {
-      errors.push({""Code"":""DATE-02"", ""Title"":""min parameter not a date""});
+const innerValidation = function() {
+    if (value === null || value === undefined) {
+        return;
     }
-   if(mindate>value)
-     {
-       errors.push({""Code"":""DATE-03"", ""Title"":""less than minimum""});
-     }
- }
 
-if(options.max !==undefined )
- {
-   var maxdate=new Date(options.max);
-   if(!(maxdate instanceof Date) || maxdate == undefined)
-    {
-      errors.push({""Code"":""DATE-04"", ""Title"":""min parameter not a date""});
+    if(!(value instanceof Date)) {
+        errors.push({""Code"":""DATE-01"", ""Title"":""Not a date""});
+        return;
     }
-   if(maxdate>value)
-     {
-       errors.push({""Code"":""DATE-05"", ""Title"":""more than max""});
-     }
- }
 
-var backendResult=JSON.stringify(errors);
+    if (options.min !== undefined) {
+        var mindate = new Date(options.min);
+
+        if (!(mindate instanceof Date) || mindate == undefined) {
+            errors.push({""Code"":""DATE-02"", ""Title"":""min parameter not a date""});
+        }
+
+        if (mindate > value) {
+            errors.push({""Code"":""DATE-03"", ""Title"":""less than minimum""});
+        }
+    }
+
+    if (options.max !== undefined) {
+        var maxdate = new Date(options.max);
+
+        if (!(maxdate instanceof Date) || maxdate == undefined) {
+            errors.push({""Code"":""DATE-04"", ""Title"":""min parameter not a date""});
+        }
+
+        if (value > maxdate) {
+            errors.push({""Code"":""DATE-05"", ""Title"":""more than max""});
+        }
+    }
+
+    return JSON.stringify(errors);
+};
+
+var backendResult = innerValidation();
             ";
             }
         }

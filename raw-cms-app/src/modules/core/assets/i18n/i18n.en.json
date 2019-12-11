@@ -30,7 +30,13 @@
     "entities": {
       "detail": {
         "newTitle": "New entity",
-        "updateTitle": "Entity {name}"
+        "updateTitle": "Entity {name}",
+        "fieldEdit": {
+          "nameLabel": "Name",
+          "optionsText": "Options",
+          "title": "Edit field",
+          "typeLabel": "Type"
+        }
       },
       "deleteConfirmMsgTpl": "Are you sure you want to delete entity {name}?",
       "deleteErrorMsgTpl": "An error occurred while deleting entity {name}.",
@@ -78,6 +84,7 @@
       "title": "Users"
     },
     "validation": {
+      "required": "This field is required",
       "text": {
         "maxlength": "Maximum length should be {maxLength}"
       }

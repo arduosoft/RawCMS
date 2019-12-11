@@ -1,4 +1,4 @@
-<detail-wrapper v-on="$listeners" v-bind="$props" :apiBasePath="apiBasePath">
+<detail-wrapper v-on="$listeners" v-bind="$props" :apiBasePath="apiBasePath" :canSave="isValid">
   <template slot="custom-tabs">
     <v-tab href="#tabFormly">
       {{ $t('core.common.editText') }}
