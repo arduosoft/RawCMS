@@ -22,13 +22,18 @@ namespace RawCMS.Library.Service
             {
                 IsMultiple = IsMultiple(field),
                 LookupCollection = GetLookupCollectionName(field),
-                Values = GetLookupValue(input)
+                Values = GetLookupValue((JValue)input[field.Name])
             };
             return relation;
         }
 
-        private List<BsonObjectId> GetLookupValue(JObject input)
+        private List<BsonObjectId> GetLookupValue(JValue input)
         {
+            if (input == null)
+            {
+                return new List<BsonObjectId>();
+            }
+
             if (input.Type == JTokenType.Array)
             {
                 return input.Value<List<string>>().Select(x => BsonObjectId.Create(x)).ToList();
@@ -48,7 +53,7 @@ namespace RawCMS.Library.Service
 
         private string GetLookupCollectionName(Field field)
         {
-            if (field.Options["Collection"].HasValues)
+            if (field.Options["Collection"] != null)
             {
                 return field.Options["Collection"].ToString();
             }

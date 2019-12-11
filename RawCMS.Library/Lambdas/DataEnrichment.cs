@@ -15,8 +15,14 @@ namespace RawCMS.Library.Lambdas
         public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
             JObject meta = EnrichMetadata(collection, item, dataContext);
-
-            item["_metadata"][MetadataName] = meta;
+            if (meta != null && meta.HasValues)
+            {
+                if (item["_metadata"] == null)
+                {
+                    item["_metadata"] = new JObject();
+                }
+                item["_metadata"][MetadataName] = meta;
+            }
         }
 
         public abstract JObject EnrichMetadata(string collection, JObject item, Dictionary<string, object> dataContext);

@@ -32,7 +32,7 @@ namespace RawCMS.Library.Lambdas
             JObject result = new JObject();
 
             Schema.CollectionSchema schema = entityService.GetByName(collection);
-            if (dataContext.TryGetValue("expando", out object relationsObj) && relationsObj is List<string> relations)
+            if (schema != null && dataContext.TryGetValue("expando", out object relationsObj) && relationsObj is List<string> relations)
             {
                 foreach (string relName in relations)
                 {
@@ -43,26 +43,52 @@ namespace RawCMS.Library.Lambdas
 
                         DataQuery dq = new DataQuery()
                         {
-                            PageNumber = 0,
+                            PageNumber = 1,
                             PageSize = 999// make it parametric
                         };
 
+                        BsonDocument b = new BsonDocument();
+
                         if (relationInfo.IsMultiple)
                         {
-                            dq.RawQuery = Builders<BsonDocument>.Filter.Eq("_id", relationInfo.Values.FirstOrDefault()).ToJson();
+                            BsonDocument inc = new BsonDocument
+                            {
+                                ["$in"] = new BsonArray(relationInfo.Values)
+                            };
+                            b["_id"] = inc;
                         }
                         else
                         {
-                            dq.RawQuery = Builders<BsonDocument>.Filter.In<BsonObjectId>("_id", relationInfo.Values).ToJson();
+                            b["_id"] = relationInfo.Values.FirstOrDefault();
                         }
 
+                        dq.RawQuery = b.ToJson();
+
                         ItemList subitems = crudService.Query(relationInfo.LookupCollection, dq);
-                        result[field.Name] = subitems.Items;
+
+                        if (relationInfo.IsMultiple)
+                        {
+                            result[field.Name] = subitems.Items;
+                        }
+                        else
+                        {
+                            result[field.Name] = subitems.Items.FirstOrDefault();
+                        }
                     }
                 }
             }
 
             return result;
         }
+
+        //    JObject queryJSON = new JObject();
+        //                    if (relationInfo.IsMultiple)
+        //                    {
+        //                        queryJSON["_id"] = relationInfo.Values.FirstOrDefault().ToString();
+        //}
+        //                    else
+        //                    {
+        //                        queryJSON["_id"] = new JArray(relationInfo.Values.Select(x => x.ToString()).ToList());
+        //                    }
     }
 }
