@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { epicSpinners } from '../../../../utils/spinners.js';
 import { entitiesService } from '../../services/entities.service.js';
 import { snackbarService } from '../../services/snackbar-service.js';
@@ -13,6 +14,11 @@ const _LambdasList = async (res, rej) => {
     },
     created: function() {
       this.fetchData();
+    },
+    computed: {
+      title: function() {
+        return vuexStore.state.core.topBarTitle;
+      },
     },
     data: () => {
       return {

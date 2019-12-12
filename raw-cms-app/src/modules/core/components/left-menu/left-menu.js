@@ -45,8 +45,11 @@ const _LeftMenu = async (resolve, reject) => {
         this.$router.push({ name: item.route });
       },
       isActive: function(item) {
-        vuexStore.dispatch('core/topBarTitle', this.$route.name);
+        this.topBarTitle();
         return item.route === this.$route.name;
+      },
+      topBarTitle: function() {
+        vuexStore.dispatch('core/topBarTitle', this.$route.name);
       },
       logout: async function() {
         loginService.logout();
