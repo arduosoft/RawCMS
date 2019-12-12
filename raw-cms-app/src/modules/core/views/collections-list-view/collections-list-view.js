@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { CollectionsListDef } from '../../components/collections-list/collections-list.js';
 
 const _CollectionsListView = async (res, rej) => {
@@ -9,6 +10,11 @@ const _CollectionsListView = async (res, rej) => {
   res({
     components: {
       CollectionsList: collectionsList,
+    },
+    computed: {
+      title: function() {
+        return vuexStore.state.core.topBarTitle;
+      },
     },
     data: function() {
       return {};
