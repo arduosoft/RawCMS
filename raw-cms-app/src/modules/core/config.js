@@ -7,6 +7,7 @@ const _configCoreModule = function() {
     state: {
       isLoggedIn: undefined,
       userInfo: undefined,
+      topBarTitle: undefined,
     },
     mutations: {
       isLoggedIn(state, value) {
@@ -15,12 +16,18 @@ const _configCoreModule = function() {
       setUserInfo(state, value) {
         state.userInfo = value;
       },
+      setTopBarTitle(state, value) {
+        state.topBarTitle = value;
+      },
     },
     actions: {
       async isLoggedIn({ commit }, value) {
         commit('isLoggedIn', value);
         const userInfo = await userInfoService.getUserInfo();
         commit('setUserInfo', userInfo);
+      },
+      async topBarTitle({ commit }, value) {
+        commit('setTopBarTitle', value);
       },
     },
   });

@@ -6,12 +6,16 @@ import { router } from './config/router.js';
 import { vuelidate, vuelidateValidators } from './config/vuelidate.js';
 import { vuetify } from './config/vuetify.js';
 import { vuexStore } from './config/vuex.js';
+import { capitalize } from './utils/capitalize.js';
 import { epicSpinners } from './utils/spinners.js';
 
 tweakConsole();
 
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
+
+// Add global filters
+Vue.filter('capitalize', capitalize);
 
 // Add reference to plugins for commodity
 RawCMS.plugins.router = router;
