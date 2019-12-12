@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { epicSpinners } from '../../../../utils/spinners.js';
 import { snackbarService } from '../../services/snackbar-service.js';
 import { userService } from '../../services/users.service.js';
@@ -13,6 +14,11 @@ const _UsersList = async (res, rej) => {
     },
     created: function() {
       this.fetchUsers();
+    },
+    computed: {
+      title: function() {
+        return vuexStore.state.core.topBarTitle;
+      },
     },
     data: () => {
       return {

@@ -1,7 +1,7 @@
 <v-layout class="flex-column">
   <link rel="stylesheet" href="/modules/core/components/users-list/users-list.css" />
 
-  <h1>Users</h1>
+  <h1>{{title | capitalize }}</h1>
 
   <v-layout class="flex-column justify-center align-self-center fill-height" v-if="isLoading">
     <atom-spinner :animation-duration="1000" :size="80" :color="'#64B5F6'"></atom-spinner>
