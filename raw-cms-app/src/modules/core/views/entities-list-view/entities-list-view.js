@@ -23,9 +23,6 @@ const _EntitiesListView = async (res, rej) => {
       goToCreateView: function() {
         this.$router.push({ name: 'entity-details', params: { id: 'new' } });
       },
-      capitalize: function([firstLetter, ...rest]) {
-        return [firstLetter.toLocaleUpperCase(), ...rest].join('');
-      },
     },
     template: tpl,
   });
