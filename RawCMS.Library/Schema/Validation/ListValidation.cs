@@ -18,23 +18,25 @@ namespace RawCMS.Library.Schema.Validation
             get
             {
                 return @"
-
-var debug=""debug""+JSON.stringify(options);
-if(options.allownotmapped == undefined || options.allownotmapped ===""false"" ) {
-
-    
-    var regExp= new RegExp(""(\|X=([^\|]*)\|)|(\|X\|)"".replace(/X/gm,value));
-    log(regExp);
-    var result= (""|""+options[""items""]+""|"").toString().match(regExp);
-
-log(result);
-    if(result==null)
-    {
-      errors.push({""Code"":""LIST-01"", ""Title"":""value not allowed""});
+const innerValidation = function() {
+    if (value === null || value === undefined) {
+        return;
     }
-}
-var backendResult=JSON.stringify(errors);
 
+    // code starts here
+    if (options.allowNotMapped === undefined || options.allowNotMapped === false ) {
+        var regExp = new RegExp(""(\|X=([^\|]*)\|)|(\|X\|)"".replace(/X/gm, value));
+        var result = (""|"" + options[""items""] + ""|"").toString().match(regExp);
+
+        if (result === null) {
+            errors.push({""Code"":""LIST-01"", ""Title"":""value not allowed""});
+        }
+    }
+
+    return JSON.stringify(errors);
+};
+
+var backendResult = innerValidation();
             ";
             }
         }
