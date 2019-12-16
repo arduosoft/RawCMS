@@ -19,7 +19,10 @@ const _CollectionTableView = async (res, rej) => {
       },
     },
     data: function() {
-      return {};
+      return {
+        txtQuery: '',
+        parseQuery: {},
+      };
     },
     methods: {
       goToCreateView: function() {
@@ -27,6 +30,17 @@ const _CollectionTableView = async (res, rej) => {
           name: 'collection-details',
           params: { id: 'new' },
         });
+      },
+      rawQuery: function() {
+        if (this.txtQuery != '') {
+          try {
+            this.parseQuery = JSON.parse(this.txtQuery);
+          } catch (e) {
+            alert(e);
+          }
+          return this.parseQuery;
+        }
+        return;
       },
     },
     template: tpl,
