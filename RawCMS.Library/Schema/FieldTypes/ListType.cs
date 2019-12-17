@@ -9,8 +9,8 @@
             //
             OptionParameter.Add(new OptionParameter()
             {
-                Name = "allownotmapped",
-                Type = "text",
+                Name = "allowNotMapped",
+                Type = "bool",
                 Description = "true if you allow values not listed into values"
             });
 

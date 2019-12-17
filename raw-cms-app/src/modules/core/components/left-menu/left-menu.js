@@ -29,6 +29,11 @@ const _LeftMenu = async (resolve, reject) => {
           { icon: 'mdi-book-open', text: 'Collections', route: 'collections' },
           { icon: 'mdi-circle', text: 'Lambdas', route: 'lambdas' },
           { icon: 'mdi-settings', text: 'Configuration', route: 'plugins' },
+          {
+            icon: 'mdi-file-document-outline',
+            text: 'Dev portal',
+            extLink: RawCMS.env.api.baseUrl,
+          },
         ],
       };
     },
@@ -40,6 +45,17 @@ const _LeftMenu = async (resolve, reject) => {
         this.isUserMenuVisible = !this.isUserMenuVisible;
       },
       goTo: function(item) {
+        if (item === null || item === undefined) {
+          return;
+        }
+
+        // Ext link
+        if (item.extLink) {
+          window.open(item.extLink);
+          return;
+        }
+
+        // Internal route
         if (this.isActive(item)) {
           return;
         }

@@ -22,6 +22,9 @@ class ValidationService {
   }
 
   applyFieldMetadataToFormlyInput(formlyField, { fieldType, fieldOptions = {} }) {
+    formlyField._meta_ = {};
+    formlyField._meta_.options = fieldOptions;
+
     const fieldsMetadata = optionalChain(() => vuexStore.state.core.fieldsMetadata, {
       fallbackValue: [],
       replaceLastUndefined: true,

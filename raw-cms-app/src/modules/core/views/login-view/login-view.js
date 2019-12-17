@@ -31,7 +31,9 @@ const _LoginView = async (res, rej) => {
       };
     },
     methods: {
-      login: async function() {
+      login: async function(submitEvent) {
+        submitEvent.preventDefault();
+
         this.$v.$touch();
         if (this.$v.$invalid) {
           return;

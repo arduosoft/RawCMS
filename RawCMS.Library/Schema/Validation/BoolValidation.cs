@@ -9,9 +9,9 @@
 
 namespace RawCMS.Library.Schema.Validation
 {
-    public class ListValidation : BaseJavascriptValidator
+    public class BoolValidation : BaseJavascriptValidator
     {
-        public override string Type => "list";
+        public override string Type => "bool";
 
         public override string Javascript
         {
@@ -21,16 +21,6 @@ namespace RawCMS.Library.Schema.Validation
 const innerValidation = function() {
     if (value === null || value === undefined) {
         return;
-    }
-
-    // code starts here
-    if (options.allowNotMapped === undefined || options.allowNotMapped === false ) {
-        var regExp = new RegExp(""(\|X=([^\|]*)\|)|(\|X\|)"".replace(/X/gm, value));
-        var result = (""|"" + options[""items""] + ""|"").toString().match(regExp);
-
-        if (result === null) {
-            errors.push({""Code"":""LIST-01"", ""Title"":""value not allowed""});
-        }
     }
 
     return JSON.stringify(errors);
