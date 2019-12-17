@@ -1,0 +1,13 @@
+<v-row>
+  <v-col>
+    <strong>{{ $t('core.home.totalRecordsText')}}</strong> {{ totalRecordsNum }}<br />
+    <strong>{{ $t('core.home.entitiesNumText') }}</strong> {{ optionalChain(() =>
+    this.info.entitiesNum) }}<br />
+    <strong>{{ $t('core.home.apiCallsText') }}</strong> {{ optionalChain(() =>
+    this.info.lastWeekCallsNum) }}<br />
+  </v-col>
+  <v-col>
+    <strong>{{ $t('core.home.recordsQuotaText') }}</strong><br />
+    <pie-chart :context="recordQuotasChartData" />
+  </v-col>
+</v-row>
