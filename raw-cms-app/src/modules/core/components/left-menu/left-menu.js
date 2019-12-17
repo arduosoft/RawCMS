@@ -35,6 +35,7 @@ const _LeftMenu = async (resolve, reject) => {
             extLink: RawCMS.env.api.baseUrl,
           },
         ],
+        bottomItem: { icon: 'mdi-information', text: 'About', route: 'about' },
       };
     },
     methods: {
