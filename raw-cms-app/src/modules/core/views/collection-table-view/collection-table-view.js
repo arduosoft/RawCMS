@@ -22,25 +22,34 @@ const _CollectionTableView = async (res, rej) => {
       return {
         txtQuery: '',
         parseQuery: {},
+        monacoOptions: {
+          language: 'json',
+          scrollBeyondLastLine: false,
+        },
       };
     },
     methods: {
+      amdRequire: require,
+      resizeMonaco: function() {
+        const monacoEditor = this.$refs.monaco.getMonaco();
+        const oldLayout = monacoEditor.getLayoutInfo();
+        const newHeight =
+          this.$refs.tabs.$el.getBoundingClientRect().height -
+          this.$refs.tabMonacoRef.$el.getBoundingClientRect().height;
+        monacoEditor.layout({ width: oldLayout.width, height: newHeight });
+      },
       goToCreateView: function() {
         this.$router.push({
           name: 'collection-details',
           params: { id: 'new' },
         });
       },
-      rawQuery: function() {
+      filter: function() {
         if (this.txtQuery != '') {
           try {
             this.parseQuery = JSON.parse(this.txtQuery);
-          } catch (e) {
-            alert(e);
-          }
-          return this.parseQuery;
+          } catch (e) {}
         }
-        return;
       },
     },
     template: tpl,

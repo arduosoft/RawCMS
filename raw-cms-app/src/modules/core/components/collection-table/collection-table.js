@@ -66,7 +66,7 @@ const _CollectionTableDef = async () => {
     },
     props: {
       collectionName: String,
-      rawQuery: Object,
+      externalRawQuery: Object,
     },
     template: tpl,
   };
