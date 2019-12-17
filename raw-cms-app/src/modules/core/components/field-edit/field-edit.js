@@ -24,7 +24,9 @@ const _FieldEditDef = async () => {
         });
       },
       isAllValid: function() {
-        return this.isValid && this.optionsFormState.$valid;
+        return (
+          this.isValid && optionalChain(() => this.optionsFormState.$valid, { fallbackValue: true })
+        );
       },
       nameRules: function() {
         return [
