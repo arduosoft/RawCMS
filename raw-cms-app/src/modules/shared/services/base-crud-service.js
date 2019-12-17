@@ -1,14 +1,13 @@
+import { mix } from '../../../utils/inheritance.utils.js';
 import { optionalChain } from '../../../utils/object.utils.js';
-import { apiClient } from '../../core/api/api-client.js';
+import { BaseApiService } from './base-api-service.js';
 import { ICrudService } from './crud-service.js';
 
-export class BaseCrudService extends ICrudService {
-  _apiClient;
+export class BaseCrudService extends mix(BaseApiService, ICrudService) {
   _basePath;
 
   constructor({ basePath }) {
     super();
-    this._apiClient = apiClient;
     this._basePath = basePath;
   }
 
@@ -76,13 +75,5 @@ export class BaseCrudService extends ICrudService {
 
     const res = await this._apiClient.delete(`${this._basePath}/${id}`);
     return this._checkGenericError(res);
-  }
-
-  _checkGenericError(axiosRes) {
-    if (axiosRes.status !== 200) {
-      return false;
-    }
-
-    return true;
   }
 }
