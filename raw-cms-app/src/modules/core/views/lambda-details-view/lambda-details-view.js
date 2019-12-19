@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { optionalChain } from '../../../../utils/object.utils.js';
 import { rawCmsDetailEditEvents } from '../../../shared/components/detail-edit/detail-edit.js';
 import { LambdaDetailsDef } from '../../components/lambda-details/lambda-details.js';
@@ -31,6 +32,8 @@ const _LambdaDetailsView = async (res, rej) => {
         this.title = isNew
           ? this.$t('core.lambdas.details.newTitle')
           : this.$t('core.lambdas.details.updateTitle', { name: name });
+
+        vuexStore.dispatch('core/updateTopBarTitle', this.title);
       },
     },
     template: tpl,

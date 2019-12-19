@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { optionalChain } from '../../../../utils/object.utils.js';
 import { rawCmsDetailEditEvents } from '../../../shared/components/detail-edit/detail-edit.js';
 import { EntityDetailsDef } from '../../components/entity-details/entity-details.js';
@@ -31,6 +32,8 @@ const _EntityDetailsView = async (res, rej) => {
         this.title = isNew
           ? this.$t('core.entities.detail.newTitle')
           : this.$t('core.entities.detail.updateTitle', { name: name });
+
+        vuexStore.dispatch('core/updateTopBarTitle', this.title);
       },
     },
     template: tpl,
