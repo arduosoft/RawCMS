@@ -7,14 +7,19 @@ class DashboardService extends BaseApiService {
 
   async getDashboardInfo() {
     // FIXME: For now we use mock data
+    const quota = {
+      TEST: Math.floor(Math.random() * 100),
+      Items1: Math.floor(Math.random() * 100),
+      Items2: Math.floor(Math.random() * 100),
+      Items3: Math.floor(Math.random() * 100),
+      Items4: Math.floor(Math.random() * 100),
+      Items5: Math.floor(Math.random() * 100),
+      Items6: Math.floor(Math.random() * 100),
+    };
     return {
-      recordQuotas: {
-        TEST: 30,
-        Items1: 20,
-        Items2: 40,
-      },
-      entitiesNum: 7,
-      lastWeekCallsNum: 500,
+      recordQuotas: quota,
+      entitiesNum: Object.keys(quota).length,
+      lastWeekCallsNum: Math.floor(Math.random() * 500),
     };
   }
 }

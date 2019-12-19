@@ -35,6 +35,9 @@ const _DashboardDef = async () => {
     },
     data: function() {
       return {
+        chartOptions: {
+          lowerIsBetter: true,
+        },
         dashboardService: dashboardService,
         info: undefined,
         optionalChain: optionalChain,
