@@ -1,15 +1,17 @@
 import { Pie } from '../../../../../config/vue-chartjs.js';
+import { optionalChain } from '../../../../../utils/object.utils.js';
 import { colorize, transparentize } from '../charts.utils.js';
 
 const _SimplePieChart = {
   computed: {
     chartData: function() {
-      const backColors = this.context.data.map(x => this.normalColorize(x));
+      const data = this.sortedData;
+      const backColors = data.map(x => this.normalColorize(x));
 
       const res = {
         datasets: [
           {
-            data: this.context.data,
+            data: data,
             backgroundColor: backColors,
             hoverColor: backColors.map(x => this.hoverColorize(x)),
           },
@@ -19,11 +21,25 @@ const _SimplePieChart = {
 
       return res;
     },
+    sortedData: function() {
+      let data = optionalChain(() => [...this.context.data], { fallbackValue: [] }).sort(
+        (a, b) => a - b
+      );
+
+      if (this.options.lowerIsBetter) {
+        data = data.reverse();
+      }
+
+      return data;
+    },
   },
   extends: Pie,
   methods: {
     normalColorize: function(value) {
-      return colorize(true, false, value);
+      const data = this.sortedData;
+      const min = Math.min(...data) || 0;
+      const max = Math.max(...data) || 100;
+      return colorize(value, { range: [min, max], lowerIsBetter: this.options.lowerIsBetter });
     },
     hoverColorize: function(color) {
       return transparentize(color);
@@ -41,6 +57,12 @@ const _SimplePieChart = {
       default: {
         data: [],
         labels: [],
+      },
+    },
+    options: {
+      type: Object,
+      default: {
+        lowerIsBetter: false,
       },
     },
   },
