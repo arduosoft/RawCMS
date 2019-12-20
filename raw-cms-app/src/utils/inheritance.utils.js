@@ -30,5 +30,4 @@ const _mix = (baseClass, ...mixins) => {
   return base;
 };
 
-export const checkAbstractImplementation = _checkAbstractImplementation;
 export const mix = _mix;
