@@ -8,7 +8,7 @@ WORKDIR /src
 COPY ./docker/config/api/buildscript.sh ./build.sh
 COPY . .
 
-RUN ./build.sh
+RUN  chmod +x ./build.sh && ./build.sh
 
 
 FROM base AS final
