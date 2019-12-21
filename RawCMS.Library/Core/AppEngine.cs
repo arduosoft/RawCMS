@@ -92,7 +92,8 @@ namespace RawCMS.Library.Core
 
             _logger.LogInformation($"ASSEMBLY LOAD COMPLETED");
 
-            // create plugin loaders
+            _logger.LogInformation($"plugin folder is {pluginFolder}");
+
             var pluginsDir = pluginFolder ?? Path.Combine(AppContext.BaseDirectory, "plugins");
 
             _logger.LogInformation($"Loading plugin using {pluginsDir}");
@@ -123,12 +124,15 @@ namespace RawCMS.Library.Core
                   logger,
                   basedir =>
                   {
-                      var folder = basedir + pluginPath;
-                      if (Path.IsPathRooted(pluginPath))
+                      logger.LogInformation($"original path {pluginPath}");
+                      var folder = pluginPath;
+                      if (!Path.IsPathRooted(pluginPath))
                       {
-                          folder = pluginPath;
+                          folder = basedir + pluginPath;
+                          logger.LogInformation($"pluigin is relative. path is made absolyte using base app");
                       }
 
+                      logger.LogInformation($"pluigin folder final value {folder}");
                       return Path.GetFullPath(folder);//Directory.GetDirectories(folder).FirstOrDefault();
                   },
                   reflectionManager,

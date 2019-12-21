@@ -1,0 +1,25 @@
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM microsoft/dotnet:2.1-sdk AS build
+WORKDIR /src
+COPY ./docker/config/api/buildscript.sh ./build.sh
+COPY . .
+
+RUN ./build.sh
+
+
+#frontend
+COPY ./raw-cms-app/src  /app/wwwroot/ui
+COPY ./docker/config/api/env.json  /app/wwwroot/ui/env/env.json
+COPY ./docker/config/ui/bootstrap.sh /tmp/bootstrap.sh
+
+
+FROM base AS final
+WORKDIR /app
+COPY --from=build /dist .
+ENV BASE_URL=/
+
+CMD ["/bin/bash", "-c", "ls / && ls /tmp/ && /tmp/bootstrap.sh && dotnet  /app/RawCMS.dll"]
