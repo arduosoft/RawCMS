@@ -21,19 +21,14 @@ const _LambdaDetailsView = async (res, rej) => {
         });
       });
     },
-    data: function() {
-      return {
-        title: null,
-      };
-    },
-
+    data: function() {},
     methods: {
       updateTitle: function({ isNew, name }) {
-        this.title = isNew
+        let title = isNew
           ? this.$t('core.lambdas.details.newTitle')
           : this.$t('core.lambdas.details.updateTitle', { name: name });
 
-        vuexStore.dispatch('core/updateTopBarTitle', this.title);
+        vuexStore.dispatch('core/updateTopBarTitle', title);
       },
     },
     template: tpl,

@@ -11,14 +11,15 @@ const _CollectionTableView = async (res, rej) => {
     components: {
       CollectionTable: collectionTableList,
     },
+    mounted() {
+      vuexStore.dispatch(
+        'core/updateTopBarTitle',
+        this.$t('core.collections.table.title', { name: this.collectionName })
+      );
+    },
     computed: {
       collectionName: function() {
         return this.$route.params.collName;
-      },
-      title: function() {
-        this.title = this.$t('core.collections.table.title', { name: this.collectionName });
-        vuexStore.dispatch('core/updateTopBarTitle', this.title);
-        return this.title;
       },
     },
     data: function() {
