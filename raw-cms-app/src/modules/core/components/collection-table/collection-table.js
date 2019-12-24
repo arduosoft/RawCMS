@@ -34,7 +34,6 @@ const _TableWrapperDef = async () => {
           return { text: x.Name, value: x.Name, sortable: true };
         });
 
-        //result.unshift({ text: "_id", value: "_id", sortable: true });
         return result;
       },
     },
@@ -66,6 +65,7 @@ const _CollectionTableDef = async () => {
     },
     props: {
       collectionName: String,
+      externalRawQuery: Object,
     },
     template: tpl,
   };

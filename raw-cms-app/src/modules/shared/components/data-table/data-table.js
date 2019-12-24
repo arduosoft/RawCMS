@@ -115,6 +115,7 @@ const _RawCmsDataTableDef = async () => {
           page: this.currentPage,
           size: this.pageSize,
           sort: sortArgs,
+          rawQuery: this.externalRawQuery,
         });
         this.items = res.items.map(x => {
           return { ...x, _meta_: { isDeleting: false } };
@@ -177,10 +178,14 @@ const _RawCmsDataTableDef = async () => {
     props: {
       apiBasePath: String,
       detailRouteName: String,
+      externalRawQuery: Object,
     },
     template: tpl,
     watch: {
       $route: 'fetchData',
+      externalRawQuery: function() {
+        this.fetchData();
+      },
     },
   };
 };
