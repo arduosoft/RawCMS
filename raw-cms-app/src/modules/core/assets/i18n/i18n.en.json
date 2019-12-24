@@ -46,9 +46,9 @@
     },
     "home": {
       "apiCallsText": "API calls (last week):",
-      "entitiesNumText": "Entities number:",
-      "recordsQuotaText": "Records quota:",
-      "totalRecordsText": "Total records:",
+      "entitiesNumText": "Entities number",
+      "recordsQuotaText": "Records quota",
+      "totalRecordsText": "Total records",
       "welcomeText": "Welcome back! Here you can find some insights about your app."
     },
     "lambdas": {
