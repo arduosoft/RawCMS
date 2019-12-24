@@ -51,6 +51,7 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<MongoService>();
             services.AddSingleton<CRUDService>();
             services.AddSingleton<EntityService>();
+            services.AddSingleton<RelationInfoService>();
             services.AddHttpContextAccessor();
             services.AddMvcCore().AddAuthorization() // Note - this is on the IMvcBuilder, not the service collection
     .AddJsonFormatters(options => options.ContractResolver = new CamelCasePropertyNamesContractResolver());
