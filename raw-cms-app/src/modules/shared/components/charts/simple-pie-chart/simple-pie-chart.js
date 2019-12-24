@@ -2,6 +2,10 @@ import { Pie } from '../../../../../config/vue-chartjs.js';
 import { optionalChain } from '../../../../../utils/object.utils.js';
 import { colorize, transparentize } from '../charts.utils.js';
 
+const _defaultChartOptions = {
+  lowerIsBetter: false,
+};
+
 const _SimplePieChart = {
   computed: {
     chartData: function() {
@@ -45,7 +49,10 @@ const _SimplePieChart = {
       return transparentize(color);
     },
     refresh: function() {
-      this.renderChart(this.chartData, {});
+      this.styles = { width: '100%', height: '100%', position: 'relative', ...this.styles };
+      this.renderChart(this.chartData, {
+        maintainAspectRatio: false,
+      });
     },
   },
   mounted() {
@@ -61,9 +68,7 @@ const _SimplePieChart = {
     },
     options: {
       type: Object,
-      default: {
-        lowerIsBetter: false,
-      },
+      default: _defaultChartOptions,
     },
   },
   watch: {

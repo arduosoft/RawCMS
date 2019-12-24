@@ -17,10 +17,14 @@
       </v-card-text>
     </v-card>
   </v-col>
-  <v-col align="center" align-self="center">
-    <div>
-      <strong>{{ $t('core.home.recordsQuotaText') }}</strong><br />
-      <pie-chart :context="recordQuotasChartData" :options="chartOptions" />
-    </div>
+  <v-col cols="9">
+    <v-card tile height="616" :loading="isLoading">
+      <v-card-title>
+        {{ $t('core.home.recordsQuotaText') }}
+      </v-card-title>
+      <v-card-text class="d-flex justify-center" style="height:552px">
+        <pie-chart :context="recordQuotasChartData" :options="chartOptions" />
+      </v-card-text>
+    </v-card>
   </v-col>
 </v-row>

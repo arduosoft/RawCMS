@@ -3,6 +3,7 @@ fieldset {
   width: 100%;
 }
 
+/* FIXME: Replace these with Vuetify spacing utils */
 .add-padding.add-padding--left {
   padding-left: 12px;
 }
