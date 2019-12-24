@@ -2,6 +2,7 @@ import { RawCMS } from '../../../../config/raw-cms.js';
 import { vuexStore } from '../../../../config/vuex.js';
 import { optionalChain } from '../../../../utils/object.utils.js';
 import { evtToggleDrawer } from '../../events.js';
+import { reloadService } from '../../services/reload.service.js';
 import { UserAvatarDef } from '../user-avatar/user-avatar.js';
 
 const _TopBar = async (resolve, reject) => {
@@ -24,6 +25,9 @@ const _TopBar = async (resolve, reject) => {
     methods: {
       toggleDrawer: function() {
         RawCMS.eventBus.$emit(evtToggleDrawer);
+      },
+      reloadBackend: async function() {
+        await reloadService.reloadBackend();
       },
     },
     template: tpl,

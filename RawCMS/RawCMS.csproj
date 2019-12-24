@@ -63,6 +63,11 @@
     <ProjectReference Include="..\RawCMS.Library\RawCMS.Library.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+	<!-- extends watching group to include *.js files -->
+	<Watch Include="conf\reload.config" />
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
     <Exec Command="rmdir /s /Q $(ProjectDir)\Plugins\&#xD;&#xA;for /f %%a in ('dir/b /s $(SolutionDir)\*plugins*.csproj') do (dotnet build %%a --output $(ProjectDir)\Plugins\%%~na)" />
   </Target>
