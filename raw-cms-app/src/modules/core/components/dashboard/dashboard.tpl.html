@@ -1,12 +1,21 @@
 <v-row>
-  <v-col align="center" align-self="center">
-    <div>
-      <strong>{{ $t('core.home.totalRecordsText')}}</strong> {{ totalRecordsNum }}<br />
-      <strong>{{ $t('core.home.entitiesNumText') }}</strong> {{ optionalChain(() =>
-      this.info.entitiesNum) }}<br />
-      <strong>{{ $t('core.home.apiCallsText') }}</strong> {{ optionalChain(() =>
-      this.info.lastWeekCallsNum) }}<br />
-    </div>
+  <v-col cols="3">
+    <v-card tile height="300" :loading="isLoading" class="mb-4">
+      <v-card-title>
+        {{ $t('core.home.totalRecordsText') }}
+      </v-card-title>
+      <v-card-text class="display-4 font-weight-black">
+        {{ totalRecordsNum }}
+      </v-card-text>
+    </v-card>
+    <v-card tile height="300" :loading="isLoading">
+      <v-card-title>
+        {{ $t('core.home.entitiesNumText') }}
+      </v-card-title>
+      <v-card-text class="display-4 font-weight-black">
+        {{ optionalChain(() => this.info.entitiesNum) }}
+      </v-card-text>
+    </v-card>
   </v-col>
   <v-col align="center" align-self="center">
     <div>

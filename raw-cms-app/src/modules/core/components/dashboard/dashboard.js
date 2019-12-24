@@ -13,7 +13,11 @@ const _DashboardDef = async () => {
     },
     computed: {
       totalRecordsNum: function() {
-        const quotasObj = optionalChain(() => this.info.recordQuotas, { fallbackValue: {} });
+        const quotasObj = optionalChain(() => this.info.recordQuotas);
+        if (quotasObj === undefined) {
+          return undefined;
+        }
+
         return Object.keys(quotasObj)
           .map(x => quotasObj[x])
           .reduce((acc, v) => acc + v, 0);
@@ -32,6 +36,7 @@ const _DashboardDef = async () => {
     },
     created: async function() {
       this.info = await this.dashboardService.getDashboardInfo();
+      this.isLoading = false;
     },
     data: function() {
       return {
@@ -39,6 +44,7 @@ const _DashboardDef = async () => {
           lowerIsBetter: true,
         },
         dashboardService: dashboardService,
+        isLoading: true,
         info: undefined,
         optionalChain: optionalChain,
       };
