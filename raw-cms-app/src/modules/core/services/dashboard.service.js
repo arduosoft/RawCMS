@@ -1,3 +1,4 @@
+import { sleep } from '../../../utils/time.utils.js';
 import { BaseApiService } from '../../shared/services/base-api-service.js';
 
 class DashboardService extends BaseApiService {
@@ -7,6 +8,9 @@ class DashboardService extends BaseApiService {
 
   async getDashboardInfo() {
     // FIXME: For now we use mock data
+
+    await sleep(5000);
+
     const quota = {
       TEST: Math.floor(Math.random() * 100),
       Items1: Math.floor(Math.random() * 100),
