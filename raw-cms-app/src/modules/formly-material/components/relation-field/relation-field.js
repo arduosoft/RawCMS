@@ -7,10 +7,15 @@ const _ListFieldWrapperDef = async () => {
   const listFieldDef = await BaseListFieldDef();
 
   return {
-    data: function() {
-      return {};
+    computed: {
+      multi: function() {
+        return optionalChain(() => this.field._meta_.options.Multiple, { fallbackValue: false });
+      },
     },
     methods: {
+      itemText: function(item) {
+        return item._id;
+      },
       itemValue: function(item) {
         return item._id;
       },

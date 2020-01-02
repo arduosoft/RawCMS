@@ -1,22 +1,15 @@
 <v-select
   prepend-icon="mdi-format-list-bulleted-square"
   :id="to.id"
+  :chips="multi"
   :class="to.classes"
   :label="label"
   :rules="errorMsgs"
   :items="items"
+  :item-text="itemText"
   :item-value="itemValue"
+  :multiple="multi"
   v-model="value"
   v-on="basicListeners"
 >
-  <template v-slot:item="{ parent, item, on, attrs }">
-    <slot name="item" v-bind="{ parent, item, on, attrs }">
-      {{ itemText(item) }}
-    </slot>
-  </template>
-  <template v-slot:selection="{ parent, item, on, attrs }">
-    <slot name="selection" v-bind="{ parent, item, on, attrs }">
-      {{ itemText(item) }}
-    </slot>
-  </template>
 </v-select>

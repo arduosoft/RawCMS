@@ -7,6 +7,11 @@ const _BaseListFieldDef = async () => {
   );
 
   return {
+    computed: {
+      multi: function() {
+        return false;
+      },
+    },
     data: function() {
       return {
         items: [],
