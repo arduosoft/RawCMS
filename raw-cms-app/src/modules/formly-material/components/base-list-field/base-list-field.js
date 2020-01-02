@@ -1,4 +1,5 @@
 import { optionalChain } from '../../../../utils/object.utils.js';
+import { debounce } from '../../../../utils/time.utils.js';
 import { BaseField } from '../base-field/base-field.js';
 
 const _BaseListFieldDef = async () => {
@@ -8,6 +9,12 @@ const _BaseListFieldDef = async () => {
 
   return {
     computed: {
+      isSearchable: function() {
+        return false;
+      },
+      isRemoteSearch: function() {
+        return false;
+      },
       showCounter: function() {
         return this.multi && Array.isArray(this.value) && this.value.length > 0;
       },
@@ -17,7 +24,9 @@ const _BaseListFieldDef = async () => {
     },
     data: function() {
       return {
+        isLoading: false,
         items: [],
+        search: undefined,
       };
     },
     methods: {
@@ -27,9 +36,31 @@ const _BaseListFieldDef = async () => {
       itemValue: function(item) {
         return item;
       },
+      remoteSearch: async function(search) {
+        throw new Error('You have to implement `remoteSearch` method if `isRemoteSearch` is true!');
+      },
     },
     mixins: [BaseField],
     template: tpl,
+    watch: {
+      search: debounce(
+        async _val => {
+          if (!context.isRemoteSearch) {
+            return;
+          }
+
+          if (context.isLoading) {
+            return;
+          }
+
+          context.isLoading = true;
+          context.items = await context.remoteSearch(context.search);
+          context.isLoading = false;
+        },
+        500,
+        { context: this }
+      ),
+    },
   };
 };
 

@@ -8,6 +8,12 @@ const _ListFieldWrapperDef = async () => {
 
   return {
     computed: {
+      isSearchable: function() {
+        return true;
+      },
+      isRemoteSearch: function() {
+        return true;
+      },
       multi: function() {
         return optionalChain(() => this.field._meta_.options.Multiple, { fallbackValue: false });
       },
@@ -18,6 +24,10 @@ const _ListFieldWrapperDef = async () => {
       },
       itemValue: function(item) {
         return item._id;
+      },
+      remoteSearch: async function(search) {
+        const res = (await this.apiService.getPage()).items;
+        return res;
       },
     },
     mounted: async function() {
@@ -47,6 +57,7 @@ const _RelationField = async (res, rej) => {
     components: {
       ListWrapper: wrapperDef,
     },
+
     mixins: [BaseFieldProps],
     template: tpl,
   });
