@@ -15,7 +15,7 @@
             OptionParameter.Add(new OptionParameter()
             {
                 Name = "Multiple",
-                Type = "int",
+                Type = "bool",
                 Description = "1N or NM",
             });
         }
