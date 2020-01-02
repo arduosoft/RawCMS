@@ -8,6 +8,9 @@ const _BaseListFieldDef = async () => {
 
   return {
     computed: {
+      showCounter: function() {
+        return this.multi && Array.isArray(this.value) && this.value.length > 0;
+      },
       multi: function() {
         return false;
       },
