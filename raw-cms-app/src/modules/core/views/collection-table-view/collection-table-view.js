@@ -19,14 +19,37 @@ const _CollectionTableView = async (res, rej) => {
       },
     },
     data: function() {
-      return {};
+      return {
+        txtQuery: '',
+        parseQuery: {},
+        monacoOptions: {
+          language: 'json',
+          scrollBeyondLastLine: false,
+        },
+      };
     },
     methods: {
+      amdRequire: require,
+      resizeMonaco: function() {
+        const monacoEditor = this.$refs.monaco.getMonaco();
+        const oldLayout = monacoEditor.getLayoutInfo();
+        const newHeight =
+          this.$refs.tabs.$el.getBoundingClientRect().height -
+          this.$refs.tabMonacoRef.$el.getBoundingClientRect().height;
+        monacoEditor.layout({ width: oldLayout.width, height: newHeight });
+      },
       goToCreateView: function() {
         this.$router.push({
           name: 'collection-details',
           params: { id: 'new' },
         });
+      },
+      filter: function() {
+        if (this.txtQuery != '') {
+          try {
+            this.parseQuery = JSON.parse(this.txtQuery);
+          } catch (e) {}
+        }
       },
     },
     template: tpl,
