@@ -29,6 +29,9 @@
     },
     "entities": {
       "detail": {
+        "allowNotMappedFields": "Allow non-mapped fields",
+        "fields": "Fields",
+        "name": "Name",
         "newTitle": "New entity",
         "updateTitle": "Entity {name}",
         "fieldEdit": {
