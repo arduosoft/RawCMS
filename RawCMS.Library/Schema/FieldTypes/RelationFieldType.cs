@@ -9,7 +9,7 @@
             OptionParameter.Add(new OptionParameter()
             {
                 Name = "Collection",
-                Type = "text"
+                Type = "entities-list"
             });
 
             OptionParameter.Add(new OptionParameter()

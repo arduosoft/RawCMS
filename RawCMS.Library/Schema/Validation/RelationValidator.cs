@@ -1,10 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
 using RawCMS.Library.Service;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RawCMS.Library.Schema.Validation
 {
@@ -50,7 +50,7 @@ namespace RawCMS.Library.Schema.Validation
                         errors.Add(new Error()
                         {
                             Code = "REL-01",
-                            Title = "Item not fount on lookup collection",
+                            Title = "Item not found on lookup collection",
                             Description = ""
                         });
                     }

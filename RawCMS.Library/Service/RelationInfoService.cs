@@ -1,9 +1,9 @@
-﻿using MongoDB.Bson;
-using Newtonsoft.Json.Linq;
-using RawCMS.Library.Schema;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MongoDB.Bson;
+using Newtonsoft.Json.Linq;
+using RawCMS.Library.Schema;
 
 namespace RawCMS.Library.Service
 {
@@ -44,7 +44,8 @@ namespace RawCMS.Library.Service
         private bool IsMultiple(Field field)
         {
             string[] positiveMatch = new string[] { "1", "true" };
-            if (field.Options["Multiple"].HasValues)
+            var optionVal = field.Options["Multiple"];
+            if (optionVal != null && optionVal.HasValues)
             {
                 return positiveMatch.Any(x => x.Equals(field.Options["Multiple"].ToString(), StringComparison.InvariantCultureIgnoreCase));
             }
