@@ -1,5 +1,4 @@
 import { tweakConsole } from './config/console.js';
-import { configFormlyMaterialModule } from './config/formly.js';
 import { i18n } from './config/i18n.js';
 import { RawCMS } from './config/raw-cms.js';
 import { router } from './config/router.js';
@@ -26,9 +25,6 @@ RawCMS.vuexStore = vuexStore;
 RawCMS.utils.vuelidateValidators = vuelidateValidators;
 RawCMS.utils.epicSpinners = epicSpinners;
 
-// Register shared modules
-configFormlyMaterialModule();
-
 // Add env and start app
 axios({
   url: '/env/env.json',
@@ -39,10 +35,13 @@ axios({
   })
   .then(_ => {
     // FIXME: This should be properly handled!
+    const moduleConfigPromises = [
+      import('/modules/formly-material/config.js').then(x => x.default()),
+      import('/modules/core/config.js').then(x => x.default()),
+    ];
     const appCmpPromise = import('/app/app.js').then(x => x.App);
-    const moduleConfigsPromise = import('/modules/core/config.js').then(x => x.default());
 
-    Promise.all([appCmpPromise, moduleConfigsPromise]).then(x => {
+    Promise.all([appCmpPromise, ...moduleConfigPromises]).then(x => {
       const appCmp = x[0];
 
       const vue = new Vue({

@@ -1,6 +1,27 @@
 import { optionalChain } from '../../../../utils/object.utils.js';
 import { toFirstUpperCase } from '../../../../utils/string.utils.js';
 
+const _BaseFieldProps = {
+  props: {
+    form: {
+      type: Object,
+      required: true,
+    },
+    field: {
+      type: Object,
+      required: true,
+    },
+    model: {
+      type: Object,
+      required: true,
+    },
+    to: {
+      type: Object,
+      required: true,
+    },
+  },
+};
+
 const _BaseField = {
   computed: {
     hasError: function() {
@@ -140,25 +161,9 @@ const _BaseField = {
       this.$set(this.model, this.field.key, newValue);
     },
   },
-  props: {
-    form: {
-      type: Object,
-      required: true,
-    },
-    field: {
-      type: Object,
-      required: true,
-    },
-    model: {
-      type: Object,
-      required: true,
-    },
-    to: {
-      type: Object,
-      required: true,
-    },
-  },
+  mixins: [_BaseFieldProps],
 };
 
+export const BaseFieldProps = _BaseFieldProps;
 export const BaseField = _BaseField;
 export default _BaseField;

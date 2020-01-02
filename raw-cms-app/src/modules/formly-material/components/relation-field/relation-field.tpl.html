@@ -1,0 +1,5 @@
+<list-wrapper v-on="$listeners" v-bind="$props">
+  <template v-for="slotName in ['item', 'selection']" v-slot:[slotName]="{ item }">
+    {{ item._id }}
+  </template>
+</list-wrapper>
