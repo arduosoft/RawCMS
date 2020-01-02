@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 		docs\index.md = docs\index.md
 		docs\Plugin.md = docs\Plugin.md
 		docs\RawCMS.postman_collection.json = docs\RawCMS.postman_collection.json
+		docs\Relation.md = docs\Relation.md
 		docs\TestBook.md = docs\TestBook.md
 	EndProjectSection
 EndProject
