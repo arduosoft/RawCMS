@@ -11,14 +11,14 @@ const _CollectionTableView = async (res, rej) => {
       CollectionTable: collectionTableList,
     },
     computed: {
-      collectionName: function () {
+      collectionName: function() {
         return this.$route.params.collName;
       },
-      title: function () {
+      title: function() {
         return this.$t('core.collections.table.title', { name: this.collectionName });
       },
     },
-    data: function () {
+    data: function() {
       return {
         txtQuery: '',
         parseQuery: {},
@@ -30,22 +30,22 @@ const _CollectionTableView = async (res, rej) => {
     },
     methods: {
       amdRequire: require,
-      resizeMonaco: function () {
+      resizeMonaco: function() {
         const monacoEditor = this.$refs.monaco.getMonaco();
         const oldLayout = monacoEditor.getLayoutInfo();
         monacoEditor.layout({ width: oldLayout.width, height: 80 });
       },
-      goToCreateView: function () {
+      goToCreateView: function() {
         this.$router.push({
           name: 'collection-details',
           params: { id: 'new' },
         });
       },
-      filter: function () {
+      filter: function() {
         if (this.txtQuery != '') {
           try {
             this.parseQuery = JSON.parse(this.txtQuery);
-          } catch (e) { }
+          } catch (e) {}
         }
       },
     },
