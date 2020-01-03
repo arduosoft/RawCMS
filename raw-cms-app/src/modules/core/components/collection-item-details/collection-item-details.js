@@ -13,6 +13,11 @@ const _CollectionItemDetailsWrapperDef = async () => {
         return rawCmsDetailEditDef.computed.isSaveDisabled.call(this) || !this.canSave;
       },
     },
+    data: function() {
+      return {
+        activeTabId: 'tabFormly',
+      };
+    },
     extends: rawCmsDetailEditDef,
     props: {
       canSave: {

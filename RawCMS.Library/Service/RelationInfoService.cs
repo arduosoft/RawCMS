@@ -1,9 +1,8 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MongoDB.Bson;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Schema;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RawCMS.Library.Service
 {
@@ -22,33 +21,31 @@ namespace RawCMS.Library.Service
             {
                 IsMultiple = IsMultiple(field),
                 LookupCollection = GetLookupCollectionName(field),
-                Values = GetLookupValue((JValue)input[field.Name])
+                Values = GetLookupValue(input[field.Name] as JToken)
             };
             return relation;
         }
 
-        private List<BsonObjectId> GetLookupValue(JValue input)
+        private List<BsonObjectId> GetLookupValue(JToken input)
         {
             if (input == null)
             {
                 return new List<BsonObjectId>();
             }
 
+            // Array
             if (input.Type == JTokenType.Array)
             {
-                return input.Value<List<string>>().Select(x => BsonObjectId.Create(x)).ToList();
+                return input.Values<string>().Select(x => BsonObjectId.Create(x)).ToList();
             }
+
+            // Single value
             return new List<BsonObjectId>() { BsonObjectId.Create(input.Value<string>()) };
         }
 
         private bool IsMultiple(Field field)
         {
-            string[] positiveMatch = new string[] { "1", "true" };
-            if (field.Options["Multiple"].HasValues)
-            {
-                return positiveMatch.Any(x => x.Equals(field.Options["Multiple"].ToString(), StringComparison.InvariantCultureIgnoreCase));
-            }
-            return false;
+            return ((field.Options["Multiple"] as JValue)?.Value as bool?).GetValueOrDefault(false);
         }
 
         private string GetLookupCollectionName(Field field)

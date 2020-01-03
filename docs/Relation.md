@@ -14,7 +14,7 @@ reference 1 to many. into child schema collection you can link parent Collection
             "BaseType" : "String",
             "Options" : {
                 "Collection" : "Items",
-                "Multiple" : "false"
+                "Multiple" : false
             }
         },
 
@@ -31,7 +31,7 @@ reference many to many. on Parent schema collection you set the related items
   "BaseType": "String",
   "Options": {
     "Collection": "Items",
-    "Multiple": "true"
+    "Multiple": true
   }
 }
 ```

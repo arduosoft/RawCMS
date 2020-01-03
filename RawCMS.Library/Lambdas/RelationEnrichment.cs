@@ -1,10 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Service;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RawCMS.Library.Lambdas
 {
@@ -40,6 +40,14 @@ namespace RawCMS.Library.Lambdas
                     if (field != null)
                     {
                         RelationInfo relationInfo = relationInfoService.GetFromOptions(field, item);
+
+                        var hasRefAttached = relationInfo.Values.Count >= 1;
+
+                        if (!hasRefAttached)
+                        {
+                            result[field.Name] = relationInfo.IsMultiple ? new JArray() : null;
+                            continue;
+                        }
 
                         DataQuery dq = new DataQuery()
                         {
