@@ -13,6 +13,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Docker
       - CLIENT_ID=raw.client
       - CLIENT_SECRET=raw.secret
+      - BASE_URL=/
   # rawcms-api:
   #   build:
   #     dockerfile: ./docker/Dockerfile-api

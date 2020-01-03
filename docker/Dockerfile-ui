@@ -17,7 +17,7 @@ RUN apk add --no-cache bash
 EXPOSE 80
 EXPOSE 4200 80
 
-CMD ["/bin/bash", "-c", " /bootstrap.sh && nginx -g \"daemon off;\""]
+CMD ["/bin/bash", "-c", " sudo  /bootstrap.sh && sudo  nginx -g \"daemon off;\""]
 
 
 

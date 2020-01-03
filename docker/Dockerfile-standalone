@@ -1,20 +1,29 @@
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.1-aspnetcore-runtime-alpine AS base
+RUN apk add --no-cache bash 
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
+#backend
 COPY ./docker/config/api/buildscript.sh ./build.sh
 COPY . .
-
-RUN  chmod +x ./build.sh && ./build.sh
-
-
 #frontend
-COPY ./raw-cms-app/src  /app/wwwroot/ui
-COPY ./docker/config/api/env.json  /app/wwwroot/ui/env/env.json
-COPY ./docker/config/ui/bootstrap.sh /tmp/bootstrap.sh
+COPY ./raw-cms-app/src  /dist/wwwroot/
+COPY ./docker/config/standalone/env.json   /dist/wwwroot/env/env.json
+COPY ./docker/config/standalone/bootstrap.sh  /dist/bootstrap.sh
+
+
+RUN  tr -d '\r' < ./build.sh > ./build.sh &&\
+     tr -d '\r' < /dist/bootstrap.sh > /dist/bootstrap.sh &&\
+    chmod +x ./build.sh &&\
+    chmod +x /dist/bootstrap.sh &&\
+    ./build.sh 
+ 
+
+
+
 
 
 FROM base AS final
@@ -22,4 +31,6 @@ WORKDIR /app
 COPY --from=build /dist .
 ENV BASE_URL=/
 
-CMD ["/bin/bash", "-c", "ls / && ls /tmp/ && /tmp/bootstrap.sh && dotnet  /app/RawCMS.dll"]
+RUN ls /app -l
+
+CMD ["/bin/bash", "-c", " /app/bootstrap.sh && dotnet  /app/RawCMS.dll"]
