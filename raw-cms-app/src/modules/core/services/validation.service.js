@@ -21,23 +21,23 @@ class ValidationService {
     return validation(obj);
   }
 
-  applyFieldMetadataToFormlyInput(formlyField, { fieldType, fieldOptions = {} }) {
+  applyFieldMetadataToFormlyInput(
+    formlyField,
+    { fieldType, formId = undefined, fieldOptions = {} }
+  ) {
     formlyField._meta_ = {};
+    formlyField._meta_.formId = formId;
     formlyField._meta_.options = fieldOptions;
 
     const fieldsMetadata = optionalChain(() => vuexStore.state.core.fieldsMetadata, {
-      fallbackValue: [],
+      fallbackValue: {},
       replaceLastUndefined: true,
     });
 
     const validators = fieldsMetadata[fieldType].validations;
     validators.forEach(x => {
       const key = `${fieldType}.${x.name}`;
-      var option = optionalChain(() => fieldOptions[x.name]);
-
-      if (option === undefined) {
-        option = {};
-      }
+      const option = optionalChain(() => fieldOptions[x.name], { fallbackValue: {} });
 
       formlyField.validators[key] = function(field, model, next) {
         const item = model;
