@@ -25,6 +25,24 @@ const _ListFieldWrapperDef = async () => {
       collectionName: function() {
         return optionalChain(() => this.field._meta_.options.Collection);
       },
+      fieldMetadata: async function() {
+        const searchKey = `${this.collectionName}-${this.showProp}`;
+        if (this.lastSearchKey !== searchKey) {
+          this.lastFoundMeta = await metadataService.getFieldMetadata(
+            this.collectionName,
+            this.showProp
+          );
+          this.lastSearchKey = searchKey;
+        }
+
+        return this.lastFoundMeta;
+      },
+    },
+    data: function() {
+      return {
+        lastSearchKey: undefined,
+        lastFoundMeta: undefined,
+      };
     },
     methods: {
       itemText: function(item) {
@@ -35,8 +53,7 @@ const _ListFieldWrapperDef = async () => {
         return item._id;
       },
       remoteSearch: async function(search) {
-        const meta = await metadataService.getFieldMetadata(this.collectionName, this.showProp);
-        const fieldType = meta.type.typeName;
+        const fieldType = (await this.fieldMetadata).type.typeName;
         const searchPayload = getFieldSearchPayload(search, fieldType);
         const rawQuery = { [this.showProp]: searchPayload };
         const res = (await this.apiService.getPage({ rawQuery })).items;
