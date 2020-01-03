@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { CollectionTableDef } from '../../components/collection-table/collection-table.js';
 
 const _CollectionTableView = async (res, rej) => {
@@ -10,12 +11,15 @@ const _CollectionTableView = async (res, rej) => {
     components: {
       CollectionTable: collectionTableList,
     },
+    mounted() {
+      vuexStore.dispatch(
+        'core/updateTopBarTitle',
+        this.$t('core.collections.table.title', { name: this.collectionName })
+      );
+    },
     computed: {
       collectionName: function() {
         return this.$route.params.collName;
-      },
-      title: function() {
-        return this.$t('core.collections.table.title', { name: this.collectionName });
       },
     },
     data: function() {

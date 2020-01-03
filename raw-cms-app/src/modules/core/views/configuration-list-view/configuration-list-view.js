@@ -1,4 +1,5 @@
 import { ConfigurationListDef } from '../../components/configuration-list/configuration-list.js';
+import vuexStore from '../../../../config/vuex.js';
 
 const _ConfigurationListView = async (res, rej) => {
   const tpl = await RawCMS.loadComponentTpl(
@@ -9,6 +10,9 @@ const _ConfigurationListView = async (res, rej) => {
   res({
     components: {
       ConfigurationList: list,
+    },
+    mounted() {
+      vuexStore.dispatch('core/updateTopBarTitle', this.$t('core.configuration.title'));
     },
     data: function() {
       return {};

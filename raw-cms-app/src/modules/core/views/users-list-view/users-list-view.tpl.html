@@ -1,10 +1,7 @@
 <v-layout class="flex-column">
-  <h1>{{ $t('core.users.title') }}</h1>
-  <v-row>
-    <v-col>
-      <users-list></users-list>
-    </v-col>
-  </v-row>
+  <v-col>
+    <users-list></users-list>
+  </v-col>
 
   <v-fab-transition>
     <v-btn color="primary" fab fixed bottom right @click.stop="goToCreateView()">
