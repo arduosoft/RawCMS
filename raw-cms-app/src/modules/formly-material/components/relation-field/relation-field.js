@@ -1,4 +1,6 @@
 import { nameOf, optionalChain } from '../../../../utils/object.utils.js';
+import metadataService from '../../../core/services/metadata.service.js';
+import { getFieldSearchPayload } from '../../../core/utils/metadata.utils.js';
 import { BaseCrudService } from '../../../shared/services/base-crud-service.js';
 import { BaseFieldProps } from '../base-field/base-field.js';
 import { BaseListFieldDef } from '../base-list-field/base-list-field.js';
@@ -20,6 +22,9 @@ const _ListFieldWrapperDef = async () => {
       showProp: function() {
         return optionalChain(() => this.field._meta_.options.Property, { fallbackValue: '_id' });
       },
+      collectionName: function() {
+        return optionalChain(() => this.field._meta_.options.Collection);
+      },
     },
     methods: {
       itemText: function(item) {
@@ -30,20 +35,21 @@ const _ListFieldWrapperDef = async () => {
         return item._id;
       },
       remoteSearch: async function(search) {
-        const rawQuery = { [this.showProp]: { $regex: `.*${search}.*` } };
+        const meta = await metadataService.getFieldMetadata(this.collectionName, this.showProp);
+        const fieldType = meta.type.typeName;
+        const searchPayload = getFieldSearchPayload(search, fieldType);
+        const rawQuery = { [this.showProp]: searchPayload };
         const res = (await this.apiService.getPage({ rawQuery })).items;
         return res;
       },
     },
     mounted: async function() {
-      const collectionName = optionalChain(() => this.field._meta_.options.Collection);
-
-      if (collectionName === undefined) {
+      if (this.collectionName === undefined) {
         this.$set(this, nameOf(() => this.items), []);
         return;
       }
 
-      this.apiService = new BaseCrudService({ basePath: `/api/CRUD/${collectionName}` });
+      this.apiService = new BaseCrudService({ basePath: `/api/CRUD/${this.collectionName}` });
       const values = await this.apiService.getAll();
 
       this.$set(this, nameOf(() => this.items), values);
