@@ -9,6 +9,7 @@ const _configCoreModule = function() {
       isLoggedIn: undefined,
       userInfo: undefined,
       fieldsMetadata: undefined,
+      relationMetadata: undefined,
     },
     mutations: {
       isLoggedIn(state, value) {
@@ -19,6 +20,9 @@ const _configCoreModule = function() {
       },
       setFieldsMetadata(state, value) {
         state.fieldsMetadata = value;
+      },
+      setRelationMetadata(state, value) {
+        state.relationMetadata = value;
       },
     },
     actions: {
@@ -36,6 +40,13 @@ const _configCoreModule = function() {
       async updateFieldsMetadata({ commit }) {
         const metadata = await metadataService.getFieldsMetadata();
         commit('setFieldsMetadata', metadata);
+      },
+      updateRelationMetadata({ commit, state }, value) {
+        const newState = { ...state.relationMetadata, ...value };
+        commit('setRelationMetadata', newState);
+      },
+      clearRelationMetadata({ commit }) {
+        commit('setRelationMetadata', {});
       },
     },
   });
