@@ -17,16 +17,21 @@ const _ListFieldWrapperDef = async () => {
       multi: function() {
         return optionalChain(() => this.field._meta_.options.Multiple, { fallbackValue: false });
       },
+      showProp: function() {
+        return optionalChain(() => this.field._meta_.options.Property, { fallbackValue: '_id' });
+      },
     },
     methods: {
       itemText: function(item) {
-        return item._id;
+        const val = item[this.showProp];
+        return val !== undefined ? val.toString() : `NA (id: ${item._id})`;
       },
       itemValue: function(item) {
         return item._id;
       },
       remoteSearch: async function(search) {
-        const res = (await this.apiService.getPage()).items;
+        const rawQuery = { [this.showProp]: { $regex: `.*${search}.*` } };
+        const res = (await this.apiService.getPage({ rawQuery })).items;
         return res;
       },
     },

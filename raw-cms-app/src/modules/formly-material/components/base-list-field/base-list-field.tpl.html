@@ -13,12 +13,12 @@
   :counter="showCounter"
   deletable-chips
   clearable
+  cache-items
   v-model="value"
   v-on="basicListeners"
   :disabled="isLoading"
   :loading="isLoading"
   :search-input.sync="search"
-  :no-filter="isRemoteSearch"
 >
 </v-autocomplete>
 

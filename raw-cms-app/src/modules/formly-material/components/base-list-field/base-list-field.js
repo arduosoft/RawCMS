@@ -27,6 +27,8 @@ const _BaseListFieldDef = async () => {
         isLoading: false,
         items: [],
         search: undefined,
+        actualTextSearch: undefined,
+        lastSearch: undefined,
       };
     },
     methods: {
@@ -36,6 +38,32 @@ const _BaseListFieldDef = async () => {
       itemValue: function(item) {
         return item;
       },
+      setValue: function(val, { applyDirectly } = { applyDirectly: false }) {
+        BaseField.methods.setValue.apply(this, [val, { applyDirectly }]);
+        this.actualTextSearch = undefined;
+      },
+      remoteSearchCaller: debounce(async function() {
+        if (this.search === null || this.search === undefined) {
+          return;
+        }
+
+        if (this.search === this.actualTextSearch || this.search === this.lastSearch) {
+          return;
+        }
+
+        if (!this.isRemoteSearch) {
+          return;
+        }
+
+        if (this.isLoading) {
+          return;
+        }
+
+        this.isLoading = true;
+        this.items = await this.remoteSearch(this.search);
+        this.lastSearch = this.search;
+        this.isLoading = false;
+      }, 250),
       remoteSearch: async function(search) {
         throw new Error('You have to implement `remoteSearch` method if `isRemoteSearch` is true!');
       },
@@ -43,23 +71,13 @@ const _BaseListFieldDef = async () => {
     mixins: [BaseField],
     template: tpl,
     watch: {
-      search: debounce(
-        async _val => {
-          if (!context.isRemoteSearch) {
-            return;
-          }
+      search: function(newVal, oldVal) {
+        if (this.actualTextSearch === undefined && (newVal !== null && newVal !== undefined)) {
+          this.actualTextSearch = newVal;
+        }
 
-          if (context.isLoading) {
-            return;
-          }
-
-          context.isLoading = true;
-          context.items = await context.remoteSearch(context.search);
-          context.isLoading = false;
-        },
-        500,
-        { context: this }
-      ),
+        this.remoteSearchCaller();
+      },
     },
   };
 };
