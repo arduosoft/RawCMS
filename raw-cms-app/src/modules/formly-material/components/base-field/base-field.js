@@ -154,7 +154,7 @@ const _BaseField = {
       return val;
     },
     runFunction: function(action, e) {
-      if (typeof this.to[action] == 'function') this.to[action].call(this, e);
+      if (typeof this.to[action] === 'function') this.to[action].call(this, e);
     },
     setValue: function(val, { applyDirectly } = { applyDirectly: false }) {
       const newValue = applyDirectly ? val : this.preProcessValueForSet(val);
