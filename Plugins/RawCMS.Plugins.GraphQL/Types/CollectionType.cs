@@ -10,6 +10,7 @@ using GraphQL;
 using GraphQL.Types;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Schema;
+using RawCMS.Library.Service;
 using RawCMS.Plugins.GraphQL.Classes;
 using System;
 using System.Collections.Generic;
@@ -25,23 +26,23 @@ namespace RawCMS.Plugins.GraphQL.Types
             get; set;
         }
 
-        private IDictionary<FieldBaseType, Type> _fieldTypeToSystemType;
+        private IDictionary<FieldGraphType, Type> _fieldTypeToSystemType;
 
-        protected IDictionary<FieldBaseType, Type> FieldTypeToSystemType
+        protected IDictionary<FieldGraphType, Type> FieldTypeToSystemType
         {
             get
             {
                 if (_fieldTypeToSystemType == null)
                 {
-                    _fieldTypeToSystemType = new Dictionary<FieldBaseType, Type>
+                    _fieldTypeToSystemType = new Dictionary<FieldGraphType, Type>
                     {
-                        { FieldBaseType.Boolean, typeof(bool) },
-                        { FieldBaseType.Date, typeof(DateTime) },
-                        { FieldBaseType.Float, typeof(float) },
-                        { FieldBaseType.ID, typeof(Guid) },
-                        { FieldBaseType.Int, typeof(int) },
-                        { FieldBaseType.String, typeof(string) },
-                        { FieldBaseType.Object, typeof(JObject) }
+                        { FieldGraphType.Boolean, typeof(bool) },
+                        { FieldGraphType.Date, typeof(DateTime) },
+                        { FieldGraphType.Float, typeof(float) },
+                        { FieldGraphType.Id, typeof(Guid) },
+                        { FieldGraphType.Int, typeof(int) },
+                        { FieldGraphType.String, typeof(string) },
+                        { FieldGraphType.Relation, typeof(JObject) }
                     };
                 }
 
@@ -49,7 +50,7 @@ namespace RawCMS.Plugins.GraphQL.Types
             }
         }
 
-        private Type ResolveFieldMetaType(FieldBaseType type)
+        private Type ResolveFieldMetaType(FieldGraphType type)
         {
             if (FieldTypeToSystemType.ContainsKey(type))
             {
@@ -59,23 +60,25 @@ namespace RawCMS.Plugins.GraphQL.Types
             return typeof(string);
         }
 
-        public CollectionType(CollectionSchema collectionSchema, List<CollectionSchema> collections = null, GraphQLService graphQLService = null)
+        public CollectionType(CollectionSchema collectionSchema, EntityService entityService, List<CollectionSchema> collections = null)
         {
             Name = collectionSchema.CollectionName;
+            var fields = entityService.GetTypes();
 
             foreach (Field field in collectionSchema.FieldSettings)
             {
-                InitGraphField(field, collections, graphQLService);
+                InitGraphField(field, entityService, collections);
             }
         }
 
-        private void InitGraphField(Field field, List<CollectionSchema> collections = null, GraphQLService graphQLService = null)
+        private void InitGraphField(Field field, EntityService entityService, List<CollectionSchema> collections = null)
         {
             Type graphQLType;
-            if (field.BaseType == FieldBaseType.Object)
+            var f = entityService.GetTypes().Where(x => x.TypeName == field.Type).FirstOrDefault();
+            if (f?.GraphType == FieldGraphType.Relation)
             {
-                var relatedObject = collections.FirstOrDefault(x => x.CollectionName == field.Type);
-                var relatedCollection = new CollectionType(relatedObject, collections);
+                var relatedObject = collections.FirstOrDefault(x => x.CollectionName == field.Options["Collection"].Value<string>());
+                var relatedCollection = new CollectionType(relatedObject, entityService, collections);
                 var listType = new ListGraphType(relatedCollection);
                 graphQLType = relatedCollection.GetType();
                 FieldType columnField = Field(
@@ -93,7 +96,7 @@ namespace RawCMS.Plugins.GraphQL.Types
             else
             {
                 //graphQLType = (ResolveFieldMetaType(field.BaseType)).GetGraphTypeFromType(!field.Required);
-                graphQLType = (ResolveFieldMetaType(field.BaseType)).GetGraphTypeFromType(true);
+                graphQLType = (ResolveFieldMetaType(f.GraphType)).GetGraphTypeFromType(true);
                 FieldType columnField = Field(
                 graphQLType,
                 field.Name);

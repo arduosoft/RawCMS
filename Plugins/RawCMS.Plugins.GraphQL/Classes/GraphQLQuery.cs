@@ -21,7 +21,7 @@ namespace RawCMS.Plugins.GraphQL.Classes
             var schemas = entityService.GetCollectionSchemas();
             foreach (var metaColl in schemas)
             {
-                CollectionType type = new CollectionType(metaColl, schemas, graphQLService);
+                CollectionType type = new CollectionType(metaColl, entityService, schemas);
                 ListGraphType listType = new ListGraphType(type);
 
                 AddField(new FieldType

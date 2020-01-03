@@ -27,7 +27,7 @@ namespace RawCMS.Plugins.Core.Controllers.Controllers.admin
         private static Dictionary<string, Type> enumMap = new Dictionary<string, Type>()
         {
             { "SavePipelineStage", typeof(PipelineStage) },
-            { "FieldBaseType", typeof(FieldBaseType) }
+            { "FieldBaseType", typeof(FieldGraphType) }
         };
 
         protected ILogger<EnumController> logger;

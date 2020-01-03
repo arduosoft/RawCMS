@@ -59,7 +59,7 @@ namespace RawCMS.Library.Service
                         Field field = new Field
                         {
                             Name = "_id",
-                            BaseType = FieldBaseType.String,
+                            //BaseType = FieldBaseType.String,
                             Type = "ObjectId",
                             Required = true
                         };

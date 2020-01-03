@@ -4,8 +4,11 @@
     {
         public override string TypeName => "bool";
 
+        public override FieldGraphType GraphType => FieldGraphType.Boolean;
+
         public BoolFieldType()
         {
+            
         }
     }
 }
