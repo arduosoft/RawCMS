@@ -21,6 +21,98 @@ namespace RawCMS.Plugins.GraphQL.Types
 {
     public class CollectionType : ObjectGraphType<object>
     {
+        private GraphQLService _graphQLService { get; set; }
+        private CollectionSchema _collectionSchema { get; set; }
+        private EntityService _entityService { get; set; }
+        private GraphQLQuery _query { get; set; }
+
+        public CollectionType(GraphQLQuery query, GraphQLService graphQLService, CollectionSchema collectionSchema, EntityService entityService)
+        {
+            _query = query;
+            _graphQLService = graphQLService;
+            _collectionSchema = collectionSchema;
+            _entityService = entityService;
+
+            Name = collectionSchema.CollectionName;
+            var fields = entityService.GetTypes();
+
+            foreach (Field field in collectionSchema.FieldSettings)
+            {
+                BuildGraphField(field);
+            }
+
+            TableArgs.Add(new QueryArgument<IntGraphType> { Name = "pageNumber" });
+            TableArgs.Add(new QueryArgument<IntGraphType> { Name = "pageSize" });
+            TableArgs.Add(new QueryArgument<StringGraphType> { Name = "rawQuery" });
+        }
+
+        private void BuildGraphField(Field field)
+        {
+            Type graphQLType;
+            var f = _entityService.GetTypes().FirstOrDefault(x => x.TypeName == field.Type);
+
+            if (f?.GraphType == FieldGraphType.Relation)
+            {
+                var collectionName = field.Options["Collection"].Value<string>();
+                var fieldType = _query.Fields.FirstOrDefault(x => x.Name == collectionName);
+                if (fieldType == null)
+                {
+                    //Add related collection not registred on schema
+                    var relatedObject = _entityService.GetCollectionSchemas().FirstOrDefault(x => x.CollectionName == collectionName);
+                    var type = new CollectionType(_query, _graphQLService, relatedObject, _entityService);
+                    var listType = new ListGraphType(type);
+
+                    fieldType = new FieldType
+                    {
+                        Name = collectionName,
+                        Type = listType.GetType(),
+                        ResolvedType = listType,
+                        Resolver = new JObjectFieldResolver(_graphQLService, _entityService),
+                        Arguments = new QueryArguments(
+                            type.TableArgs
+                        )
+                    };
+
+                    _query.AddField(fieldType);
+                }
+
+                //Type resolvedType = fieldType.GetType();
+                //if (!field.Options["Multiple"].Value<bool>())
+                //{
+                //    resolvedType = new ComplexGraphType<fieldType.ResolvedType.GetType();
+                //}
+
+                var subField = new FieldType
+                {
+                    Name = fieldType.Name,
+                    Type = fieldType.Type,
+                    ResolvedType = fieldType.ResolvedType,
+                    Resolver = new NameFieldResolver(),
+                    Arguments = fieldType.Arguments
+                };
+                
+                AddField(subField);
+                
+                foreach (var arg in fieldType.Arguments.Where(x => !(new string[] { "pageNumber", "pageSize", "rawQuery", "_id" }.Contains(x.Name))).ToList())
+                {
+                    arg.Name = $"{collectionName}_{arg.Name}";
+                    TableArgs.Add(arg);
+                }
+            }
+            else
+            {
+                //graphQLType = (ResolveFieldMetaType(field.BaseType)).GetGraphTypeFromType(!field.Required);
+                graphQLType = (ResolveFieldMetaType(f?.GraphType ?? FieldGraphType.String)).GetGraphTypeFromType(true);
+                FieldType columnField = Field(
+                graphQLType,
+                field.Name);
+
+                columnField.Resolver = new NameFieldResolver();
+                FillArgs(field.Name, graphQLType);
+            }
+        }
+    
+
         public QueryArguments TableArgs
         {
             get; set;
@@ -60,52 +152,6 @@ namespace RawCMS.Plugins.GraphQL.Types
             return typeof(string);
         }
 
-        public CollectionType(CollectionSchema collectionSchema, EntityService entityService, List<CollectionSchema> collections = null)
-        {
-            Name = collectionSchema.CollectionName;
-            var fields = entityService.GetTypes();
-
-            foreach (Field field in collectionSchema.FieldSettings)
-            {
-                InitGraphField(field, entityService, collections);
-            }
-        }
-
-        private void InitGraphField(Field field, EntityService entityService, List<CollectionSchema> collections = null)
-        {
-            Type graphQLType;
-            var f = entityService.GetTypes().Where(x => x.TypeName == field.Type).FirstOrDefault();
-            if (f?.GraphType == FieldGraphType.Relation)
-            {
-                var relatedObject = collections.FirstOrDefault(x => x.CollectionName == field.Options["Collection"].Value<string>());
-                var relatedCollection = new CollectionType(relatedObject, entityService, collections);
-                var listType = new ListGraphType(relatedCollection);
-                graphQLType = relatedCollection.GetType();
-                FieldType columnField = Field(
-                 graphQLType,
-                 relatedObject.CollectionName);
-
-                columnField.Resolver = new NameFieldResolver();
-                columnField.Arguments = new QueryArguments(relatedCollection.TableArgs);
-                foreach (var arg in columnField.Arguments.Where(x => !(new string[] { "pageNumber", "pageSize", "rawQuery", "_id" }.Contains(x.Name))).ToList())
-                {
-                    arg.Name = $"{relatedObject.CollectionName}_{arg.Name}";
-                    TableArgs.Add(arg);
-                }
-            }
-            else
-            {
-                //graphQLType = (ResolveFieldMetaType(field.BaseType)).GetGraphTypeFromType(!field.Required);
-                graphQLType = (ResolveFieldMetaType(f.GraphType)).GetGraphTypeFromType(true);
-                FieldType columnField = Field(
-                graphQLType,
-                field.Name);
-
-                columnField.Resolver = new NameFieldResolver();
-                FillArgs(field.Name, graphQLType);
-            }
-        }
-
         private void FillArgs(string name, Type graphType)
         {
             if (TableArgs == null)
@@ -121,10 +167,6 @@ namespace RawCMS.Plugins.GraphQL.Types
             {
                 TableArgs.Add(new QueryArgument(graphType) { Name = name });
             }
-
-            TableArgs.Add(new QueryArgument<IntGraphType> { Name = "pageNumber" });
-            TableArgs.Add(new QueryArgument<IntGraphType> { Name = "pageSize" });
-            TableArgs.Add(new QueryArgument<StringGraphType> { Name = "rawQuery" });
         }
     }
 }
