@@ -76,17 +76,20 @@ namespace RawCMS.Plugins.GraphQL.Types
                     _query.AddField(fieldType);
                 }
 
-                //Type resolvedType = fieldType.GetType();
+                var subType = fieldType.GetType();
+                var subresolvedType = fieldType.ResolvedType;
                 //if (!field.Options["Multiple"].Value<bool>())
                 //{
-                //    resolvedType = new ComplexGraphType<fieldType.ResolvedType.GetType();
+                //    var relatedObject = _entityService.GetCollectionSchemas().FirstOrDefault(x => x.CollectionName == collectionName);
+                //    subresolvedType = new CollectionType(_query, _graphQLService, relatedObject, _entityService);
+                //    subType = subresolvedType.GetType();
                 //}
 
                 var subField = new FieldType
                 {
                     Name = fieldType.Name,
-                    Type = fieldType.Type,
-                    ResolvedType = fieldType.ResolvedType,
+                    Type = subType,
+                    ResolvedType = subresolvedType,
                     Resolver = new NameFieldResolver(),
                     Arguments = fieldType.Arguments
                 };

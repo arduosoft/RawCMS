@@ -45,6 +45,9 @@ const _configCoreModule = function() {
         const metadata = await metadataService.getFieldsMetadata();
         commit('setFieldsMetadata', metadata);
       },
+      async updateTopBarTitle({ commit }, value) {
+        commit('setTopBarTitle', value);
+      },
       updateRelationMetadata({ commit, state }, value) {
         const newState = { ...state.relationMetadata, ...value };
         commit('setRelationMetadata', newState);

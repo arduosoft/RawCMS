@@ -28,10 +28,12 @@ namespace RawCMS.Plugins.GraphQL.Types
             {
                 JObject src = source as JObject;
                 var token = src.SelectToken($"$._metadata.rel.{name}", false);
-                if(token is JArray)
+                //value = token.Value<object>();
+                if (token is JArray)
                 {
                     value = token.Value<object>();
-                }else
+                }
+                else
                 {
                     value = new JArray(token.Value<object>());
                 }
