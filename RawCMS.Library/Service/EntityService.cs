@@ -112,7 +112,6 @@ namespace RawCMS.Library.Service
                 clone.Add(entityName, schema);
             }
             entities = clone;
-
         }
     }
 }
