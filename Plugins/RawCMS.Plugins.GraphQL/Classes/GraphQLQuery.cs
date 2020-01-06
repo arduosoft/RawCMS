@@ -24,7 +24,7 @@ namespace RawCMS.Plugins.GraphQL.Classes
             {
                 if (Fields.Count(x => x.Name == metaColl.CollectionName) == 0)
                 {
-                    CollectionType type = new CollectionType(this, graphQLService, metaColl, entityService);
+                    JObjectRawType type = new JObjectRawType(this, graphQLService, metaColl, entityService);
                     ListGraphType listType = new ListGraphType(type);
 
                     AddField(new FieldType

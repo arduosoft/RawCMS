@@ -19,14 +19,14 @@ using FieldType = GraphQL.Types.FieldType;
 
 namespace RawCMS.Plugins.GraphQL.Types
 {
-    public class CollectionType : ObjectGraphType<object>
+    public class JObjectRawType : ObjectGraphType<object>
     {
         private GraphQLService _graphQLService { get; set; }
         private CollectionSchema _collectionSchema { get; set; }
         private EntityService _entityService { get; set; }
         private GraphQLQuery _query { get; set; }
 
-        public CollectionType(GraphQLQuery query, GraphQLService graphQLService, CollectionSchema collectionSchema, EntityService entityService)
+        public JObjectRawType(GraphQLQuery query, GraphQLService graphQLService, CollectionSchema collectionSchema, EntityService entityService)
         {
             _query = query;
             _graphQLService = graphQLService;
@@ -59,7 +59,7 @@ namespace RawCMS.Plugins.GraphQL.Types
                 {
                     //Add related collection not registred on schema
                     var relatedObject = _entityService.GetCollectionSchemas().FirstOrDefault(x => x.CollectionName == collectionName);
-                    var type = new CollectionType(_query, _graphQLService, relatedObject, _entityService);
+                    var type = new JObjectRawType(_query, _graphQLService, relatedObject, _entityService);
                     var listType = new ListGraphType(type);
 
                     fieldType = new FieldType
@@ -81,7 +81,7 @@ namespace RawCMS.Plugins.GraphQL.Types
                 //if (!field.Options["Multiple"].Value<bool>())
                 //{
                 //    var relatedObject = _entityService.GetCollectionSchemas().FirstOrDefault(x => x.CollectionName == collectionName);
-                //    subresolvedType = new CollectionType(_query, _graphQLService, relatedObject, _entityService);
+                //    subresolvedType = new JObjectRawType(_query, _graphQLService, relatedObject, _entityService);
                 //    subType = subresolvedType.GetType();
                 //}
 
@@ -137,6 +137,14 @@ namespace RawCMS.Plugins.GraphQL.Types
                         { FieldGraphType.Id, typeof(Guid) },
                         { FieldGraphType.Int, typeof(int) },
                         { FieldGraphType.String, typeof(string) },
+                        { FieldGraphType.BigInt, typeof(Int64) },
+                        { FieldGraphType.Byte, typeof(byte) },
+                        { FieldGraphType.DateTimeOffset, typeof(DateTimeOffset) },
+                        { FieldGraphType.Decimal, typeof(decimal) },
+                        { FieldGraphType.Long, typeof(long) },
+                        { FieldGraphType.SByte, typeof(sbyte) },
+                        { FieldGraphType.Short, typeof(short) },
+                        { FieldGraphType.TimeSpanSeconds, typeof(TimeSpan) },
                         { FieldGraphType.Relation, typeof(JObject) }
                     };
                 }
