@@ -23,7 +23,11 @@
         {{ $t('core.home.recordsQuotaText') }}
       </v-card-title>
       <v-card-text class="d-flex justify-center" style="height:552px">
-        <pie-chart :context="recordQuotasChartData" :options="chartOptions" />
+        <pie-chart
+          :context="recordQuotasChartData"
+          :options="chartOptions"
+          cssClasses="fill-container-chart"
+        />
       </v-card-text>
     </v-card>
   </v-col>
