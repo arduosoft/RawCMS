@@ -1,16 +1,17 @@
 <v-layout class="flex-column">
   <v-expansion-panels>
     <v-expansion-panel>
-      <v-expansion-panel-header
-        >{{ $t('core.collections.detail.filter') }}</v-expansion-panel-header
-      >
-      <v-expansion-panel-content>
+      <v-expansion-panel-header>
+        {{ $t('core.collections.detail.filter') }}
+      </v-expansion-panel-header>
+      <v-expansion-panel-content ref="filterContent">
         <monaco-editor
           ref="monaco"
           @editorDidMount="resizeMonaco()"
           v-model="txtQuery"
           :options="monacoOptions"
           :amdRequire="amdRequire"
+          style="height:100px;"
         >
         </monaco-editor>
         <v-row justify="center">

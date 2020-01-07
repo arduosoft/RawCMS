@@ -14,17 +14,16 @@ const _UserDetailsView = async (res, rej) => {
       UserDetails: details,
     },
     created: function() {
-      RawCMS.eventBus.$on(rawCmsDetailEditEvents.loaded, ev => {
+      RawCMS.eventBus.$once(rawCmsDetailEditEvents.loaded, ev => {
         this.updateTitle({
           isNew: ev.isNew,
           name: optionalChain(() => ev.value.UserName, { fallbackValue: '<NONE>' }),
         });
       });
     },
-    data: function() {},
     methods: {
       updateTitle: function({ isNew, name }) {
-        let title = isNew
+        const title = isNew
           ? this.$t('core.users.detail.newTitle')
           : this.$t('core.users.detail.updateTitle', { name: name });
 
