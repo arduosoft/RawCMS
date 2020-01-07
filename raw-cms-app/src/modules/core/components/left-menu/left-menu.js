@@ -19,7 +19,7 @@ const _LeftMenu = async (resolve, reject) => {
         return vuexStore.state.core.userInfo || {};
       },
     },
-    data: () => {
+    data: function() {
       return {
         isVisible: false,
         isUserMenuVisible: false,

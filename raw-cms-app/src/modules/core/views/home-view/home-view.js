@@ -1,3 +1,4 @@
+import { vuexStore } from '../../../../config/vuex.js';
 import { DashboardDef } from '../../components/dashboard/dashboard.js';
 
 const _HomeView = async (res, rej) => {
@@ -7,6 +8,9 @@ const _HomeView = async (res, rej) => {
   res({
     components: {
       Dashboard: dashboardDef,
+    },
+    mounted() {
+      vuexStore.dispatch('core/updateTopBarTitle', this.$t('core.home.title'));
     },
     template: tpl,
   });
