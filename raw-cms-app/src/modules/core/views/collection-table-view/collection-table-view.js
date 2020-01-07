@@ -37,10 +37,7 @@ const _CollectionTableView = async (res, rej) => {
       resizeMonaco: function() {
         const monacoEditor = this.$refs.monaco.getMonaco();
         const oldLayout = monacoEditor.getLayoutInfo();
-        const newHeight =
-          this.$refs.tabs.$el.getBoundingClientRect().height -
-          this.$refs.tabMonacoRef.$el.getBoundingClientRect().height;
-        monacoEditor.layout({ width: oldLayout.width, height: newHeight });
+        monacoEditor.layout({ width: oldLayout.width, height: 80 });
       },
       goToCreateView: function() {
         this.$router.push({
