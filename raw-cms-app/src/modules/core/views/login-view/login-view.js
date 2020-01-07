@@ -23,7 +23,7 @@ const _LoginView = async (res, rej) => {
         return errors;
       },
     },
-    data: () => {
+    data: function() {
       return {
         username: '',
         password: '',

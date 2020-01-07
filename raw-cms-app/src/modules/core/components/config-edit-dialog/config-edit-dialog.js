@@ -7,9 +7,9 @@ const _ConfigEditDialog = async (res, rej) => {
     props: {
       activeEntity: Object,
     },
-    data: () => {
+    data: function() {
       return {
-        data: { Code: 'ddd' },
+        data: { code: '' },
       };
     },
     methods: {
