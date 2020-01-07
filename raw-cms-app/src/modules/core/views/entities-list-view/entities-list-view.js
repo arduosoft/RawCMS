@@ -1,4 +1,5 @@
 import { EntitiesListDef } from '../../components/entities-list/entities-list.js';
+import vuexStore from '../../../../config/vuex.js';
 
 const _EntitiesListView = async (res, rej) => {
   const tpl = await RawCMS.loadComponentTpl(
@@ -9,6 +10,9 @@ const _EntitiesListView = async (res, rej) => {
   res({
     components: {
       EntitiesList: entitiesList,
+    },
+    mounted() {
+      vuexStore.dispatch('core/updateTopBarTitle', this.$t('core.entities.title'));
     },
     data: function() {
       return {};
