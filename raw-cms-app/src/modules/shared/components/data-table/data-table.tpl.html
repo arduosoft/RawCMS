@@ -32,14 +32,12 @@
     :server-items-length="totalItemsCount"
     @click:row="goTo($event)"
   >
-    <template
-      v-for="(header, index) in dataHeaders"
-      :key="index"
-      v-slot:[getTemplateName(header)]="slotProps"
-    >
-      <slot :name="getTemplateName(header)" v-bind="slotProps">
-        {{ slotProps.item[header.value] }}
-      </slot>
+    <template v-for="(header, index) in dataHeaders" v-slot:[getTemplateName(header)]="slotProps">
+      <div :key="index">
+        <slot :name="getTemplateName(header)" v-bind="slotProps">
+          {{ slotProps.item[header.value] }}
+        </slot>
+      </div>
     </template>
 
     <template v-slot:item.action="{ item }">
