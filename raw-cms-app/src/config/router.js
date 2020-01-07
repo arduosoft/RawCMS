@@ -178,6 +178,14 @@ const _router = new VueRouter({
       ],
     },
     {
+      path: '/logs',
+      name: 'logs',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/logs-view/logs-view.js');
+        await cmp.default(res, rej);
+      },
+    },
+    {
       path: '/sandbox',
       component: {
         template: `<router-view></router-view>`,
