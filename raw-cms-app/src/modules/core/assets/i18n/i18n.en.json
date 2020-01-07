@@ -49,7 +49,12 @@
       "title": "Entities"
     },
     "home": {
-      "helpText": "Welcome! Please select a menu entry on the left."
+      "apiCallsText": "API calls (last week):",
+      "entitiesNumText": "Entities number",
+      "recordsQuotaText": "Records quota",
+      "title": "Home",
+      "totalRecordsText": "Total records",
+      "welcomeText": "Welcome back! Here you can find some insights about your app."
     },
     "lambdas": {
       "deleteConfirmMsgTpl": "Are you sure you want to delete lambda {name}?",
