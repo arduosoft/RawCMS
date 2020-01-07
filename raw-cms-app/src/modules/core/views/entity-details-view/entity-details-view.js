@@ -14,7 +14,7 @@ const _EntityDetailsView = async (res, rej) => {
       EntityDetails: entityDetails,
     },
     created: function() {
-      RawCMS.eventBus.$on(rawCmsDetailEditEvents.loaded, ev => {
+      RawCMS.eventBus.$once(rawCmsDetailEditEvents.loaded, ev => {
         this.updateTitle({
           isNew: ev.isNew,
           name: optionalChain(() => ev.value.CollectionName, { fallbackValue: '<NONE>' }),
