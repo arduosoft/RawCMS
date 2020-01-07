@@ -1,5 +1,5 @@
 import { addOrReplace } from '../../../../utils/immutable.utils.js';
-import { deepClone, optionalChain } from '../../../../utils/object.utils.js';
+import { deepClone, nameOf, optionalChain } from '../../../../utils/object.utils.js';
 import { RawCmsDetailEditDef } from '../../../shared/components/detail-edit/detail-edit.js';
 import { entitiesSchemaService } from '../../services/entities-schema.service.js';
 import { FieldEditDef } from '../field-edit/field-edit.js';
@@ -34,7 +34,7 @@ const _EntityDetailsDef = async () => {
       return {
         currentFieldCopy: null,
         isFieldDialogVisible: false,
-        nameRules: [v => !!v || this.$t('core.entities.details.requiredNameMsg')],
+        nameRules: [v => !!v || this.$t('core.entities.detail.requiredNameMsg')],
       };
     },
     methods: {
@@ -48,11 +48,12 @@ const _EntityDetailsDef = async () => {
           return;
         }
 
-        entity.FieldSettings = addOrReplace({
+        const newFieldSettings = addOrReplace({
           array: optionalChain(() => entity.FieldSettings, { fallbackValue: [] }),
           element: evt.field,
           findFn: a => a.Name === evt.field.Name,
         });
+        this.$set(entity, nameOf(() => entity.FieldSettings), newFieldSettings);
       },
       removeField: function(entity, field) {
         entity.FieldSettings = entity.FieldSettings.filter(x => x.Name !== field.Name);

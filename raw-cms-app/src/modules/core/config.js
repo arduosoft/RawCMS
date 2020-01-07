@@ -9,6 +9,7 @@ const _configCoreModule = function() {
       isLoggedIn: undefined,
       userInfo: undefined,
       fieldsMetadata: undefined,
+      relationMetadata: undefined,
       topBarTitle: undefined,
     },
     mutations: {
@@ -20,6 +21,9 @@ const _configCoreModule = function() {
       },
       setFieldsMetadata(state, value) {
         state.fieldsMetadata = value;
+      },
+      setRelationMetadata(state, value) {
+        state.relationMetadata = value;
       },
       setTopBarTitle(state, value) {
         state.topBarTitle = value;
@@ -43,6 +47,13 @@ const _configCoreModule = function() {
       },
       async updateTopBarTitle({ commit }, value) {
         commit('setTopBarTitle', value);
+      },
+      updateRelationMetadata({ commit, state }, value) {
+        const newState = { ...state.relationMetadata, ...value };
+        commit('setRelationMetadata', newState);
+      },
+      clearRelationMetadata({ commit }) {
+        commit('setRelationMetadata', {});
       },
     },
   });

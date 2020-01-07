@@ -14,7 +14,7 @@ There isn't any nuget package atm or relases. Just clone code on your local, com
 - [Make Plugin configurable](Configurable-Plugins)
 - [Authentication](Authentication)
 - [Docker](Docker)
-
+- [Relations](Relation)
 
 ### Plugins
 

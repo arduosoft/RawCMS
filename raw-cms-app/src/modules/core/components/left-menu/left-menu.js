@@ -24,6 +24,7 @@ const _LeftMenu = async (resolve, reject) => {
         isVisible: false,
         isUserMenuVisible: false,
         items: [
+          { icon: 'mdi-home', text: 'Home', route: 'home' },
           { icon: 'mdi-account', text: 'Users', route: 'users' },
           { icon: 'mdi-cube', text: 'Entities', route: 'entities' },
           { icon: 'mdi-book-open', text: 'Collections', route: 'collections' },
@@ -36,6 +37,7 @@ const _LeftMenu = async (resolve, reject) => {
             extLink: RawCMS.env.api.baseUrl,
           },
         ],
+        bottomItem: { icon: 'mdi-information', text: 'About', route: 'about' },
       };
     },
     methods: {
