@@ -20,6 +20,9 @@ const _TopBar = async (resolve, reject) => {
       username: function() {
         return vuexStore.state.core.userInfo.UserName;
       },
+      Title: function() {
+        return vuexStore.state.core.topBarTitle;
+      },
     },
     methods: {
       toggleDrawer: function() {
