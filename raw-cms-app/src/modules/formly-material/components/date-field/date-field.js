@@ -6,9 +6,11 @@ const _DateFieldDef = async () => {
   );
 
   return {
-    data: vm => ({
-      isMenuVisible: false,
-    }),
+    data: function() {
+      return {
+        isMenuVisible: false,
+      };
+    },
     computed: {
       dateFormatted: function() {
         return this.toTextValue(this.modelValue);

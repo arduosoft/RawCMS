@@ -21,10 +21,9 @@ const _UserDetailsView = async (res, rej) => {
         });
       });
     },
-    data: function() {},
     methods: {
       updateTitle: function({ isNew, name }) {
-        let title = isNew
+        const title = isNew
           ? this.$t('core.users.detail.newTitle')
           : this.$t('core.users.detail.updateTitle', { name: name });
 

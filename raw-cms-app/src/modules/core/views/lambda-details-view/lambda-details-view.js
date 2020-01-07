@@ -21,7 +21,6 @@ const _LambdaDetailsView = async (res, rej) => {
         });
       });
     },
-    data: function() {},
     methods: {
       updateTitle: function({ isNew, name }) {
         let title = isNew
