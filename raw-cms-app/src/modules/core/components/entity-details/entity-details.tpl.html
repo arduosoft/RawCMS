@@ -11,37 +11,65 @@
   <template v-slot:custom-tab-items="{ value }">
     <v-tab-item value="tabFormly">
       <v-card flat tile>
-        <v-list class="elevation-1">
-          <v-list-item
-            v-for="i of value.FieldSettings"
-            :key="i.Name"
-            @click.stop="showFieldDialog(i)"
-          >
-            <v-list-item-content>
-              <v-list-item-title>{{ i.Name }}</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-icon class="show-on-hover">
-              <v-btn icon @click.stop="showFieldDialog(i)">
-                <v-icon>mdi-pencil-outline</v-icon>
-              </v-btn>
-              <v-btn icon @click.stop="removeField(value, i)">
-                <v-icon>mdi-delete-outline</v-icon>
-              </v-btn>
-            </v-list-item-icon>
-          </v-list-item>
+        <v-form>
+          <v-container fluid>
+            <v-row class="px-3">
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="value.CollectionName"
+                  :rules="nameRules"
+                  :label="$t('core.entities.detail.name')"
+                  required
+                ></v-text-field>
+              </v-col>
 
-          <v-list-item @click.stop="showFieldDialog()">
-            <v-list-item-icon>
-              <v-icon>mdi-plus-circle-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title>Add new field</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-icon class="show-on-hover">
-              <v-icon>mdi-plus</v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-        </v-list>
+              <v-col cols="12" sm="6">
+                <v-checkbox
+                  :label="$t('core.entities.detail.allowNotMappedFields')"
+                  v-model="value.AllowNonMappedFields"
+                ></v-checkbox>
+              </v-col>
+            </v-row>
+
+            <v-row class="px-3">
+              <v-col>
+                <span class="headline">{{ $t('core.entities.detail.fields') }}</span>
+
+                <v-list class="elevation-2">
+                  <v-list-item
+                    v-for="i of value.FieldSettings"
+                    :key="i.Name"
+                    @click.stop="showFieldDialog(i)"
+                  >
+                    <v-list-item-content>
+                      <v-list-item-title>{{ i.Name }}</v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-icon class="show-on-hover">
+                      <v-btn icon @click.stop="showFieldDialog(i)">
+                        <v-icon>mdi-pencil-outline</v-icon>
+                      </v-btn>
+                      <v-btn icon @click.stop="removeField(value, i)">
+                        <v-icon>mdi-delete-outline</v-icon>
+                      </v-btn>
+                    </v-list-item-icon>
+                  </v-list-item>
+
+                  <v-list-item @click.stop="showFieldDialog()">
+                    <v-list-item-icon>
+                      <v-icon>mdi-plus-circle-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title>Add new field</v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-icon class="show-on-hover">
+                      <v-icon>mdi-plus</v-icon>
+                    </v-list-item-icon>
+                  </v-list-item>
+                </v-list>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
 
         <v-dialog persistent v-model="isFieldDialogVisible">
           <field-edit :field="currentFieldCopy" @closed="onFieldEdited(value, $event)"></field-edit>
