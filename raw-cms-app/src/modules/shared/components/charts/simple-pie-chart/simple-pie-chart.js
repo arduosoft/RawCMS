@@ -49,7 +49,6 @@ const _SimplePieChart = {
       return transparentize(color);
     },
     refresh: function() {
-      this.styles = { width: '100%', height: '100%', position: 'relative', ...this.styles };
       this.renderChart(this.chartData, {
         maintainAspectRatio: false,
       });
