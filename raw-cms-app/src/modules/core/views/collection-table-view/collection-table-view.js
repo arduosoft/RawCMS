@@ -1,4 +1,5 @@
 import vuexStore from '../../../../config/vuex.js';
+import { sleep } from '../../../../utils/time.utils.js';
 import { CollectionTableDef } from '../../components/collection-table/collection-table.js';
 
 const _CollectionTableView = async (res, rej) => {
@@ -34,10 +35,21 @@ const _CollectionTableView = async (res, rej) => {
     },
     methods: {
       amdRequire: require,
-      resizeMonaco: function() {
-        const monacoEditor = this.$refs.monaco.getMonaco();
-        const oldLayout = monacoEditor.getLayoutInfo();
-        monacoEditor.layout({ width: oldLayout.width, height: 80 });
+      resizeMonaco: async function() {
+        await sleep(0);
+
+        const monacoRef = this.$refs.monaco;
+        const monacoEditor = monacoRef.getMonaco();
+        const expPanelContentEl = this.$refs.filterContent.$el.getElementsByClassName(
+          'v-expansion-panel-content__wrap'
+        )[0];
+        const style = window.getComputedStyle(expPanelContentEl, null);
+        const h = monacoRef.$el.offsetHeight;
+        const w =
+          parseFloat(style.getPropertyValue('width')) -
+          parseFloat(style.getPropertyValue('padding-left')) -
+          parseFloat(style.getPropertyValue('padding-right'));
+        monacoEditor.layout({ width: w, height: h });
       },
       goToCreateView: function() {
         this.$router.push({
