@@ -2,7 +2,8 @@
   "core": {
     "collections": {
       "detail": {
-        "title": "Item data"
+        "title": "Item data",
+        "filter": "filter"
       },
       "table": {
         "deleteConfirmMsgTpl": "Are you sure you want to delete the selected item?",
