@@ -9,8 +9,8 @@
 
 # Configuration
 ## Setup postman and visual studio
-On Postman import the collections: open the folder of rawCMS/docs/RawCMS.postman_collection.json.
-After that, open any collection and copy the port number from the link (e.g. (should be 28436)).
+On Postman import the collection file rawCMS/docs/RawCMS.postman_collection.json.
+After that, open any collection and copy the port number from the link (should be 28436).
 Open rawCMS on Visual Studio, on the right in the *solution explorer*, right click on rawCMS, then property.
 On the opened window, *debug*, search *URL of the app*, then delete the port number and past the Postman port.
 
