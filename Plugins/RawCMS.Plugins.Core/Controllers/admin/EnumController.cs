@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
+using RawCMS.Library.Core.Enum;
 using RawCMS.Library.Schema;
 using RawCMS.Plugins.Core.Model;
 using System;
@@ -25,7 +26,7 @@ namespace RawCMS.Plugins.Core.Controllers.Controllers.admin
     {
         private static Dictionary<string, Type> enumMap = new Dictionary<string, Type>()
         {
-            { "SavePipelineStage", typeof(SavePipelineStage) },
+            { "SavePipelineStage", typeof(PipelineStage) },
             { "FieldBaseType", typeof(FieldBaseType) }
         };
 

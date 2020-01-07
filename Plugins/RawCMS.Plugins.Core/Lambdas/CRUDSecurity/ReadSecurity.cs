@@ -8,7 +8,7 @@
 //******************************************************************************
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
-using RawCMS.Library.Core;
+using RawCMS.Library.Core.Enum;
 using RawCMS.Library.Service;
 using System.Collections.Generic;
 
@@ -17,7 +17,7 @@ namespace RawCMS.Plugins.Core.Lambdas.CRUDSecurity
     public class ReadSecurity : GenericSecurity
     {
         public override string Name => nameof(ReadSecurity);
-        public override SavePipelineStage Stage => SavePipelineStage.PreSave;
+        public override PipelineStage Stage => PipelineStage.PreOperation;
         public override DataOperation Operation => DataOperation.Read;
 
         public override string Description => nameof(ReadSecurity);

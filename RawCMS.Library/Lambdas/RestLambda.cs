@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 
-namespace RawCMS.Library.Core
+namespace RawCMS.Library.Lambdas
 {
     public abstract class RestLambda : HttpLambda
     {

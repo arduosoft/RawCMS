@@ -34,6 +34,7 @@
         "fields": "Fields",
         "name": "Name",
         "newTitle": "New entity",
+        "requiredNameMsg": "Name is required",
         "updateTitle": "Entity {name}",
         "fieldEdit": {
           "nameLabel": "Name",
