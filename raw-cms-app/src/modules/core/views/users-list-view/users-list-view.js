@@ -1,5 +1,5 @@
-import { UsersListDef } from '../../components/users-list/users-list.js';
 import vuexStore from '../../../../config/vuex.js';
+import { UsersListDef } from '../../components/users-list/users-list.js';
 
 const _UsersListView = async (res, rej) => {
   const tpl = await RawCMS.loadComponentTpl(
@@ -13,9 +13,6 @@ const _UsersListView = async (res, rej) => {
     },
     mounted() {
       vuexStore.dispatch('core/updateTopBarTitle', this.$t('core.users.title'));
-    },
-    data: function() {
-      return {};
     },
     methods: {
       goToCreateView: function() {

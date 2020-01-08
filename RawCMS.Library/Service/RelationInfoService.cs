@@ -6,13 +6,6 @@ using RawCMS.Library.Schema;
 
 namespace RawCMS.Library.Service
 {
-    public class RelationInfo
-    {
-        public bool IsMultiple { get; set; }
-        public string LookupCollection { get; set; }
-        public List<BsonObjectId> Values { get; set; }
-    }
-
     public class RelationInfoService
     {
         public RelationInfo GetFromOptions(Field field, JObject input)

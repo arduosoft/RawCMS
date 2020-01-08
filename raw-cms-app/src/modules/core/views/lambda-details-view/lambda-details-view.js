@@ -14,14 +14,13 @@ const _LambdaDetailsView = async (res, rej) => {
       LambdaDetails: editor,
     },
     created: function() {
-      RawCMS.eventBus.$on(rawCmsDetailEditEvents.loaded, ev => {
+      RawCMS.eventBus.$once(rawCmsDetailEditEvents.loaded, ev => {
         this.updateTitle({
           isNew: ev.isNew,
           name: optionalChain(() => ev.value.Name, { fallbackValue: '<NONE>' }),
         });
       });
     },
-    data: function() {},
     methods: {
       updateTitle: function({ isNew, name }) {
         let title = isNew

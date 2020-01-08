@@ -216,6 +216,14 @@ const _router = new VueRouter({
         },
       ],
     },
+    {
+      path: '/about',
+      name: 'about',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/about-view/about-view.js');
+        await cmp.default(res, rej);
+      },
+    },
   ],
 });
 

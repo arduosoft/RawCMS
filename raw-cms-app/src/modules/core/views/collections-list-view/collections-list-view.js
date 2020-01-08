@@ -1,5 +1,5 @@
-import { CollectionsListDef } from '../../components/collections-list/collections-list.js';
 import vuexStore from '../../../../config/vuex.js';
+import { CollectionsListDef } from '../../components/collections-list/collections-list.js';
 
 const _CollectionsListView = async (res, rej) => {
   const tpl = await RawCMS.loadComponentTpl(
@@ -13,9 +13,6 @@ const _CollectionsListView = async (res, rej) => {
     },
     mounted() {
       vuexStore.dispatch('core/updateTopBarTitle', this.$t('core.collections.title'));
-    },
-    data: function() {
-      return {};
     },
     methods: {},
     template: tpl,
