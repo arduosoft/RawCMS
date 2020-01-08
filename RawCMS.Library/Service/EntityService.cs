@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Enum;
 using RawCMS.Library.Schema;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,22 +54,28 @@ namespace RawCMS.Library.Service
                 CollectionSchema schema = item.ToObject<CollectionSchema>();
                 if (schema.CollectionName != null && !string.IsNullOrEmpty(schema.CollectionName.ToString()))
                 {
-                    bool haveIdField = schema.FieldSettings.Where(x => x.Name.Equals("_id")).Count() > 0;
-                    if (!haveIdField)
-                    {
-                        Field field = new Field
-                        {
-                            Name = "_id",
-                            BaseType = FieldBaseType.String,
-                            Type = "ObjectId",
-                            Required = true
-                        };
-                        schema.FieldSettings.Add(field);
-                    }
-
+                    schema = AddIdSchemaField(schema);
                     entities[schema.CollectionName] = schema;
                 }
             }
+        }
+
+        private CollectionSchema AddIdSchemaField(CollectionSchema schema)
+        {
+            bool haveIdField = schema.FieldSettings.Where(x => x.Name.Equals("_id")).Count() > 0;
+            if (!haveIdField)
+            {
+                Field field = new Field
+                {
+                    Name = "_id",
+                    //BaseType = FieldBaseType.String,
+                    Type = "ObjectId",
+                    Required = true
+                };
+                schema.FieldSettings.Add(field);
+            }
+
+            return schema;
         }
 
         public List<CollectionSchema> GetCollectionSchemas()
@@ -89,6 +96,22 @@ namespace RawCMS.Library.Service
         public List<FieldTypeValidator> GetTypeValidator(string type)
         {
             return typeValidators.Where(x => x.Type == type).ToList();
+        }
+
+        internal void AddOrReplaceEntity(string entityName, CollectionSchema schema, DataOperation operation)
+        {
+            var clone = new Dictionary<string, CollectionSchema>(entities);
+            if (clone.ContainsKey(entityName))
+            {
+                clone.Remove(entityName);
+            }
+
+            if (operation == DataOperation.Write)
+            {
+                schema = AddIdSchemaField(schema);
+                clone.Add(entityName, schema);
+            }
+            entities = clone;
         }
     }
 }

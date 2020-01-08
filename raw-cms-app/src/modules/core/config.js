@@ -55,6 +55,9 @@ const _configCoreModule = function() {
       clearRelationMetadata({ commit }) {
         commit('setRelationMetadata', {});
       },
+      async updateTopBarTitle({ commit }, value) {
+        commit('setTopBarTitle', value);
+      },
     },
   });
 };

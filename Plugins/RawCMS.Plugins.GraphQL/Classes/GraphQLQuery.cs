@@ -10,6 +10,7 @@ using GraphQL.Types;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.GraphQL.Types;
+using System.Linq;
 
 namespace RawCMS.Plugins.GraphQL.Classes
 {
@@ -21,19 +22,22 @@ namespace RawCMS.Plugins.GraphQL.Classes
             var schemas = entityService.GetCollectionSchemas();
             foreach (var metaColl in schemas)
             {
-                CollectionType type = new CollectionType(metaColl, schemas, graphQLService);
-                ListGraphType listType = new ListGraphType(type);
-
-                AddField(new FieldType
+                if (Fields.Count(x => x.Name == metaColl.CollectionName) == 0)
                 {
-                    Name = metaColl.CollectionName,
-                    Type = listType.GetType(),
-                    ResolvedType = listType,
-                    Resolver = new JObjectFieldResolver(graphQLService),
-                    Arguments = new QueryArguments(
-                        type.TableArgs
-                    )
-                });
+                    JObjectRawType type = new JObjectRawType(this, graphQLService, metaColl, entityService);
+                    ListGraphType listType = new ListGraphType(type);
+
+                    AddField(new FieldType
+                    {
+                        Name = metaColl.CollectionName,
+                        Type = listType.GetType(),
+                        ResolvedType = listType,
+                        Resolver = new JObjectFieldResolver(graphQLService, entityService),
+                        Arguments = new QueryArguments(
+                            type.TableArgs
+                        )
+                    });
+                }
             }
         }
     }

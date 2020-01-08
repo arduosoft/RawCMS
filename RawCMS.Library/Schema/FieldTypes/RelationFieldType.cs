@@ -4,6 +4,8 @@
     {
         public override string TypeName => "relation";
 
+        public override FieldGraphType GraphType => FieldGraphType.Relation;
+
         public RelationFieldType()
         {
             OptionParameter.Add(new OptionParameter()

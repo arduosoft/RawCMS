@@ -178,6 +178,13 @@ const _router = new VueRouter({
       ],
     },
     {
+      path: '/graphql',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/graphql-view/graphql-view.js');
+        await cmp.default(res, rej);
+      },
+    },
+    {
       path: '/sandbox',
       component: {
         template: `<router-view></router-view>`,

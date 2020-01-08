@@ -4,6 +4,8 @@
     {
         public override string TypeName => "entities-list";
 
+        public override FieldGraphType GraphType => FieldGraphType.String;
+
         public EntitiesListType()
         {
         }

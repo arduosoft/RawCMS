@@ -4,6 +4,8 @@
     {
         public override string TypeName => "list";
 
+        public override FieldGraphType GraphType => FieldGraphType.String;
+
         public ListType()
         {
             //

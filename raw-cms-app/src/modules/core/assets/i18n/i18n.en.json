@@ -40,7 +40,8 @@
           "nameLabel": "Name",
           "optionsText": "Options",
           "title": "Edit field",
-          "typeLabel": "Type"
+          "typeLabel": "Type",
+          "required": "Required"
         }
       },
       "deleteConfirmMsgTpl": "Are you sure you want to delete entity {name}?",

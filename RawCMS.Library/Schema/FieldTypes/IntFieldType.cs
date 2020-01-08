@@ -4,6 +4,8 @@
     {
         public override string TypeName => "int";
 
+        public override FieldGraphType GraphType => FieldGraphType.Int;
+
         public IntFieldType()
         {
             OptionParameter.Add(new OptionParameter()
