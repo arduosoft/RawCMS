@@ -23,7 +23,7 @@ const _LoginView = async (res, rej) => {
         return errors;
       },
     },
-    data: () => {
+    data: function() {
       return {
         username: '',
         password: '',
@@ -31,7 +31,9 @@ const _LoginView = async (res, rej) => {
       };
     },
     methods: {
-      login: async function() {
+      login: async function(submitEvent) {
+        submitEvent.preventDefault();
+
         this.$v.$touch();
         if (this.$v.$invalid) {
           return;

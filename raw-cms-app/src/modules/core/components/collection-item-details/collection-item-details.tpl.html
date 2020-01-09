@@ -1,4 +1,4 @@
-<detail-wrapper v-on="$listeners" v-bind="$props" :apiBasePath="apiBasePath">
+<detail-wrapper v-on="$listeners" v-bind="$props" :apiBasePath="apiBasePath" :canSave="isValid">
   <template slot="custom-tabs">
     <v-tab href="#tabFormly">
       {{ $t('core.common.editText') }}
@@ -16,7 +16,7 @@
               :model="value"
               :fields="formFields"
               tag="v-row"
-              class="add-padding add-padding--left add-padding--right"
+              class="px-3"
             ></formly-form>
           </v-container>
         </v-form>

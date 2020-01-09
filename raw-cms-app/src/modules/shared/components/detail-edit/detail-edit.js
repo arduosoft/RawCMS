@@ -1,6 +1,6 @@
 import { RawCMS } from '../../../../config/raw-cms.js';
 import { epicSpinners } from '../../../../utils/spinners.js';
-import { snackbarService } from '../../../core/services/snackbar-service.js';
+import { snackbarService } from '../../../core/services/snackbar.service.js';
 import { BaseCrudService } from '../../../shared/services/base-crud-service.js';
 
 const _rawCmsDetailEditEvents = {
@@ -17,6 +17,9 @@ const _RawCmsDetailEditDef = async () => {
       AtomSpinner: epicSpinners.AtomSpinner,
     },
     computed: {
+      isSaveDisabled: function() {
+        return this.isSaving;
+      },
       compCode: {
         get: function() {
           return this.code;

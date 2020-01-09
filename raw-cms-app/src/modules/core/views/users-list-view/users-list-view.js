@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { UsersListDef } from '../../components/users-list/users-list.js';
 
 const _UsersListView = async (res, rej) => {
@@ -10,8 +11,8 @@ const _UsersListView = async (res, rej) => {
     components: {
       UsersList: list,
     },
-    data: function() {
-      return {};
+    mounted() {
+      vuexStore.dispatch('core/updateTopBarTitle', this.$t('core.users.title'));
     },
     methods: {
       goToCreateView: function() {

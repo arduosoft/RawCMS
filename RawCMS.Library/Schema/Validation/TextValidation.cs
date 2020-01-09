@@ -18,27 +18,35 @@ namespace RawCMS.Library.Schema.Validation
             get
             {
                 return @"
-if(value != null) {
-//code starts here
-if(options.maxlenght !==undefined && value!=null)
-{
-    if(options.maxlenght<value)
-    {
-        errors.push({""Code"":""STRING-01"", ""Title"":""field too long""});
+const innerValidation = function() {
+    if (value === null || value === undefined) {
+        return;
     }
-}
 
-if(options.regexp !==undefined)
-{
-    var re = new RegExp(options.regexp);
-
-    if(!value.match(re))
-    {
-       errors.push({""Code"":""STRING-02"", ""Title"":""field do not match the regular expression ""});
+    // code starts here
+    if (typeof(value) !== 'string') {
+        errors.push({""Code"":""STRING-01"", ""Title"":""Not a string""});
+        return;
     }
-}
-}
-var backendResult=JSON.stringify(errors);
+
+    if (options.maxlength !== undefined && options.maxlength < value.length) {
+        errors.push({""Code"":""STRING-02"", ""Title"":""field too long"",""Description"":""ddd""});
+    }
+
+    if (options.regexp !== undefined)
+    {
+        var re = new RegExp(options.regexp);
+
+        if (!value.match(re))
+        {
+           errors.push({""Code"":""STRING-02"", ""Title"":""field do not match the regular expression ""});
+        }
+    }
+
+    return JSON.stringify(errors);
+};
+
+var backendResult = innerValidation();
             ";
             }
         }

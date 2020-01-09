@@ -1,14 +1,13 @@
+import { mix } from '../../../utils/inheritance.utils.js';
 import { optionalChain } from '../../../utils/object.utils.js';
-import { apiClient } from '../../core/api/api-client.js';
+import { BaseApiService } from './base-api-service.js';
 import { ICrudService } from './crud-service.js';
 
-export class BaseCrudService extends ICrudService {
-  _apiClient;
+export class BaseCrudService extends mix(BaseApiService, ICrudService) {
   _basePath;
 
   constructor({ basePath }) {
     super();
-    this._apiClient = apiClient;
     this._basePath = basePath;
   }
 
@@ -36,6 +35,11 @@ export class BaseCrudService extends ICrudService {
     }
 
     const res = await this._apiClient.get(`${this._basePath}/${id}`);
+
+    if (!this._checkGenericError(res)) {
+      return false;
+    }
+
     return res.data.data;
   }
 
@@ -48,7 +52,7 @@ export class BaseCrudService extends ICrudService {
     }
 
     const res = await this._apiClient.post(`${this._basePath}`, obj);
-    return res.data.status === 0;
+    return this._checkGenericError(res);
   }
 
   async update(obj) {
@@ -60,7 +64,7 @@ export class BaseCrudService extends ICrudService {
     }
 
     const res = await this._apiClient.patch(`${this._basePath}/${id}`, obj);
-    return res.data.status === 0;
+    return this._checkGenericError(res);
   }
 
   async delete(id) {
@@ -70,6 +74,6 @@ export class BaseCrudService extends ICrudService {
     }
 
     const res = await this._apiClient.delete(`${this._basePath}/${id}`);
-    return res.data.status === 0;
+    return this._checkGenericError(res);
   }
 }

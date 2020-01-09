@@ -8,7 +8,7 @@
 //******************************************************************************
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
-using RawCMS.Library.Core;
+using RawCMS.Library.Core.Enum;
 using RawCMS.Library.Service;
 using System.Collections.Generic;
 
@@ -20,7 +20,7 @@ namespace RawCMS.Plugins.Core.Lambdas.CRUDSecurity
 
         public override string Description => nameof(DeleteSecurity);
 
-        public override SavePipelineStage Stage => SavePipelineStage.PreSave;
+        public override PipelineStage Stage => PipelineStage.PreOperation;
 
         public override DataOperation Operation => DataOperation.Delete;
 

@@ -18,32 +18,32 @@ namespace RawCMS.Library.Schema.Validation
             get
             {
                 return @"
-if(value!=null)
-{
-//code starts here
-intVal=parseFloat(value);
- if(isNaN(intVal) || intVal  === NaN )
- {
-   errors.push({""Code"":""FLOAT - 01"", ""Title"":""Not a number""});
- }
+const innerValidation = function() {
+    if (value === null || value === undefined) {
+        return;
+    }
 
-if(options.min !==undefined)
- {
-   if(options.min>intVal)
-     {
-       errors.push({""Code"":""FLOAT-02"", ""Title"":""less than minimum""});
-     }
- }
+    // code starts here
+    floatVal = parseFloat(value);
 
-if(options.max !==undefined)
- {
-   if(options.max<intVal)
-     {
-      errors.push({""Code"":""FLOAT-03"", ""Title"":""greater than max""});
-     }
- }
-}
-var backendResult=JSON.stringify(errors);
+    if (isNaN(floatVal) || floatVal  === NaN ) {
+        errors.push({""Code"":""FLOAT-01"", ""Title"":""Not a number""});
+        return;
+    }
+
+    if (options.min !== undefined && options.min > floatVal) {
+        errors.push({""Code"":""FLOAT-02"", ""Title"":""less than minimum"",""Description"":""ddd""});
+    }
+
+    if (options.max !== undefined && options.max < floatVal)
+    {
+        errors.push({""Code"":""FLOAT-03"", ""Title"":""greater than max"",""Description"":""ddd""});
+    }
+
+    return JSON.stringify(errors);
+};
+
+var backendResult = innerValidation();
             ";
             }
         }

@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { CollectionsListDef } from '../../components/collections-list/collections-list.js';
 
 const _CollectionsListView = async (res, rej) => {
@@ -10,8 +11,8 @@ const _CollectionsListView = async (res, rej) => {
     components: {
       CollectionsList: collectionsList,
     },
-    data: function() {
-      return {};
+    mounted() {
+      vuexStore.dispatch('core/updateTopBarTitle', this.$t('core.collections.title'));
     },
     methods: {},
     template: tpl,

@@ -23,7 +23,27 @@ namespace RawCMS.Plugins.GraphQL.Types
                 return null;
             }
             string name = char.ToUpperInvariant(context.FieldAst.Name[0]) + context.FieldAst.Name.Substring(1);
-            object value = GetPropValue(source, name);
+            object value;
+            if (context.SubFields != null && context.SubFields.Count > 0)
+            {
+                JObject src = source as JObject;
+                var token = src.SelectToken($"$._metadata.rel.{name}", false);
+                //value = token.Value<object>();
+                if (token is JArray)
+                {
+                    value = token.Value<object>();
+                }
+                else
+                {
+                    value = new JArray(token.Value<object>());
+                }
+
+            }
+            else
+            {
+                value = GetPropValue(source, name);
+            }
+            
             if (value == null)
             {
                 throw new InvalidOperationException($"Expected to find property {context.FieldAst.Name} on {context.Source.GetType().Name} but it does not exist.");
@@ -33,15 +53,22 @@ namespace RawCMS.Plugins.GraphQL.Types
 
         private static object GetPropValue(object src, string propName)
         {
-            JObject source = src as JObject;
-            source.TryGetValue(propName, StringComparison.InvariantCultureIgnoreCase, out JToken value);
-            if (value != null)
+            try
             {
-                return value.Value<object>();
-            }
-            else
+                JObject source = src as JObject;
+                JToken value;
+                source.TryGetValue(propName, StringComparison.InvariantCultureIgnoreCase, out value);
+                if (value != null)
+                {
+                    return value.Value<object>();
+                }
+                else
+                {
+                    return null;
+                }
+            }catch(Exception e)
             {
-                return null;
+                throw;
             }
         }
     }

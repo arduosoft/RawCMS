@@ -4,6 +4,8 @@
     {
         public override string TypeName => "text";
 
+        public override FieldGraphType GraphType => FieldGraphType.String;
+
         public TextFieldType()
         {
             OptionParameter.Add(new OptionParameter()
@@ -15,7 +17,7 @@
             OptionParameter.Add(new OptionParameter()
             {
                 Name = "maxlength",
-                Type = "text"
+                Type = "int"
             });
         }
     }

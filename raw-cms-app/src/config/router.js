@@ -50,6 +50,9 @@ const _router = new VueRouter({
           },
         },
       ],
+      meta: {
+        i18nLoad: ['core', 'formly-material'],
+      },
     },
     {
       path: '/collections',
@@ -89,6 +92,9 @@ const _router = new VueRouter({
           },
         },
       ],
+      meta: {
+        i18nLoad: ['core', 'formly-material'],
+      },
     },
     {
       path: '/users',
@@ -143,6 +149,42 @@ const _router = new VueRouter({
       ],
     },
     {
+      path: '/configuration',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/configuration-view/configuration-view.js');
+        await cmp.default(res, rej);
+      },
+      children: [
+        {
+          path: '/',
+          name: 'plugins',
+          component: async (res, rej) => {
+            const cmp = await import(
+              '/modules/core/views/configuration-list-view/configuration-list-view.js'
+            );
+            await cmp.default(res, rej);
+          },
+        },
+        {
+          path: ':id',
+          name: 'configuration-details',
+          component: async (res, rej) => {
+            const cmp = await import(
+              '/modules/core/views/configuration-details-view/configuration-details-view.js'
+            );
+            await cmp.default(res, rej);
+          },
+        },
+      ],
+    },
+    {
+      path: '/graphql',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/graphql-view/graphql-view.js');
+        await cmp.default(res, rej);
+      },
+    },
+    {
       path: '/sandbox',
       component: {
         template: `<router-view></router-view>`,
@@ -173,6 +215,14 @@ const _router = new VueRouter({
           },
         },
       ],
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: async (res, rej) => {
+        const cmp = await import('/modules/core/views/about-view/about-view.js');
+        await cmp.default(res, rej);
+      },
     },
   ],
 });

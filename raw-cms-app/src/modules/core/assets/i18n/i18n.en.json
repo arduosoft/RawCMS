@@ -2,7 +2,8 @@
   "core": {
     "collections": {
       "detail": {
-        "title": "Item data"
+        "title": "Item data",
+        "filter": "filter"
       },
       "table": {
         "deleteConfirmMsgTpl": "Are you sure you want to delete the selected item?",
@@ -29,8 +30,19 @@
     },
     "entities": {
       "detail": {
+        "allowNotMappedFields": "Allow non-mapped fields",
+        "fields": "Fields",
+        "name": "Name",
         "newTitle": "New entity",
-        "updateTitle": "Entity {name}"
+        "requiredNameMsg": "Name is required",
+        "updateTitle": "Entity {name}",
+        "fieldEdit": {
+          "nameLabel": "Name",
+          "optionsText": "Options",
+          "title": "Edit field",
+          "typeLabel": "Type",
+          "required": "Required"
+        }
       },
       "deleteConfirmMsgTpl": "Are you sure you want to delete entity {name}?",
       "deleteErrorMsgTpl": "An error occurred while deleting entity {name}.",
@@ -39,7 +51,12 @@
       "title": "Entities"
     },
     "home": {
-      "helpText": "Welcome! Please select a menu entry on the left."
+      "apiCallsText": "API calls (last week):",
+      "entitiesNumText": "Entities number",
+      "recordsQuotaText": "Records quota",
+      "title": "Home",
+      "totalRecordsText": "Total records",
+      "welcomeText": "Welcome back! Here you can find some insights about your app."
     },
     "lambdas": {
       "deleteConfirmMsgTpl": "Are you sure you want to delete lambda {name}?",
@@ -76,6 +93,23 @@
       "deleteSuccessMsgTpl": "User {name} was deleted.",
       "emptyMsg": "There are no users yet. Add some with the button below!",
       "title": "Users"
+    },
+    "validation": {
+      "required": "This field is required",
+      "text": {
+        "maxlength": "Maximum length should be {maxLength}"
+      }
+    },
+    "configuration": {
+      "detail": {
+        "newTitle": "New configuration",
+        "updateTitle": "Configuration {name}"
+      },
+      "deleteConfirmMsgTpl": "Are you sure you want to delete configuration {name}?",
+      "deleteErrorMsgTpl": "An error occurred while deleting configuration {name}.",
+      "deleteSuccessMsgTpl": "Configuration {name} was deleted.",
+      "emptyMsg": "There are no plugins yet. Add some with the button below!",
+      "title": "Configuration"
     }
   }
 }

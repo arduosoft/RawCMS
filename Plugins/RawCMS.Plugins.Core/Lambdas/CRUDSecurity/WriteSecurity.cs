@@ -8,7 +8,7 @@
 //******************************************************************************
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
-using RawCMS.Library.Core;
+using RawCMS.Library.Core.Enum;
 using RawCMS.Library.Service;
 using System.Collections.Generic;
 
@@ -19,7 +19,7 @@ namespace RawCMS.Plugins.Core.Lambdas.CRUDSecurity
         public override string Name => nameof(WriteSecurity);
 
         public override string Description => nameof(WriteSecurity);
-        public override SavePipelineStage Stage => SavePipelineStage.PreSave;
+        public override PipelineStage Stage => PipelineStage.PreOperation;
         public override DataOperation Operation => DataOperation.Write;
 
         public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)

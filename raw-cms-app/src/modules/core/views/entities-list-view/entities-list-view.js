@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { EntitiesListDef } from '../../components/entities-list/entities-list.js';
 
 const _EntitiesListView = async (res, rej) => {
@@ -10,8 +11,8 @@ const _EntitiesListView = async (res, rej) => {
     components: {
       EntitiesList: entitiesList,
     },
-    data: function() {
-      return {};
+    mounted() {
+      vuexStore.dispatch('core/updateTopBarTitle', this.$t('core.entities.title'));
     },
     methods: {
       goToCreateView: function() {

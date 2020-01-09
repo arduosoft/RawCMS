@@ -1,11 +1,31 @@
+import { vuexStore } from '../../../../config/vuex.js';
+import { optionalChain } from '../../../../utils/object.utils.js';
 import { RawCmsDetailEditDef } from '../../../shared/components/detail-edit/detail-edit.js';
 import { entitiesSchemaService } from '../../services/entities-schema.service.js';
+import { validationService } from '../../services/validation.service.js';
 
 const _CollectionItemDetailsWrapperDef = async () => {
   const rawCmsDetailEditDef = await RawCmsDetailEditDef();
 
   return {
+    computed: {
+      isSaveDisabled: function() {
+        return rawCmsDetailEditDef.computed.isSaveDisabled.call(this) || !this.canSave;
+      },
+    },
+    data: function() {
+      return {
+        activeTabId: 'tabFormly',
+      };
+    },
     extends: rawCmsDetailEditDef,
+    props: {
+      canSave: {
+        type: Boolean,
+        required: true,
+        default: true,
+      },
+    },
   };
 };
 
@@ -22,6 +42,15 @@ const _CollectionItemDetailsDef = async () => {
     computed: {
       apiBasePath: function() {
         return `/api/CRUD/${this.collectionName}`;
+      },
+      fieldsMetadata: function() {
+        return optionalChain(() => vuexStore.state.core.fieldsMetadata, {
+          fallbackValue: [],
+          replaceLastUndefined: true,
+        });
+      },
+      isValid: function() {
+        return optionalChain(() => this.formState.$valid, { fallbackValue: true });
       },
     },
     created: async function() {
@@ -40,27 +69,28 @@ const _CollectionItemDetailsDef = async () => {
           size: 1,
           rawQuery: { CollectionName: this.collectionName },
         });
+        const schema = res.items[0];
 
-        const result = res.items[0].FieldSettings.map(x => {
-          return {
-            key: x.Name,
-            type: this.getFormlyType(x.Type),
-            wrapper: '<div class="col-12 col-sm-6"></div>',
-          };
+        const result = schema.FieldSettings.map(x => {
+          return this.applyFieldMetadata(
+            {
+              key: x.Name,
+              type: x.Type,
+              validators: {},
+              templateOptions: { validation: {} },
+              wrapper: '<div class="col-12 col-sm-6"></div>',
+            },
+            x
+          );
         });
 
         return result;
       },
-      getFormlyType: function(beType) {
-        switch (beType) {
-          case 'String':
-          case 'string':
-            return 'text';
-          case 'number':
-            return 'number';
-          default:
-            return 'text';
-        }
+      applyFieldMetadata: function(formlyField, schemaField) {
+        return validationService.applyFieldMetadataToFormlyInput(formlyField, {
+          fieldType: schemaField.Type,
+          fieldOptions: schemaField.Options,
+        });
       },
     },
     props: {

@@ -1,0 +1,11 @@
+.rawcms-entity-details .v-list-item .v-list-item__icon.show-on-hover {
+  opacity: 0;
+}
+
+.rawcms-entity-details .v-list-item:hover .v-list-item__icon.show-on-hover {
+  opacity: 1;
+}
+
+.rawcms-entity-details .v-list-item .v-list-item__icon.show-on-hover.force-show {
+  opacity: 1;
+}

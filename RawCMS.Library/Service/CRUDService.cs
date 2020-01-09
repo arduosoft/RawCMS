@@ -12,6 +12,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Enum;
 using RawCMS.Library.Core.Exceptions;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Lambdas;
@@ -58,7 +59,7 @@ namespace RawCMS.Library.Service
 
             EnsureCollection(collection);
 
-            InvokeProcess(collection, ref newitem, SavePipelineStage.PreSave, DataOperation.Write, dataContext);
+            InvokeProcess(collection, ref newitem, PipelineStage.PreOperation, DataOperation.Write, dataContext);
 
             string json = newitem.ToString();
             BsonDocument itemToAdd = BsonSerializer.Deserialize<BsonDocument>(json);
@@ -67,6 +68,7 @@ namespace RawCMS.Library.Service
                 itemToAdd.Remove("_id");
             }
 
+            itemToAdd.Remove("_metadata");
             _mongoService.GetCollection<BsonDocument>(collection).InsertOne(itemToAdd);
 
             //sanitize
@@ -74,7 +76,7 @@ namespace RawCMS.Library.Service
 
             var addedItem = JObject.Parse(itemToAdd.ToJson(js));
 
-            InvokeProcess(collection, ref addedItem, SavePipelineStage.PostSave, DataOperation.Write, dataContext);
+            InvokeProcess(collection, ref addedItem, PipelineStage.PostOperation, DataOperation.Write, dataContext);
 
             return addedItem;
         }
@@ -88,7 +90,7 @@ namespace RawCMS.Library.Service
             }
         }
 
-        private void InvokeProcess(string collection, ref JObject item, SavePipelineStage save, DataOperation dataOperation, Dictionary<string, object> dataContext)
+        private void InvokeProcess(string collection, ref JObject item, PipelineStage save, DataOperation dataOperation, Dictionary<string, object> dataContext)
         {
             List<Lambda> processhandlers = lambdaManager.Lambdas
                 .Where(x => x is DataProcessLambda)
@@ -148,11 +150,12 @@ namespace RawCMS.Library.Service
 
             FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(item["_id"].Value<string>()));
 
-            InvokeProcess(collection, ref item, SavePipelineStage.PreSave, DataOperation.Write, dataContext);
+            InvokeProcess(collection, ref item, PipelineStage.PreOperation, DataOperation.Write, dataContext);
 
             //insert id (mandatory)
             BsonDocument doc = BsonDocument.Parse(item.ToString());
             doc["_id"] = BsonObjectId.Create(id);
+            doc.Remove("_metadata");
 
             UpdateOptions o = new UpdateOptions()
             {
@@ -170,7 +173,7 @@ namespace RawCMS.Library.Service
                 _mongoService.GetCollection<BsonDocument>(collection).UpdateOne(filter, dbset, o);
             }
             var fullSaved = Get(collection, id);
-            InvokeProcess(collection, ref fullSaved, SavePipelineStage.PostSave, DataOperation.Write, dataContext);
+            InvokeProcess(collection, ref fullSaved, PipelineStage.PostOperation, DataOperation.Write, dataContext);
             return fullSaved;
         }
 
@@ -190,20 +193,25 @@ namespace RawCMS.Library.Service
             var old = Get(collection, id);
             var dataContext = new Dictionary<string, object>();
 
-            InvokeProcess(collection, ref old, SavePipelineStage.PreSave, DataOperation.Delete, dataContext);
+            InvokeProcess(collection, ref old, PipelineStage.PreOperation, DataOperation.Delete, dataContext);
 
             FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(id));
 
             DeleteResult result = _mongoService.GetCollection<BsonDocument>(collection).DeleteOne(filter);
 
-            InvokeProcess(collection, ref old, SavePipelineStage.PostSave, DataOperation.Delete, dataContext);
+            InvokeProcess(collection, ref old, PipelineStage.PostOperation, DataOperation.Delete, dataContext);
 
             return result.DeletedCount == 1;
         }
 
-        public JObject Get(string collection, string id)
+        public JObject Get(string collection, string id, List<string> expando = null)
         {
             FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("_id", BsonObjectId.Create(id));
+            JObject nullValue = new JObject();
+            var dataContext = new Dictionary<string, object>();
+            dataContext["expando"] = expando ?? new List<string>();
+
+            InvokeProcess(collection, ref nullValue, PipelineStage.PreOperation, DataOperation.Read, dataContext);
 
             IFindFluent<BsonDocument, BsonDocument> results = _mongoService
                 .GetCollection<BsonDocument>(collection)
@@ -211,7 +219,7 @@ namespace RawCMS.Library.Service
 
             List<BsonDocument> list = results.ToList();
 
-            BsonDocument item = list.FirstOrDefault();
+            var item = list.FirstOrDefault();
             string json = "{}";
             //sanitize id format
             if (item != null)
@@ -220,7 +228,9 @@ namespace RawCMS.Library.Service
                 json = item.ToJson(js);
             }
 
-            return JObject.Parse(json);
+            var output = JObject.Parse(json);
+            InvokeProcess(collection, ref output, PipelineStage.PostOperation, DataOperation.Read, dataContext);
+            return output;
         }
 
         public long Count(string collection, string query)
@@ -244,6 +254,9 @@ namespace RawCMS.Library.Service
         public ItemList Query(string collection, DataQuery query)
         {
             FilterDefinition<BsonDocument> filter = FilterDefinition<BsonDocument>.Empty;
+            var dataContext = new Dictionary<string, object>();
+            dataContext["expando"] = query.Expando;
+
             if (query.RawQuery != null)
             {
                 filter = new JsonFilterDefinition<BsonDocument>(query.RawQuery);
@@ -287,8 +300,13 @@ namespace RawCMS.Library.Service
             }
 
             string json = list.ToJson(js);
-
-            return new ItemList(JArray.Parse(json), (int)count, query.PageNumber, query.PageSize);
+            var result = JArray.Parse(json);
+            for (int i = 0; i < result.Count; i++)
+            {
+                var node = (JObject)result[i];
+                InvokeProcess(collection, ref node, PipelineStage.PostOperation, DataOperation.Read, dataContext);
+            }
+            return new ItemList(result, (int)count, query.PageNumber, query.PageSize);
         }
 
         public List<Error> Validate(JObject item, string collection)

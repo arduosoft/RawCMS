@@ -1,5 +1,5 @@
 import { epicSpinners } from '../../../../utils/spinners.js';
-import { snackbarService } from '../../../core/services/snackbar-service.js';
+import { snackbarService } from '../../../core/services/snackbar.service.js';
 import { BaseCrudService } from '../../../shared/services/base-crud-service.js';
 
 const _rawCmsListEvents = {

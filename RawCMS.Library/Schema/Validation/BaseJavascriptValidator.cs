@@ -29,11 +29,16 @@ namespace RawCMS.Library.Schema.Validation
 
                 object convValue = null;
                 convValue = GetObjectValue(value, convValue);
+                string debug = "";
                 Engine add = new Engine((X) =>
                 {
                     X.AllowClr();
                     X.Culture(new System.Globalization.CultureInfo("en-US"));
                 })
+                   .SetValue("log", new Action<object>((x) =>
+                   {
+                       Console.WriteLine(x);
+                   }))
                   .SetValue("item", jinput)
                   .SetValue("errors", errors)
                   .SetValue("options", options)
@@ -42,6 +47,7 @@ namespace RawCMS.Library.Schema.Validation
                   .SetValue("Type", field.Type)
                   .SetValue("value", convValue)
                   .SetValue("backendResult", backendResult)
+                  .SetValue("debug", debug)
                  .Execute(Javascript);
 
                 string resultEnum = add.GetValue("backendResult").ToString();

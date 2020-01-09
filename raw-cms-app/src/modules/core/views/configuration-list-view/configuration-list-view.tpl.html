@@ -1,0 +1,13 @@
+<v-layout class="flex-column">
+  <v-row>
+    <v-col>
+      <configuration-list></configuration-list>
+    </v-col>
+  </v-row>
+
+  <v-fab-transition>
+    <v-btn color="primary" fab fixed bottom right @click.stop="goToCreateView()">
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-fab-transition>
+</v-layout>
