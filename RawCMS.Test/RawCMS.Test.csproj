@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Plugins\RawCMS.Plugins.FullText\RawCMS.Plugin.FullText\RawCMS.Plugins.FullText.csproj" />
+    <ProjectReference Include="..\Plugins\RawCMS.Plugins.FullText\RawCMS.Plugins.FullText.csproj" />
   </ItemGroup>
 
 </Project>
