@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Collections.Generic;
 
 namespace RawCMS.Library.Schema
 {
@@ -12,6 +14,9 @@ namespace RawCMS.Library.Schema
     public abstract class FieldType
     {
         public abstract string TypeName { get; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public abstract FieldGraphType GraphType { get; }
 
         public virtual List<OptionParameter> OptionParameter { get; set; } = new List<OptionParameter>();
     }

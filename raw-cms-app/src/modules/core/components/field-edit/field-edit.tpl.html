@@ -21,6 +21,15 @@
           ></v-select>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-checkbox
+            :label="$t('core.entities.detail.fieldEdit.required')"
+            v-model="currentField.Required"
+          >
+          </v-checkbox>
+        </v-col>
+      </v-row>
 
       <v-row v-if="areOptionsAvailable">
         <v-col cols="12 text--primary">
