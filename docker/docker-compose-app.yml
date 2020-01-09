@@ -1,0 +1,38 @@
+version: "3"
+services:
+  rawcms-standalone:
+    build:
+      dockerfile: ./docker/Dockerfile-standalone
+      context: ../
+    ports:
+      - "7580:80"
+      - "7543:443"
+    environment:
+      - MongoSettings__ConnectionString=mongodb://dev:password@mongo:27017/rawcms?authSource=admin
+      - PORT=80
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - CLIENT_ID=raw.client
+      - CLIENT_SECRET=raw.secret
+      - BASE_URL=/
+  rawcms-api:
+    build:
+      dockerfile: ./docker/Dockerfile-api
+      context: ../
+    ports:
+      - "6580:80"
+      - "6543:443"
+    environment:
+      - MongoSettings__ConnectionString=mongodb://dev:password@mongo:27017/rawcms?authSource=admin
+      - PORT=80
+      - ASPNETCORE_ENVIRONMENT=Docker
+  rawcms-ui:
+    build:
+      dockerfile: ./docker/Dockerfile-ui
+      context: ../
+    environment:
+      - BASE_URL=http://localhost:6580
+      - CLIENT_ID=raw.client
+      - CLIENT_SECRET=raw.secret
+    ports:
+      - "5580:80"
+      - "5543:443"
