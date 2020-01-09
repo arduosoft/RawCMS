@@ -14,7 +14,7 @@ There isn't any nuget package atm or relases. Just clone code on your local, com
 - [Make Plugin configurable](Configurable-Plugins)
 - [Authentication](Authentication)
 - [Docker](Docker)
-
+- [Relations](Relation)
 
 ### Plugins
 
@@ -33,4 +33,4 @@ There isn't any nuget package atm or relases. Just clone code on your local, com
 - [Postman Tests](RawCMS.postman_collection.json)
 - [WebApp developer info](WebApp-Dev-Home)
 - [Api Test](APITest)
-
+- [Setup for development](Setup-Dev)

@@ -1,10 +1,7 @@
 <v-layout class="flex-column">
-  <h1>{{ $t('core.lambdas.title') }}</h1>
-  <v-row>
-    <v-col>
-      <lambdas-list></lambdas-list>
-    </v-col>
-  </v-row>
+  <v-col>
+    <lambdas-list></lambdas-list>
+  </v-col>
 
   <v-fab-transition>
     <v-btn color="primary" fab fixed bottom right @click.stop="goToCreateView()">

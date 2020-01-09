@@ -1,25 +1,21 @@
-import { optionalChain } from '../../../../utils/object.utils.js';
-import { BaseField } from '../base-field/base-field.js';
+import { nameOf, optionalChain } from '../../../../utils/object.utils.js';
+import { BaseListFieldDef } from '../base-list-field/base-list-field.js';
 
 const _ListField = async (res, rej) => {
-  const tpl = await RawCMS.loadComponentTpl(
-    '/modules/formly-material/components/list-field/list-field.tpl.html'
-  );
+  const baseDef = await BaseListFieldDef();
 
   res({
-    computed: {
-      items: function() {
-        const strVal = optionalChain(() => this.field._meta_.options.values);
+    mounted: function() {
+      const strVal = optionalChain(() => this.field._meta_.options.values);
 
-        if (strVal === undefined) {
-          return [];
-        }
+      if (strVal === undefined) {
+        this.$set(this, nameOf(() => this.items), []);
+        return;
+      }
 
-        return strVal.split('|').map(x => x.trim());
-      },
+      this.$set(this, nameOf(() => this.items), strVal.split('|').map(x => x.trim()));
     },
-    mixins: [BaseField],
-    template: tpl,
+    extends: baseDef,
   });
 };
 

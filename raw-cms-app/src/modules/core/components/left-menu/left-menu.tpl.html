@@ -9,7 +9,7 @@
     <v-list dark tile>
       <v-list-item>
         <v-list-item-avatar>
-          <user-avatar size="48" color="blue lighten-3" dark></user-avatar>
+          <user-avatar :size="48" color="blue lighten-3" dark></user-avatar>
         </v-list-item-avatar>
       </v-list-item>
 
@@ -103,4 +103,20 @@
       </v-list-item>
     </template>
   </v-list>
+
+  <template v-slot:append>
+    <v-list dense>
+      <v-list-item
+        :class="{ 'router-link-active': isActive(bottomItem)}"
+        @click.stop="goTo(bottomItem)"
+      >
+        <v-list-item-action>
+          <v-icon>{{ bottomItem.icon }}</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>{{ bottomItem.text }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+  </template>
 </v-navigation-drawer>

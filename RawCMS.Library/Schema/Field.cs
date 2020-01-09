@@ -20,9 +20,6 @@ namespace RawCMS.Library.Schema
 
         public string Type { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public FieldBaseType BaseType { get; set; }
-
         public JObject Options { get; set; }
     }
 }

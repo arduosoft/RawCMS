@@ -1,5 +1,8 @@
-<v-container class="fill-height" fluid>
-  <v-row align="center" justify="center">
-    <img src="/modules/core/assets/rawlogo.png" />
+<v-container fluid>
+  <v-row align="start">
+    <v-col>
+      {{ $t('core.home.welcomeText') }}
+      <dashboard></dashboard>
+    </v-col>
   </v-row>
 </v-container>

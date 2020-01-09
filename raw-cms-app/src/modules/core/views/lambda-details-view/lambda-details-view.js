@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { optionalChain } from '../../../../utils/object.utils.js';
 import { rawCmsDetailEditEvents } from '../../../shared/components/detail-edit/detail-edit.js';
 import { LambdaDetailsDef } from '../../components/lambda-details/lambda-details.js';
@@ -13,24 +14,20 @@ const _LambdaDetailsView = async (res, rej) => {
       LambdaDetails: editor,
     },
     created: function() {
-      RawCMS.eventBus.$on(rawCmsDetailEditEvents.loaded, ev => {
+      RawCMS.eventBus.$once(rawCmsDetailEditEvents.loaded, ev => {
         this.updateTitle({
           isNew: ev.isNew,
           name: optionalChain(() => ev.value.Name, { fallbackValue: '<NONE>' }),
         });
       });
     },
-    data: function() {
-      return {
-        title: null,
-      };
-    },
-
     methods: {
       updateTitle: function({ isNew, name }) {
-        this.title = isNew
+        let title = isNew
           ? this.$t('core.lambdas.details.newTitle')
           : this.$t('core.lambdas.details.updateTitle', { name: name });
+
+        vuexStore.dispatch('core/updateTopBarTitle', title);
       },
     },
     template: tpl,
