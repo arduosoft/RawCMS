@@ -1,0 +1,11 @@
+<v-layout class="flex-column">
+  <v-col>
+    <lambdas-list></lambdas-list>
+  </v-col>
+
+  <v-fab-transition>
+    <v-btn color="primary" fab fixed bottom right @click.stop="goToCreateView()">
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-fab-transition>
+</v-layout>

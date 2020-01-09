@@ -1,0 +1,43 @@
+<v-autocomplete
+  v-if="isSearchable"
+  prepend-icon="mdi-format-list-bulleted-square"
+  :id="to.id"
+  :chips="multi"
+  :class="to.classes"
+  :label="label"
+  :rules="errorMsgs"
+  :items="items"
+  :item-text="itemText"
+  :item-value="itemValue"
+  :multiple="multi"
+  :counter="showCounter"
+  deletable-chips
+  clearable
+  cache-items
+  v-model="value"
+  v-on="basicListeners"
+  :disabled="isLoading"
+  :loading="isLoading"
+  :search-input.sync="search"
+>
+</v-autocomplete>
+
+<v-select
+  v-else
+  prepend-icon="mdi-format-list-bulleted-square"
+  :id="to.id"
+  :chips="multi"
+  :class="to.classes"
+  :label="label"
+  :rules="errorMsgs"
+  :items="items"
+  :item-text="itemText"
+  :item-value="itemValue"
+  :multiple="multi"
+  :counter="showCounter"
+  deletable-chips
+  clearable
+  v-model="value"
+  v-on="basicListeners"
+>
+</v-select>

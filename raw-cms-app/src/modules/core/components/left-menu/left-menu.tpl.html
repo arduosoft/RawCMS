@@ -1,5 +1,53 @@
-<v-navigation-drawer v-model="isVisible" :clipped="$vuetify.breakpoint.lgAndUp" app>
+<v-navigation-drawer
+  v-model="isVisible"
+  :clipped="$vuetify.breakpoint.lgAndUp"
+  app
+  class="rawcms-left_menu"
+>
   <link rel="stylesheet" href="/modules/core/components/left-menu/left-menu.css" />
+  <v-img src="/modules/core/assets/left-menu-bg.jpg" contain position="top">
+    <v-list dark tile>
+      <v-list-item>
+        <v-list-item-avatar>
+          <user-avatar :size="48" color="blue lighten-3" dark></user-avatar>
+        </v-list-item-avatar>
+      </v-list-item>
+
+      <v-list-group
+        link
+        @click.stop="toggleUserMenuVisibility()"
+        append-icon="mdi-menu-down"
+        active-class="user-menu-active"
+      >
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title class="title">{{ userinfo.UserName }}</v-list-item-title>
+            <v-list-item-subtitle>{{ userinfo.Email }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </template>
+      </v-list-group>
+    </v-list>
+  </v-img>
+
+  <v-divider></v-divider>
+
+  <transition name="user-menu-tr">
+    <v-list dense ref="userMenu" v-if="isUserMenuVisible">
+      <v-list-item @click.stop="logout()">
+        <v-list-item-action>
+          <v-icon>mdi-logout</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>{{ $t('core.leftMenu.logoutText') }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+  </transition>
+
+  <transition name="user-menu-divider-tr">
+    <v-divider v-if="isUserMenuVisible"></v-divider>
+  </transition>
+
   <v-list dense>
     <template v-for="item in items">
       <v-row v-if="item.heading" :key="item.heading" align="center">
@@ -24,19 +72,21 @@
             </v-list-item-content>
           </v-list-item>
         </template>
-        <v-list-item
-          v-for="(child, i) in item.children"
-          :key="i"
-          :class="{ 'router-link-active': isActive(item)}"
-          @click.stop="goTo(item)"
-        >
-          <v-list-item-action v-if="child.icon">
-            <v-icon>{{ child.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ child.text }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <template>
+          <v-list-item
+            v-for="(child, i) in item.children"
+            :key="i"
+            :class="{ 'router-link-active': isActive(item)}"
+            @click.stop="goTo(item)"
+          >
+            <v-list-item-action v-if="child.icon">
+              <v-icon>{{ child.icon }}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{ child.text }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
       </v-list-group>
       <v-list-item
         v-else
@@ -53,10 +103,20 @@
       </v-list-item>
     </template>
   </v-list>
+
+  <template v-slot:append>
+    <v-list dense>
+      <v-list-item
+        :class="{ 'router-link-active': isActive(bottomItem)}"
+        @click.stop="goTo(bottomItem)"
+      >
+        <v-list-item-action>
+          <v-icon>{{ bottomItem.icon }}</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>{{ bottomItem.text }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+  </template>
 </v-navigation-drawer>
-<style>
-  .router-link-active {
-    opacity: 0.4;
-    color: red;
-  }
-</style>

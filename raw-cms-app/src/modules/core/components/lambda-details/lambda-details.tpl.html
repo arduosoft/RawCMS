@@ -1,0 +1,53 @@
+<detail-wrapper v-on="$listeners" v-bind="$props" ref="detailWrapper">
+  <template slot="custom-tabs">
+    <v-tab href="#tabCustom" ref="tabCustom">
+      {{ $t('core.common.editText') }}
+      <v-icon>mdi-pen</v-icon>
+    </v-tab>
+  </template>
+
+  <template v-slot:custom-tab-items="{ value }">
+    <v-tab-item value="tabCustom">
+      <v-card flat tile>
+        <v-form>
+          <v-container fluid ref="customContainer">
+            <v-row class="px-3" ref="firstRow">
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="value.Name"
+                  :rules="nameRules"
+                  :counter="10"
+                  :label="$t('core.lambdas.details.nameLabel')"
+                  required
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="value.Path"
+                  :rules="pathRules"
+                  :counter="20"
+                  :label="$t('core.lambdas.details.pathLabel')"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12" ref="monacoContainer">
+                <monaco-editor
+                  ref="customMonaco"
+                  class="fill-height"
+                  v-model="value.Code"
+                  :options="customMonacoOptions"
+                  :amdRequire="amdRequire"
+                  @editorDidMount="resizeCustomMonaco()"
+                ></monaco-editor>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-card>
+    </v-tab-item>
+  </template>
+</detail-wrapper>

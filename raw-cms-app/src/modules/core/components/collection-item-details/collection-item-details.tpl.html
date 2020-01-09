@@ -1,0 +1,26 @@
+<detail-wrapper v-on="$listeners" v-bind="$props" :apiBasePath="apiBasePath" :canSave="isValid">
+  <template slot="custom-tabs">
+    <v-tab href="#tabFormly">
+      {{ $t('core.common.editText') }}
+      <v-icon>mdi-pen</v-icon>
+    </v-tab>
+  </template>
+
+  <template v-slot:custom-tab-items="{ value }">
+    <v-tab-item value="tabFormly">
+      <v-card flat tile>
+        <v-form>
+          <v-container fluid>
+            <formly-form
+              :form="formState"
+              :model="value"
+              :fields="formFields"
+              tag="v-row"
+              class="px-3"
+            ></formly-form>
+          </v-container>
+        </v-form>
+      </v-card>
+    </v-tab-item>
+  </template>
+</detail-wrapper>

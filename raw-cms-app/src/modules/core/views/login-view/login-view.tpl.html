@@ -1,0 +1,45 @@
+<v-row align="center" justify="center" class="fill-height">
+  <v-col cols="12" sm="8" md="4">
+    <v-card class="elevation-12">
+      <v-form ref="loginForm" @submit="login($event)">
+        <v-toolbar color="primary" flat dark>
+          <v-toolbar-title>{{ $t('core.login.title') }}</v-toolbar-title>
+          <div class="flex-grow-1"></div>
+        </v-toolbar>
+        <v-card-text>
+          <v-text-field
+            label="Login"
+            name="login"
+            prepend-icon="mdi-account"
+            type="text"
+            required
+            v-model="username"
+            :error-messages="usernameErrors"
+            @input="onInputEvt('username')"
+            @blur="onInputEvt('username')"
+          ></v-text-field>
+
+          <v-text-field
+            label="Password"
+            name="password"
+            prepend-icon="mdi-lock"
+            type="password"
+            required
+            v-model="password"
+            :error-messages="passwordErrors"
+            @input="onInputEvt('password')"
+            @blur="onInputEvt('password')"
+          ></v-text-field>
+
+          <v-alert type="error" v-if="error">
+            {{ $t('core.login.wrongCredentials') }}
+          </v-alert>
+        </v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn type="submit" color="primary">{{ $t('core.login.loginBtn') }}</v-btn>
+        </v-card-actions>
+      </v-form>
+    </v-card>
+  </v-col>
+</v-row>

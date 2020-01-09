@@ -1,0 +1,14 @@
+.rawcms-data-table tr {
+  cursor: pointer;
+}
+
+.rawcms-data-table tr th:last-child,
+.rawcms-data-table tr td:last-child {
+  width: 1%;
+  white-space: nowrap;
+
+  border-spacing: 5px;
+  border-left-color: rgba(0, 0, 0, 0.12);
+  border-left-style: solid;
+  border-left-width: 1px;
+}

@@ -12,6 +12,7 @@ namespace RawCMS.Library.Core.Attributes
 {
     public class RawAuthenticationAttribute : AuthorizeAttribute
     {
+        //TODO: a che serve?
         public RawAuthenticationAttribute()
         {
             AuthenticationSchemes = "Bearer";

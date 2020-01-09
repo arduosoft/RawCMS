@@ -9,7 +9,7 @@
 using Jint;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
-using RawCMS.Library.Schema;
+using RawCMS.Library.Service;
 using System.Collections.Generic;
 
 namespace RawCMS.Library.Lambdas
@@ -20,9 +20,17 @@ namespace RawCMS.Library.Lambdas
 
         public override string Description => "JsDispatcher";
 
+        protected readonly EntityService entityService;
+
+        public JsDispatcher(EntityService entityService)
+        {
+            this.entityService = entityService;
+        }
+
         public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
-            if (EntityValidation.Entities.TryGetValue(collection, out CollectionSchema settings))
+            var settings = this.entityService.GetByName(collection);
+            if (settings != null)
             {
                 if (!string.IsNullOrEmpty(settings.PresaveScript))
                 {
