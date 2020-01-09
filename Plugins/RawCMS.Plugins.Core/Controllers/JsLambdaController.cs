@@ -50,14 +50,16 @@ namespace RawCMS.Plugins.Core.Controllers
             string code = js["Code"].ToString();
 
             Dictionary<string, object> tmpIn = input.ToObject<Dictionary<string, object>>();
-            Dictionary<string, object> tmpOur = new Dictionary<string, object>();
+            Dictionary<string, object> tmpOut = new Dictionary<string, object>();
 
 
-            Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); });
+            Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); });
+            
 
             engine.SetValue("input", tmpIn);
-            engine.SetValue("RestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
-            engine.SetValue("output", tmpOur);
+            engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
+            engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
+            engine.SetValue("output", tmpOut);
             try
             {
                 engine.Execute(code);
@@ -66,9 +68,10 @@ namespace RawCMS.Plugins.Core.Controllers
             catch (Exception e)
             {
                 // TODO: log error...
+                tmpOut.Add("Error", e.Message);
             }
 
-            return JObject.FromObject(tmpOur);
+            return JObject.FromObject(tmpOut);
         }
     }
 }

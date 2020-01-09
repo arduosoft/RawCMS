@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace RawCMS.Library.JavascriptClient
 {
-    internal class JavascriptRestClientRequest
+    public class JavascriptRestClientRequest
     {
         public string Url { get; set; }
         public Dictionary<string,string> Header { get; set; }
