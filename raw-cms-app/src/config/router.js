@@ -181,12 +181,32 @@ const _router = new VueRouter({
       path: '/graphql',
       component: async (res, rej) => {
         const cmp = await import('/modules/core/views/graphql-view/graphql-view.js');
+      },
+    },
+      {
       path: '/logs',
-      name: 'logs',
       component: async (res, rej) => {
         const cmp = await import('/modules/core/views/logs-view/logs-view.js');
         await cmp.default(res, rej);
       },
+      children: [
+        {
+          path: '/',
+          name: 'logs',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/views/logs-list-view/logs-list-view.js');
+            await cmp.default(res, rej);
+          },
+        },
+        {
+          path: ':name',
+          name: 'logs-search',
+          component: async (res, rej) => {
+            const cmp = await import('/modules/core/views/logs-search-view/logs-search-view.js');
+            await cmp.default(res, rej);
+          },
+        },
+      ],
     },
     {
       path: '/sandbox',

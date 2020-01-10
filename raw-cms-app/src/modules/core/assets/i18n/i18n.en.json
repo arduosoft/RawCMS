@@ -110,6 +110,10 @@
       "deleteSuccessMsgTpl": "Configuration {name} was deleted.",
       "emptyMsg": "There are no plugins yet. Add some with the button below!",
       "title": "Configuration"
+    },
+    "logs": {
+      "detail": { "newTitle": "New log", "updateTitle": "Log {name}", "search": "Search" },
+      "title": "Logs"
     }
   }
 }

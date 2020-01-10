@@ -1,0 +1,24 @@
+<v-card flat tile height="100%">
+  <v-form>
+    <v-container fluid>
+      <v-row class="px-6">
+        <v-col>
+          <v-text-field
+            label="search"
+            alignment="start"
+            justify="start"
+            v-model="search"
+          ></v-text-field>
+        </v-col>
+        <v-col>
+          <v-btn @click="search()">{{ $t('core.logs.detail.search') }}</v-btn>
+        </v-col>
+      </v-row>
+      <v-row md="40">
+        <v-col md="7">
+          <v-card-text></v-card-text>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-form>
+</v-card>
