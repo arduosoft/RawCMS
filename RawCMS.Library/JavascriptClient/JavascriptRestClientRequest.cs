@@ -9,6 +9,7 @@
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using System;
 using System.Collections.Generic;
 
 namespace RawCMS.Library.JavascriptClient
@@ -18,7 +19,7 @@ namespace RawCMS.Library.JavascriptClient
         public string Url { get; set; }
         public Dictionary<string,string> Header { get; set; }
         public Dictionary<string,string> QueryParams { get; set; }
-        public Method  Method { get; set; }
+        public string  Method { get; set; }
         public JObject Body { get; set; }
     }
 }

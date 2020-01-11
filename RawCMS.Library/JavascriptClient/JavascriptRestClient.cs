@@ -22,40 +22,56 @@ namespace RawCMS.Library.JavascriptClient
         {
 
         }
-        public JavascriptRestClient(ILogger logger)
-        {
-            this.logger = logger;
-        }
+    
 
-        JavascriptRestClientMessage<JObject> Execute(JavascriptRestClientRequest javascriptRequest)
+        public JavascriptRestClientMessage<JObject> Execute(JavascriptRestClientRequest javascriptRequest)
         {
             JavascriptRestClientMessage<JObject> response = new JavascriptRestClientMessage<JObject>(new JObject());
+                        IRestResponse restResponse = null;
 
             RestClient client = new RestClient(javascriptRequest.Url);
-            RestRequest request = new RestRequest(javascriptRequest.Method)
+            Method reqMethod = Method.GET;
+            if (!Enum.TryParse(javascriptRequest.Method, true, out reqMethod))
+            {
+                // log error method...
+            }
+
+
+            RestRequest request = new RestRequest()
             {
                 //request headers type
-                RequestFormat = DataFormat.Json
+                RequestFormat = DataFormat.Json,
+                Method = reqMethod
             };
+
             // set the request header
-            foreach (var el in javascriptRequest.Header)
+            if (javascriptRequest.Header!=null)
             {
-                request.AddHeader(el.Key, el.Value);
+                foreach (var el in javascriptRequest.Header)
+                {
+                    request.AddHeader(el.Key, el.Value);
 
+                }
             }
+           
 
-            //add parameters and token to request
+            //add parameters to request
             request.Parameters.Clear();
-            foreach (var el in javascriptRequest.QueryParams)
+            if (javascriptRequest.QueryParams!=null)
             {
-                request.AddParameter(el.Key, el.Value);
+                foreach (var el in javascriptRequest.QueryParams)
+                {
+                    request.AddParameter(el.Key, el.Value);
+                }
             }
 
+            // add body to request (only JSON)
             
-            //request.AddParameter("Authorization", "Bearer " + req.Token, ParameterType.HttpHeader);
+            request.AddJsonBody(javascriptRequest.Body);
 
-            logger.LogDebug($"request URI: {client.BuildUri(request)}");
-            IRestResponse restResponse = null;
+            // TODO: add logging
+            var uri = client.BuildUri(request);
+            //logger.LogDebug($"request URI: {uri.AbsoluteUri}");
             try
             {
                 restResponse = client.Execute(request);
@@ -78,13 +94,13 @@ namespace RawCMS.Library.JavascriptClient
         }
 
 
-        public string getText()
-        {
-            return "ptova";
-        }
-        public static string getStaticText()
-        {
-            return "staticprova";
-        }
+        //public string getText()
+        //{
+        //    return "text";
+        //}
+        //public static string getStaticText()
+        //{
+        //    return "static text";
+        //}
     }
 }
