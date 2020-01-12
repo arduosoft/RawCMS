@@ -1,5 +1,21 @@
 {
-    "files.exclude": {
-        "**/dist": true
-    }
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "editor.formatOnSave": true,
+  "editor.rulers": [100],
+  "files.exclude": {
+    "**/dist": true
+  },
+  "html.format.wrapAttributes": "auto",
+  "html.format.wrapLineLength": 120,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

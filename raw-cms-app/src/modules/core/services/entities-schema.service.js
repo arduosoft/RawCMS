@@ -1,16 +1,16 @@
-import { apiClient } from '../api/api-client.js';
+import { BaseCrudService } from '../../shared/services/base-crud-service.js';
 
-class EntitiesSchemaService {
-  _apiClient;
-
+class EntitiesSchemaService extends BaseCrudService {
   constructor() {
-    this._apiClient = apiClient;
+    super({ basePath: '/system/admin/_schema' });
   }
 
-  async getEntities(page = 0) {
-    // FIXME: Handle pagination (maybe in api client?)
-    const res = await this._apiClient.get('/system/admin/_schema');
-    return res.data.data.items;
+  async getByName(collectionName) {
+    const res = await this.getPage({
+      size: 1,
+      rawQuery: { CollectionName: collectionName },
+    });
+    return res.items[0];
   }
 }
 

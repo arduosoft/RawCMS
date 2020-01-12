@@ -1,0 +1,13 @@
+<div>
+  <v-text-field
+    prepend-icon="mdi-numeric"
+    :id="to.id"
+    :class="to.classes"
+    :label="label"
+    :rules="errorMsgs"
+    :type="'number'"
+    :step="step"
+    v-on="basicListeners"
+    v-model="value"
+  ></v-text-field>
+</div>

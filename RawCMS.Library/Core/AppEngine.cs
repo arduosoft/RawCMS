@@ -16,6 +16,7 @@ using RawCMS.Library.Core.Extension;
 using RawCMS.Library.Core.Helpers;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.DataModel;
+using RawCMS.Library.Lambdas;
 using RawCMS.Library.Schema;
 using RawCMS.Library.Service;
 using System;
@@ -50,6 +51,11 @@ namespace RawCMS.Library.Core
             return this.reflectionManager.GetAssignablesInstances<FieldTypeValidator>();
         }
 
+        public List<FieldType> GetFieldTypes()
+        {
+            return this.reflectionManager.GetAssignablesInstances<FieldType>();
+        }
+
         public void Init()
         {
         }
@@ -74,7 +80,7 @@ namespace RawCMS.Library.Core
                     {
                         if (_logger.IsEnabled(LogLevel.Trace))
                         {
-                            _logger.LogDebug($"Added {type.FullName}..");
+                            //   _logger.LogDebug($"Added {type.FullName}..");
                         }
                         typesToAdd.Add(type);
                     }
@@ -87,7 +93,8 @@ namespace RawCMS.Library.Core
 
             _logger.LogInformation($"ASSEMBLY LOAD COMPLETED");
 
-            // create plugin loaders
+            _logger.LogInformation($"plugin folder is {pluginFolder}");
+
             var pluginsDir = pluginFolder ?? Path.Combine(AppContext.BaseDirectory, "plugins");
 
             _logger.LogInformation($"Loading plugin using {pluginsDir}");
@@ -118,12 +125,15 @@ namespace RawCMS.Library.Core
                   logger,
                   basedir =>
                   {
-                      var folder = basedir + pluginPath;
-                      if (Path.IsPathRooted(pluginPath))
+                      logger.LogInformation($"original path {pluginPath}");
+                      var folder = pluginPath;
+                      if (!Path.IsPathRooted(pluginPath))
                       {
-                          folder = pluginPath;
+                          folder = basedir + pluginPath;
+                          logger.LogInformation($"pluigin is relative. path is made absolyte using base app");
                       }
 
+                      logger.LogInformation($"pluigin folder final value {folder}");
                       return Path.GetFullPath(folder);//Directory.GetDirectories(folder).FirstOrDefault();
                   },
                   reflectionManager,
@@ -309,11 +319,12 @@ namespace RawCMS.Library.Core
 
         private void DumpLambdaInfo()
         {
+            _logger.LogDebug("DumpLambdaInfo");
+
             var types = this.Lambdas.Select(x => x.GetType().BaseType).Distinct().ToList();
 
             foreach (var type in types)
             {
-                _logger.LogDebug("");
                 _logger.LogDebug($"For type {type.FullName}");
 
                 this.Lambdas.Where(x => x.GetType().BaseType == type).ToList().ForEach(x =>
@@ -368,6 +379,7 @@ namespace RawCMS.Library.Core
             _logger.LogDebug("Discover Lambdas in Bundle");
 
             List<Type> lambdas = this.reflectionManager.GetImplementors<Lambda>();
+            List<Type> _rest = this.reflectionManager.GetImplementors<RestLambda>();
 
             foreach (Type type in lambdas)
             {

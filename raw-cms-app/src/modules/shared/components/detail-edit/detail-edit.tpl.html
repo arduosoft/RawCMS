@@ -1,0 +1,56 @@
+<v-layout class="flex-column justify-center align-center fill-height">
+  <atom-spinner
+    :animation-duration="1000"
+    :size="80"
+    :color="'#64B5F6'"
+    v-if="isLoading"
+  ></atom-spinner>
+
+  <v-tabs
+    dark
+    background-color="tabHeader"
+    class="rawcms-detail-edit elevation-2"
+    :centered="true"
+    :grow="true"
+    prev-icon="mdi-arrow-left-bold-box-outline"
+    next-icon="mdi-arrow-right-bold-box-outline"
+    :icons-and-text="true"
+    v-model="activeTabId"
+    v-if="!isLoading"
+    ref="tabs"
+  >
+    <v-tabs-slider></v-tabs-slider>
+
+    <slot name="custom-tabs"></slot>
+
+    <v-tab ref="tabMonacoRef" href="#tabMonaco">
+      {{ $t('core.common.jsonText') }}
+      <v-icon>mdi-json</v-icon>
+    </v-tab>
+
+    <v-tabs-items v-model="activeTabId">
+      <!-- custom editor(s) here -->
+      <slot name="custom-tab-items" v-bind:value="value"></slot>
+
+      <v-tab-item value="tabMonaco">
+        <v-card flat tile>
+          <monaco-editor
+            ref="monaco"
+            class="fill-height"
+            v-model="compCode"
+            :options="monacoOptions"
+            :amdRequire="amdRequire"
+            @editorDidMount="resizeMonaco()"
+          ></monaco-editor>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+  </v-tabs>
+
+  <v-fab-transition>
+    <v-btn color="primary" fab fixed bottom right :disabled="isSaveDisabled" @click.stop="save()">
+      <v-icon v-if="!isSaving">mdi-floppy</v-icon>
+      <v-progress-circular v-if="isSaving" indeterminate></v-progress-circular>
+    </v-btn>
+  </v-fab-transition>
+</v-layout>

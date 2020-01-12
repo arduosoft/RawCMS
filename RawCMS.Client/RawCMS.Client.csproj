@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.3.0" />
+    <PackageReference Include="IdentityServer4.Contrib.LocalAccessTokenValidation" Version="1.0.1" />
     <PackageReference Include="Jint" Version="2.11.58" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="0.2.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />

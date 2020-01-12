@@ -1,0 +1,36 @@
+FROM microsoft/dotnet:2.1-aspnetcore-runtime-alpine AS base
+RUN apk add --no-cache bash 
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM microsoft/dotnet:2.1-sdk AS build
+WORKDIR /src
+#backend
+COPY ./docker/config/api/buildscript.sh ./build.sh
+COPY . .
+#frontend
+COPY ./raw-cms-app/src  /dist/wwwroot/
+COPY ./docker/config/standalone/env.json   /dist/wwwroot/env/env.json
+COPY ./docker/config/standalone/bootstrap.sh  /dist/bootstrap.sh
+
+
+RUN  tr -d '\r' < ./build.sh > ./build.sh &&\
+     tr -d '\r' < /dist/bootstrap.sh > /dist/bootstrap.sh &&\
+    chmod +x ./build.sh &&\
+    chmod +x /dist/bootstrap.sh &&\
+    ./build.sh 
+ 
+
+
+
+
+
+FROM base AS final
+WORKDIR /app
+COPY --from=build /dist .
+ENV BASE_URL=/
+
+RUN ls /app -l
+
+CMD ["/bin/bash", "-c", " /app/bootstrap.sh && dotnet  /app/RawCMS.dll"]

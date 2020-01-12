@@ -1,15 +1,13 @@
-<v-list class="elevation-1">
-  <v-list-item class="justify-center" v-if="isLoading">
-    <atom-spinner :animation-duration="1000" :size="60" :color="'#64B5F6'"></atom-spinner>
-  </v-list-item>
-  <v-list-item-group v-model="entities.length" color="primary">
-    <v-list-item v-for="ent in entities" :key="ent._id" @click.stop="goTo(ent._id)">
-      <v-list-item-content>
-        <v-list-item-title v-html="ent.CollectionName"></v-list-item-title>
-      </v-list-item-content>
-      <v-list-item-icon>
-        <v-icon>mdi-chevron-right</v-icon>
-      </v-list-item-icon>
-    </v-list-item>
-  </v-list-item-group>
-</v-list>
+<list-wrapper v-on="$listeners">
+  <template v-slot:content="slotProps">
+    <v-list-item-content>
+      <v-list-item-title v-html="slotProps.item.CollectionName"></v-list-item-title>
+    </v-list-item-content>
+  </template>
+  <template v-slot:delete-confirm-msg="slotProps">
+    {{ $t('core.entities.deleteConfirmMsgTpl', { name: slotProps.item.CollectionName }) }}
+  </template>
+  <template v-slot:empty-content="slotProps">
+    {{ $t('core.entities.emptyMsg') }}
+  </template>
+</list-wrapper>

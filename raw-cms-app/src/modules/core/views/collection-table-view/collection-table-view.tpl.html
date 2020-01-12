@@ -1,0 +1,36 @@
+<v-layout class="flex-column">
+  <v-expansion-panels>
+    <v-expansion-panel>
+      <v-expansion-panel-header>
+        {{ $t('core.collections.detail.filter') }}
+      </v-expansion-panel-header>
+      <v-expansion-panel-content ref="filterContent">
+        <monaco-editor
+          ref="monaco"
+          @editorDidMount="resizeMonaco()"
+          v-model="txtQuery"
+          :options="monacoOptions"
+          :amdRequire="amdRequire"
+          style="height:100px;"
+        >
+        </monaco-editor>
+        <v-row justify="center">
+          <v-btn @click="filter()">{{ $t('core.collections.detail.filter') }}</v-btn>
+        </v-row>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
+  <v-row>
+    <v-col>
+      <collection-table
+        :collectionName="collectionName"
+        :externalRawQuery="parseQuery"
+      ></collection-table>
+    </v-col>
+  </v-row>
+  <v-fab-transition>
+    <v-btn color="primary" fab fixed bottom right @click.stop="goToCreateView()">
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+  </v-fab-transition>
+</v-layout>

@@ -1,0 +1,63 @@
+<v-layout
+  class="flex-column justify-center"
+  :class="{'fill-height': isLoading || isEmpty, 'align-center': isLoading || isEmpty}"
+>
+  <atom-spinner
+    :animation-duration="1000"
+    :size="80"
+    :color="'#64B5F6'"
+    v-if="isLoading"
+  ></atom-spinner>
+
+  <template v-if="!isLoading && isEmpty">
+    <slot name="empty-content">
+      {{ $t('core.common.emptyListMsg') }}
+    </slot>
+  </template>
+
+  <v-list class="elevation-1 rawcms-list" v-if="!isLoading && !isEmpty">
+    <link rel="stylesheet" href="/modules/shared/components/list/list.css" />
+
+    <v-list-item v-for="i of items" :key="i._id" @click.stop="goTo(i)">
+      <slot name="content" v-bind:item="i">
+        <v-list-item-content>
+          <v-list-item-title v-html="i._id"></v-list-item-title>
+        </v-list-item-content>
+      </slot>
+      <slot name="action-buttons" v-bind:item="i">
+        <v-list-item-icon :class="{'force-show': i._meta_.isDeleting}">
+          <v-btn icon @click.stop="goTo(i)" v-if="!i._meta_.isDeleting">
+            <v-icon>mdi-pencil-outline</v-icon>
+          </v-btn>
+          <v-btn icon @click.stop="showDeleteConfirm(i)">
+            <v-icon v-if="!i._meta_.isDeleting">mdi-delete-outline</v-icon>
+            <v-progress-circular v-if="i._meta_.isDeleting" indeterminate></v-progress-circular>
+          </v-btn>
+        </v-list-item-icon>
+      </slot>
+    </v-list-item>
+
+    <v-dialog persistent v-model="isDeleteConfirmVisible">
+      <slot name="delete-dialog">
+        <v-card>
+          <v-card-title class="headline">
+            {{ $t('core.common.deleteConfirmTitle') }}
+          </v-card-title>
+          <v-card-text>
+            {{ deleteConfirmMsg(currentItem) }}
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click.stop="dismissDeleteConfirm()">
+              {{ $t('core.common.cancelBtnText') }}
+            </v-btn>
+            <v-btn color="error" text @click.stop="deleteEntity(currentItem)">
+              {{ $t('core.common.okBtnText') }}
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </slot>
+    </v-dialog>
+  </v-list>
+</v-layout>
