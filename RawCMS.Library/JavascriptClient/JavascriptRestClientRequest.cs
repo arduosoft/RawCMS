@@ -20,6 +20,6 @@ namespace RawCMS.Library.JavascriptClient
         public Dictionary<string,string> Header { get; set; }
         public Dictionary<string,string> QueryParams { get; set; }
         public string  Method { get; set; }
-        public JObject Body { get; set; }
+        public string Body { get; set; }
     }
 }

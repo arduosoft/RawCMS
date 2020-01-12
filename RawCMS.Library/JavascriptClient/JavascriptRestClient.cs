@@ -65,13 +65,16 @@ namespace RawCMS.Library.JavascriptClient
                 }
             }
 
-            // add body to request (only JSON)
-            
-            request.AddJsonBody(javascriptRequest.Body);
+            if (!string.IsNullOrEmpty(javascriptRequest.Body))
+            {
+                request.AddJsonBody(javascriptRequest.Body);
+            }
+           
 
             // TODO: add logging
-            var uri = client.BuildUri(request);
+            //var uri = client.BuildUri(request);
             //logger.LogDebug($"request URI: {uri.AbsoluteUri}");
+
             try
             {
                 restResponse = client.Execute(request);
