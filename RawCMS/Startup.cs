@@ -16,6 +16,7 @@ using NLog.Web;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Helpers;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -36,6 +37,7 @@ namespace RawCMS
             var path = ApplicationLogger.GetConfigPath(env.EnvironmentName);
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
+            loggerFactory.AddConsole();
             logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
             env.ConfigureNLog(path);
 
@@ -43,6 +45,7 @@ namespace RawCMS
 
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
+                .AddEnvironmentVariables()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
@@ -52,9 +55,10 @@ namespace RawCMS
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        //This method gets called by the runtime.Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+          
             app.UseCors();
 
             appEngine.InvokeConfigure(app);
@@ -87,9 +91,10 @@ namespace RawCMS
             app.UseWelcomePage();
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        //This method gets called by the runtime.Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           
             services.AddCors(opt => opt.AddDefaultPolicy(p =>
             {
                 p.AllowAnyHeader();
@@ -104,6 +109,8 @@ namespace RawCMS
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
             var pluginPath = Configuration.GetValue<string>("PluginPath");
+            logger.LogInformation($"loading plugins from {pluginPath}");
+            Console.WriteLine($"loading plugins from {pluginPath}");
             List<Assembly> allAssembly = AssemblyHelper.GetAllAssembly();
 
             ReflectionManager rm = new ReflectionManager(allAssembly);

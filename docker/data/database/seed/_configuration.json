@@ -1,0 +1,96 @@
+[
+  {
+    "_id": { "$oid": "5c70de8525340c4f6c30c873" },
+    "plugin_name": "RawCMS.Plugins.Core.AuthPlugin",
+    "data": {
+      "Mode": 0,
+      "ClientId": "raw.client",
+      "ClientSecret": "raw.secret",
+      "ApiResource": "rawcms",
+      "Authority": "http://localhost:284wertyuio36/",
+      "IntrospectionEndpoint": null,
+      "TokenTypeHint": null,
+      "OauthEnabled": false,
+      "AdminApiKey": "prova",
+      "ApiKey": null
+    }
+  },
+  {
+    "_id": { "$oid": "5c716c836cfcfa66d4da065e" },
+    "plugin_name": "RawCMS.Plugins.GraphQL.GraphQLPlugin",
+    "data": {
+      "Path": "/api/graphql",
+      "GraphiQLPath": "/graphql",
+      "BuildUserContext": null,
+      "EnableMetrics": false
+    }
+  },
+  {
+    "_id": { "$oid": "5d454184ae7f9b0d3810f14f" },
+    "plugin_name": "RawCMS.Plugins.GraphQL.KeyStorePlugin",
+    "data": {}
+  },
+  {
+    "_id": { "$oid": "5d89d8e06025cd4c70f31d95" },
+    "plugin_name": "RawCMS.Plugins.KeyStore.KeyStorePlugin",
+    "data": {}
+  },
+  {
+    "_id": { "$oid": "5db08f4a0337645f8853f848" },
+    "plugin_name": "RawCMS.Plugins.FullText.FullTextPlugin",
+    "data": { "Url": "http://localhost:9300", "Engine": 0 }
+  },
+  {
+    "_id": { "$oid": "5db1d9acb1573c6750b1c1e8" },
+    "plugin_name": "RawCMS.Plugins.ApiGateway.ApiGatewayPlugin",
+    "data": {
+      "Balancer": [
+        {
+          "Host": "localhost:64516",
+          "Port": 64516,
+          "Scheme": "http",
+          "Path": "^(.*)$",
+          "Nodes": [
+            {
+              "Host": "google.com",
+              "Port": 443,
+              "Scheme": "https",
+              "Enable": true
+            },
+            {
+              "Host": "amazon.com",
+              "Port": 443,
+              "Scheme": "https",
+              "Enable": true
+            }
+          ],
+          "Policy": "RoundRobin",
+          "Enable": false
+        }
+      ],
+      "Proxy": [
+        {
+          "Host": "localhost:64516",
+          "Port": 64516,
+          "Scheme": "http",
+          "Path": "^(.*)$",
+          "Node": {
+            "Host": "google.com",
+            "Port": 443,
+            "Scheme": "https",
+            "Enable": true
+          },
+          "Enable": false
+        }
+      ],
+      "Cache": {
+        "Enable": false,
+        "Duration": 600,
+        "SizeLimit": 67108864,
+        "MaximumBodySize": 104857600,
+        "UseCaseSensitivePaths": false
+      },
+      "Logging": { "Enable": false }
+    }
+  }
+]

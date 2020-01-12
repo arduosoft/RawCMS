@@ -1,5 +1,6 @@
 import { vuexStore } from '../../../../config/vuex.js';
 import { optionalChain } from '../../../../utils/object.utils.js';
+import { randomString } from '../../../../utils/random.utils.js';
 import { validationService } from '../../services/validation.service.js';
 
 const _fieldEditEvents = {
@@ -59,6 +60,9 @@ const _FieldEditDef = async () => {
         this.updateFieldOptions(optionalChain(() => this.currentField.Type));
       },
       updateFieldOptions: function(fieldTypeName) {
+        const formId = randomString(16);
+        vuexStore.dispatch('core/updateRelationMetadata', { formId: formId });
+
         if (fieldTypeName === undefined) {
           this.optionsFields = [];
           return;
@@ -86,6 +90,7 @@ const _FieldEditDef = async () => {
             },
             {
               fieldType: x.type,
+              formId: formId,
             }
           );
         });

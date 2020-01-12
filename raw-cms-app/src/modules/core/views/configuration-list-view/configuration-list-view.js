@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { ConfigurationListDef } from '../../components/configuration-list/configuration-list.js';
 
 const _ConfigurationListView = async (res, rej) => {
@@ -10,8 +11,8 @@ const _ConfigurationListView = async (res, rej) => {
     components: {
       ConfigurationList: list,
     },
-    data: function() {
-      return {};
+    mounted() {
+      vuexStore.dispatch('core/updateTopBarTitle', this.$t('core.configuration.title'));
     },
     methods: {
       goToCreateView: function() {

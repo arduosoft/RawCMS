@@ -64,7 +64,7 @@ namespace RawCMS.Plugins.GraphQL.Controllers
                 _.Query = request.Query;
                 _.OperationName = request.OperationName;
                 _.Inputs = request.Variables.ToInputs();
-                _.UserContext = _service.Settings.BuildUserContext?.Invoke(HttpContext);
+                //_.UserContext = _service.Settings.BuildUserContext?.Invoke(HttpContext);
                 _.EnableMetrics = _service.Settings.EnableMetrics;
                 if (_service.Settings.EnableMetrics)
                 {

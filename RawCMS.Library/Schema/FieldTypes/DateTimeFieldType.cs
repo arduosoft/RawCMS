@@ -4,6 +4,8 @@
     {
         public override string TypeName => "date";
 
+        public override FieldGraphType GraphType => FieldGraphType.Date;
+
         public DateTimeFieldType()
         {
             OptionParameter.Add(new OptionParameter()

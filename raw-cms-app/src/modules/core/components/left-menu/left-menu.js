@@ -19,22 +19,25 @@ const _LeftMenu = async (resolve, reject) => {
         return vuexStore.state.core.userInfo || {};
       },
     },
-    data: () => {
+    data: function() {
       return {
         isVisible: false,
         isUserMenuVisible: false,
         items: [
+          { icon: 'mdi-home', text: 'Home', route: 'home' },
           { icon: 'mdi-account', text: 'Users', route: 'users' },
           { icon: 'mdi-cube', text: 'Entities', route: 'entities' },
           { icon: 'mdi-book-open', text: 'Collections', route: 'collections' },
           { icon: 'mdi-circle', text: 'Lambdas', route: 'lambdas' },
           { icon: 'mdi-settings', text: 'Configuration', route: 'plugins' },
+          { icon: 'mdi-graphql', text: 'GraphQL', route: 'graphql' },
           {
             icon: 'mdi-file-document-outline',
             text: 'Dev portal',
             extLink: RawCMS.env.api.baseUrl,
           },
         ],
+        bottomItem: { icon: 'mdi-information', text: 'About', route: 'about' },
       };
     },
     methods: {

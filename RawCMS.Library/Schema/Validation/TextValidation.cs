@@ -29,7 +29,7 @@ const innerValidation = function() {
         return;
     }
 
-    if (options.maxlenght !== undefined && options.maxlength < value.length) {
+    if (options.maxlength !== undefined && options.maxlength < value.length) {
         errors.push({""Code"":""STRING-02"", ""Title"":""field too long"",""Description"":""ddd""});
     }
 

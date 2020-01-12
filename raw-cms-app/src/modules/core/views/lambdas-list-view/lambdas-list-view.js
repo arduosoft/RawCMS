@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { LambdasListDef } from '../../components/lambdas-list/lambdas-list.js';
 
 const _LambdasListView = async (res, rej) => {
@@ -10,8 +11,8 @@ const _LambdasListView = async (res, rej) => {
     components: {
       LambdasList: list,
     },
-    data: function() {
-      return {};
+    mounted() {
+      vuexStore.dispatch('core/updateTopBarTitle', this.$t('core.lambdas.title'));
     },
     methods: {
       goToCreateView: function() {

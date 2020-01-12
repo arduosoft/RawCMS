@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 		docs\index.md = docs\index.md
 		docs\Plugin.md = docs\Plugin.md
 		docs\RawCMS.postman_collection.json = docs\RawCMS.postman_collection.json
+		docs\Relation.md = docs\Relation.md
 		docs\TestBook.md = docs\TestBook.md
 	EndProjectSection
 EndProject
@@ -41,9 +42,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Client", "RawCMS.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.KeyStore", "Plugins\RawCMS.Plugins.KeyStore\RawCMS.Plugins.KeyStore.csproj", "{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.FullText", "Plugins\RawCMS.Plugins.FullText\RawCMS.Plugin.FullText\RawCMS.Plugins.FullText.csproj", "{802B37DD-6166-404F-825D-D0A0460C2F12}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.ApiGateway", "Plugins\RawCMS.Plugins.ApiGateway\RawCMS.Plugins.ApiGateway.csproj", "{AB934622-977A-471A-854C-B905AB9F5174}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.FullText", "Plugins\RawCMS.Plugins.FullText\RawCMS.Plugins.FullText.csproj", "{9D9923CC-CA63-4E7C-B0F5-5A151F0FF524}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,14 +80,14 @@ Global
 		{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{802B37DD-6166-404F-825D-D0A0460C2F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{802B37DD-6166-404F-825D-D0A0460C2F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{802B37DD-6166-404F-825D-D0A0460C2F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{802B37DD-6166-404F-825D-D0A0460C2F12}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB934622-977A-471A-854C-B905AB9F5174}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB934622-977A-471A-854C-B905AB9F5174}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB934622-977A-471A-854C-B905AB9F5174}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB934622-977A-471A-854C-B905AB9F5174}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D9923CC-CA63-4E7C-B0F5-5A151F0FF524}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D9923CC-CA63-4E7C-B0F5-5A151F0FF524}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D9923CC-CA63-4E7C-B0F5-5A151F0FF524}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D9923CC-CA63-4E7C-B0F5-5A151F0FF524}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,8 +96,8 @@ Global
 		{A9B9CD89-FF15-4E8A-B1AD-122A38080CB3} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
 		{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
 		{CE2FFFD9-CB20-42CF-809E-2B17B4CF8AC5} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
-		{802B37DD-6166-404F-825D-D0A0460C2F12} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
 		{AB934622-977A-471A-854C-B905AB9F5174} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
+		{9D9923CC-CA63-4E7C-B0F5-5A151F0FF524} = {6DA8883F-F42E-4FDC-A93A-1D41549F6C05}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE0F5781-A4C7-4C01-8B4C-4AE7A10908CF}

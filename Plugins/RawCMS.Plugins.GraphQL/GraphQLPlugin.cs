@@ -28,11 +28,11 @@ namespace RawCMS.Plugins.GraphQL
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
+            //services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<IDocumentWriter, DocumentWriter>();
             services.AddScoped<ISchema, GraphQLSchema>();
-            services.AddSingleton<GraphQLQuery>();
+            services.AddScoped<GraphQLQuery>();
             services.AddSingleton<GraphQLService>();
             Logger.LogInformation("GraphQL plugin loaded");
         }

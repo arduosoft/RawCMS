@@ -1,12 +1,5 @@
-import { checkAbstractImplementation } from '../../../utils/inheritance.js';
-
 export class ICrudService {
-  constructor() {
-    checkAbstractImplementation({
-      baseClazz: ICrudService,
-      targetClazz: new.target,
-    });
-  }
+  constructor() {}
 
   async getAll() {
     throw new Error(`Please Provide an implementation for ${this.getAll.name}`);

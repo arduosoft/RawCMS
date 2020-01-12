@@ -1,35 +1,25 @@
 <v-layout class="flex-column">
-  <h1>{{ title }}</h1>
-  <v-row class="flex-grow-0">
-    <v-col cols="12" sm="6" md="3">
-      <v-text-field
-        label="Raw Mongo query"
-        v-model="txtQuery"
-        @keyup.native.enter="filter()"
-      ></v-text-field>
-    </v-col>
-    <v-col>
-      <v-btn @click="filter()">filter</v-btn>
-    </v-col>
-  </v-row>
-  <!-- <v-expansion-panel>
-    <v-expansion-panel-header>filter</v-expansion-panel-header>
-    <v-expansion-panel-content>
-      <v-row class="flex-grow-0">
-        <v-col>
-          <monaco-editor
-            ref="monaco"
-            class="fill-height"
-            v-model="txtQuery"
-            :options="monacoOptions"
-            :amdRequire="amdRequire"
-            @editorDidMount="resizeMonaco()"
-          ></monaco-editor>
-        </v-col>
-        <v-col><v-btn @click="filter()">filter</v-btn></v-col>
-      </v-row>
-    </v-expansion-panel-content>
-  </v-expansion-panel> -->
+  <v-expansion-panels>
+    <v-expansion-panel>
+      <v-expansion-panel-header>
+        {{ $t('core.collections.detail.filter') }}
+      </v-expansion-panel-header>
+      <v-expansion-panel-content ref="filterContent">
+        <monaco-editor
+          ref="monaco"
+          @editorDidMount="resizeMonaco()"
+          v-model="txtQuery"
+          :options="monacoOptions"
+          :amdRequire="amdRequire"
+          style="height:100px;"
+        >
+        </monaco-editor>
+        <v-row justify="center">
+          <v-btn @click="filter()">{{ $t('core.collections.detail.filter') }}</v-btn>
+        </v-row>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
   <v-row>
     <v-col>
       <collection-table

@@ -1,3 +1,4 @@
+import vuexStore from '../../../../config/vuex.js';
 import { optionalChain } from '../../../../utils/object.utils.js';
 import { rawCmsDetailEditEvents } from '../../../shared/components/detail-edit/detail-edit.js';
 import { ConfigurationDetailsDef } from '../../components/configuration-details/configuration-details.js';
@@ -20,17 +21,13 @@ const _ConfigurationDetailsView = async (res, rej) => {
         });
       });
     },
-    data: function() {
-      return {
-        title: null,
-      };
-    },
-
     methods: {
       updateTitle: function({ isNew, name }) {
-        this.title = isNew
+        let title = isNew
           ? this.$t('core.configuration.detail.newTitle')
           : this.$t('core.configuration.detail.updateTitle', { name: name });
+
+        vuexStore.dispatch('core/updateTopBarTitle', title);
       },
     },
     template: tpl,

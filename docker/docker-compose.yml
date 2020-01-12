@@ -1,0 +1,31 @@
+version: "3"
+services:
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      # - MONGO_INITDB_DATABASE=rawcms
+      - MONGO_INITDB_USERNAME=dev
+      - MONGO_INITDB_PASSWORD=password
+    ports:
+      - 28017:27017
+    volumes:
+      - ./data/database/seed/:/docker-entrypoint-initdb.d/seed/:ro
+      - ./config/mongo/init-mongo.sh:/docker-entrypoint-initdb.d/1init-mongo.sh:ro
+      - ./config/mongo/dev-user.js:/docker-entrypoint-initdb.d/0dev-user.js:ro
+  elasticsearchtest:
+    image: elasticsearch:7.4.0
+    environment:
+      - discovery.type=single-node
+      - http.cors.enabled=true
+      - http.cors.allow-credentials=true
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-origin=/https?:\/\/localhost(:[0-9]+)?/
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9300:9200

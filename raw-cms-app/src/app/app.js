@@ -20,7 +20,7 @@ const _App = Vue.component('rawcms-app', (resolve, reject) => {
           return vuexStore.state.core.isLoggedIn;
         },
       },
-      data: () => {
+      data: function() {
         return {
           showSnackbar: false,
           snackbarConfig: {},

@@ -13,24 +13,34 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using RawCMS.Library.DataModel;
+using RawCMS.Library.Service;
 using RawCMS.Plugins.GraphQL.Classes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RawCMS.Plugins.GraphQL.Types
 {
     public class JObjectFieldResolver : IFieldResolver
     {
         private readonly GraphQLService _graphQLService;
+        private readonly EntityService _entityService;
 
-        public JObjectFieldResolver(GraphQLService graphQLService)
+        public JObjectFieldResolver(GraphQLService graphQLService, EntityService entityService)
         {
             _graphQLService = graphQLService;
+            _entityService = entityService;
         }
 
         public object Resolve(ResolveFieldContext context)
         {
             ItemList result;
+            var collectionName = context.FieldName.ToPascalCase();
+            var expando = _entityService.GetCollectionSchemas()
+                            .First(x => x.CollectionName == collectionName)
+                            .FieldSettings.Where(x => x.Type == "relation")
+                            .Select(x => x.Options["Collection"].Value<string>())
+                            .ToList();
             if (context.Arguments != null && context.Arguments.Count > 0)
             {
                 int pageNumber = 1;
@@ -51,20 +61,22 @@ namespace RawCMS.Plugins.GraphQL.Types
                     context.Arguments.Remove("pageSize");
                 }
 
-                result = _graphQLService.CrudService.Query(context.FieldName.ToPascalCase(), new DataQuery()
+                result = _graphQLService.CrudService.Query(collectionName, new DataQuery()
                 {
                     PageNumber = pageNumber,
                     PageSize = pageSize,
-                    RawQuery = BuildMongoQuery(context.Arguments)
+                    RawQuery = BuildMongoQuery(context.Arguments),
+                    Expando = expando
                 });
             }
             else
             {
-                result = _graphQLService.CrudService.Query(context.FieldName.ToPascalCase(), new DataQuery()
+                result = _graphQLService.CrudService.Query(collectionName, new DataQuery()
                 {
                     PageNumber = 1,
                     PageSize = 1000,
-                    RawQuery = null
+                    RawQuery = null,
+                    Expando = expando
                 });
             }
 
