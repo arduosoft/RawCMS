@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 services:
   mongo:
     image: mongo
@@ -6,12 +6,12 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=password
       # - MONGO_INITDB_DATABASE=rawcms
-      - MONGO_INITDB_USERNAME=dev
-      - MONGO_INITDB_PASSWORD=password
+      # - MONGO_INITDB_USERNAME=dev
+      # - MONGO_INITDB_PASSWORD=password
     ports:
-      - 28017:27017
+      - 47017:27017
     volumes:
-      - ./data/database/seed/:/docker-entrypoint-initdb.d/seed/:ro
+      - ./data/database/seed/:/docker-entrypoint-initdb.d/seed:ro
       - ./config/mongo/init-mongo.sh:/docker-entrypoint-initdb.d/1init-mongo.sh:ro
       - ./config/mongo/dev-user.js:/docker-entrypoint-initdb.d/0dev-user.js:ro
   elasticsearchtest:
@@ -28,4 +28,4 @@ services:
         soft: -1
         hard: -1
     ports:
-      - 9300:9200
+      - 49200:9200

@@ -8,7 +8,7 @@ services:
       - "7580:80"
       - "7543:443"
     environment:
-      - MongoSettings__ConnectionString=mongodb://dev:password@mongo:27017/rawcms?authSource=admin
+      - MongoSettings__ConnectionString=mongodb://dev:password@mongo:47017/rawcms?authSource=admin
       - PORT=80
       - ASPNETCORE_ENVIRONMENT=Docker
       - CLIENT_ID=raw.client
@@ -22,7 +22,7 @@ services:
       - "6580:80"
       - "6543:443"
     environment:
-      - MongoSettings__ConnectionString=mongodb://dev:password@mongo:27017/rawcms?authSource=admin
+      - MongoSettings__ConnectionString=mongodb://dev:password@mongo:47017/rawcms?authSource=admin
       - PORT=80
       - ASPNETCORE_ENVIRONMENT=Docker
   rawcms-ui:

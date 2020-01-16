@@ -1,6 +1,5 @@
+var db = new Mongo().getDB("admin");
 db.auth("root", "password");
-
-db = db.getSiblingDB("admin");
 
 db.createUser({
   user: "dev",
