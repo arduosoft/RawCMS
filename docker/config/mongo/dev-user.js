@@ -8,6 +8,10 @@ db.createUser({
     {
       role: "readWrite",
       db: "rawcms"
+    },
+    {
+      role: "dbAdmin",
+      db: "rawcms"
     }
   ]
 });
