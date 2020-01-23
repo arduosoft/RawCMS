@@ -112,7 +112,14 @@
       "title": "Configuration"
     },
     "logs": {
-      "detail": { "newTitle": "New log", "updateTitle": "Log {name}", "search": "Search" },
+      "detail": {
+        "newTitle": "New log",
+        "updateTitle": "Log {name}",
+        "search": "Search",
+        "level0": "INFO",
+        "level1": "WARN",
+        "level2": "ERROR"
+      },
       "title": "Logs"
     }
   }

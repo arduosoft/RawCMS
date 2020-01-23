@@ -3,6 +3,17 @@
     <v-container fluid>
       <v-row class="px-6">
         <v-col>
+          <v-select
+            label="LEVEL"
+            v-model="level"
+            :items="levels"
+            v-on:change="sLevel(level)"
+            dense
+            outlined
+          >
+          </v-select>
+        </v-col>
+        <v-col>
           <v-text-field
             label="search"
             alignment="start"
@@ -14,9 +25,9 @@
           <v-btn @click="search()">{{ $t('core.logs.detail.search') }}</v-btn>
         </v-col>
       </v-row>
-      <v-row md="40">
-        <v-col md="7">
-          <v-card-text></v-card-text>
+      <v-row>
+        <v-col>
+          <table-wrapper></table-wrapper>
         </v-col>
       </v-row>
     </v-container>

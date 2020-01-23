@@ -66,5 +66,7 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
     <Exec Command="rmdir /s /Q $(ProjectDir)\Plugins\&#xD;&#xA;for /f %%a in ('dir/b /s $(SolutionDir)\*plugins*.csproj') do (dotnet build %%a --output $(ProjectDir)\Plugins\%%~na)" />
   </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
  
 </Project>
