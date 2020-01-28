@@ -27,11 +27,7 @@ class FullTextService extends BaseCrudService {
       {
         size: 1,
         query: {
-          wildcard: {
-            level: {
-              value: level,
-            },
-          },
+          level: level,
         },
       },
       logNameHash

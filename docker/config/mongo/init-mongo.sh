@@ -2,7 +2,7 @@
 echo "restoring data"
 cd /docker-entrypoint-initdb.d/seed/
 
-ls -1 *.json | sed 's/.json$//' | while read col; do 
+ls -1 -- *.json | sed 's/.json$//' | while read -r col; do 
     echo "restoring $col"
     mongoimport  -d rawcms -c $col --type json < $col.json; 
 done
