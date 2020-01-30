@@ -6,6 +6,11 @@
       {{ $t('core.common.editText') }}
       <v-icon>mdi-pen</v-icon>
     </v-tab>
+
+    <v-tab ref="tabs" href="#editEvent">
+      {{ $t('core.common.editEvent') }}
+      <v-icon>mdi-pen</v-icon>
+    </v-tab>
   </template>
 
   <template v-slot:custom-tab-items="{ value }">
@@ -74,6 +79,33 @@
         <v-dialog persistent v-model="isFieldDialogVisible">
           <field-edit :field="currentFieldCopy" @closed="onFieldEdited(value, $event)"></field-edit>
         </v-dialog>
+      </v-card>
+    </v-tab-item>
+    <v-tab-item value="editEvent">
+      <v-card flat tile>
+        <v-tabs
+          dark
+          vertical="vertical"
+          background-color="deep-purple accent-4"
+          class="elevation-2"
+        >
+          <v-tabs-slider></v-tabs-slider>
+          <v-tab ref="tabMonacoRef" href="#PresaveScript">
+            {{ $t('core.common.entityEvents.presaveScript') }}
+          </v-tab>
+          <v-tab-item value="PresaveScript">
+            <v-card flat tile>
+              <monaco-editor
+                ref="monaco"
+                class="fill-height"
+                v-model="value.PresaveScript"
+                :options="monacoOptions"
+                :amdRequire="amdRequire"
+                @editorDidMount="resizeMonaco()"
+              ></monaco-editor>
+            </v-card>
+          </v-tab-item>
+        </v-tabs>
       </v-card>
     </v-tab-item>
   </template>
