@@ -18,10 +18,19 @@ const _RawCmsDataTableDef = async () => {
     },
     computed: {
       headers: function() {
-        return [
-          ...this.dataHeaders,
-          { text: 'Actions', value: 'action', align: 'center', divider: true, sortable: false },
-        ];
+        if (this.dataHeaders[0].text == 'Level') return [...this.dataHeaders];
+        else {
+          return [
+            ...this.dataHeaders,
+            {
+              text: 'Actions',
+              value: 'action',
+              align: 'center',
+              divider: true,
+              sortable: false,
+            },
+          ];
+        }
       },
       isEmpty: function() {
         return this.items.length <= 0;

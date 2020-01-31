@@ -1,6 +1,5 @@
+var db = new Mongo().getDB("admin");
 db.auth("root", "password");
-
-db = db.getSiblingDB("admin");
 
 db.createUser({
   user: "dev",
@@ -8,6 +7,10 @@ db.createUser({
   roles: [
     {
       role: "readWrite",
+      db: "rawcms"
+    },
+    {
+      role: "dbAdmin",
       db: "rawcms"
     }
   ]

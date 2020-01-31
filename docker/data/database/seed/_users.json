@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5e2068e9ecab375ccc6432f4"},"UserName":"bob","NormalizedUserName":"BOB","Email":"test@test.it","NormalizedEmail":"TEST@TEST.IT","Roles":[],"Metadata":{},"_createdon":"2020-01-16T14:45:11.8957158+01:00","_modifiedon":"2020-01-16T14:45:11.905813+01:00"}
+{"_id":{"$oid":"5e206c0fe177762620100857"},"UserName":"alice","Email":"test@test.it","Roles":["Admin"],"_createdon":"2020-01-16T14:58:39.2715639+01:00","_modifiedon":"2020-01-16T14:58:39.277469+01:00","NormalizedUserName":"ALICE"}

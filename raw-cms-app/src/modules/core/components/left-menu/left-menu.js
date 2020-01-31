@@ -31,6 +31,7 @@ const _LeftMenu = async (resolve, reject) => {
           { icon: 'mdi-circle', text: 'Lambdas', route: 'lambdas' },
           { icon: 'mdi-settings', text: 'Configuration', route: 'plugins' },
           { icon: 'mdi-graphql', text: 'GraphQL', route: 'graphql' },
+          { icon: 'mdi-file-multiple-outline', text: 'Logs', route: 'logs' },
           {
             icon: 'mdi-file-document-outline',
             text: 'Dev portal',

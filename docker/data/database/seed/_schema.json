@@ -1,0 +1,1 @@
+{"_id":{"$oid":"5e206c99e177762620100859"},"CollectionName":"Application","FieldSettings":[{"Options":{},"Name":"Name","Type":"text"},{"Options":{},"Name":"LogName","Type":"text"}],"_createdon":"2020-01-16T15:00:57.0391294+01:00","_modifiedon":"2020-01-16T15:00:57.0391438+01:00"}

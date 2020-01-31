@@ -33,7 +33,6 @@ const _TableWrapperDef = async () => {
         ).map(x => {
           return { text: x.Name, value: x.Name, sortable: true };
         });
-
         return result;
       },
     },
