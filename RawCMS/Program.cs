@@ -51,7 +51,6 @@ namespace RawCMS
                                 logger.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                             })
                             .UseNLog()
-                            .UseUrls()
                             .Build();
             //testy
 
