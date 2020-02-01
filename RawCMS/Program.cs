@@ -53,6 +53,7 @@ namespace RawCMS
                             .UseNLog()
                             .UseUrls()
                             .Build();
+            //testy
 
             host.Run();
         }
