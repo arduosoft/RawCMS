@@ -11,6 +11,8 @@ const _EntityDetailsWrapperDef = async () => {
     data: function() {
       return {
         activeTabId: 'tabFormly',
+        vertical: true,
+        icons: true,
         apiService: entitiesSchemaService,
       };
     },
@@ -35,9 +37,34 @@ const _EntityDetailsDef = async () => {
         currentFieldCopy: null,
         isFieldDialogVisible: false,
         nameRules: [v => !!v || this.$t('core.entities.detail.requiredNameMsg')],
+        code: '',
+        monacoOptions: {
+          language: 'javascript',
+          scrollBeyondLastLine: false,
+        },
       };
     },
+    computed: {
+      compCode: {
+        get: function() {
+          return this.code;
+        },
+        set: function(newValue) {
+          try {
+            console.log('value', this.$slots);
+            this.value.preSave = newValue;
+          } catch (e) {}
+        },
+      },
+    },
     methods: {
+      amdRequire: require,
+      resizeMonaco: function() {
+        const monacoEditor = this.$refs.monaco.getMonaco();
+        const oldLayout = monacoEditor.getLayoutInfo();
+        const newHeight = 365;
+        monacoEditor.layout({ width: oldLayout.width, height: newHeight });
+      },
       dismissFieldDialog: function() {
         this.isFieldDialogVisible = false;
       },
