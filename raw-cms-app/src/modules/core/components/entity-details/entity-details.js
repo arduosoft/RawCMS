@@ -37,32 +37,20 @@ const _EntityDetailsDef = async () => {
         currentFieldCopy: null,
         isFieldDialogVisible: false,
         nameRules: [v => !!v || this.$t('core.entities.detail.requiredNameMsg')],
-        code: '',
-        monacoOptions: {
+        customMonacoOptions: {
           language: 'javascript',
           scrollBeyondLastLine: false,
         },
       };
     },
-    computed: {
-      compCode: {
-        get: function() {
-          return this.code;
-        },
-        set: function(newValue) {
-          try {
-            console.log('value', this.$slots);
-            this.value.preSave = newValue;
-          } catch (e) {}
-        },
-      },
-    },
     methods: {
       amdRequire: require,
-      resizeMonaco: function() {
-        const monacoEditor = this.$refs.monaco.getMonaco();
+      resizeCustomMonaco: function() {
+        const monacoEditor = this.$refs.lambdaMonaco.getMonaco();
         const oldLayout = monacoEditor.getLayoutInfo();
-        const newHeight = 365;
+        const newHeight =
+          this.$refs.tabs.$el.getBoundingClientRect().height -
+          this.$refs.lambdas.$el.getBoundingClientRect().height;
         monacoEditor.layout({ width: oldLayout.width, height: newHeight });
       },
       dismissFieldDialog: function() {
