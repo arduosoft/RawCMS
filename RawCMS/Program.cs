@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace RawCMS
 {
@@ -39,12 +40,13 @@ namespace RawCMS
         private static void Run(string[] args)
         {
             IConfiguration config = new ConfigurationBuilder()
-     .AddCommandLine(args)
-     .Build();
+         .AddCommandLine(args)
+         .Build();
 
             IWebHost host = new WebHostBuilder()
                             .UseNLog()
                             .UseKestrel()
+                            .UseContentRoot(Directory.GetCurrentDirectory())
                             .UseConfiguration(config)
                             .UseKestrel()
                             .UseIISIntegration()
@@ -56,7 +58,7 @@ namespace RawCMS
                                 logger.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                             })
                             .UseNLog()
-                            .UseUrls()
+
                             .Build();
             //testy
 
