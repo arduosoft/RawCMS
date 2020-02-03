@@ -38,6 +38,8 @@ namespace RawCMS
 
         private static void Run(string[] args)
         {
+            Debug.WriteLine("START....HARDCODED");
+            Debug.WriteLine(Environment.GetEnvironmentVariable("PORT"));
             WebHost.CreateDefaultBuilder(args)
                  .UseStartup<Startup>()
                  .ConfigureLogging(logging =>
@@ -45,6 +47,8 @@ namespace RawCMS
                      logging.ClearProviders();
                      logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                  })
+                 .UseKestrel()
+                 .UseUrls("http://0.0.0.0:" + Environment.GetEnvironmentVariable("PORT"))
                  .UseNLog()
                  .Build()
                  .Run();
