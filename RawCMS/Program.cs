@@ -38,18 +38,20 @@ namespace RawCMS
 
         private static void Run(string[] args)
         {
-            Debug.WriteLine("START....HARDCODED");
-            Debug.WriteLine(Environment.GetEnvironmentVariable("PORT"));
-            WebHost.CreateDefaultBuilder(args)
+            var builder = WebHost.CreateDefaultBuilder(args)
                  .UseStartup<Startup>()
                  .ConfigureLogging(logging =>
                  {
                      logging.ClearProviders();
                      logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                  })
-                 .UseKestrel()
-                 .UseUrls("http://0.0.0.0:" + Environment.GetEnvironmentVariable("PORT"))
-                 .UseNLog()
+                 //                 .UseUrls("http://0.0.0.0:" + Environment.GetEnvironmentVariable("PORT"))
+                 .UseNLog();
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_SERVER_URLS") != null)
+            {
+                builder = builder.UseUrls(Environment.GetEnvironmentVariable("ASPNETCORE_SERVER_URLS"));
+            }
+            builder
                  .Build()
                  .Run();
         }
