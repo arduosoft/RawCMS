@@ -8,12 +8,10 @@
 //******************************************************************************
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
 using System.Diagnostics;
-using System.IO;
 
 namespace RawCMS
 {
@@ -40,30 +38,16 @@ namespace RawCMS
 
         private static void Run(string[] args)
         {
-            IConfiguration config = new ConfigurationBuilder()
-         .AddCommandLine(args)
-         .Build();
-
-            IWebHost host = WebHost.CreateDefaultBuilder(args)
-                            .UseNLog()
-                            .UseKestrel()
-                            .UseContentRoot(Directory.GetCurrentDirectory())
-                            .UseConfiguration(config)
-                            .UseKestrel()
-                            .UseIISIntegration()
-                            .UseStartup<Startup>()
-                            .UseSetting("detailedErrors", "true")
-                            .ConfigureLogging(logger =>
-                            {
-                                logger.ClearProviders();
-                                logger.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                            })
-                            .UseNLog()
-
-                            .Build();
-            //testy
-
-            host.Run();
+            WebHost.CreateDefaultBuilder(args)
+                 .UseStartup<Startup>()
+                 .ConfigureLogging(logging =>
+                 {
+                     logging.ClearProviders();
+                     logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                 })
+                 .UseNLog()
+                 .Build()
+                 .Run();
         }
     }
 }
