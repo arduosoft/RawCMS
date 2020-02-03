@@ -45,7 +45,7 @@ namespace RawCMS
                      logging.ClearProviders();
                      logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                  })
-                 //                 .UseUrls("http://0.0.0.0:" + Environment.GetEnvironmentVariable("PORT"))
+
                  .UseNLog();
             if (Environment.GetEnvironmentVariable("ASPNETCORE_SERVER_URLS") != null)
             {
