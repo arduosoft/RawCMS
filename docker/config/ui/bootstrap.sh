@@ -1,5 +1,5 @@
 
-echo "changin env.json"
+echo "changing env.json"
 ls /usr/share/nginx/html/ -lh
 ls /usr/share/nginx/html/env/ -lh
 
