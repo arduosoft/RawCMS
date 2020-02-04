@@ -1,7 +1,7 @@
-
+#!/bin/sh
 echo "changing env.json"
-ls /usr/share/nginx/html/ -lh
-ls /usr/share/nginx/html/env/ -lh
+ls /usr/share/nginx/html/ 
+ls /usr/share/nginx/html/env/ 
 
 #TODO replace with jq. this commands depends on positions
 sed -i "/baseUrl/c\   \"baseUrl\" : \"$BASE_URL\"" /usr/share/nginx/html/env/env.json
