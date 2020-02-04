@@ -1,0 +1,19 @@
+FROM nginx:alpine
+
+#!/bin/sh
+
+COPY ./docker/config/ui/nginx-heroku.conf /etc/nginx/nginx-heroku.conf
+COPY ./docker/config/ui/bootstrap.sh /bootstrap.sh
+
+## Remove default nginx index page
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy from the stahg 1
+COPY ./raw-cms-app/src  /usr/share/nginx/html
+
+# Add bash
+RUN apk add --no-cache bash 
+
+EXPOSE 80
+
+CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/nginx-heroku.conf > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
