@@ -35,9 +35,7 @@ namespace RawCMS
             this.logger = logger;
 
             var path = ApplicationLogger.GetConfigPath(env.EnvironmentName);
-            loggerFactory.AddDebug();
             loggerFactory.AddNLog();
-            loggerFactory.AddConsole();
             logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
             env.ConfigureNLog(path);
 
@@ -105,8 +103,8 @@ namespace RawCMS
             var ass = new List<Assembly>();
             var builder = services.AddMvc().AddJsonOptions(options =>
             {
-                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+                options.JsonSerializerOptions.IgnoreNullValues = true;
             });
             var pluginPath = Configuration.GetValue<string>("PluginPath");
             logger.LogInformation($"loading plugins from {pluginPath}");
