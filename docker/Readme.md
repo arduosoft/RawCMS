@@ -23,3 +23,14 @@ docker-compose -f docker-compose.yml -f ./docker-compose-app.yml up
 # trick
 
 docker-compose build images only if are not present. to rebuild force it by docker-compose -f ./docker-compose-app.yml build
+
+# manual deploy
+
+from here
+`
+docker build -t arduosoft/rawcms-api-preview -f ./Dockerfile-api ../
+docker push arduosoft/rawcms-api-preview
+
+docker build -t arduosoft/rawcms-ui-preview -f ./Dockerfile-ui ../
+docker push arduosoft/rawcms-ui-preview
+`
