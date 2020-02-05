@@ -9,3 +9,11 @@ sed -i "/client_id/c\   \"client_id\" : \"$CLIENT_ID\"," /usr/share/nginx/html/e
 sed -i "/client_secret/c\   \"client_secret\" : \"$CLIENT_SECRET\"" /usr/share/nginx/html/env/env.json
 
 cat /usr/share/nginx/html/env/env.json
+
+if [ ! -z "$PORT" ]
+then
+ sed -i -e 's/80/'"$PORT"'/g' /etc/nginx/nginx.conf
+ echo "\$PORT is NOT empty"
+else 
+ echo "\$PORT is empty, used default port 80"
+fi
