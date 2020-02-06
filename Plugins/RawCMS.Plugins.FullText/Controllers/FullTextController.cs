@@ -10,37 +10,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core.Attributes;
+using RawCMS.Library.JavascriptClient;
 using RawCMS.Plugins.Core.Model;
 using RawCMS.Plugins.FullText.Core;
+using RawCMS.Plugins.FullText.Core.Http;
 using System;
 using System.Collections.Generic;
 
 namespace RawCMS.Plugins.FullText.Controllers
 {
-    public class LocalError
-    {
-        public string Code { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-    }
-
-    //TO BE FIXED ON PLUGIN LOADING
-    public class LocalRestMessage<T>
-    {
-        public List<LocalError> Errors { get; set; } = new List<LocalError>();
-        public List<LocalError> Warnings { get; set; } = new List<LocalError>();
-        public List<LocalError> Infos { get; set; } = new List<LocalError>();
-
-        public RestStatus Status { get; set; }
-
-        public T Data { get; set; }
-
-        public LocalRestMessage(T item)
-        {
-            Data = item;
-        }
-    }
-
     [AllowAnonymous]
     [RawAuthentication]
     [Route("api/[controller]")]

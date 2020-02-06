@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 
 namespace RawCMS.Library.Core
 {
@@ -102,12 +103,14 @@ namespace RawCMS.Library.Core
             var pluginFiles = Directory.GetFiles(pluginsDir, "plugin.config", SearchOption.AllDirectories);
 
             _logger.LogDebug($"Found  {string.Join(",", pluginFiles)}");
-
+            //AssemblyLoadContext.Default.LoadFromAssemblyPath(assLib);
             foreach (var pluginInfo in pluginFiles)
             {
+                var folderName = Path.GetFileName(Path.GetDirectoryName(pluginInfo));
+                var assemblyPath = Path.Combine(Path.GetDirectoryName(pluginInfo), $"{folderName}.dll");
                 _logger.LogInformation($"Loading plugin  {pluginInfo}");
-                var loader = PluginLoader.CreateFromConfigFile(
-                filePath: pluginInfo,
+                var loader = PluginLoader.CreateFromAssemblyFile(
+                assemblyFile: assemblyPath,
                 sharedTypes: typesToAdd.ToArray());
                 loaders.Add(loader);
             }

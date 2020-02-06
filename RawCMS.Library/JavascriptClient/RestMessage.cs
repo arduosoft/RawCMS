@@ -11,13 +11,6 @@ using System.Collections.Generic;
 
 namespace RawCMS.Library.JavascriptClient
 {
-    public enum RestStatus
-    {
-        OK,
-        KO,
-        CompletedWithErrors
-    }
-
     public class JavascriptRestClientMessage<T>
     {
         public List<Error> Errors { get; set; } = new List<Error>();

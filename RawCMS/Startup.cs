@@ -10,12 +10,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Helpers;
 using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.Swagger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,15 +31,18 @@ namespace RawCMS
         private readonly ILoggerFactory loggerFactory;
         private AppEngine appEngine;
 
-        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory, ILogger<Startup> logger)
+        public Startup(IWebHostEnvironment env)
         {
-            this.loggerFactory = loggerFactory;
-            this.logger = logger;
 
+            this.loggerFactory = new LoggerFactory();
             var path = ApplicationLogger.GetConfigPath(env.EnvironmentName);
-            loggerFactory.AddNLog();
-            logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
-            env.ConfigureNLog(path);
+            this.loggerFactory.ConfigureNLog(path);
+            this.logger = this.loggerFactory.CreateLogger<Startup>();
+            //this.logger = logger;
+
+            //loggerFactory.AddNLog();
+            //logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
+
 
             ApplicationLogger.SetLogFactory(loggerFactory);
 
@@ -54,7 +59,7 @@ namespace RawCMS
         public IConfigurationRoot Configuration { get; }
 
         //This method gets called by the runtime.Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
           
             app.UseCors();
@@ -65,34 +70,33 @@ namespace RawCMS
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
             }
 
-            app.UseMvc();
+            app.UseRouting();
 
-            app.UseMvc(routes =>
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{collection?}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{collection?}/{id?}");
             });
 
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "RawCms API V1");
             });
 
             app.UseStaticFiles();
-
-            app.UseWelcomePage();
         }
 
         //This method gets called by the runtime.Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+
             services.AddCors(opt => opt.AddDefaultPolicy(p =>
             {
                 p.AllowAnyHeader();
@@ -100,17 +104,25 @@ namespace RawCMS
                 p.AllowAnyOrigin();
             }));
 
-            var ass = new List<Assembly>();
-            var builder = services.AddMvc().AddJsonOptions(options =>
+            var builder = services.AddControllersWithViews().AddNewtonsoftJson(options =>
             {
-                options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-                options.JsonSerializerOptions.IgnoreNullValues = true;
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
+
+
+            var ass = new List<Assembly>();
+            //var builder = services.AddMvc().AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+            //    options.JsonSerializerOptions.IgnoreNullValues = true;
+            //});
             var pluginPath = Configuration.GetValue<string>("PluginPath");
-            logger.LogInformation($"loading plugins from {pluginPath}");
+            //logger.LogInformation($"loading plugins from {pluginPath}");
             Console.WriteLine($"loading plugins from {pluginPath}");
             List<Assembly> allAssembly = AssemblyHelper.GetAllAssembly();
-
+            System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(@"D:\code\github\RawCMS\RawCMS\bin\Debug\netcoreapp3.1\RawCMS.Views.dll");
+            //allAssembly.Add(Assembly.Load(@"D:\code\github\RawCMS\RawCMS\bin\Debug\netcoreapp3.1\RawCMS.Views.dll"));
             ReflectionManager rm = new ReflectionManager(allAssembly);
 
             appEngine = AppEngine.Create(
@@ -127,11 +139,10 @@ namespace RawCMS
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Web API", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Web API", Version = "v1" });
                 //x.IncludeXmlComments(AppContext.BaseDirectory + "YourProject.Api.xml");
                 c.IgnoreObsoleteProperties();
                 c.IgnoreObsoleteActions();
-                c.DescribeAllEnumsAsStrings();
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
                 c.CustomSchemaIds(t => t.FullName);
             });

@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace RawCMS.Plugins.Core.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ParameterValidator("collection", "_(.*)", true)]
     public class CRUDController : Controller

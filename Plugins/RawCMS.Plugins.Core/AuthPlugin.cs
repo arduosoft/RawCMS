@@ -23,6 +23,8 @@ using RawCMS.Plugins.Core.Handlers;
 using RawCMS.Plugins.Core.Model;
 using RawCMS.Plugins.Core.Stores;
 using System.Security.Claims;
+using IdentityRole = RawCMS.Plugins.Core.Model.IdentityRole;
+using IdentityUser = RawCMS.Plugins.Core.Model.IdentityUser;
 
 namespace RawCMS.Plugins.Core
 {
@@ -44,17 +46,16 @@ namespace RawCMS.Plugins.Core
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            IdentityModelEventSource.ShowPII = true;
-            services.AddSingleton<IUserStore<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IUserPasswordStore<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IPasswordValidator<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IUserClaimStore<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IPasswordHasher<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IProfileService, RawUserStore>();
-            services.AddSingleton<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
+            services.AddScoped<IUserStore<IdentityUser>, RawUserStore>();
+            services.AddScoped<IUserPasswordStore<IdentityUser>, RawUserStore>();
+            services.AddScoped<IPasswordValidator<IdentityUser>, RawUserStore>();
+            services.AddScoped<IUserClaimStore<IdentityUser>, RawUserStore>();
+            services.AddScoped<IPasswordHasher<IdentityUser>, RawUserStore>();
+            services.AddScoped<IProfileService, RawUserStore>();
+            services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
 
-            services.AddSingleton<RawRoleStore>();
-            services.AddSingleton<IRoleStore<IdentityRole>, RawRoleStore>();
+            services.AddScoped<RawRoleStore>();
+            services.AddScoped<IRoleStore<IdentityRole>, RawRoleStore>();
             services.AddIdentity<IdentityUser, IdentityRole>();
 
             // configure identity server with in-memory stores, keys, clients and scopes
@@ -75,7 +76,7 @@ namespace RawCMS.Plugins.Core
                     Authority = config.Authority,
                     ClientSecret = config.ClientSecret,
                     ClientId = config.ClientId,
-                    BasicAuthenticationHeaderStyle = IdentityModel.Client.BasicAuthenticationHeaderStyle.Rfc2617
+                    AuthorizationHeaderStyle = IdentityModel.Client.BasicAuthenticationHeaderStyle.Rfc2617
                 };
                 if (!string.IsNullOrWhiteSpace(config.IntrospectionEndpoint))
                 {
