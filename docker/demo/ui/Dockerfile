@@ -2,7 +2,7 @@ FROM nginx:alpine
 
 #!/bin/sh
 
-COPY ./docker/config/ui/nginx-heroku.conf /etc/nginx/nginx-heroku.conf
+COPY ./docker/config/ui/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/config/ui/bootstrap.sh /bootstrap.sh
 
 ## Remove default nginx index page
@@ -15,5 +15,9 @@ COPY ./raw-cms-app/src  /usr/share/nginx/html
 RUN apk add --no-cache bash 
 
 EXPOSE 80
+EXPOSE 4200 80
 
-CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/nginx-heroku.conf > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
+CMD ["/bin/bash", "-c", " sudo  /bootstrap.sh && sudo  nginx -g \"daemon off;\""]
+
+
+

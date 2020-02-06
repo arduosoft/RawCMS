@@ -9,6 +9,7 @@
 using Jint;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
+using RawCMS.Library.JavascriptClient;
 using RawCMS.Library.Service;
 using System.Collections.Generic;
 
@@ -35,9 +36,12 @@ namespace RawCMS.Library.Lambdas
                 if (!string.IsNullOrEmpty(settings.PresaveScript))
                 {
                     Dictionary<string, object> input = item.ToObject<Dictionary<string, object>>();
-                    Engine add = new Engine()
-                      .SetValue("item", input)
-                     .Execute(settings.PresaveScript);
+
+                    Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); });                    
+                    engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
+                    engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
+                    engine.SetValue("item", input);
+                    engine.Execute(settings.PresaveScript);
                     item = JObject.FromObject(input);
                 }
             }

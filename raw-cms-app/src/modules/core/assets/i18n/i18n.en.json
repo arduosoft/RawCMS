@@ -20,6 +20,7 @@
       "deleteErrorMsgTpl": "An error occurred while deleting {id}.",
       "deleteSuccessMsgTpl": "{id} was deleted.",
       "editText": "Edit",
+      "editEvent": "Event",
       "emptyListMsg": "There are no items yet.",
       "emptyTableMsg": "There are no items yet.",
       "jsonText": "JSON",
@@ -42,7 +43,9 @@
           "title": "Edit field",
           "typeLabel": "Type",
           "required": "Required"
-        }
+        },
+        "lambdasScript": "Actions",
+        "presave": "Presave Action"
       },
       "deleteConfirmMsgTpl": "Are you sure you want to delete entity {name}?",
       "deleteErrorMsgTpl": "An error occurred while deleting entity {name}.",

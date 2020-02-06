@@ -1,0 +1,43 @@
+version: "3"
+services:
+  rawcms-api:
+    image: arduosoft/rawcms-api-preview
+    ports:
+      - "3580:80"
+      - "3543:443"
+    environment:
+      - MongoSettings__ConnectionString=mongodb://root:password@mongo:27017/rawcms?authSource=admin
+      - PORT=80
+      - ASPNETCORE_ENVIRONMENT=Docker
+  rawcms-ui:
+    image: arduosoft/rawcms-ui-preview
+    environment:
+      - BASE_URL=http://localhost:3580
+      - CLIENT_ID=raw.client
+      - CLIENT_SECRET=raw.secret
+    ports:
+      - "3680:80"
+      - "3643:443"
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=rawcms
+    ports:
+      - 38017:27017
+  elasticsearch:
+    image: elasticsearch:7.4.0
+    environment:
+      - discovery.type=single-node
+      - http.cors.enabled=true
+      - http.cors.allow-credentials=true
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-origin=/https?:\/\/localhost(:[0-9]+)?/
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 4200:9200

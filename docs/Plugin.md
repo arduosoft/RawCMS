@@ -1,6 +1,6 @@
 # Build New Plugin
 
-For build you own plugin follwn next steps:
+To build your own plugin please follow below steps:
 
 - Create you project named RawCMS.Plugins.\{plugin name} inside Plugins folder
 - Add references to RawCMS.Library and RawCMS.Plugins.Core

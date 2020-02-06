@@ -17,7 +17,7 @@ to this directory as the root directory for the webapp, unless stated otherwise.
 
 ## Prerequisites
 
-To thinker with the web app, you must have this tools installed on your machine:
+To tinker with the web app, you must have this tools installed on your machine:
 
 - NodeJS + npm (tested with version v10.15.2/6.4.1)
 

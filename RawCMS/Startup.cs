@@ -38,7 +38,7 @@ namespace RawCMS
             loggerFactory.AddDebug();
             loggerFactory.AddNLog();
             loggerFactory.AddConsole();
-            logger.LogInformation($"Starting RawCMS, environment={env.EnvironmentName}");
+
             env.ConfigureNLog(path);
 
             ApplicationLogger.SetLogFactory(loggerFactory);
@@ -58,7 +58,6 @@ namespace RawCMS
         //This method gets called by the runtime.Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-          
             app.UseCors();
 
             appEngine.InvokeConfigure(app);
@@ -94,7 +93,6 @@ namespace RawCMS
         //This method gets called by the runtime.Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
             services.AddCors(opt => opt.AddDefaultPolicy(p =>
             {
                 p.AllowAnyHeader();

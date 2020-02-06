@@ -14,4 +14,4 @@ RUN  chmod +x ./build.sh && ./build.sh
 FROM base AS final
 WORKDIR /app
 COPY --from=build /dist .
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet RawCMS.dll
+ENTRYPOINT ["dotnet", "RawCMS.dll"]
