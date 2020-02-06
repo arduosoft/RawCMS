@@ -1,5 +1,5 @@
 ## Deply on docker containers
-You can start from the base docker-compose. At the moment we have two images, one for the api and one for the ui. This means you have two containers. Both of them must be reachable by the user, so they have to be exposed. The following example creare and set using local address and port mapping. On production you have to change them with public url. You can bind directly the port, even this may be tricky in case you want to use standard ports and the machine is not embedded for this application. Moreover, to enable https and get more control about traffic, it is suggester to run all the containers under a nginx proxy.
+You can start from the base docker-compose. At the moment we have two images, one for the api and one for the ui. This means you have two containers. Both of them must be reachable by the user, so they have to be exposed. The following example creates and sets using local address and port mapping. On production you have to change them with public url. You can bind directly the port, even this may be tricky in case you want to use standard ports and the machine is not embedded for this application. Moreover, to enable https and get more control about traffic, it is suggested to run all the containers under a nginx proxy.
 
 '''
 example
@@ -177,7 +177,7 @@ You can create a kubernetes cluster from scratch using Microsoft Azure using [th
 
 
 ## Manual deployment
-If you want you can use the zip packages and deploy them directly. This practice is not receommentede and supported.
+If you want you can use the zip packages and deploy them directly. This practice is niether recommended nor supported.
 The two applications can be deployed as following:
 - **UI** is a static html web site, can be serverd by nginx or all other web server. All the url must point to index.html with a rewrite rule. You can use the nginx condiguration of our [nginx container as refernence ](https://github.com/arduosoft/RawCMS/blob/master/docker/config/ui/nginx.conf)
 - **API** is a regular aspnet core application, and can be run using command 'dotnet RawCMS.dll'. IIS should work as well. It is tested on frmework 2.2 and 2.1
