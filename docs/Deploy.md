@@ -5,23 +5,23 @@ You can start from the base docker-compose. At the moment we have two images, on
 version: "3"
 services:
   rawcms-api:
-    image: arduosoft/rawcms-api-preview
+    image: arduosoft/rawcms-api-preview:latest
     ports:
-      - "3580:80"
-      - "3543:443"
+      - "3581:3581"
     environment:
       - MongoSettings__ConnectionString=mongodb://root:password@mongo:27017/rawcms?authSource=admin
-      - PORT=80
+      - PORT=3581
       - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_SERVER_URLS=http://*:3581
   rawcms-ui:
-    image: arduosoft/rawcms-ui-preview
+    image: arduosoft/rawcms-ui-preview:latest
     environment:
-      - BASE_URL=http://localhost:3580
+      - BASE_URL=http://localhost:3581
       - CLIENT_ID=raw.client
       - CLIENT_SECRET=raw.secret
+  
     ports:
-      - "3680:80"
-      - "3643:443"
+      - "3681:80"
   mongo:
     image: mongo
     environment:
@@ -45,6 +45,7 @@ services:
         hard: -1
     ports:
       - 4200:9200
+
 ```
 
 Api will be available at http://localhost:3680 (api http://localhost:3580).
