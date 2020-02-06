@@ -1,9 +1,53 @@
 ## Deply on docker containers
 You can start from the base docker-compose. At the moment we have two images, one for the api and one for the ui. This means you have two containers. Both of them must be reachable by the user, so they have to be exposed. The following example creare and set using local address and port mapping. On production you have to change them with public url. You can bind directly the port, even this may be tricky in case you want to use standard ports and the machine is not embedded for this application. Moreover, to enable https and get more control about traffic, it is suggester to run all the containers under a nginx proxy.
 
-'''
-example
-'''
+```yaml
+version: "3"
+services:
+  rawcms-api:
+    image: arduosoft/rawcms-api-preview
+    ports:
+      - "3580:80"
+      - "3543:443"
+    environment:
+      - MongoSettings__ConnectionString=mongodb://root:password@mongo:27017/rawcms?authSource=admin
+      - PORT=80
+      - ASPNETCORE_ENVIRONMENT=Docker
+  rawcms-ui:
+    image: arduosoft/rawcms-ui-preview
+    environment:
+      - BASE_URL=http://localhost:3580
+      - CLIENT_ID=raw.client
+      - CLIENT_SECRET=raw.secret
+    ports:
+      - "3680:80"
+      - "3643:443"
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=rawcms
+    ports:
+      - 38017:27017
+  elasticsearch:
+    image: elasticsearch:7.4.0
+    environment:
+      - discovery.type=single-node
+      - http.cors.enabled=true
+      - http.cors.allow-credentials=true
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-origin=/https?:\/\/localhost(:[0-9]+)?/
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 4200:9200
+```
+
+Api will be available at http://localhost:3680 (api http://localhost:3580).
 
 You can find documentationa about each docker image on [docker hub](https://hub.docker.com/u/arduosoft).
 
@@ -17,16 +61,18 @@ As the CMS is released in two different containers, you need to deploy two diffe
 3. Deploy using the heroku cli
 
 **Variables**
-'''
-
-'''
+```bash
+BASE_URL=<your api heroky url, i.e your-demo-api.herokuapp.com>
+CLIENT_ID=raw.client
+CLIENT_SECRET=raw.secret
+```
 
 **deploy**
-'''
+```bash
 heroku container:push web -a your-demo-ui
 heroku container:release web -a your-demo-ui
 
-'''
+```
 
 
 ### Deploy API on Heroku
@@ -35,16 +81,17 @@ heroku container:release web -a your-demo-ui
 3. Deploy using the heroku cli
 
 **Variables**
-'''
-
-'''
+```bash
+MongoSettings__ConnectionString=<url to mongo db, a mongo atlas free account can be OK>
+ASPNETCORE_ENVIRONMENT=Docker
+```
 
 **deploy**
-'''
-heroku container:push web -a your-demo-ui
-heroku container:release web -a your-demo-ui
+```bash
+heroku container:push web -a your-demo-api
+heroku container:release web -a your-demo-api
 
-'''
+```
 
 
 ## Deploy using Kubernetes
@@ -52,7 +99,7 @@ A simple configuration for Kubernetes can be made using following yaml files
 
 ### UI 
 save this file as ui.yml
-'''
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -88,14 +135,19 @@ spec:
          - containerPort: 80
         env:
         ## use secret on production
-        - name: CONNECTION_STRING
-          value: 
-'''
+        - name: BASE_URL
+          value: <your api url>
+        - name: CLIENT_ID
+          value: raw.client
+        - name: CLIENT_ID
+          value: raw.secret
+ 
+```
 
 ## API
 
 save this snippet as api.yml
-'''
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -131,14 +183,16 @@ spec:
          - containerPort: 80
         env:
         ## use secret on production
-        - name: CONNECTION_STRING
-          value: 
+        - name: MongoSettings__ConnectionString
+          value: <your mongodb url>
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Docker
       
-'''
+```
 
 ### Ingress
 save this snippet as ingress.yml
-'''
+```yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -162,16 +216,15 @@ spec:
           servicePort: 80
         path: /
 
-'''
+```
 ### Deploy it
-
-'''
+```bash
 kubectl create -f ui.yml
 
 kubectl create -f api.yml
 
 kubectl create -f ingress.yml
-'''
+```
 
 You can create a kubernetes cluster from scratch using Microsoft Azure using [this simple tutorial](https://medium.com/swlh/how-to-deploy-an-asp-net-application-with-kubernetes-3c00c5fa1c6e?source=friends_link&sk=de1e07739413943d6a03f8ae232e5408)
 
