@@ -201,9 +201,12 @@ namespace RawCMS.Plugins.Core.Stores
                     NormalizedUserName = "BOB",
                     Email = "test@test.it",
                     NormalizedEmail = "test@test.it",
-                    NewPassword = "XYZ"//password will be hashed by service
+                    NewPassword = "XYZ",//password will be hashed by service
+                    
                 };
 
+                userToAdd.Roles.Add("Admin");
+                userToAdd.Roles.Add("User");
                 await CreateAsync(userToAdd, CancellationToken.None);
             }
         }
