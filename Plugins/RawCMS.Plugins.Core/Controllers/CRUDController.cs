@@ -37,7 +37,6 @@ namespace RawCMS.Plugins.Core.Controllers
         public RestMessage<ItemList> Get(string collection, string rawQuery = null, string[] expando = null, int pageNumber = 1, int pageSize = 20, string sort = "")
         {
             var sortValue = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SortOption>>(sort);
-            // CRUDService service = new CRUDService(new MongoService(new MongoSettings() { }));
             ItemList result = service.Query(collection, new Library.DataModel.DataQuery()
             {
                 PageNumber = pageNumber,

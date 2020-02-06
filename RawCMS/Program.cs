@@ -44,8 +44,6 @@ namespace RawCMS
                 {
                     webBuilder
                             .UseContentRoot(Directory.GetCurrentDirectory())
-                            //.UseIISIntegration()
-                            //.UseKestrel()
                             .UseSetting("detailedErrors", "true")
                             .ConfigureLogging(logger =>
                             {
