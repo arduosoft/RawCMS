@@ -1,4 +1,4 @@
-CRUD Controller offer capability to save structured or non structured data basing on mondodb collections.
+CRUD Controller offers capability to save structured or non structured data based on mondodb collections.
 
 ### Operations
 

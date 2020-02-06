@@ -1,6 +1,6 @@
 # Autentication
 
-Authentication module use identity server 4 and expose part of its features.
+Authentication module uses identity server 4 and exposes parts of its features.
 Main target of RawCMS authentication is:
 
 - identify user and use user info to make different things (i.e. profile data and feature)

@@ -1,6 +1,6 @@
 To create a Lambda just implement a class. Class derived from Lambda will be activated and added to lambda bucket.
 
-This example show how to implemeent a simple REST Lambda
+This example shows how to implemeent a simple REST Lambda
 
 ```cs
   public class DummyRest : RestLambda
