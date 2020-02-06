@@ -3,7 +3,7 @@ Welcome to the RawCMS wiki!
 ### Install
 
 
-You can deploy it using many options. Rawcms is dockerized from the development stage so modern hosting are fully supported.
+You can deploy it using many options. Rawcms is dockerized from the development stage so modern hostings are fully supported.
 
 1. *Docker Compose* using the provided docke-compose file 
 2. *Kubernetes* using the provided docker images

@@ -1,6 +1,6 @@
 ## Manage
 
-Trough system tables you can set schema definition for collection. 
+Through system tables you can set schema definition for collection. 
 
 In this examples Items collection is described by schema definition. As for all entities, POST, PUT, PATCH are supported.
 

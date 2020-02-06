@@ -7,7 +7,7 @@ Standard validator are shipped with RawCMS:
 * DateTime
 * Text
 
-you can add you own type, just implement the class:
+you can add your own type, by just implementing the below class:
 
 ```cs
     public class MyTypeValidator: FieldTypeValidator
@@ -20,4 +20,4 @@ you can add you own type, just implement the class:
     }
 ```
 
-the value of *Type*  match with field type in schema validation
+the value of *Type*  should match with the field type in schema validation.
