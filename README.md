@@ -17,6 +17,20 @@ RawCMS is a headless CMS written in ASP.NET Core, built for developers that embr
 ## Help wanted
 As every opensource project, it is finding for contributors. Any kind of help are welcome. You can join the project  by [filling this form](https://forms.gle/dddbHWzcxypN9rpx9) or opening an issues. 
 
+## Try it
+You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) an default credential.
+
+## Deploy it
+
+You can deploy it using many options. Rawcms is dockerized from the development stage so modern hosting are fully supported.
+
+1. *Docker Compose* using the provided docke-compose file 
+2. *Kubernetes* using the provided docker images
+3. *Heroku* using the provided images
+4. *Virtual machines* using the packges provided and deployed manually to the server
+
+
+
 ## The mission of RawCMS
 
 1. **Modular** Each module is shipped in a NuGet package that can be added to the system to gain new features
