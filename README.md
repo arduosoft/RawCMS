@@ -7,6 +7,7 @@ RawCMS is a headless CMS written in ASP.NET Core, built for developers that embr
 [![CodeFactor](https://www.codefactor.io/repository/github/arduosoft/rawcms/badge?style=flat-square)](https://www.codefactor.io/repository/github/arduosoft/rawcms/)
 [![Build status](https://ci.appveyor.com/api/projects/status/65b7mnf0bop393u7/branch/develop?svg=true)](https://ci.appveyor.com/project/zeppaman/rawcms)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Discover%20RawCMS%20a%20free%20opensource%20Headless%20CMS%20Based%20on%20AspnetCore%20and%20MongoDB%204&url=https://github.com/arduosoft/RawCMS&hashtags=CMS,Headless,AspnetCore,developer,opensource) [![Join the chat at https://gitter.im/arduosoft/RawCMS-Headless-CMS-Aspnet](https://badges.gitter.im/arduosoft/RawCMS-Headless-CMS-Aspnet.svg)](https://gitter.im/arduosoft/RawCMS-Headless-CMS-Aspnet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+ <a href="https://forms.gle/dddbHWzcxypN9rpx9"><img src="https://github.com/arduosoft/RawCMS/blob/master/asset/wantsyou.jpg?raw=true" width=300 align="right" /></a>
 
 - 📖 [Documentation](https://rawcms.readthedocs.io/)
 - 📚 [API Documentation](https://raw.githubusercontent.com/arduosoft/RawCMS/master/docs/RawCMS.postman_collection.json)
@@ -14,7 +15,21 @@ RawCMS is a headless CMS written in ASP.NET Core, built for developers that embr
 - 👪 [Community Chat](https://gitter.im/arduosoft/RawCMS-Headless-CMS-Aspnet) - Gitter
 
 ## Help wanted
-As every opensource project, it is finding for contributors. Any kind of help are welcome. You can join the project  by [filling this form](https://forms.gle/dddbHWzcxypN9rpx9) or opening an issues.  <a href="https://forms.gle/dddbHWzcxypN9rpx9"><img src="https://github.com/arduosoft/RawCMS/blob/master/asset/wantsyou.jpg?raw=true" width=300 align="right" /></a>
+As every opensource project, it is finding for contributors. Any kind of help are welcome. You can join the project  by [filling this form](https://forms.gle/dddbHWzcxypN9rpx9) or opening an issues. 
+
+## Try it
+You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) an default credential.
+
+## Deploy it
+
+You can deploy it using many options. Rawcms is dockerized from the development stage so modern hosting are fully supported.
+
+1. *Docker Compose* using the provided docke-compose file 
+2. *Kubernetes* using the provided docker images
+3. *Heroku* using the provided images
+4. *Virtual machines* using the packges provided and deployed manually to the server
+
+
 
 ## The mission of RawCMS
 
