@@ -66,6 +66,7 @@ As the CMS is released in two different containers, you need to deploy two diffe
 BASE_URL=<your api heroky url, i.e your-demo-api.herokuapp.com>
 CLIENT_ID=raw.client
 CLIENT_SECRET=raw.secret
+GOOGLE_ANALITYCS= <your api key on GA, optional>
 ```
 
 **deploy**
