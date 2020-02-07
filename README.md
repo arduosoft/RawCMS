@@ -15,7 +15,7 @@ RawCMS is a headless CMS written in ASP.NET Core, built for developers that embr
 - 👪 [Community Chat](https://gitter.im/arduosoft/RawCMS-Headless-CMS-Aspnet) - Gitter
 
 ## Contribution
-As every opensource project, we are looking for contributors. Any kind of help are welcome. *just a star to the project is a lot* If you want to contributute as developer, you can join the project  by [filling this form](https://forms.gle/dddbHWzcxypN9rpx9) or opening an issues. 
+As every opensource project, we are looking for contributors. Any kind of help are welcome. *just a star to the project is a lot* If you want to contributute as developer, you can join the project  by [filling this form](https://forms.gle/dddbHWzcxypN9rpx9) or opening an issues. Any other kind of contirbution, from doc to test are also welcome.
 
 ## Try it
 You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) an default credential (username:bob, password:XYZ).
