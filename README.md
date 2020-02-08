@@ -15,14 +15,14 @@ RawCMS is a headless CMS written in ASP.NET Core, built for developers that embr
 - 👪 [Community Chat](https://gitter.im/arduosoft/RawCMS-Headless-CMS-Aspnet) - Gitter
 
 ## Contribution
-As every opensource project, we are looking for contributors. Any kind of help are welcome. *just a star to the project is a lot* If you want to contributute as developer, you can join the project  by [filling this form](https://forms.gle/dddbHWzcxypN9rpx9) or opening an issues. Any other kind of contirbution, from doc to test are also welcome.
+As every for open source project, we are looking for contributors. Any kind of help are welcome. *just a star to the project is a lot* If you want to contributute as developer, you can join the project  by [filling this form](https://forms.gle/dddbHWzcxypN9rpx9) or by opening an issue. Any other kind of contirbution, from docs to tests, are also welcome.
 
 ## Try it
-You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) an default credential (username:bob, password:XYZ).
+You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) using the default credentials (username:bob, password:XYZ).
 
 ## Deploy it
 
-You can deploy it using many options. Rawcms is dockerized from the development stage so modern hosting are fully supported.
+You can deploy it using many options. Rawcms is dockerized from the development stage so modern hosting is fully supported.
 
 1. *Docker Compose* using the provided docke-compose file 
 2. *Kubernetes* using the provided docker images
@@ -33,12 +33,12 @@ You can deploy it using many options. Rawcms is dockerized from the development 
 
 ## The mission of RawCMS
 
-1. **Modular** Each module is shipped in a NuGet package that can be added to the system to gain new features
-2. **Headless** RawCMS doesn't include any presentation logic. All presentation is delegated to the caller. This aims to create a scalable and reusable system
-3. **Packaged** RawCMS must be shipped into a single deployable package or added into an existent ASP.NET core application as NuGet package.
-4. **Extensible** RawCMS must be customized by the user through extension only. So, no changes to the code will be done. Just adding new packages.
-5. **Buildless** RawCMS must give the possibility to manage an installation without the need to manage a codebase or a code repository. It will be possible to add lambdas code at runtime.
-6. **Caller Friendly** Produce data in many formats to help integration (Odata, GraphQL)
+1. **Modular**: Each module is shipped in a NuGet package that can be added to the system to gain new features
+2. **Headless**: RawCMS doesn't include any presentation logic. All presentation is delegated to the caller. This aims to create a scalable and reusable system
+3. **Packaged**: RawCMS must be shipped into a single deployable package or added into an existent ASP.NET core application as NuGet package.
+4. **Extensible**: RawCMS must be customized by the user through extension only. So, no changes to the code will be done. Just adding new packages.
+5. **Buildless**: RawCMS must give the possibility to manage an installation without the need to manage a codebase or a code repository. It will be possible to add lambdas code at runtime.
+6. **Caller Friendly**: Produce data in many formats to help integration (Odata, GraphQL)
 
 ****If you are interested in contributing. just open an issue to start a conversion. Help wanted.****
 
@@ -46,7 +46,7 @@ You can deploy it using many options. Rawcms is dockerized from the development 
 
 You have 3 options to start using RawCMS:
 
-- Run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhu page](https://hub.docker.com/r/arduosoft/rawcms-preview) to get more options like docker-compose file.
+- Run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhub page](https://hub.docker.com/r/arduosoft/rawcms-preview) to get more options like docker-compose file.
 - Download the **zip and deploy** a regular ASP.NET core application from [github releases](https://github.com/arduosoft/RawCMS/releases)
 - **fork** the repository and customize (then deploy as you want)
 
@@ -54,7 +54,7 @@ You have 3 options to start using RawCMS:
 
 Actually, you have 3 options to start using RawCMS:
 
-- run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhug page](https://hub.docker.com/r/arduosoft/rawcms-preview) to get more options like docker-compose file.
+- run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhub page](https://hub.docker.com/r/arduosoft/rawcms-preview) to get more options like docker-compose file.
 - download the **zip and deploy** a regular asp.net core application from [github releases](https://github.com/arduosoft/RawCMS/releases)
 - **fork** the repository and customize (the deploy as you want)
 
@@ -107,3 +107,6 @@ You can find all we have on [Github wiki](https://github.com/arduosoft/RawCMS/wi
 ## License
 
 This software is published under the [GNU General Public License v3](https://github.com/arduosoft/RawCMS/blob/develop/LICENSE).
+
+
+##
