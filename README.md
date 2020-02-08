@@ -16,7 +16,7 @@ RawCMS is a headless CMS written in ASP.NET Core, built for developers that embr
 
 ## Contribution
 
-As every open source project, we are looking for contributors. Any kind of help is welcome. _Just a star to the project is a lot._ If you want to contributute as developer, you can join the project by [filling out this form](https://forms.gle/dddbHWzcxypN9rpx9) or by opening an issue. Any other kind of contribution, from docs to tests, is also welcome.
+As every open source project, we are looking for contributors. Any kind of help is welcome. _Just a star to the project is a lot._ If you want to contributute as a developer, you can join the project by [filling out this form](https://forms.gle/dddbHWzcxypN9rpx9) or by opening an issue. Any other kind of contribution, from docs to tests, is also welcome.
 
 ## Try it
 
