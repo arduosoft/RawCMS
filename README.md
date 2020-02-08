@@ -16,7 +16,7 @@ RawCMS is a headless CMS written in ASP.NET Core, built for developers that embr
 
 ## Contribution
 
-As every open source project, we are looking for contributors. Any kind of help is welcome. _Just a star to the project is a lot._ If you want to contributute as a developer, you can join the project by [filling out this form](https://forms.gle/dddbHWzcxypN9rpx9) or by opening an issue. Any other kind of contribution, from docs to tests, is also welcome.
+As every open source project, we are looking for contributors. Any kind of help is welcome. *Just a star on the project is a lot.* If you want to contribute as a developer, you can join the project by [filling out this form](https://forms.gle/dddbHWzcxypN9rpx9) or by opening an issue. Any other kind of contribution, from docs to tests, is also welcome.
 
 ## Try it
 
@@ -26,10 +26,10 @@ You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) u
 
 You can deploy it using many options. RawCMS is dockerized from the development stage so modern hosting is fully supported.
 
-1. _Docker Compose_ using the provided docker-compose file
-2. _Kubernetes_ using the provided docker images
-3. _Heroku_ using the provided images
-4. _Virtual machines_ using the packages provided and deployed manually to the server
+1. *Docker Compose* using the provided docker-compose file
+2. *Kubernetes* using the provided docker images
+3. *Heroku* using the provided images
+4. *Virtual machines* using the packages provided and deployed manually to the server
 
 ## The mission of RawCMS
 
@@ -40,7 +40,7 @@ You can deploy it using many options. RawCMS is dockerized from the development 
 5. **Buildless**: RawCMS must give the possibility to manage an installation without the need to manage a codebase or a code repository. It will be possible to add lambdas code at runtime.
 6. **Caller Friendly**: Produce data in many formats to help integration (Odata, GraphQL)
 
-\***\*If you are interested in contributing just open an issue to start a conversation. Help wanted.\*\***
+****If you are interested in contributing just open an issue to start a conversation. Help wanted.****
 
 ## Run
 
