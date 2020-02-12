@@ -76,7 +76,7 @@ namespace RawCMS
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{collection?}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{collection?}/{id?}/{applicationId?}");
             });
 
             app.UseSwagger();
