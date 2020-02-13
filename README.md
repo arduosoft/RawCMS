@@ -20,7 +20,7 @@ As every open source project, we are looking for contributors. Any kind of help 
 
 ## Try it
 
-You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) using the default credentials (username:bob, password:XYZ).
+You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) using the default credentials (username:bob, password:XYZ). **App run in a free tier, so it can take a little bit to come up.**
 
 ## Deploy it
 
@@ -46,13 +46,10 @@ You can deploy it using many options. RawCMS is dockerized from the development 
 
 You have 3 options to start using RawCMS:
 
-- Run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhub page](https://hub.docker.com/r/arduosoft/rawcms-preview) to get more options like docker-compose file.
+- Run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhub page](https://hub.docker.com/r/arduosoft/rawcms-api-preview) to get more options like docker-compose file.
 - Download the **zip and deploy** a regular ASP.NET core application from [GitHub releases](https://github.com/arduosoft/RawCMS/releases)
 - **Fork** the repository and customize (then deploy as you want)
 
-## Technical documentation
-
-You can find all we have on [GitHub wiki](https://github.com/arduosoft/RawCMS/wiki). There is documentation for users, developers, and contributors.
 
 ## Features
 
@@ -65,36 +62,9 @@ You can find all we have on [GitHub wiki](https://github.com/arduosoft/RawCMS/wi
 - Possibility to create a custom endpoint
 - Upsert and incremental update
 - GraphQL data query
+- Api Gateway
+- Relation between entities
 
-## LIMITATIONS
-
-- CRUD controller must manage exceptions and errors
-- No UI to manage entities
-- No data data relation
-
-## ROADMAP
-
-### PHASE 1 - POC
-
-- [x] Dynamic entity management
-- [x] Expose with regular web API services and Swagger
-- [x] Lambda
-- [x] Schema definition and validation
-
-### PHASE 2 - Be ready for production
-
-- [x] Expose with GraphQL
-- [x] Authentication and permission
-- [x] Lambda HTTP
-- [x] Plugin system
-- [x] Client to automate operations
-
-### PHASE 3 - Ready to send on a rocket to Mars
-
-- [ ] Expose with Odata
-- [ ] Test and client sample
-- [ ] design UI for schema management
-- [ ] design UI for data management
 
 ## License
 
