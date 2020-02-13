@@ -50,9 +50,6 @@ You have 3 options to start using RawCMS:
 - Download the **zip and deploy** a regular ASP.NET core application from [GitHub releases](https://github.com/arduosoft/RawCMS/releases)
 - **Fork** the repository and customize (then deploy as you want)
 
-## Technical documentation
-
-You can find all we have on [GitHub wiki](https://github.com/arduosoft/RawCMS/wiki). There is documentation for users, developers, and contributors.
 
 ## Features
 
@@ -65,36 +62,9 @@ You can find all we have on [GitHub wiki](https://github.com/arduosoft/RawCMS/wi
 - Possibility to create a custom endpoint
 - Upsert and incremental update
 - GraphQL data query
+- Api Gateway
+- Relation between entities
 
-## LIMITATIONS
-
-- CRUD controller must manage exceptions and errors
-- No UI to manage entities
-- No data data relation
-
-## ROADMAP
-
-### PHASE 1 - POC
-
-- [x] Dynamic entity management
-- [x] Expose with regular web API services and Swagger
-- [x] Lambda
-- [x] Schema definition and validation
-
-### PHASE 2 - Be ready for production
-
-- [x] Expose with GraphQL
-- [x] Authentication and permission
-- [x] Lambda HTTP
-- [x] Plugin system
-- [x] Client to automate operations
-
-### PHASE 3 - Ready to send on a rocket to Mars
-
-- [ ] Expose with Odata
-- [ ] Test and client sample
-- [ ] design UI for schema management
-- [ ] design UI for data management
 
 ## License
 
