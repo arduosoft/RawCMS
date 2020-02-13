@@ -20,7 +20,7 @@ As every open source project, we are looking for contributors. Any kind of help 
 
 ## Try it
 
-You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) using the default credentials (username:bob, password:XYZ).
+You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) using the default credentials (username:bob, password:XYZ). **App run in a free tier, so it can take a little bit to come up.**
 
 ## Deploy it
 
