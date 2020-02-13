@@ -46,7 +46,7 @@ You can deploy it using many options. RawCMS is dockerized from the development 
 
 You have 3 options to start using RawCMS:
 
-- Run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhub page](https://hub.docker.com/r/arduosoft/rawcms-preview) to get more options like docker-compose file.
+- Run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhub page](https://hub.docker.com/r/arduosoft/rawcms-api-preview) to get more options like docker-compose file.
 - Download the **zip and deploy** a regular ASP.NET core application from [GitHub releases](https://github.com/arduosoft/RawCMS/releases)
 - **Fork** the repository and customize (then deploy as you want)
 
