@@ -1,4 +1,4 @@
-Lambda controller expose HttpLambda or RestLambda to callers.
+Lambda controller exposes HttpLambda or RestLambda to callers.
 
 ### How to invoke lambda
 

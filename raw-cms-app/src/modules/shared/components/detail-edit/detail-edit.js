@@ -43,6 +43,7 @@ const _RawCmsDetailEditDef = async () => {
 
       this.isLoading = false;
       this.code = this.formatJson(this.value || {});
+
       RawCMS.eventBus.$emit(_rawCmsDetailEditEvents.loaded, {
         isNew: this.isNew,
         value: this.value,
@@ -105,6 +106,8 @@ const _RawCmsDetailEditDef = async () => {
           color: 'success',
           message: this.saveSuccessMsg(this.value),
         });
+
+        this.value = res;
       },
     },
     props: {

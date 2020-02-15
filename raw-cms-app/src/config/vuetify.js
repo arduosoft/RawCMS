@@ -4,7 +4,7 @@ const _vuetify = new Vuetify({
   theme: {
     themes: {
       light: {
-        primary: colors.blue.darken2,
+        primary: colors.indigo.darken4,
         secondary: colors.cyan.base,
         tabHeader: colors.blue.lighten2,
       },

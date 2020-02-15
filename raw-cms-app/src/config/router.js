@@ -179,6 +179,7 @@ const _router = new VueRouter({
     },
     {
       path: '/graphql',
+      name: 'graphql',
       component: async (res, rej) => {
         const cmp = await import('/modules/core/views/graphql-view/graphql-view.js');
         await cmp.default(res, rej);
@@ -265,5 +266,15 @@ _router.beforeEach((to, from, next) => {
     params: { nextUrl: to.fullPath },
   });
 });
+
+if (typeof ga != 'undefined') {
+  // ga('set', 'page', _router.currentRoute.path);
+  // ga('send', 'pageview');
+
+  _router.afterEach((to, from) => {
+    ga('set', 'page', to.path);
+    ga('send', 'pageview');
+  });
+}
 
 export const router = _router;

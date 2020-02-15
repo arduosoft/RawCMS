@@ -1,11 +1,11 @@
 # GraphQL
 
-GraphQL plugin use [graphql-dotnet](https://github.com/graphql-dotnet/graphql-dotnet) library for implementation.
+GraphQL plugin uses [graphql-dotnet](https://github.com/graphql-dotnet/graphql-dotnet) library for implementation.
 
 This plugin is an example of RAWCMS configurable plugin
 
 ## Configuration
-Like all configurable plugin, graphQL have a json stored on _configuration collection
+Like all configurable plugins, graphQL has a json stored on _configuration collection
 
 ```json
 {
@@ -111,14 +111,14 @@ Type field
 
 ## Special Fields
 
-All collection that define on schema expose automatically this field:
+All collections that define on schema automatically expose this field:
 * Paging field
     * pageSize (default 1000)
     * pageNumber (1-base)
 * _id (MongoDB key)
 * rawQuery
 
-rawQuery is special field for write you custom MongoDB query on collcetion
+rawQuery is special field for writing your custom MongoDB queries on collection
 
 ## Example
 
@@ -130,7 +130,7 @@ while GraphiQL
 
 `http://{host}/graphihql`
 
-Suppose you have define previus schema, this is an explample of graphql query.
+Suppose you have defined a previous schema, this is an example of graphql query.
 
 ### 1. simple query
 
@@ -190,7 +190,7 @@ Suppose you have define previus schema, this is an explample of graphql query.
 
 ### 1. query subtype
 
-Yuo can query subtype using this path (collectionName)_(fieldName)
+You can query subtype using this path (collectionName)_(fieldName)
 
 **Body**
 ```json

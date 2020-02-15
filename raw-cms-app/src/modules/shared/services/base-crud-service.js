@@ -52,7 +52,11 @@ export class BaseCrudService extends mix(BaseApiService, ICrudService) {
     }
 
     const res = await this._apiClient.post(`${this._basePath}`, obj);
-    return this._checkGenericError(res);
+    if (!this._checkGenericError(res)) {
+      return false;
+    }
+
+    return res.data.data;
   }
 
   async update(obj) {
@@ -64,7 +68,11 @@ export class BaseCrudService extends mix(BaseApiService, ICrudService) {
     }
 
     const res = await this._apiClient.patch(`${this._basePath}/${id}`, obj);
-    return this._checkGenericError(res);
+    if (!this._checkGenericError(res)) {
+      return false;
+    }
+
+    return res.data.data;
   }
 
   async delete(id) {
@@ -74,6 +82,10 @@ export class BaseCrudService extends mix(BaseApiService, ICrudService) {
     }
 
     const res = await this._apiClient.delete(`${this._basePath}/${id}`);
-    return this._checkGenericError(res);
+    if (!this._checkGenericError(res)) {
+      return false;
+    }
+
+    return res.data.data;
   }
 }
