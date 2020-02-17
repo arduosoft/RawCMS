@@ -14,4 +14,10 @@ COPY ./raw-cms-app/src  /usr/share/nginx/html
 # Add bash
 RUN apk add --no-cache bash 
 
-CMD ["/bin/bash", "-c", " chmod 777 /bootstrap.sh && /bootstrap.sh && nginx -g \"daemon off;\""]
+EXPOSE 80
+EXPOSE 4200 80
+
+CMD ["/bin/bash", "-c", " sudo  /bootstrap.sh && sudo  nginx -g \"daemon off;\""]
+
+
+

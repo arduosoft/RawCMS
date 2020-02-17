@@ -1,6 +1,7 @@
-SchemaValidationLambda is the base type to hook validation. In save pipeline validation is triggered so all derived class will be used to manage data validation.
+SchemaValidationLambda is the base type to hook validation. In the save pipeline validation is triggered so all derived class will be used to manage data validation.
 
 Basic implementation:
+
 ```cs
     public class MySchemaValidationLambda: SchemaValidationLambda
     {
@@ -13,8 +14,9 @@ Basic implementation:
 ```
 
 ### Entity Validation
-RawCMS ship already a validator that analyze schema and report errors. This is the "EntityValidation".
 
-EntityValidation read json settings in _schema collection and validate data.
+RawCMS already ships a validator that analyzes schemas and reports errors. This is the "EntityValidation".
 
-This let you manage most common validation issues (field required, format validation, lenght, regexp) without writing code, just configuration.
+EntityValidation reads json settings in \_schema collection and validate data.
+
+This lets you manage most common validation issues (field required, format validation, lenght, regexp) without writing code, and just with the configuration.

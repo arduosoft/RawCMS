@@ -1,21 +1,24 @@
-Data process Lambda are used to alter regular save behaviour. Using such lambdas you can:
-* compute some value
-* add some validation step
-* add per-user filters
-* hide fields
-* everithing else you need
+Data processing Lambdas are used to alter regular save behaviour. Using such lambdas you can:
+
+- compute some value
+- add some validation step
+- add per-user filters
+- hide fields
+- everithing else you need
 
 ### Data saving pipeline
-Data is saved using a save pipeline. Current implemented stage are:
+
+Data is saved using a save pipeline. Current implemented stages are:
 
 1. Pre-Save
 2. Post-Save
 
 ### DataProcessLambda
-Implementing a DataProcessLambda will let you in which phases you want to be triggered. Multiple phases can be binded as in example
+
+Implementing a DataProcessLambda will let you choose in which phases you want to be triggered. Multiple phases can be binded as in example
 
 ```cs
- public class AuditLambda : DataProcessLambda 
+ public class AuditLambda : DataProcessLambda
     {
         public override string Name => "LogLambda";
         public override string Description => "Log all";
@@ -28,11 +31,12 @@ Implementing a DataProcessLambda will let you in which phases you want to be tri
 ```
 
 ### PostSaveLambda, PreaveLambda
-This classes are shortcut to bing presave or postsave event
+
+This class is shortcut to bind presave or postsave event
 
 Audit Lambda is a sample. It is triggered on before saving data and it set audit details.
 
-```cs 
+```cs
  public class AuditLambda : PreSaveLambda
     {
         public override string Name => "AuditLambda";
@@ -51,4 +55,3 @@ Audit Lambda is a sample. It is triggered on before saving data and it set audit
         }
     }
 ```
-

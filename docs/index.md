@@ -2,7 +2,14 @@ Welcome to the RawCMS wiki!
 
 ### Install
 
-There isn't any nuget package atm or relases. Just clone code on your local, compile and run as simple Asp.Net core application. When ready, will be released with nuget package or docker image.
+You can deploy it using many options. Rawcms is dockerized from the development stage so modern hostings are fully supported.
+
+1. _Docker Compose_ using the provided docke-compose file
+2. _Kubernetes_ using the provided docker images
+3. _Heroku_ using the provided images
+4. _Virtual machines_ using the packges provided and deployed manually to the server
+
+[Just follow the guide to have it working in 5 minutes](Deploy)
 
 ### Customize
 

@@ -41,7 +41,7 @@ namespace RawCMS.Plugins.FullText.Core
         public string GetIndexName(string collection)
         {
             string str = "dix_" + Convert.ToBase64String(md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(collection.ToLower()))).Replace("=", "");
-            return str.ToLower().Replace("=", "");
+            return str.ToLower().Replace("=", "").Replace(@"\","").Replace("/","");
         }
 
         private void LoadCrudFilters()

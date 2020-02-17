@@ -1,11 +1,12 @@
 # GraphQL
 
-GraphQL plugin use [graphql-dotnet](https://github.com/graphql-dotnet/graphql-dotnet) library for implementation.
+GraphQL plugin uses [graphql-dotnet](https://github.com/graphql-dotnet/graphql-dotnet) library for implementation.
 
 This plugin is an example of RAWCMS configurable plugin
 
 ## Configuration
-Like all configurable plugin, graphQL have a json stored on _configuration collection
+
+Like all configurable plugins, graphQL has a json stored on \_configuration collection
 
 ```json
 {
@@ -20,8 +21,6 @@ Like all configurable plugin, graphQL have a json stored on _configuration colle
 ```
 
 with configuration you can change the path of GraphiQL exposed by RAWCMS.
-
-
 
 ## Configure collection
 
@@ -98,27 +97,28 @@ For expose collection with GraphQL you should add configuration on schema collec
 
 Supported BaseType are:
 
-* Boolean
-* Date
-* Float
-* Int
-* ID
-* String
-* Object
+- Boolean
+- Date
+- Float
+- Int
+- ID
+- String
+- Object
 
 to specify SubObject on base collection you can use _Object_ base type and write related collection name on
 Type field
 
 ## Special Fields
 
-All collection that define on schema expose automatically this field:
-* Paging field
-    * pageSize (default 1000)
-    * pageNumber (1-base)
-* _id (MongoDB key)
-* rawQuery
+All collections that define on schema automatically expose this field:
 
-rawQuery is special field for write you custom MongoDB query on collcetion
+- Paging field
+  - pageSize (default 1000)
+  - pageNumber (1-base)
+- \_id (MongoDB key)
+- rawQuery
+
+rawQuery is special field for writing your custom MongoDB queries on collection
 
 ## Example
 
@@ -130,14 +130,15 @@ while GraphiQL
 
 `http://{host}/graphihql`
 
-Suppose you have define previus schema, this is an explample of graphql query.
+Suppose you have defined a previous schema, this is an example of graphql query.
 
 ### 1. simple query
 
 **Body**
+
 ```json
 {
-    'query':'{ 
+    'query':'{
         currency(pageSize:1, pageNumber: 1, codCurrency: "E"){
             description,
             codCurrency
@@ -147,25 +148,27 @@ Suppose you have define previus schema, this is an explample of graphql query.
 ```
 
 **Result**
+
 ```json
 {
-    "data": {
-        "currency": [
-            {
-                "description": "Euro",
-                "codCurrency": "EUR"
-            }
-        ]
-    }
+  "data": {
+    "currency": [
+      {
+        "description": "Euro",
+        "codCurrency": "EUR"
+      }
+    ]
+  }
 }
 ```
 
 ### 1. rawQuery query
 
 **Body**
+
 ```json
 {
-	"query":"{ 
+	"query":"{
 		currency(pageSize:1, pageNumber: 1, rawQuery: \"{'CodCurrency':{'$regex':'/*U/*','$options':'si'}}\"){
 			description,
 			codCurrency
@@ -175,24 +178,26 @@ Suppose you have define previus schema, this is an explample of graphql query.
 ```
 
 **Result**
+
 ```json
 {
-    "data": {
-        "currency": [
-            {
-                "description": "Euro",
-                "codCurrency": "EUR"
-            }
-        ]
-    }
+  "data": {
+    "currency": [
+      {
+        "description": "Euro",
+        "codCurrency": "EUR"
+      }
+    ]
+  }
 }
 ```
 
 ### 1. query subtype
 
-Yuo can query subtype using this path (collectionName)_(fieldName)
+You can query subtype using this path (collectionName)\_(fieldName)
 
 **Body**
+
 ```json
 {
 	"query":"{
@@ -209,28 +214,28 @@ Yuo can query subtype using this path (collectionName)_(fieldName)
 ```
 
 **Result**
+
 ```json
 {
-    "data": {
-        "country": [
-            {
-                "codCountry": "IT",
-                "description": "Italy",
-                "currency": {
-                    "codCurrency": "EUR",
-                    "description": "Euro"
-                }
-            },
-            {
-                "codCountry": "SM",
-                "description": "San Marino",
-                "currency": {
-                    "codCurrency": "EUR",
-                    "description": "Euro"
-                }
-            }
-        ]
-    }
+  "data": {
+    "country": [
+      {
+        "codCountry": "IT",
+        "description": "Italy",
+        "currency": {
+          "codCurrency": "EUR",
+          "description": "Euro"
+        }
+      },
+      {
+        "codCountry": "SM",
+        "description": "San Marino",
+        "currency": {
+          "codCurrency": "EUR",
+          "description": "Euro"
+        }
+      }
+    ]
+  }
 }
 ```
- 

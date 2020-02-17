@@ -12,6 +12,14 @@ export class BaseApiService {
       return false;
     }
 
+    if (axiosRes.data && axiosRes.data.status && axiosRes.data.status != 'OK') {
+      return false;
+    }
+
+    if (axiosRes.data && axiosRes.data.errors && axiosRes.data.errors.lenght > 0) {
+      return false;
+    }
+
     return true;
   }
 }

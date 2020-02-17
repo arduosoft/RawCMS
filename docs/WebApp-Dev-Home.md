@@ -17,7 +17,7 @@ to this directory as the root directory for the webapp, unless stated otherwise.
 
 ## Prerequisites
 
-To thinker with the web app, you must have this tools installed on your machine:
+To tinker with the web app, you must have this tools installed on your machine:
 
 - NodeJS + npm (tested with version v10.15.2/6.4.1)
 
@@ -46,6 +46,7 @@ Components are usually splitted in 2/3 files: `<name>.js` (component logic),
 components are lazy loaded when the app needs them via an utility (more on that later).
 
 ### Notable/config files
+
 `src/index.html` and `src/main.js` are the main entry points where the whole application is
 bootstrapped.
 
@@ -74,6 +75,7 @@ Concerning `src/config` directory:
   at will to share objects/states within the application.
 
 ### Module structure
+
 We can use `src/modules/core` to explain a module structure:
 
 - `assets` directory: contains all static files (e.g. images). It has a sub-directory `i18n` where
@@ -81,6 +83,6 @@ We can use `src/modules/core` to explain a module structure:
 - `views` directory: contains the components which acts as main views for the module.
 - `services` directory: contains classes/helpers/utils providing business logic to the module components
   and possibly to other modules.
-- `components` directory: contains components which are logically contained in the module, but have been 
-splitted from the view for maintainability or can potentially be used also elsewhere. Each subdirectory
-contains a component with its own 2/3 files.
+- `components` directory: contains components which are logically contained in the module, but have been
+  splitted from the view for maintainability or can potentially be used also elsewhere. Each subdirectory
+  contains a component with its own 2/3 files.
