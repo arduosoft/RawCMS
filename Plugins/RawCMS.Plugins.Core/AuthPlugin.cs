@@ -45,16 +45,28 @@ namespace RawCMS.Plugins.Core
         public override void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true;
-            services.AddSingleton<IUserStore<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IUserPasswordStore<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IPasswordValidator<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IUserClaimStore<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IPasswordHasher<IdentityUser>, RawUserStore>();
-            services.AddSingleton<IProfileService, RawUserStore>();
-            services.AddSingleton<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
-
-            services.AddSingleton<RawRoleStore>();
-            services.AddSingleton<IRoleStore<IdentityRole>, RawRoleStore>();
+           
+            // all singleton works on CI/docker env but not on local
+            //services.AddSingleton<IUserStore<IdentityUser>, RawUserStore>();
+            //services.AddSingleton<IUserPasswordStore<IdentityUser>, RawUserStore>();
+            //services.AddSingleton<IPasswordValidator<IdentityUser>, RawUserStore>();
+            //services.AddSingleton<IUserClaimStore<IdentityUser>, RawUserStore>();
+            //services.AddSingleton<IPasswordHasher<IdentityUser>, RawUserStore>();
+            //services.AddSingleton<IProfileService, RawUserStore>();
+            //services.AddSingleton<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
+            
+            // this works on local
+            services.AddScoped<IUserStore<IdentityUser>, RawUserStore>();
+            services.AddScoped<IUserPasswordStore<IdentityUser>, RawUserStore>();
+            services.AddScoped<IPasswordValidator<IdentityUser>, RawUserStore>();
+            services.AddScoped<IUserClaimStore<IdentityUser>, RawUserStore>();
+            services.AddScoped<IPasswordHasher<IdentityUser>, RawUserStore>();
+            services.AddScoped<IProfileService, RawUserStore>();
+            services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, RawClaimsFactory>();
+            
+            
+            services.AddScoped<RawRoleStore>();
+            services.AddScoped<IRoleStore<IdentityRole>, RawRoleStore>();
             services.AddIdentity<IdentityUser, IdentityRole>();
 
             // configure identity server with in-memory stores, keys, clients and scopes
