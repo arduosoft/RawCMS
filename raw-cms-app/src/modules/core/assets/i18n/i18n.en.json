@@ -42,7 +42,12 @@
           "title": "Edit field",
           "typeLabel": "Type",
           "required": "Required"
-        }
+        },
+        "lambdasScript": "Actions",
+        "presave": "Presave Action",
+        "postsave": "Postsave Action",
+        "predelete": "Predelete Action",
+        "postdelete": "Postdelete Action"
       },
       "deleteConfirmMsgTpl": "Are you sure you want to delete entity {name}?",
       "deleteErrorMsgTpl": "An error occurred while deleting entity {name}.",
