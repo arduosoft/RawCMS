@@ -19,11 +19,59 @@
           <v-icon left>mdi-flip-to-back</v-icon>
           {{ $t('core.entities.detail.presave')}}
         </v-tab>
+        <v-tab>
+          <v-icon left>mdi-flip-to-back</v-icon>
+          {{ $t('core.entities.detail.postsave')}}
+        </v-tab>
+        <v-tab>
+          <v-icon left>mdi-flip-to-back</v-icon>
+          {{ $t('core.entities.detail.predelete')}}
+        </v-tab>
+        <v-tab>
+          <v-icon left>mdi-flip-to-back</v-icon>
+          {{ $t('core.entities.detail.postdelete')}}
+        </v-tab>
         <v-tab-item>
           <v-card flat>
             <monaco-editor
               ref="lambdaMonaco"
               v-model="value.PresaveScript"
+              style="height:800px;"
+              :options="customMonacoOptions"
+              :amdRequire="amdRequire"
+            >
+            </monaco-editor>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item>
+          <v-card flat>
+            <monaco-editor
+              ref="lambdaMonaco"
+              v-model="value.PostsaveScript"
+              style="height:800px;"
+              :options="customMonacoOptions"
+              :amdRequire="amdRequire"
+            >
+            </monaco-editor>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item>
+          <v-card flat>
+            <monaco-editor
+              ref="lambdaMonaco"
+              v-model="value.PreDeleteScript"
+              style="height:800px;"
+              :options="customMonacoOptions"
+              :amdRequire="amdRequire"
+            >
+            </monaco-editor>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item>
+          <v-card flat>
+            <monaco-editor
+              ref="lambdaMonaco"
+              v-model="value.PostDeleteScript"
               style="height:800px;"
               :options="customMonacoOptions"
               :amdRequire="amdRequire"
