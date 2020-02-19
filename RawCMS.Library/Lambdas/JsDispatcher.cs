@@ -9,13 +9,14 @@
 using Jint;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Enum;
 using RawCMS.Library.JavascriptClient;
 using RawCMS.Library.Service;
 using System.Collections.Generic;
 
 namespace RawCMS.Library.Lambdas
 {
-    public class JsDispatcher : PreSaveLambda
+    public abstract class JsDispatcher : DataProcessLambda 
     {
         public override string Name => "JsDispatcher";
 
@@ -28,7 +29,7 @@ namespace RawCMS.Library.Lambdas
             this.entityService = entityService;
         }
 
-        public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
             var settings = this.entityService.GetByName(collection);
             if (settings != null)
@@ -37,7 +38,7 @@ namespace RawCMS.Library.Lambdas
                 {
                     Dictionary<string, object> input = item.ToObject<Dictionary<string, object>>();
 
-                    Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); });                    
+                    Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); });
                     engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
                     engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
                     engine.SetValue("item", input);
@@ -47,4 +48,102 @@ namespace RawCMS.Library.Lambdas
             }
         }
     }
+
+    public class PreSaveEvent : JsDispatcher
+    {
+        public override PipelineStage Stage => PipelineStage.PreOperation;
+
+        public override DataOperation Operation => DataOperation.Write;
+
+        public override string Name => "PreSaveEvent";
+
+        public override string Description => "PreSaveEvent";
+
+        protected readonly static EntityService entityService;
+
+        public PreSaveEvent(): base(entityService)
+        {
+            
+        }
+
+
+        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        {
+            
+        }
+    }
+
+    public class PostSaveEvent : JsDispatcher
+    {
+        public override PipelineStage Stage => PipelineStage.PreOperation;
+
+        public override DataOperation Operation => DataOperation.Write;
+
+        public override string Name => "PreSaveEvent";
+
+        public override string Description => "PreSaveEvent";
+
+        protected readonly static EntityService entityService;
+
+        public PostSaveEvent() : base(entityService)
+        {
+
+        }
+
+
+        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        {
+
+        }
+    }
+
+    public class PreDeleteEvent : JsDispatcher
+    {
+        public override PipelineStage Stage => PipelineStage.PreOperation;
+
+        public override DataOperation Operation => DataOperation.Write;
+
+        public override string Name => "PreSaveEvent";
+
+        public override string Description => "PreSaveEvent";
+
+        protected readonly static EntityService entityService;
+
+        public PreDeleteEvent() : base(entityService)
+        {
+
+        }
+
+
+        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        {
+
+        }
+    }
+
+    public class PostDeleteEvent : JsDispatcher
+    {
+        public override PipelineStage Stage => PipelineStage.PreOperation;
+
+        public override DataOperation Operation => DataOperation.Write;
+
+        public override string Name => "PreSaveEvent";
+
+        public override string Description => "PreSaveEvent";
+
+        protected readonly static EntityService entityService;
+
+        public PostDeleteEvent() : base(entityService)
+        {
+
+        }
+
+
+        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        {
+
+        }
+    }
+
+
 }
