@@ -17,6 +17,9 @@ using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Plugins.FullText.Core;
 using System;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using RawCMS.Plugins.FullText.Models;
 
 namespace RawCMS.Plugins.FullText
 {
@@ -43,6 +46,10 @@ namespace RawCMS.Plugins.FullText
             {
                 RegisterElastiServices(services);
             }
+            services.AddHangfire(config =>
+            {
+                config.UseMemoryStorage();
+            });
         }
 
         private void RegisterElastiServices(IServiceCollection services)
@@ -65,10 +72,17 @@ namespace RawCMS.Plugins.FullText
             services.AddSingleton<FullTextService, ElasticFullTextService>();
             services.AddSingleton<FullTextUtilityService, FullTextUtilityService>();
             services.AddSingleton<LogIngressService, LogIngressService>();
+            services.AddSingleton<LogQueueService, LogQueueService>();
         }
 
         public override void Configure(IApplicationBuilder app)
         {
+           app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new MyAuthorizationFilter() }
+            });
+            //app.UseHangfireDashboard();
+            app.UseHangfireServer();
         }
 
         public override void ConfigureMvc(IMvcBuilder builder)

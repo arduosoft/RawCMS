@@ -9,7 +9,7 @@ namespace RawCMS.Plugins.FullText.Models
         public DateTime Date { get; set; }
         public string Message { get; set; }
         public string Severity { get; set; }
-        
+        public string ApplicationId { get; set; }
 
     }
 }

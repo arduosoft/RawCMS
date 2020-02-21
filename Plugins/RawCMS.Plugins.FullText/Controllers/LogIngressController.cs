@@ -19,12 +19,16 @@ namespace RawCMS.Plugins.FullText.Controllers
         }
         [HttpPost()]
         [Route("{applicationId}")]
-        public LocalRestMessage<bool> Log([FromRoute]string applicationId, [FromBody] LogEntity item)
+        public LocalRestMessage<bool> Log([FromRoute]string applicationId, [FromBody] LogEntity[] item)
         {
             var result = new LocalRestMessage<bool>(true);
             try
             {
-                this.service.addLog(applicationId, item);
+                for (int i = 0; i < item.Length; i++)
+                {
+                    this.service.addLog(applicationId, item[i]);
+                }
+                
             }
             catch (Exception err)
             {

@@ -5,6 +5,9 @@
     <IsPlugin>true</IsPlugin>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.9" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.9" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.6.3" />
     <PackageReference Include="IdentityServer4" Version="2.2.0" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.6.0" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="2.1.0" />

@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="Elasticsearch.Net" Version="7.4.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.9" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.9" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.6.3" />
     <PackageReference Include="IdentityServer4.Contrib.LocalAccessTokenValidation" Version="1.0.1" />
     <PackageReference Include="Jint" Version="2.11.58" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="0.2.4" />
