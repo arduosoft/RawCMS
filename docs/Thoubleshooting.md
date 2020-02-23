@@ -69,4 +69,12 @@ the log file paths are configured in
 
 You can find here the location of log files.
 
+3. asking for help
+
+- for specific question add a reply on issue thread is the perfect way. This made all transparend and build community
+- for general question not related to the task, we can ask on gitter o general slack channel
+- for problem with codebase or so on, just use direct communicaton. Of course all we learn of useful must be added to doc
+    - any problem must be transfromed in issues
+    - any news must be translated to documentation
+
 ## On production
