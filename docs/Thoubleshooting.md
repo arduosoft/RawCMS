@@ -77,4 +77,7 @@ You can find here the location of log files.
     - any problem must be transfromed in issues
     - any news must be translated to documentation
 
-## On production
+## Common errors
+
+### Failed to load resource: net::ERR_CONNECTION_REFUSED
+the base url is not correct, or API is not started yet
