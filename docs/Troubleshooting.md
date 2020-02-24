@@ -1,4 +1,3 @@
-
 ## On your local
 
 1. Check configuration.
@@ -7,15 +6,13 @@ API and UI are two different application and must be linked.
 
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/architecture.png?raw=true)
 
-In future api and UI will be melt to implement a standalone (but scalable or splittable) web application. 
-Now API and UI are separated and lives in differe universes. That implies we need to configure two different settings
-
+In future api and UI will be separated to implement a standalone (but scalable or splittable) web application.
+Now API and UI are separated and lives in different universes. That implies we need to configure two different settings
 
 ### UI settings
 
-
-
 /env/env.json
+
 ```
 {
   "api": {
@@ -32,10 +29,12 @@ Now API and UI are separated and lives in differe universes. That implies we nee
 ```
 
 ### API settings
-All settings are stored into _config table and are editable (don't support the hot reload, so you need too reboot APPI after change).
+
+All settings are stored into \_config table and are editable (doesn't support the hot reload, so you need to reboot APPI after change).
 The only settings we have on file is the connection string.
 
 appsettings.json
+
 ```
 {
   "Logging": {
@@ -54,30 +53,30 @@ appsettings.json
 
 The port or generally the baseUrl must point to the correct API url. Just check ISSExpress tray icon and open on browser to check it.
 
-
 2. Check API configuration.
-Standard port from dev is 28436. You should run the RawCMS config and have this settings:
+   Standard port from dev is 28436. You should run the RawCMS config and have this settings:
 
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/projectsettings.png?raw=true)
 
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/runsettings.png?raw=true)
 
 3. Log Files
-the log file paths are configured in 
+   the log file paths are configured in
 
 /cong/NLog.Development.config
 
 You can find here the location of log files.
 
-3. asking for help
+4. asking for help
 
-- for specific question add a reply on issue thread is the perfect way. This made all transparend and build community
-- for general question not related to the task, we can ask on gitter o general slack channel
-- for problem with codebase or so on, just use direct communicaton. Of course all we learn of useful must be added to doc
-    - any problem must be transfromed in issues
-    - any news must be translated to documentation
+- for specific question add a reply on issue thread is the perfect way. This makes the issue transparent and helps build the community
+- for general question not related to the task, we can ask on gitter or general slack channel
+- for problem with codebase or so on, just use direct communicaton. Of course, anything we learn of use must be added to doc
+  - any problem must be transformed into issues
+  - any news must be translated to documentation
 
 ## Common errors
 
 ### Failed to load resource: net::ERR_CONNECTION_REFUSED
+
 the base url is not correct, or API is not started yet
