@@ -22,7 +22,7 @@ As every open source project, we are looking for contributors. Any kind of help 
 
 You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) using the default credentials (username:bob, password:XYZ). **App run in a free tier, so it can take a little bit to come up.**
 
-You an see the [**tutorial**](https://github.com/arduosoft/RawCMS/blob/master/docs/Tutorial.md)
+You an see the [**tutorial**](https://rawcms.readthedocs.io/en/latest/Relation/)
 
 ## Deploy it
 
