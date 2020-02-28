@@ -31,10 +31,13 @@ namespace RawCMS.Library.Lambdas
 
         public void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext, PipelineStage stage, DataOperation Operation)
         {
+            var eventName = Stage.ToString() + Operation.ToString();
             var settings = this.entityService.GetByName(collection);
+            var eventScript = settings.Events?[eventName];
+
             if (settings != null)
             {
-                if (!string.IsNullOrEmpty(settings.Event))
+                if (!string.IsNullOrEmpty(eventScript.ToString()))
                 {
                     Dictionary<string, object> input = item.ToObject<Dictionary<string, object>>();
 
@@ -42,7 +45,7 @@ namespace RawCMS.Library.Lambdas
                     engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
                     engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
                     engine.SetValue("item", input);
-                    engine.Execute(settings.Event);
+                    engine.Execute(eventScript.ToString());
                     item = JObject.FromObject(input);
                 }
             }
