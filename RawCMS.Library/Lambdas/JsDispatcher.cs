@@ -29,12 +29,12 @@ namespace RawCMS.Library.Lambdas
             this.entityService = entityService;
         }
 
-        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        public void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext, PipelineStage stage, DataOperation Operation)
         {
             var settings = this.entityService.GetByName(collection);
             if (settings != null)
             {
-                if (!string.IsNullOrEmpty(settings.PresaveScript))
+                if (!string.IsNullOrEmpty(settings.Event))
                 {
                     Dictionary<string, object> input = item.ToObject<Dictionary<string, object>>();
 
@@ -42,7 +42,7 @@ namespace RawCMS.Library.Lambdas
                     engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
                     engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
                     engine.SetValue("item", input);
-                    engine.Execute(settings.PresaveScript);
+                    engine.Execute(settings.Event);
                     item = JObject.FromObject(input);
                 }
             }
@@ -63,13 +63,12 @@ namespace RawCMS.Library.Lambdas
 
         public PreSaveEvent(): base(entityService)
         {
-            
+
         }
 
-
-        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
-            
+            ExecuteInternal(collection,ref item,ref dataContext, Stage, Operation);
         }
     }
 
@@ -90,10 +89,9 @@ namespace RawCMS.Library.Lambdas
 
         }
 
-
-        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
-
+            ExecuteInternal(collection, ref item, ref dataContext, Stage, Operation);
         }
     }
 
@@ -114,10 +112,9 @@ namespace RawCMS.Library.Lambdas
 
         }
 
-
-        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
-
+            ExecuteInternal(collection, ref item, ref dataContext, Stage, Operation);
         }
     }
 
@@ -138,12 +135,9 @@ namespace RawCMS.Library.Lambdas
 
         }
 
-
-        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
-
+            ExecuteInternal(collection, ref item, ref dataContext, Stage, Operation);
         }
     }
-
-
 }

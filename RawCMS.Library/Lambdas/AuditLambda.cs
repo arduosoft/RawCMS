@@ -19,7 +19,7 @@ namespace RawCMS.Library.Lambdas
 
         public override string Description => "Add audit settings";
 
-        public override void ExecuteInternal(string collection, ref JObject Item, ref Dictionary<string, object> dataContext)
+        public override void Execute(string collection, ref JObject Item, ref Dictionary<string, object> dataContext)
         {
             if (!Item.ContainsKey("_id") || string.IsNullOrEmpty(Item["_id"].ToString()))
             {

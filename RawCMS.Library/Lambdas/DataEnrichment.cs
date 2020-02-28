@@ -12,7 +12,7 @@ namespace RawCMS.Library.Lambdas
 
         public abstract string MetadataName { get; }
 
-        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
             JObject meta = EnrichMetadata(collection, item, dataContext);
             if (meta != null && meta.HasValues)

@@ -23,11 +23,12 @@ namespace RawCMS.Library.Schema
     public class CollectionSchema
     {
         public string CollectionName { get; set; }
+
         public bool AllowNonMappedFields { get; set; }
 
         public List<Field> FieldSettings { get; set; } = new List<Field>();
 
-        public string PresaveScript { get; set; }
+        public Event Event { get; set; }
 
         public Dictionary<string, JObject> PluginConfiguration { get; set; } = new Dictionary<string, JObject>();
     }

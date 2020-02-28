@@ -17,7 +17,7 @@ namespace RawCMS.Library.Lambdas
         public abstract PipelineStage Stage { get; }
         public abstract DataOperation Operation { get; }
 
-        public abstract void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext);
+        public abstract void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext);
     }
 
     public abstract class PostSaveLambda : DataProcessLambda

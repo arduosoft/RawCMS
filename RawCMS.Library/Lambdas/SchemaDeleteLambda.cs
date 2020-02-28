@@ -19,7 +19,7 @@ namespace RawCMS.Library.Lambdas
 
         public override string Description => "Update schema in entity service";
 
-        public override void ExecuteInternal(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
+        public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
             if (collection.Equals("_schema"))
             {
