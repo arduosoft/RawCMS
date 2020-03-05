@@ -13,33 +13,6 @@ using System.Security.Claims;
 
 namespace RawCMS.Plugins.Core.Configuration
 {
-    public enum OAuthMode
-    {
-        JWT,
-        Introspection
-    }
-
-    public class ExternalProvider
-    {
-        public OAuthMode Mode { get; set; }
-        public string SchemaName { get; set; }
-        public string Authority { get; set; }
-        public string Audience { get; set; }
-        public string UserInfoEndpoint { get; set; }
-        public string RoleClaimType { get; set; }
-    }
-
-    public class RawCMSProvider
-    {
-        public string Authority { get; set; }
-        public string ClientId { get; set; }
-        public string ClientSecret { get; set; }
-        public string ApiResource { get; set; }
-
-        public string AdminApiKey { get; set; }
-        public string ApiKey { get; set; }
-    }
-
     public class AuthConfig
     {
         public AuthConfig()
