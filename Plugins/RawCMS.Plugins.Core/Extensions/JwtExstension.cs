@@ -76,7 +76,7 @@ namespace RawCMS.Plugins.Core.Extensions
                                             ["Email"] = identity.Claims.FirstOrDefault(y => y.Type == "email")?.Value,
                                             ["IsExternal"] = true,
                                         };
-                                        cRUDService.Insert("_users", userToSave);
+                                        user.Items.Add(cRUDService.Insert("_users", userToSave));
                                     }
                                     
 
@@ -86,9 +86,9 @@ namespace RawCMS.Plugins.Core.Extensions
 
                                     if(user.Items.First["Roles"] != null)
                                     {
-
+                                        roles = string.Join(',', roles, user.Items.First["Roles"].Values<string>()?.ToList());
                                     }
-                                    identity.AddClaim(new Claim(ClaimTypes.Role, string.Join(',', claimRole.Value, perm)));
+                                    identity.AddClaim(new Claim(ClaimTypes.Role, roles));
                                 }
                             }
                         }
