@@ -133,11 +133,11 @@ namespace RawCMS.Plugins.Core
                      o.ApiKey = this.config.RawCMSProvider.ApiKey;
                  });
 
-            if(this.config.ExternalProvider != null && this.config.ExternalProvider.Count > 0)
+            if(this.config.ExternalProviders != null && this.config.ExternalProviders.Count > 0)
             {
                 var crudService = services.BuildServiceProvider().GetService<CRUDService>();
 
-                foreach (var provider in this.config.ExternalProvider)
+                foreach (var provider in this.config.ExternalProviders)
                 {
                     //TODO: add multiple authintication schema type
                     authBuilder = authBuilder.AddJwtProvider(provider, crudService);

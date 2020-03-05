@@ -51,7 +51,7 @@ namespace RawCMS.Plugins.Core.Configuration
         }
 
         public RawCMSProvider RawCMSProvider { get; set; } = new RawCMSProvider();
-        public List<ExternalProvider> ExternalProvider { get; set; } = new List<ExternalProvider>();
+        public List<ExternalProvider> ExternalProviders { get; set; } = new List<ExternalProvider>();
 
 
         // scopes define the resources in your system
