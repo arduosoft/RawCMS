@@ -3,7 +3,7 @@
 Authentication module allows to authenticate users in two way:
 
 - using RawCMS provider
-- using external provider
+- using external providers
 
 RawCMS provider uses identity server 4 like internal IDP and exposes parts of its features.
 The main target of RawCMS authentication is:
@@ -159,11 +159,11 @@ Authorization:Bearer <sdfghjk>
 }
 ```
 
-## External Provider
+## External Providers
 
 Like we have to see Authentication plugin is configurable. On configuration JSON you can add multiple
 external provider for authenticating users.
-For configure external provider use _ExsternalProvider_ property.
+For configure external providers use _ExsternalProviders_ property.
 
 ```json
 {
@@ -175,7 +175,7 @@ For configure external provider use _ExsternalProvider_ property.
       "ClientSecret": "raw.secret",
       "ApiResource": "rawcms"
     },
-    "ExternalProvider": [
+    "ExternalProviders": [
       {
         "Mode": "JWT",
         "SchemaName": "Auth0",
