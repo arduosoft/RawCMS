@@ -170,6 +170,8 @@ namespace RawCMS.Library.Core.Helpers
             {
                 // _logger.LogDebug("loading from" + assembly.FullName);
                 Type[] types = assembly.GetTypes();
+                string[] excludedTypeNames = GetExcludedTypeNames();
+
                 foreach (Type type in types)
                 {
                     try
@@ -177,7 +179,10 @@ namespace RawCMS.Library.Core.Helpers
                         if ((t.IsAssignableFrom(type) || (type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == t)))
                             && !type.IsAbstract && !type.IsInterface && !type.IsGenericType)
                         {
-                            result.Add(type);
+                            if (!excludedTypeNames.Contains(type.Name)) 
+                            {
+                                result.Add(type);
+                            }
                         }
                     }
                     catch (Exception err)
@@ -187,6 +192,15 @@ namespace RawCMS.Library.Core.Helpers
                 }
             }
             return result;
+        }
+
+        private string[] GetExcludedTypeNames()
+        {
+            return new string[]
+            {
+                "EntitiesListType",
+                "FieldListType"
+            };
         }
     }
 }
