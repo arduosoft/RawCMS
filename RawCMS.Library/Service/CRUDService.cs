@@ -100,7 +100,7 @@ namespace RawCMS.Library.Service
 
             foreach (DataProcessLambda h in processhandlers)
             {
-                h.ExecuteInternal(collection, ref item, ref dataContext);
+                h.Execute(collection, ref item, ref dataContext);
             }
         }
 

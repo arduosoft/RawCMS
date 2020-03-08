@@ -33,21 +33,26 @@ namespace RawCMS.Library.Lambdas
         {
             var eventName = Stage.ToString() + Operation.ToString();
             var settings = this.entityService.GetByName(collection);
-            var eventScript = settings.Events?[eventName];
 
             if (settings != null)
             {
-                if (!string.IsNullOrEmpty(eventScript.ToString()))
-                {
-                    Dictionary<string, object> input = item.ToObject<Dictionary<string, object>>();
+                var eventScript = settings.Events?[eventName];
 
-                    Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); });
-                    engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
-                    engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
-                    engine.SetValue("item", input);
-                    engine.Execute(eventScript.ToString());
-                    item = JObject.FromObject(input);
+                if (eventScript != null)
+                {
+                    if (!string.IsNullOrEmpty(eventScript.ToString()))
+                    {
+                        Dictionary<string, object> input = item.ToObject<Dictionary<string, object>>();
+
+                        Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); });
+                        engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
+                        engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
+                        engine.SetValue("item", input);
+                        engine.Execute(eventScript.ToString());
+                        item = JObject.FromObject(input);
+                    }
                 }
+                
             }
         }
     }
@@ -62,9 +67,7 @@ namespace RawCMS.Library.Lambdas
 
         public override string Description => "PreSaveEvent";
 
-        protected readonly static EntityService entityService;
-
-        public PreSaveEvent(): base(entityService)
+        public PreSaveEvent(EntityService entityService) : base(entityService)
         {
 
         }
@@ -85,9 +88,7 @@ namespace RawCMS.Library.Lambdas
 
         public override string Description => "PreSaveEvent";
 
-        protected readonly static EntityService entityService;
-
-        public PostSaveEvent() : base(entityService)
+        public PostSaveEvent(EntityService entityService) : base(entityService)
         {
 
         }
@@ -108,9 +109,7 @@ namespace RawCMS.Library.Lambdas
 
         public override string Description => "PreSaveEvent";
 
-        protected readonly static EntityService entityService;
-
-        public PreDeleteEvent() : base(entityService)
+        public PreDeleteEvent(EntityService entityService) : base(entityService)
         {
 
         }
@@ -131,9 +130,7 @@ namespace RawCMS.Library.Lambdas
 
         public override string Description => "PreSaveEvent";
 
-        protected readonly static EntityService entityService;
-
-        public PostDeleteEvent() : base(entityService)
+        public PostDeleteEvent(EntityService entityService) : base(entityService)
         {
 
         }
