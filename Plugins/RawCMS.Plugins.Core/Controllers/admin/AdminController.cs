@@ -14,8 +14,9 @@ using RawCMS.Library.Service;
 
 namespace RawCMS.Plugins.Core.Controllers.Controllers.admin
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
-    [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer,ApiKey")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer,ApiKey")]
+    [Authorize(Roles = "Admin")]
     [Route("system/[controller]")]
     [ParameterValidator("collection", "_(.*)", false)]
     public class AdminController : CRUDController

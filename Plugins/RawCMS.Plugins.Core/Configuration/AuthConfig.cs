@@ -13,36 +13,19 @@ using System.Security.Claims;
 
 namespace RawCMS.Plugins.Core.Configuration
 {
-    public enum OAuthMode
-    {
-        Standalone,
-        External
-    }
-
     public class AuthConfig
     {
         public AuthConfig()
         {
-            Mode = OAuthMode.Standalone;
-            Authority = "http://localhost:50093";
-            ClientId = "raw.client";
-            ClientSecret = "raw.secret";
-            ApiResource = "rawcms";
+            RawCMSProvider.Authority = "http://localhost:50093";
+            RawCMSProvider.ClientId = "raw.client";
+            RawCMSProvider.ClientSecret = "raw.secret";
+            RawCMSProvider.ApiResource = "rawcms";
         }
 
-        public OAuthMode Mode { get; set; }
+        public RawCMSProvider RawCMSProvider { get; set; } = new RawCMSProvider();
+        public List<ExternalProvider> ExternalProviders { get; set; } = new List<ExternalProvider>();
 
-        public string ClientId { get; set; }
-        public string ClientSecret { get; set; }
-        public string ApiResource { get; set; }
-        public string Authority { get; set; }
-        public string IntrospectionEndpoint { get; internal set; }
-        public string TokenTypeHint { get; internal set; }
-
-        public bool OauthEnabled { get; set; }
-
-        public string AdminApiKey { get; set; }
-        public string ApiKey { get; set; }
 
         // scopes define the resources in your system
         public IEnumerable<IdentityResource> GetIdentityResources()
@@ -59,11 +42,11 @@ namespace RawCMS.Plugins.Core.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource(ApiResource, ApiResource)
+                new ApiResource(RawCMSProvider.ApiResource, RawCMSProvider.ApiResource)
                 {
                     ApiSecrets = new List<Secret>
                 {
-                    new Secret(ClientSecret.Sha256())
+                    new Secret(RawCMSProvider.ClientSecret.Sha256())
                 },
                 Scopes=
                 {
@@ -82,14 +65,14 @@ namespace RawCMS.Plugins.Core.Configuration
             {
                 new Client
                 {
-                    ClientId = ClientId,
+                    ClientId = RawCMSProvider.ClientId,
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     AlwaysSendClientClaims = true,
 
                     ClientSecrets =
                     {
-                        new Secret(ClientSecret.Sha256())
+                        new Secret(RawCMSProvider.ClientSecret.Sha256())
                     },
                     AllowedScopes =
                     {
