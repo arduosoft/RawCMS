@@ -35,7 +35,7 @@
           <v-card flat>
             <monaco-editor
               ref="lambdaMonaco"
-              v-model="value.PresaveScript"
+              v-model="value.Events.PresaveScript"
               style="height:800px;"
               :options="customMonacoOptions"
               :amdRequire="amdRequire"
@@ -47,7 +47,7 @@
           <v-card flat>
             <monaco-editor
               ref="lambdaMonaco"
-              v-model="value.PostsaveScript"
+              v-model="value.Events.PostsaveScript"
               style="height:800px;"
               :options="customMonacoOptions"
               :amdRequire="amdRequire"
@@ -59,7 +59,7 @@
           <v-card flat>
             <monaco-editor
               ref="lambdaMonaco"
-              v-model="value.PreDeleteScript"
+              v-model="value.Events.PreDeleteScript"
               style="height:800px;"
               :options="customMonacoOptions"
               :amdRequire="amdRequire"
@@ -71,7 +71,7 @@
           <v-card flat>
             <monaco-editor
               ref="lambdaMonaco"
-              v-model="value.PostDeleteScript"
+              v-model="value.Events.PostDeleteScript"
               style="height:800px;"
               :options="customMonacoOptions"
               :amdRequire="amdRequire"

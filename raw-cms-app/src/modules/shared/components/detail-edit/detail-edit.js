@@ -60,7 +60,7 @@ const _RawCmsDetailEditDef = async () => {
           language: 'json',
           scrollBeyondLastLine: false,
         },
-        value: {},
+        value: { Events: {} },
       };
     },
     methods: {
