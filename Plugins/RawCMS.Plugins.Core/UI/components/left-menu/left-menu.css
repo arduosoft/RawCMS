@@ -1,0 +1,53 @@
+.rawcms-left_menu .v-list-item.router-link-active::before {
+  opacity: 0.04;
+}
+
+.rawcms-left_menu .user-menu-active {
+  color: white !important;
+}
+
+/* User Menu Animation */
+.user-menu-tr-enter,
+.user-menu-tr-leave {
+  transform-origin: top;
+  overflow: hidden;
+}
+
+.user-menu-tr-enter-active {
+  animation: user-menu-slide 0.3s;
+}
+
+.user-menu-tr-leave-active {
+  animation: user-menu-slide 0.3s reverse;
+}
+
+@keyframes user-menu-slide {
+  0% {
+    transform: scaleY(0);
+    padding: 0 0;
+    max-height: 0;
+  }
+  100% {
+    transform: scaleY(1);
+    padding: 8px 0;
+    max-height: 64px;
+  }
+}
+
+/* User Menu Divider Animation */
+.user-menu-divider-tr-enter-active {
+  animation: user-menu-divider-fade 0.3s;
+}
+
+.user-menu-divider-tr-leave-active {
+  animation: user-menu-divider-fade 0.3s reverse;
+}
+
+@keyframes user-menu-divider-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

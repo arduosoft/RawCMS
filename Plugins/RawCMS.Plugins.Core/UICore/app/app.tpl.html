@@ -1,0 +1,14 @@
+<v-app>
+  <rawcms-top-bar v-if="showMenus"></rawcms-top-bar>
+  <rawcms-left-menu v-if="showMenus"></rawcms-left-menu>
+
+  <v-content>
+    <router-view></router-view>
+    <v-snackbar v-model="showSnackbar" :color="snackbarConfig.color">
+      {{ snackbarConfig.message }}
+      <v-btn icon @click="closeSnackbar()">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-snackbar>
+  </v-content>
+</v-app>

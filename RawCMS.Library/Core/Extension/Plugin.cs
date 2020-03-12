@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SlugGenerator;
 
 namespace RawCMS.Library.Core.Extension
 {
@@ -26,6 +27,8 @@ namespace RawCMS.Library.Core.Extension
 
         private readonly AppEngine engine;
         private readonly ILogger logger;
+
+        public virtual string Slug { get { return this.Name.Replace("RawCMS.Plugins.","").GenerateSlug(); } }
 
         public Plugin(AppEngine engine, ILogger logger)
         {

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\RawCMS\Plugins\RawCMS.Plugins.Core</OutputPath>
+    <OutputPath></OutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="UICore\Index.html" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="IdentityServer4" Version="2.2.0" />
@@ -60,8 +64,68 @@
     <ProjectReference Include="..\..\RawCMS.Library\RawCMS.Library.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interface\" />
+  <!--<ItemGroup>
+    <Folder Include="Interface\" CopyToOutputDirectory="PreserveNewest"/>
+    <Folder Include="UI\" />
   </ItemGroup>
+	
+	
+	<ItemGroup>
+		<None Include="$(ProjectDir)UI\**" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="$(ProjectDir)UICore\**" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>-->
+
+
+
+
+	<Target Name="WriteToFile"  AfterTargets="Build">
+		<RemoveDir	 Directories="$(OutDir)\UI" />
+		<ItemGroup>
+			<Files Include="$(ProjectDir)UI\**" />
+		</ItemGroup>
+		<ItemGroup>
+			<File Include="C:\temp\FileUi.txt" />
+		</ItemGroup>
+
+		<WriteLinesToFile
+		   File="@(File)"
+		   Lines="@(Files)"
+		   Overwrite="true"
+		   Encoding="Unicode"/>
+
+		<Copy
+            SourceFiles="@(Files)"
+			DestinationFiles="@(Files->'$(OutDir)\UI\%(RecursiveDir)%(Filename)%(Extension)')"
+        />
+	</Target>
+
+
+	<Target Name="WriteToFile2"  AfterTargets="AfterBuild">
+		<RemoveDir	 Directories="$(OutDir)\UICore" />
+		<ItemGroup>
+			<FilesUiCore Include="$(ProjectDir)UICore\**" />
+		</ItemGroup>
+		
+		<ItemGroup>
+			<FileUiCore Include="C:\temp\FilesUiCore.txt" />
+		</ItemGroup>
+
+		<WriteLinesToFile
+		   File="@(FileUiCore)"
+		   Lines="@(FilesUiCore)"
+		   Overwrite="true"
+		   Encoding="Unicode"/>
+
+
+		<Copy
+		SourceFiles="@(FilesUiCore)"
+		DestinationFiles="@(FilesUiCore->'$(OutDir)\UICore\%(RecursiveDir)%(Filename)%(Extension)')"
+        />
+	</Target>
+
+
 
 </Project>

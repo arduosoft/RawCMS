@@ -3,6 +3,7 @@ using MongoDB.Bson;
 
 namespace RawCMS.Library.Service
 {
+    //TODO: REFACTORING: Move to the DataModel
     public class RelationInfo
     {
         public bool IsMultiple { get; set; }

@@ -64,6 +64,9 @@ namespace RawCMS.Plugins.Core
             crudService.EnsureCollection("_configuration");
 
             crudService.EnsureCollection("_schema");
+
+
+            
         }
 
         private IConfigurationRoot configuration;

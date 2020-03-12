@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace RawCMS.Library.Core.Attributes
 {
+    //TODO: REFACTORING: Remove all
     public class RawAuthenticationAttribute : AuthorizeAttribute
     {
         //TODO: a che serve?

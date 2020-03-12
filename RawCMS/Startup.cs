@@ -36,7 +36,9 @@ namespace RawCMS
 
             var path = ApplicationLogger.GetConfigPath(env.EnvironmentName);
             loggerFactory.AddDebug();
-            loggerFactory.AddNLog();
+            loggerFactory.AddNLog(new NLogProviderOptions() { 
+                
+            });
             loggerFactory.AddConsole();
 
             env.ConfigureNLog(path);
@@ -60,8 +62,9 @@ namespace RawCMS
         {
             app.UseCors();
 
+
             appEngine.InvokeConfigure(app);
-            appEngine.RegisterPluginsMiddleweares(app);
+            appEngine.RegisterPluginsMiddlewares(app);
 
             if (env.IsDevelopment())
             {
@@ -85,7 +88,7 @@ namespace RawCMS
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseStaticFiles();
+           
 
             app.UseWelcomePage();
         }

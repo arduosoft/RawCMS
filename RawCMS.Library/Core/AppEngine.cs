@@ -297,7 +297,7 @@ namespace RawCMS.Library.Core
             }
         }
 
-        public void RegisterPluginsMiddleweares(IApplicationBuilder applicationBuilder)
+        public void RegisterPluginsMiddlewares(IApplicationBuilder applicationBuilder)
         {
             _logger.LogDebug("Discover Middleware in Bundle");
 

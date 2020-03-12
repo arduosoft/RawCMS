@@ -12,12 +12,16 @@
   <ItemGroup>
     <Compile Remove="Controllers\**" />
     <Compile Remove="Middlewares\**" />
+    <Compile Remove="Plugins\**" />
     <Content Remove="Controllers\**" />
     <Content Remove="Middlewares\**" />
+    <Content Remove="Plugins\**" />
     <EmbeddedResource Remove="Controllers\**" />
     <EmbeddedResource Remove="Middlewares\**" />
+    <EmbeddedResource Remove="Plugins\**" />
     <None Remove="Controllers\**" />
     <None Remove="Middlewares\**" />
+    <None Remove="Plugins\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,7 +68,9 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
-    <Exec Command="rmdir /s /Q $(ProjectDir)\Plugins\&#xD;&#xA;for /f %%a in ('dir/b /s $(SolutionDir)\*plugins*.csproj') do (dotnet build %%a --output $(ProjectDir)\Plugins\%%~na)" />
+    <exec command="rmdir /s /q $(projectdir)\plugins\&#xD;&#xA;for /f %%a in ('dir/b /s $(solutiondir)\*plugins*.csproj') do (dotnet build %%a --output $(projectdir)\plugins\%%~na)" />
   </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="http://json.schemastore.org/babelrc" /></VisualStudio></ProjectExtensions>
  
 </Project>
