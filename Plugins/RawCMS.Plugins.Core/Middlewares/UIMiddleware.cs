@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -24,11 +25,17 @@ namespace RawCMS.Plugins.Core.Middlewares
 
         public override async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Path.Value.StartsWith("/app"))
+
+
+            if (context.Request.Path.Value.StartsWith("/app") && context.Request.Path.Value.EndsWith("/"))
             {
-                await context.Response.WriteAsync("Hello from 2nd delegate.");
+                var indexPath = Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "RawCMS.Plugins.Core", "UICore", "Index.html");//TODO: make it dinamic?
+                context.Response.WriteAsync(File.ReadAllText(indexPath));
             }
-            await next(context);
+            else
+            {
+                await next(context);
+            }
         }
     }
 }

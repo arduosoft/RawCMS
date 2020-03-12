@@ -26,10 +26,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
     
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.6.0" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.6.0" />
@@ -81,8 +82,8 @@
 
 
 
-	<Target Name="WriteToFile"  AfterTargets="Build">
-		<RemoveDir	 Directories="$(OutDir)\UI" />
+	<Target Name="WriteToFile" AfterTargets="Build">
+		<RemoveDir Directories="$(OutDir)\UI" />
 		<ItemGroup>
 			<Files Include="$(ProjectDir)UI\**" />
 		</ItemGroup>
@@ -90,21 +91,14 @@
 			<File Include="C:\temp\FileUi.txt" />
 		</ItemGroup>
 
-		<WriteLinesToFile
-		   File="@(File)"
-		   Lines="@(Files)"
-		   Overwrite="true"
-		   Encoding="Unicode"/>
+		<WriteLinesToFile File="@(File)" Lines="@(Files)" Overwrite="true" Encoding="Unicode" />
 
-		<Copy
-            SourceFiles="@(Files)"
-			DestinationFiles="@(Files->'$(OutDir)\UI\%(RecursiveDir)%(Filename)%(Extension)')"
-        />
+		<Copy SourceFiles="@(Files)" DestinationFiles="@(Files->'$(OutDir)\UI\%(RecursiveDir)%(Filename)%(Extension)')" />
 	</Target>
 
 
-	<Target Name="WriteToFile2"  AfterTargets="AfterBuild">
-		<RemoveDir	 Directories="$(OutDir)\UICore" />
+	<Target Name="WriteToFile2" AfterTargets="AfterBuild">
+		<RemoveDir Directories="$(OutDir)\UICore" />
 		<ItemGroup>
 			<FilesUiCore Include="$(ProjectDir)UICore\**" />
 		</ItemGroup>
@@ -113,17 +107,10 @@
 			<FileUiCore Include="C:\temp\FilesUiCore.txt" />
 		</ItemGroup>
 
-		<WriteLinesToFile
-		   File="@(FileUiCore)"
-		   Lines="@(FilesUiCore)"
-		   Overwrite="true"
-		   Encoding="Unicode"/>
+		<WriteLinesToFile File="@(FileUiCore)" Lines="@(FilesUiCore)" Overwrite="true" Encoding="Unicode" />
 
 
-		<Copy
-		SourceFiles="@(FilesUiCore)"
-		DestinationFiles="@(FilesUiCore->'$(OutDir)\UICore\%(RecursiveDir)%(Filename)%(Extension)')"
-        />
+		<Copy SourceFiles="@(FilesUiCore)" DestinationFiles="@(FilesUiCore->'$(OutDir)\UICore\%(RecursiveDir)%(Filename)%(Extension)')" />
 	</Target>
 
 

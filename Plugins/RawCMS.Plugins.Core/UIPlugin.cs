@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -28,6 +29,12 @@ namespace RawCMS.Plugins.Core
 
         public override void Configure(IApplicationBuilder app)
         {
+
+
+            //app.UseRewriter(
+            //      new RewriteOptions().AddRewrite("^\\/app\\/(.*)\\/$", "app/index.html",true)
+            //      );
+
             Logger.LogInformation("Loading plugin UI");
             foreach (var plugin in this.Engine.Plugins)
             {
@@ -46,6 +53,8 @@ namespace RawCMS.Plugins.Core
                         }
                     });
                 }
+
+              
             }
 
             app.UseStaticFiles(new StaticFileOptions()

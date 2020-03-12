@@ -32,7 +32,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
 
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.6.0" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.6.0" />
@@ -75,8 +75,8 @@
   </ItemGroup>
 
 
-	<Target Name="BuildUI"  AfterTargets="Build">
-		<RemoveDir	 Directories="$(OutDir)\UI" />
+	<Target Name="BuildUI" AfterTargets="Build">
+		<RemoveDir Directories="$(OutDir)\UI" />
 		<ItemGroup>
 			<Files Include="$(ProjectDir)UI\**" />
 		</ItemGroup>
@@ -84,20 +84,13 @@
 			<File Include="C:\temp\FileApig.txt" />
 		</ItemGroup>
 
-		<WriteLinesToFile
-		   File="@(File)"
-		   Lines="@(Files)"
-		   Overwrite="true"
-		   Encoding="Unicode"/>
+		<WriteLinesToFile File="@(File)" Lines="@(Files)" Overwrite="true" Encoding="Unicode" />
 
-		<Copy
-            SourceFiles="@(Files)"
-			DestinationFiles="@(Files->'$(OutDir)\UI\%(RecursiveDir)%(Filename)%(Extension)')"
-        />
+		<Copy SourceFiles="@(Files)" DestinationFiles="@(Files->'$(OutDir)\UI\%(RecursiveDir)%(Filename)%(Extension)')" />
 	</Target>
 
 
-	<Target Name="RemoveUICore"  AfterTargets="AfterBuild">
-		<RemoveDir	 Directories="$(OutDir)\UICore" />
+	<Target Name="RemoveUICore" AfterTargets="AfterBuild">
+		<RemoveDir Directories="$(OutDir)\UICore" />
 	</Target>
 </Project>
