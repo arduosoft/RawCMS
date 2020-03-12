@@ -56,3 +56,7 @@ var data = JSON.parse(response.Data);
 item.Latitude = data.results[0].geometry.lat;
 item.Longitude = data.results[0].geometry.lng;
 ```
+
+### Available Clients
+
+RAWCMSRestClient is the only client available to make requests with at this time. It has limitations it only supports GET and the format is JSON.
