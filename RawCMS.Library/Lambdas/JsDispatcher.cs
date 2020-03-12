@@ -8,8 +8,6 @@
 //******************************************************************************
 using Jint;
 using Newtonsoft.Json.Linq;
-using RawCMS.Library.Core;
-using RawCMS.Library.Core.Enum;
 using RawCMS.Library.JavascriptClient;
 using RawCMS.Library.Service;
 using System;
