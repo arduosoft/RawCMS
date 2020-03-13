@@ -55,3 +55,28 @@ Audit Lambda is a sample. It is triggered on before saving data and it set audit
         }
     }
 ```
+
+### Javascript Lambdas
+
+For entities is possible define custom lambdas writed on javascript language on this events:
+
+- PreSave
+- PostSave
+- PreDelete
+- PostDelete
+
+![JS Lambdas](assets/jslambdas.png)
+
+this is an example of javascript code for calculate preview book using ISBN code
+
+```js
+var client = new RAWCMSRestClient();
+var request = new RAWCMSRestClientRequest();
+var bibkey = "ISBN:" + item.ISBN13;
+request.Url = "https://openlibrary.org/api/books?format=JSON&bibkeys=" + bibkey;
+request.Method = "GET";
+var response = client.Execute(request);
+var data = JSON.parse(response.Data);
+//set result propoerty
+item.PreviewUrl = data[bibkey].preview_url;
+```

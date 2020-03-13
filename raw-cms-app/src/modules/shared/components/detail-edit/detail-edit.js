@@ -5,6 +5,7 @@ import { BaseCrudService } from '../../../shared/services/base-crud-service.js';
 
 const _rawCmsDetailEditEvents = {
   loaded: 'rawcms_detail-edit_loaded',
+  default: 'rawcms_detail-edit_default',
 };
 
 const _RawCmsDetailEditDef = async () => {
@@ -43,6 +44,10 @@ const _RawCmsDetailEditDef = async () => {
 
       this.isLoading = false;
       this.code = this.formatJson(this.value || {});
+
+      RawCMS.eventBus.$on(_rawCmsDetailEditEvents.default, ev => {
+        this.value = ev.value;
+      });
 
       RawCMS.eventBus.$emit(_rawCmsDetailEditEvents.loaded, {
         isNew: this.isNew,

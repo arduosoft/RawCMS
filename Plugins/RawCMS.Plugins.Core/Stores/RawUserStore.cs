@@ -200,7 +200,6 @@ namespace RawCMS.Plugins.Core.Stores
                     Email = "test@test.it",
                     NormalizedEmail = "test@test.it",
                     NewPassword = "XYZ",//password will be hashed by service
-                    
                 };
 
                 userToAdd.Roles.Add("Admin");

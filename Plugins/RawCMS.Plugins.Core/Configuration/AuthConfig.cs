@@ -26,7 +26,6 @@ namespace RawCMS.Plugins.Core.Configuration
         public RawCMSProvider RawCMSProvider { get; set; } = new RawCMSProvider();
         public List<ExternalProvider> ExternalProviders { get; set; } = new List<ExternalProvider>();
 
-
         // scopes define the resources in your system
         public IEnumerable<IdentityResource> GetIdentityResources()
         {
