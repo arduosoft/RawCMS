@@ -11,17 +11,17 @@ using RawCMS.Library.Service;
 
 namespace RawCMS.Library.Lambdas.JSLambdas
 {
-    public class PostSaveLambda : JsDispatcher
+    public class JSPreSaveLambda : JsDispatcher
     {
-        public override PipelineStage Stage => PipelineStage.PostOperation;
+        public override PipelineStage Stage => PipelineStage.PreOperation;
 
         public override DataOperation Operation => DataOperation.Write;
 
-        public override string Name => "PostSaveLambda";
+        public override string Name => "JSPreSaveLambda";
 
-        public override string Description => "PostSaveLambda";
+        public override string Description => "JSPreSaveLambda";
 
-        public PostSaveLambda(EntityService entityService) : base(entityService)
+        public JSPreSaveLambda(EntityService entityService) : base(entityService)
         {
         }
     }

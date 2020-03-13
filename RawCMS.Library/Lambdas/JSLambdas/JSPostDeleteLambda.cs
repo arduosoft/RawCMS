@@ -11,17 +11,17 @@ using RawCMS.Library.Service;
 
 namespace RawCMS.Library.Lambdas.JSLambdas
 {
-    public class PostDeleteLambda : JsDispatcher
+    public class JSPostDeleteLambda : JsDispatcher
     {
         public override PipelineStage Stage => PipelineStage.PostOperation;
 
         public override DataOperation Operation => DataOperation.Delete;
 
-        public override string Name => "PostDeleteLambda";
+        public override string Name => "JSPostDeleteLambda";
 
-        public override string Description => "PostDeleteLambda";
+        public override string Description => "JSPostDeleteLambda";
 
-        public PostDeleteLambda(EntityService entityService) : base(entityService)
+        public JSPostDeleteLambda(EntityService entityService) : base(entityService)
         {
         }
     }

@@ -11,17 +11,17 @@ using RawCMS.Library.Service;
 
 namespace RawCMS.Library.Lambdas.JSLambdas
 {
-    public class PreDeleteLambda : JsDispatcher
+    public class JSPreDeleteLambda : JsDispatcher
     {
         public override PipelineStage Stage => PipelineStage.PreOperation;
 
         public override DataOperation Operation => DataOperation.Delete;
 
-        public override string Name => "PreDeleteLambda";
+        public override string Name => "JSPreDeleteLambda";
 
-        public override string Description => "PreDeleteLambda";
+        public override string Description => "JSPreDeleteLambda";
 
-        public PreDeleteLambda(EntityService entityService) : base(entityService)
+        public JSPreDeleteLambda(EntityService entityService) : base(entityService)
         {
         }
     }
