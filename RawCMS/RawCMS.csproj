@@ -50,7 +50,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.5.6" />
     <PackageReference Include="NLog.Config" Version="4.5.6" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.4" />
@@ -67,10 +67,6 @@
   <ItemGroup>
     <ProjectReference Include="..\RawCMS.Library\RawCMS.Library.csproj" />
   </ItemGroup>
-
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
-    <exec command="rmdir /s /q $(projectdir)\plugins\&#xD;&#xA;for /f %%a in ('dir/b /s $(solutiondir)\*plugins*.csproj') do (dotnet build %%a --output $(projectdir)\plugins\%%~na)" />
-  </Target>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
  

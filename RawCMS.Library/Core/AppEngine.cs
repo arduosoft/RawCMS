@@ -34,9 +34,15 @@ namespace RawCMS.Library.Core
         private readonly ILogger _logger;
         private readonly ReflectionManager reflectionManager;
 
+
+
         public List<Lambda> Lambdas { get; set; } = new List<Lambda>();
 
         public List<Plugin> Plugins { get; set; } = new List<Plugin>();
+
+        private Dictionary<string, string> pluginPathMapping = new Dictionary<string, string>();
+
+        public Plugin CorePlugin { get { return Plugins.Single(x => x.Name == "Core"); } }
 
         public AppEngine(ILogger _logger, Func<string, string> pluginPathLocator, ReflectionManager reflectionManager, IConfigurationRoot configuration)
         {
@@ -109,13 +115,15 @@ namespace RawCMS.Library.Core
                 var loader = PluginLoader.CreateFromConfigFile(
                 filePath: pluginInfo,
                 sharedTypes: typesToAdd.ToArray());
+
                 loaders.Add(loader);
+
+                var pluginAssembly = loader.LoadDefaultAssembly();
+                pluginPathMapping[pluginAssembly.FullName] = pluginInfo;
+
+                reflectionManager.AppendAssemblyToScope(pluginAssembly);
             }
 
-            foreach (var loader in loaders)
-            {
-                reflectionManager.AppendAssemblyToScope(loader.LoadDefaultAssembly());
-            }
         }
 
         public static AppEngine Create(string pluginPath, ILogger logger, ReflectionManager reflectionManager, IServiceCollection services, IConfigurationRoot configuration)
@@ -187,6 +195,8 @@ namespace RawCMS.Library.Core
                 services.AddSingleton(pluginType);
             }
 
+            LoadPluginPaths();
+
             LoadPluginSettings(pluginTypes, configuration, services);
 
             var sp = services.BuildServiceProvider();
@@ -199,11 +209,21 @@ namespace RawCMS.Library.Core
                 Plugins.Add(plugin);
             }
 
+            LoadPluginPaths();
+
             //Core plugin must be the first to be called. This ensure it also in case thirdy party define malicius priority.
             int minPriority = 0;
             Plugins.ForEach(x => { if (x.Priority <= minPriority) { minPriority = x.Priority - 1; } });
             Plugin corePlugin = Plugins.Single(x => x.Name == "Core");
             corePlugin.Priority = minPriority;
+        }
+
+        private void LoadPluginPaths()
+        {
+            foreach (var plugin in this.Plugins)
+            {
+                plugin.PluginPath = this.pluginPathMapping[plugin.GetType().Assembly.FullName];
+            }
         }
 
         private void LoadPluginSettings(List<Type> pluginTypes, IConfigurationRoot configuration, IServiceCollection services)

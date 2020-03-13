@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\RawCMS\Plugins\RawCMS.Plugins.GraphQL</OutputPath>
+    <OutputPath></OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +16,7 @@
     <PackageReference Include="Jint" Version="2.11.58" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="0.2.4" />
     <PackageReference Include="McMaster.NETCore.Plugins.Sdk" Version="0.2.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,8 +31,8 @@
 
 
 
-	<Target Name="BuildUI"  AfterTargets="Build">
-		<RemoveDir	 Directories="$(OutDir)\UI" />
+	<Target Name="BuildUI" AfterTargets="Build">
+		<RemoveDir Directories="$(OutDir)\UI" />
 		<ItemGroup>
 			<Files Include="$(ProjectDir)UI\**" />
 		</ItemGroup>
@@ -40,21 +40,14 @@
 			<File Include="C:\temp\FileApig.txt" />
 		</ItemGroup>
 
-		<WriteLinesToFile
-		   File="@(File)"
-		   Lines="@(Files)"
-		   Overwrite="true"
-		   Encoding="Unicode"/>
+		<WriteLinesToFile File="@(File)" Lines="@(Files)" Overwrite="true" Encoding="Unicode" />
 
-		<Copy
-            SourceFiles="@(Files)"
-			DestinationFiles="@(Files->'$(OutDir)\UI\%(RecursiveDir)%(Filename)%(Extension)')"
-        />
+		<Copy SourceFiles="@(Files)" DestinationFiles="@(Files->'$(OutDir)\UI\%(RecursiveDir)%(Filename)%(Extension)')" />
 	</Target>
 
 
-	<Target Name="RemoveUICore"  AfterTargets="AfterBuild">
-		<RemoveDir	 Directories="$(OutDir)\UICore" />
+	<Target Name="RemoveUICore" AfterTargets="AfterBuild">
+		<RemoveDir Directories="$(OutDir)\UICore" />
 	</Target>
 
 </Project>

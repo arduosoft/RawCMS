@@ -52,7 +52,6 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 ";
 
         #endregion fun
-
         public App(
         IConfigService configService,
             ILoggerService loggerService,

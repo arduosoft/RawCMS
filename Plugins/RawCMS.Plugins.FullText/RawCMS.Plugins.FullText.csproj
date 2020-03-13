@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\RawCMS\Plugins\RawCMS.Plugins.FullText</OutputPath>
+    <OutputPath></OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,7 +38,7 @@
     <PackageReference Include="MongoDB.Driver.Core" Version="2.6.0" />
     <PackageReference Include="NEST" Version="7.3.1" />
     <PackageReference Include="NEST.JsonNetSerializer" Version="7.3.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 
 
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />

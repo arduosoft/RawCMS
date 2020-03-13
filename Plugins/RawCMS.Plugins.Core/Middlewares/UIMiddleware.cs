@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using RawCMS.Library.Core;
 using RawCMS.Library.Core.Extension;
+using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Configuration;
 
 namespace RawCMS.Plugins.Core.Middlewares
@@ -16,11 +18,14 @@ namespace RawCMS.Plugins.Core.Middlewares
 
         public override string Description => nameof(UIMiddleware);
 
+        protected AppEngine appEngine;
+        protected UIService uiService;
 
-        public UIMiddleware(RequestDelegate requestDelegate, ILogger logger, UIPluginConfig config) :
+        public UIMiddleware(RequestDelegate requestDelegate, ILogger logger, UIPluginConfig config, AppEngine appEngine, UIService uiService) :
             base(requestDelegate, logger, config)
-        {   
-            
+        {
+            this.appEngine = appEngine;
+            this.uiService = uiService;
         }
 
         public override async Task InvokeAsync(HttpContext context)
@@ -29,8 +34,16 @@ namespace RawCMS.Plugins.Core.Middlewares
 
             if (context.Request.Path.Value.StartsWith("/app") && context.Request.Path.Value.EndsWith("/"))
             {
-                var indexPath = Path.Combine(Directory.GetCurrentDirectory(), "Plugins", "RawCMS.Plugins.Core", "UICore", "Index.html");//TODO: make it dinamic?
-                context.Response.WriteAsync(File.ReadAllText(indexPath));
+                
+                var indexPath = Path.Combine(Path.GetDirectoryName(appEngine.CorePlugin.PluginPath), "UICore", "index.html");//TODO: make it dinamic?
+
+                
+                var index = File.ReadAllText(indexPath);
+                index = index
+                    .Replace("<!--CSS-->", uiService.GetCSStHtml())
+                    .Replace("<!--SCRIPTS-->", uiService.GetJavascriptHtml()).Replace(".jss", ".js");
+
+                context.Response.WriteAsync(index);
             }
             else
             {
