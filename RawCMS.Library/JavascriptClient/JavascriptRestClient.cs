@@ -10,24 +10,21 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RawCMS.Library.JavascriptClient
 {
     public class JavascriptRestClient
     {
         public ILogger logger { get; private set; }
+
         public JavascriptRestClient()
         {
-
         }
-    
 
         public JavascriptRestClientMessage<JObject> Execute(JavascriptRestClientRequest javascriptRequest)
         {
             JavascriptRestClientMessage<JObject> response = new JavascriptRestClientMessage<JObject>(new JObject());
-                        IRestResponse restResponse = null;
+            IRestResponse restResponse = null;
 
             RestClient client = new RestClient(javascriptRequest.Url);
             Method reqMethod = Method.GET;
@@ -35,7 +32,6 @@ namespace RawCMS.Library.JavascriptClient
             {
                 // log error method...
             }
-
 
             RestRequest request = new RestRequest()
             {
@@ -45,19 +41,17 @@ namespace RawCMS.Library.JavascriptClient
             };
 
             // set the request header
-            if (javascriptRequest.Header!=null)
+            if (javascriptRequest.Header != null)
             {
                 foreach (var el in javascriptRequest.Header)
                 {
                     request.AddHeader(el.Key, el.Value);
-
                 }
             }
-           
 
             //add parameters to request
             request.Parameters.Clear();
-            if (javascriptRequest.QueryParams!=null)
+            if (javascriptRequest.QueryParams != null)
             {
                 foreach (var el in javascriptRequest.QueryParams)
                 {
@@ -69,7 +63,6 @@ namespace RawCMS.Library.JavascriptClient
             {
                 request.AddJsonBody(javascriptRequest.Body);
             }
-           
 
             // TODO: add logging
             //var uri = client.BuildUri(request);
@@ -78,7 +71,6 @@ namespace RawCMS.Library.JavascriptClient
             try
             {
                 restResponse = client.Execute(request);
-
             }
             catch (Exception untrapped)
             {
@@ -91,11 +83,10 @@ namespace RawCMS.Library.JavascriptClient
                 });
             }
             //make the API request and get a response
-          
+
             response.Data = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(restResponse.Content);
             return response;
         }
-
 
         //public string getText()
         //{

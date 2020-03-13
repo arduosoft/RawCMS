@@ -37,13 +37,12 @@ namespace RawCMS.Plugins.GraphQL.Types
                 {
                     value = new JArray(token.Value<object>());
                 }
-
             }
             else
             {
                 value = GetPropValue(source, name);
             }
-            
+
             if (value == null)
             {
                 throw new InvalidOperationException($"Expected to find property {context.FieldAst.Name} on {context.Source.GetType().Name} but it does not exist.");
@@ -66,7 +65,8 @@ namespace RawCMS.Plugins.GraphQL.Types
                 {
                     return null;
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 throw;
             }
