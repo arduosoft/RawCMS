@@ -15,15 +15,61 @@ namespace RawCMS.Library.Service
 
         public List<UIMenuItem> MenuItems = new List<UIMenuItem>();
 
+        public List<UIMetadata> Modules = new List<UIMetadata>();
+
+
         public UIService(AppEngine appEngine)
         {
             this.appEngine = appEngine;
             foreach (var plugin in this.appEngine.Plugins)
             {
                 var increment=plugin.GetUIMetadata();
-                Requirements.AddRange(increment.Requirements);
-                MenuItems.AddRange(increment.MenuItems);
+                if (increment != null)
+                {
+                    increment.ModuleUrl = GetPluginPathBase(plugin.Slug); //To be moved
+                    Requirements.AddRange(increment.Requirements);
+                    MenuItems.AddRange(increment.MenuItems);
+                    Modules.Add(increment);
+                }
             }
+            
+        }
+        public List<UIMetadata> GetModules()
+        {
+            return Modules;
+        }
+
+
+            //public List<String> GetPluginsInit()
+            //{
+            //    var metadataInfo = this.appEngine.Plugins.OrderBy(x => x.Priority).Select(x =>
+            //             x.GetUIMetadata()
+            //        ).ToList();
+
+            //    List<string> result = new List<string>();
+            //    metadataInfo.ForEach(x => {
+            //        x.
+            //    })
+            //}
+            public List<String> GetPluginsPaths()
+        {
+            var slugs = this.appEngine.Plugins.OrderBy(x => x.Priority).Select(x =>
+                     x.Slug
+                ).ToList();
+
+            List<string> result = new List<string>();
+            slugs.ForEach(x => {
+                result.Add(GetPluginPathBase(x) );
+            });
+            return result;
+        }
+
+
+        private const string PluginPathBaseTemplate= "/app/modules/{0}/";
+
+        private string GetPluginPathBase(string x)
+        {
+            return string.Format(PluginPathBaseTemplate, x);
         }
 
         public string GetJavascriptHtml()
@@ -36,6 +82,7 @@ namespace RawCMS.Library.Service
 
         public string GetCSStHtml()
         {
+            
             var requirements = Requirements.Where(x => x.Type == UIResourceRequirementType.CSS).ToList();
             StringBuilder sb = new StringBuilder();
             RequirementsToHtml("link", "href", requirements, sb);

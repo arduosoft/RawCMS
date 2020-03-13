@@ -29,6 +29,13 @@ namespace RawCMS.Plugins.Core
             this.config = config;
         }
 
+        public string PluginPath { 
+            get 
+            {
+                return "core";
+            } 
+        }
+
         public override void Configure(IApplicationBuilder app)
         {
 
@@ -89,7 +96,7 @@ namespace RawCMS.Plugins.Core
 
         public override UIMetadata GetUIMetadata()
         {
-            var metadata= base.GetUIMetadata();
+            var metadata = new UIMetadata();
 
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {

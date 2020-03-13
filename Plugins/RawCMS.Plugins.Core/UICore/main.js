@@ -27,18 +27,26 @@ RawCMS.utils.epicSpinners = epicSpinners;
 
 // Add env and start app
 axios({
-  url: "/app/env/env.json",
+  url: "/api/UIMetadata",
   method: "get"
 })
   .then(e => {
     RawCMS.env = e.data;
   })
   .then(_ => {
-    // FIXME: This should be properly handled!
+    console.log(RawCMS.env);
+
     const moduleConfigPromises = [
-      import("/app/common/formly-material/config.js").then(x => x.default()),
-      import("/app/modules/core/config.js").then(x => x.default())
+      import("/app/common/formly-material/config.js").then(x => x.default())
     ];
+
+    RawCMS.env.metadata.forEach(module => {
+      console.log(module);
+      moduleConfigPromises.push(
+        import(module.moduleUrl + "config.js").then(x => x.default())
+      );
+    });
+
     const appCmpPromise = import("/app/app/app.js").then(x => x.App);
 
     Promise.all([appCmpPromise, ...moduleConfigPromises]).then(x => {

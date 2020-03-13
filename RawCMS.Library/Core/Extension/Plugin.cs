@@ -86,7 +86,7 @@ namespace RawCMS.Library.Core.Extension
 
         public virtual UIMetadata GetUIMetadata()
         {
-            return new UIMetadata();
+            return null;
         }
     }
 }
