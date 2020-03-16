@@ -8,7 +8,6 @@ class RawCms {
   eventBus = new Vue();
 
   loadComponentTpl = path => {
-    console.log(path);
     return axios.get(path).then(x => {
       return x.data;
     });

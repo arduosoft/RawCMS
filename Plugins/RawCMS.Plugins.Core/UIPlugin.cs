@@ -29,12 +29,7 @@ namespace RawCMS.Plugins.Core
             this.config = config;
         }
 
-        public string PluginPath { 
-            get 
-            {
-                return "core";
-            } 
-        }
+        public override string Slug => "core";
 
         public override void Configure(IApplicationBuilder app)
         {
@@ -60,6 +55,12 @@ namespace RawCMS.Plugins.Core
                         {
                             ctx.Context.Response.Headers.Add("Cache", new Microsoft.Extensions.Primitives.StringValues("no-cache"));
                         }
+                    });
+
+                    app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+                    {
+                        FileProvider = new PhysicalFileProvider(folder),
+                        RequestPath = "/app/modules/" + plugin.Slug
                     });
                 }
 

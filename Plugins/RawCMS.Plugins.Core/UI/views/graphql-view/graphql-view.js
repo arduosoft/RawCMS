@@ -1,4 +1,4 @@
-import { RawCMS } from "/config/raw-cms.js";
+import { RawCMS } from "/app/config/raw-cms.js";
 const _GraphQLView = async (res, rej) => {
   const tpl = await RawCMS.loadComponentTpl(
     "/app/modules/core/views/graphql-view/graphql-view.tpl.html"
