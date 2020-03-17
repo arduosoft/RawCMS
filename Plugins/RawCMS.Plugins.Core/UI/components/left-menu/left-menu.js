@@ -17,26 +17,25 @@ const _LeftMenu = async (resolve, reject) => {
     computed: {
       userinfo: function() {
         return vuexStore.state.core.userInfo || {};
+      },
+      items: function() {
+        let menuItems = [];
+        RawCMS.env.metadata.forEach(x => {
+          var key = x.moduleName + "/menuItems";
+          var items = RawCMS.vuexStore.getters[key];
+          if (items) {
+            menuItems.push(...items);
+          }
+        });
+
+        return menuItems;
       }
     },
     data: function() {
       return {
         isVisible: false,
         isUserMenuVisible: false,
-        items: [
-          { icon: "mdi-home", text: "Home", route: "home" },
-          { icon: "mdi-account", text: "Users", route: "users" },
-          { icon: "mdi-cube", text: "Entities", route: "entities" },
-          { icon: "mdi-book-open", text: "Collections", route: "collections" },
-          { icon: "mdi-circle", text: "Lambdas", route: "lambdas" },
-          { icon: "mdi-settings", text: "Configuration", route: "plugins" },
-          { icon: "mdi-graphql", text: "GraphQL", route: "graphql" },
-          {
-            icon: "mdi-file-document-outline",
-            text: "Dev portal",
-            extLink: RawCMS.env.api.baseUrl
-          }
-        ],
+
         bottomItem: { icon: "mdi-information", text: "About", route: "about" }
       };
     },

@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
+using RawCMS.Library.UI;
 using RawCMS.Plugins.GraphQL.Classes;
 
 namespace RawCMS.Plugins.GraphQL
@@ -60,6 +61,11 @@ namespace RawCMS.Plugins.GraphQL
 
         public override void ConfigureMvc(IMvcBuilder builder)
         {
+        }
+
+        public override UIMetadata GetUIMetadata()
+        {
+            return new UIMetadata();
         }
     }
 }

@@ -22,20 +22,15 @@ namespace RawCMS.Library.UI
 
     }
 
-    public class  UIMenuItem
-    {
-        public string IconUrl { get; set; }
-        public string Title { get; set; }
-        public string Url { get; set; }
-        public int Order { get; set; }
-    }
+
     public class UIMetadata
     {
         public List<UIResourceRequirement> Requirements = new List<UIResourceRequirement>();
 
-        public List<UIMenuItem> MenuItems = new List<UIMenuItem>();  
+          
         
         public string ModuleUrl { get; set; }
+        public string ModuleName { get; set; }
 
     }
 }

@@ -37,13 +37,13 @@ axios({
     console.log(RawCMS.env);
 
     const moduleConfigPromises = [
-      import("/app/common/formly-material/config.js").then(x => x.default())
+      import("/app/common/formly-material/config.js").then(x => x.default)
     ];
 
     RawCMS.env.metadata.forEach(module => {
       console.log(module);
       moduleConfigPromises.push(
-        import(module.moduleUrl + "config.js").then(x => x.default())
+        import(module.moduleUrl + "config.js").then(x => x.default)
       );
     });
 
@@ -51,6 +51,20 @@ axios({
 
     Promise.all([appCmpPromise, ...moduleConfigPromises]).then(x => {
       const appCmp = x[0];
+
+      //App is not a module!
+      for (var i = 1; i < x.length; i++) {
+        let module = x[i];
+        vuexStore.registerModule(module.name, module);
+        if (module.init) {
+          module.init();
+        }
+        if (module.getRoutes) {
+          router.addRoutes(module.getRoutes());
+        }
+      }
+
+      console.log(vuexStore);
 
       const vue = new Vue({
         router: router,

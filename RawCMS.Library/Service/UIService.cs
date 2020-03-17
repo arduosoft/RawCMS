@@ -13,7 +13,7 @@ namespace RawCMS.Library.Service
 
         public List<UIResourceRequirement> Requirements = new List<UIResourceRequirement>();
 
-        public List<UIMenuItem> MenuItems = new List<UIMenuItem>();
+       
 
         public List<UIMetadata> Modules = new List<UIMetadata>();
 
@@ -27,8 +27,9 @@ namespace RawCMS.Library.Service
                 if (increment != null)
                 {
                     increment.ModuleUrl = GetPluginPathBase(plugin.Slug); //To be moved
+                    increment.ModuleName = plugin.Slug;
                     Requirements.AddRange(increment.Requirements);
-                    MenuItems.AddRange(increment.MenuItems);
+                    
                     Modules.Add(increment);
                 }
             }
