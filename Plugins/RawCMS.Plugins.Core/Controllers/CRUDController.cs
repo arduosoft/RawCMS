@@ -23,7 +23,8 @@ namespace RawCMS.Plugins.Core.Controllers
     //[Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ParameterValidator("collection", "_(.*)", true)]
-    public class CRUDController : Controller
+    [ApiController]
+    public class CRUDController : ControllerBase
     {
         private readonly CRUDService service;
 
@@ -34,7 +35,7 @@ namespace RawCMS.Plugins.Core.Controllers
 
         // GET api/CRUD/{collection}
         [HttpGet("{collection}")]
-        public RestMessage<ItemList> Get(string collection, string rawQuery = null, string[] expando = null, int pageNumber = 1, int pageSize = 20, string sort = "")
+        public RestMessage<ItemList> Get(string collection, string rawQuery = null, string expando = "", int pageNumber = 1, int pageSize = 20, string sort = "")
         {
             var sortValue = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SortOption>>(sort);
             ItemList result = service.Query(collection, new Library.DataModel.DataQuery()
@@ -43,7 +44,7 @@ namespace RawCMS.Plugins.Core.Controllers
                 PageSize = pageSize,
                 RawQuery = rawQuery,
                 Sort = sortValue,
-                Expando = new List<string>(expando)
+                Expando = new List<string>(expando?.Split(',', StringSplitOptions.RemoveEmptyEntries))
             });
 
             return new RestMessage<ItemList>(result);

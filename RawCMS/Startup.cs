@@ -73,9 +73,7 @@ namespace RawCMS
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{collection?}/{id?}");
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
 
@@ -87,8 +85,6 @@ namespace RawCMS
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "RawCms API V1");
             });
-
-            app.UseWelcomePage();
         }
 
         //This method gets called by the runtime.Use this method to add services to the container.
@@ -111,13 +107,7 @@ namespace RawCMS
                 p.AllowAnyOrigin();
             }));
 
-            var builder = services.AddControllersWithViews().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            });
-
-            services.AddRazorPages();
+            var builder  = services.AddRazorPages();
 
             var ass = new List<Assembly>();
 
@@ -140,6 +130,19 @@ namespace RawCMS
             {
                 builder.AddApplicationPart(a).AddControllersAsServices();
             }
+
+            services.AddControllersWithViews()
+                .ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressConsumesConstraintForFormFileParameters = true;
+                options.SuppressInferBindingSourcesForParameters = true;
+                options.SuppressModelStateInvalidFilter = true;
+                options.SuppressMapClientErrors = true;
+            }).AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            });
 
             //Invoke appEngine after service configuration
 

@@ -21,7 +21,8 @@ namespace RawCMS.Plugins.Core.Controllers
     [AllowAnonymous]
     [RawAuthentication]
     [Route("api/[controller]")]
-    public class LambdaController : Controller
+    [ApiController]
+    public class LambdaController : ControllerBase
     {
         private readonly AppEngine lambdaManager;
 

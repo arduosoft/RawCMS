@@ -7,9 +7,12 @@ import { snackbarService } from '../services/snackbar.service.js';
 class MetadataService {
   async getFieldsMetadata() {
     try {
+      const excludedTypes = ['fields-list', 'entities-list'];
       const res = await apiClient.get(`/system/metadata/fieldinfo`);
       return res.data.reduce((map, obj) => {
-        map[obj.type.typeName] = obj;
+        if (!excludedTypes.includes(obj.type.typeName)) {
+          map[obj.type.typeName] = obj;
+        }
         return map;
       }, {});
     } catch (e) {

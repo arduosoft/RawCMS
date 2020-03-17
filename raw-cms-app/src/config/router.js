@@ -267,4 +267,14 @@ _router.beforeEach((to, from, next) => {
   });
 });
 
+if (typeof ga != 'undefined') {
+  // ga('set', 'page', _router.currentRoute.path);
+  // ga('send', 'pageview');
+
+  _router.afterEach((to, from) => {
+    ga('set', 'page', to.path);
+    ga('send', 'pageview');
+  });
+}
+
 export const router = _router;

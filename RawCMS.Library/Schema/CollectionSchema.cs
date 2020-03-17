@@ -27,7 +27,7 @@ namespace RawCMS.Library.Schema
 
         public List<Field> FieldSettings { get; set; } = new List<Field>();
 
-        public string PresaveScript { get; set; }
+        public JObject Events { get; set; } = new JObject();
 
         public Dictionary<string, JObject> PluginConfiguration { get; set; } = new Dictionary<string, JObject>();
     }
