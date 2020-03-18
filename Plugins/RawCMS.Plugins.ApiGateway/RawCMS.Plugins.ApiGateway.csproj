@@ -5,7 +5,7 @@
     <IsPlugin>true</IsPlugin>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.1.0" />
+    <PackageReference Include="McMaster.NETCore.Plugins" Version="1.2.0" />
     <PackageReference Include="McMaster.NETCore.Plugins.Sdk" Version="0.2.4" />
   </ItemGroup>
   <ItemGroup>
