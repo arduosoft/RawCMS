@@ -38,9 +38,14 @@ namespace RawCMS.Library.Core.Extension
         public string GetUIFolder()
         {
             var baseFolder = Path.GetDirectoryName(this.PluginPath);
-            baseFolder = Path.GetDirectoryName(baseFolder);
-            baseFolder = Path.GetDirectoryName(baseFolder);
-            baseFolder = Path.GetDirectoryName(baseFolder);
+            if ("Development".Equals(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")))
+            {
+                //TODO: do it using configuration
+
+                baseFolder = Path.GetDirectoryName(baseFolder);
+                baseFolder = Path.GetDirectoryName(baseFolder);
+                baseFolder = Path.GetDirectoryName(baseFolder);
+            }
             return Path.Combine(baseFolder, "UI");
         }
 
