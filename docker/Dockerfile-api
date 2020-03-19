@@ -1,13 +1,13 @@
-FROM mcr.microsoft.com/dotnet/core/runtime:3.1.2-alpine AS base
+FROM mcr.microsoft.com/dotnet/core/runtime:latest AS base
 WORKDIR /app
 
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.200-alpine AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:latest AS build
 WORKDIR /src
-COPY ./docker/config/api/buildscript.sh ./build.sh
+COPY ./docker/config/api/buildscript.sh ./build.unix.sh
 COPY . .
 
-RUN chmod +x ./build.unix.sh && build.unix.sh
+RUN chmod +x ./build.unix.sh && bash /src/build.unix.sh
 
 FROM base AS final
 WORKDIR /app
