@@ -71,7 +71,7 @@ const _configCoreModule = {
           }
         ],
         meta: {
-          i18nLoad: ["core", "formly-material"]
+            i18nLoad: ["modules/core", "common/formly-material"]
         }
       },
       {
@@ -115,7 +115,7 @@ const _configCoreModule = {
           }
         ],
         meta: {
-          i18nLoad: ["core", "formly-material"]
+            i18nLoad: ["modules/core", "common/formly-material"]
         }
       },
       {
@@ -240,7 +240,7 @@ const _configCoreModule = {
               await cmp.default(res, rej);
             },
             meta: {
-              i18nLoad: ["core", "formly-material"]
+                i18nLoad: ["modules/core", "common/formly-material"]
             }
           }
         ]
