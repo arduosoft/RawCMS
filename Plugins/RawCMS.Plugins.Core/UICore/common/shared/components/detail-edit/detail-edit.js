@@ -29,7 +29,9 @@ const _RawCmsDetailEditDef = async () => {
 
           try {
             this.value = JSON.parse(newValue);
-          } catch (e) {}
+          } catch (e) {
+              console.log(e);
+          }
         }
       },
       isNew: function() {
@@ -43,6 +45,10 @@ const _RawCmsDetailEditDef = async () => {
 
       this.isLoading = false;
       this.code = this.formatJson(this.value || {});
+
+        RawCMS.eventBus.$on(_rawCmsDetailEditEvents.default, ev => {
+            this.value = ev.value;
+        });
 
       RawCMS.eventBus.$emit(_rawCmsDetailEditEvents.loaded, {
         isNew: this.isNew,

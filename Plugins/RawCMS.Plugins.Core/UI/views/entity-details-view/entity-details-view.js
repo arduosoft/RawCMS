@@ -14,7 +14,19 @@ const _EntityDetailsView = async (res, rej) => {
       EntityDetails: entityDetails
     },
     created: function() {
-      RawCMS.eventBus.$once(rawCmsDetailEditEvents.loaded, ev => {
+        RawCMS.eventBus.$once(rawCmsDetailEditEvents.loaded, ev => {
+            if (!ev.value.Events) {
+                RawCMS.eventBus.$emit('rawcms_detail-edit_default', {
+                    value: {
+                        Events: {
+                            PreWrite: '',
+                            PostWrite: '',
+                            PreDelete: '',
+                            PostDelete: '',
+                        },
+                    },
+                });
+            }
         this.updateTitle({
           isNew: ev.isNew,
           name: optionalChain(() => ev.value.CollectionName, {

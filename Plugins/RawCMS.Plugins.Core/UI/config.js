@@ -16,12 +16,7 @@ const _configCoreModule = {
         { icon: "mdi-book-open", text: "Collections", route: "collections" },
         { icon: "mdi-circle", text: "Lambdas", route: "lambdas" },
         { icon: "mdi-settings", text: "Configuration", route: "plugins" },
-
-        {
-          icon: "mdi-file-document-outline",
-          text: "Dev portal",
-          extLink: RawCMS.env.api.baseUrl
-        }
+        { icon: "mdi-transit-connection-variant", text: "Swagger", extLink: RawCMS.env.api.baseUrl + '/swagger' }
       ];
     }
   },
@@ -217,16 +212,6 @@ const _configCoreModule = {
         ]
       },
       {
-        path: "/graphql",
-        name: "graphql",
-        component: async (res, rej) => {
-          const cmp = await import(
-            "/app/modules/graphql/views/graphql-view/graphql-view.js"
-          );
-          await cmp.default(res, rej);
-        }
-      },
-      {
         path: "/sandbox",
         component: {
           template: `<router-view></router-view>`
@@ -321,9 +306,6 @@ const _configCoreModule = {
     },
     clearRelationMetadata({ commit }) {
       commit("setRelationMetadata", {});
-    },
-    async updateTopBarTitle({ commit }, value) {
-      commit("setTopBarTitle", value);
     }
   }
 };

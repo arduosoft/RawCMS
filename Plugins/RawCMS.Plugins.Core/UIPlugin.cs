@@ -56,12 +56,6 @@ namespace RawCMS.Plugins.Core
                             ctx.Context.Response.Headers.Add("Cache", new Microsoft.Extensions.Primitives.StringValues("no-cache"));
                         }
                     });
-
-                    app.UseDirectoryBrowser(new DirectoryBrowserOptions()
-                    {
-                        FileProvider = new PhysicalFileProvider(folder),
-                        RequestPath = "/app/modules/" + plugin.Slug
-                    });
                 }
 
               
@@ -76,7 +70,7 @@ namespace RawCMS.Plugins.Core
                 FileProvider = new PhysicalFileProvider(uiCoreFolder),
                 RequestPath = "/app"
 
-            }); ;
+            });
         }
 
         public override void ConfigureMvc(IMvcBuilder builder)

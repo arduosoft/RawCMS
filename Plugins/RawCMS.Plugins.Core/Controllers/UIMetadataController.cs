@@ -38,8 +38,8 @@ namespace RawCMS.Plugins.Core.Controllers
             result.api = new Api();
             result.api.baseUrl = "";
             result.login = new Login();
-            result.login.client_id = this.authConfig.ClientId;
-            result.login.client_secret = this.authConfig.ClientSecret;
+            result.login.client_id = this.authConfig.RawCMSProvider.ClientId;
+            result.login.client_secret = this.authConfig.RawCMSProvider.ClientSecret;
             result.login.grant_type = "password";
             result.login.scope = "openid";
 

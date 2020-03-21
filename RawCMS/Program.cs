@@ -41,7 +41,7 @@ namespace RawCMS
             var url = Environment.GetEnvironmentVariable("ASPNETCORE_SERVER_URLS");
             var port = Environment.GetEnvironmentVariable("PORT");
             Console.WriteLine(url);
-            if (port != null && url!=null)
+            if (port != null && url != null)
             {
                 url = url.Replace("$PORT", port);
                 Console.WriteLine(url);
@@ -58,7 +58,7 @@ namespace RawCMS
                  .UseKestrel();
 
             if (url != null)
-            {                
+            {
                 builder = builder.UseUrls(url);
             }
             builder
