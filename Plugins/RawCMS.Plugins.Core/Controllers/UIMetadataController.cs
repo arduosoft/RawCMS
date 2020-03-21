@@ -24,7 +24,7 @@ namespace RawCMS.Plugins.Core.Controllers
             this.authConfig = authConfig;
         }
 
-
+        [HttpGet("paths")]
         public List<string> PluginPaths()
         {
             var moduleInits = uiService.GetPluginsPaths();

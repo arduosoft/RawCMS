@@ -35,9 +35,9 @@ namespace RawCMS.Plugins.Core
         {
 
 
-            //app.UseRewriter(
-            //      new RewriteOptions().AddRewrite("^\\/app\\/(.*)\\/$", "app/index.html",true)
-            //      );
+            app.UseRewriter(
+                  new RewriteOptions().AddRedirect("^$", "app", 302)
+                  ); 
 
             Logger.LogInformation("Loading plugin UI");
             foreach (var plugin in this.Engine.Plugins)
@@ -53,23 +53,40 @@ namespace RawCMS.Plugins.Core
                         RequestPath = "/app/modules/" + plugin.Slug,
                         OnPrepareResponse = ctx =>
                         {
-                            ctx.Context.Response.Headers.Add("Cache", new Microsoft.Extensions.Primitives.StringValues("no-cache"));
+                            ctx.Context.Response.Headers.Add("Cache", new Microsoft.Extensions.Primitives.StringValues(new string[] { "no-cache", "no-store" }));
+                            ctx.Context.Response.Headers.Add("Cache-Control", new Microsoft.Extensions.Primitives.StringValues(new string[] { "no-cache", "no-store" }));
+                            ctx.Context.Response.Headers.Add("Pragma", new Microsoft.Extensions.Primitives.StringValues(new string[] { "no-cache" }));
+                            ctx.Context.Response.Headers.Remove("ETag");
+                          
                         }
                     });
                 }
 
               
             }
-            var baseFolder = Path.GetDirectoryName(this.Engine.CorePlugin.PluginPath);
-            baseFolder = Path.GetDirectoryName(baseFolder);
-            baseFolder = Path.GetDirectoryName(baseFolder);
-            baseFolder = Path.GetDirectoryName(baseFolder);
+            var baseFolder = Path.GetDirectoryName(this.Engine.CorePlugin.GetUIFolder());            
+
             var uiCoreFolder = Path.Combine(baseFolder, "UICore");
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(uiCoreFolder),
-                RequestPath = "/app"
+                RequestPath = "/app",
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers.Add("Cache", new Microsoft.Extensions.Primitives.StringValues(new string[] { "no-cache", "no-store" }));
+                    ctx.Context.Response.Headers.Add("Cache-Control", new Microsoft.Extensions.Primitives.StringValues(new string[] { "no-cache", "no-store" }));
+                    ctx.Context.Response.Headers.Add("Pragma", new Microsoft.Extensions.Primitives.StringValues(new string[] { "no-cache" }));
+                    ctx.Context.Response.Headers.Remove("ETag");
+                    
 
+
+                }
+
+            }); ;
+
+            app.UseWelcomePage(new WelcomePageOptions()
+            {
+                Path="/"
             });
         }
 

@@ -4,7 +4,7 @@ import { CollectionTableDef } from "/app/modules/core/components/collection-tabl
 
 const _CollectionTableView = async (res, rej) => {
   const tpl = await RawCMS.loadComponentTpl(
-    "/modules/core/views/collection-table-view/collection-table-view.tpl.html"
+    "/app/modules/core/views/collection-table-view/collection-table-view.tpl.html"
   );
   const collectionTableList = await CollectionTableDef();
 

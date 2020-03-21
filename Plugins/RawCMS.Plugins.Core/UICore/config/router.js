@@ -18,15 +18,19 @@ _router.beforeEach(async (to, from, next) => {
   let i18nModulesToLoad = to.matched
     .map(r =>
       optionalChain(() => r.meta.i18nLoad, {
-        fallbackValue: ["core"],
+        fallbackValue: ["modules/core"],
         replaceLastUndefined: true
       })
     )
     .reduce((acc, val) => [...acc, ...val], []);
   i18nModulesToLoad = [...new Set(i18nModulesToLoad)];
 
-  for (const mod of i18nModulesToLoad) {
-    await i18nHelper.load("en", `/app/modules/${mod}/assets/i18n/i18n.en.json`);
+    for (const mod of i18nModulesToLoad) {
+        try {
+            await i18nHelper.load("en", `/app/${mod}/assets/i18n/i18n.en.json`);
+        } catch (e) {
+            console.log(e);
+        }
   }
 
   next();
