@@ -2,12 +2,12 @@ version: "3"
 services:
   mongo:
     image: mongo
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=password
-      # - MONGO_INITDB_DATABASE=rawcms
-      - MONGO_INITDB_USERNAME=dev
-      - MONGO_INITDB_PASSWORD=password
+    # environment:
+      # - MONGO_INITDB_ROOT_USERNAME=root
+      # - MONGO_INITDB_ROOT_PASSWORD=password
+      # # - MONGO_INITDB_DATABASE=rawcms
+      # - MONGO_INITDB_USERNAME=dev
+      # - MONGO_INITDB_PASSWORD=password
     ports:
       - 28017:27017
     volumes:
