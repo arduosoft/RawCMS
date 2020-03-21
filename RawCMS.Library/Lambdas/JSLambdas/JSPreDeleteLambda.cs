@@ -21,7 +21,7 @@ namespace RawCMS.Library.Lambdas.JSLambdas
 
         public override string Description => "JSPreDeleteLambda";
 
-        public JSPreDeleteLambda(EntityService entityService) : base(entityService)
+        public JSPreDeleteLambda(EntityService entityService, CRUDService crudService) : base(entityService, crudService)
         {
         }
     }

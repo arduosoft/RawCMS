@@ -21,7 +21,7 @@ namespace RawCMS.Library.Lambdas.JSLambdas
 
         public override string Description => "JSPostDeleteLambda";
 
-        public JSPostDeleteLambda(EntityService entityService) : base(entityService)
+        public JSPostDeleteLambda(EntityService entityService, CRUDService crudService) : base(entityService, crudService)
         {
         }
     }
