@@ -23,7 +23,8 @@ namespace RawCMS.Plugins.Core.Controllers
     [AllowAnonymous]
     [RawAuthentication]
     [Route("api/js")]
-    public class JsLambdaController
+    [ApiController]
+    public class JsLambdaController:ControllerBase
     {
         private readonly AppEngine lambdaManager;
         private readonly CRUDService crudService;

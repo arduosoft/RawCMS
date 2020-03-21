@@ -157,7 +157,7 @@ namespace RawCMS.Library.Service
             doc["_id"] = BsonObjectId.Create(id);
             doc.Remove("_metadata");
 
-            UpdateOptions o = new UpdateOptions()
+            var o = new UpdateOptions()
             {
                 IsUpsert = true,
                 BypassDocumentValidation = true

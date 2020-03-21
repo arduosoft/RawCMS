@@ -19,10 +19,10 @@ using System.Collections.Generic;
 
 namespace RawCMS.Plugins.Core.Controllers.Controllers.admin
 {
-    [AllowAnonymous]
-    [RawAuthentication]
+    [Authorize(Policy = "rawCmsAdmin")]
     [Route("system/[controller]")]
-    public class EnumController
+    [ApiController]
+    public class EnumController:ControllerBase
     {
         private static Dictionary<string, Type> enumMap = new Dictionary<string, Type>()
         {

@@ -17,10 +17,10 @@ using System.Collections.Generic;
 
 namespace RawCMS.Plugins.Core.Controllers.admin
 {
-    [AllowAnonymous]
-    [RawAuthentication]
+    [Authorize(Policy = "rawCmsAdmin")]
     [Route("system/[controller]")]
-    public class MetadataController
+    [ApiController]
+    public class MetadataController:ControllerBase
     {
         protected EntityService entityService;
 

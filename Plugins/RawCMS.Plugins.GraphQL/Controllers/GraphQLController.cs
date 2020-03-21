@@ -42,20 +42,20 @@ namespace RawCMS.Plugins.GraphQL.Controllers
             _schema = schema;
         }
 
-        public static T Deserialize<T>(Stream s)
+        private  async Task<T> Deserialize<T>(Stream s)
         {
             using (StreamReader reader = new StreamReader(s))
             using (JsonTextReader jsonReader = new JsonTextReader(reader))
             {
                 JsonSerializer ser = new JsonSerializer();
-                return ser.Deserialize<T>(jsonReader);
+                return await Task.Run(() => ser.Deserialize<T>(jsonReader));
             }
         }
 
         [HttpPost]
         public async Task<ExecutionResult> Post([FromBody]GraphQLRequest request)
         {
-            GraphQLRequest t = Deserialize<GraphQLRequest>(HttpContext.Request.Body);
+            GraphQLRequest t = await Deserialize<GraphQLRequest>(HttpContext.Request.Body);
             DateTime start = DateTime.UtcNow;
 
             ExecutionResult result = await _executer.ExecuteAsync(_ =>

@@ -53,8 +53,9 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<EntityService>();
             services.AddSingleton<RelationInfoService>();
             services.AddHttpContextAccessor();
-            services.AddMvcCore().AddAuthorization() // Note - this is on the IMvcBuilder, not the service collection
-    .AddJsonFormatters(options => options.ContractResolver = new CamelCasePropertyNamesContractResolver());
+            services.AddMvcCore()
+                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase);// Note - this is on the IMvcBuilder, not the service collection
+    //.AddJsonFormatters(options => options.ContractResolver = new CamelCasePropertyNamesContractResolver());
         }
 
         public override void Configure(IApplicationBuilder app)

@@ -24,6 +24,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace RawCMS.Library.Core
 {
@@ -108,20 +111,33 @@ namespace RawCMS.Library.Core
             var pluginFiles = Directory.GetFiles(pluginsDir, "plugin.config", SearchOption.AllDirectories);
 
             _logger.LogDebug($"Found  {string.Join(",", pluginFiles)}");
-
+            //AssemblyLoadContext.Default.LoadFromAssemblyPath(assLib);
+            var regex = new Regex("\"(.*?)\"");
+            
             foreach (var pluginInfo in pluginFiles)
             {
-                _logger.LogInformation($"Loading plugin  {pluginInfo}");
-                var loader = PluginLoader.CreateFromConfigFile(
-                filePath: pluginInfo,
-                sharedTypes: typesToAdd.ToArray());
+                var infoXml = File.ReadAllText(pluginInfo);
+                var matchs = regex.Matches(infoXml);
+                if(matchs.Count > 0)
+                {
+                    var dllName = matchs[0].Value.Replace("\"","");
+                    var assemblyPath = Path.Combine(Path.GetDirectoryName(pluginInfo), $"{dllName}.dll");
+                    _logger.LogInformation($"Loading plugin  {pluginInfo}");
+                    var loader = PluginLoader.CreateFromAssemblyFile(
+                    assemblyFile: assemblyPath,
+                    sharedTypes: typesToAdd.ToArray());
 
-                loaders.Add(loader);
+                    loaders.Add(loader);
 
-                var pluginAssembly = loader.LoadDefaultAssembly();
-                pluginPathMapping[pluginAssembly.FullName] = pluginInfo;
+                    var pluginAssembly = loader.LoadDefaultAssembly();
+                    pluginPathMapping[pluginAssembly.FullName] = pluginInfo;
 
-                reflectionManager.AppendAssemblyToScope(pluginAssembly);
+                    reflectionManager.AppendAssemblyToScope(pluginAssembly);
+                }
+                else
+                {
+                    _logger.LogWarning($"Unable load plugin from {pluginInfo}. Plugin skipped.");
+                }
             }
 
         }
