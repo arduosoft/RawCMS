@@ -32,10 +32,10 @@ namespace RawCMS.Plugins.Core.Middlewares
         {
 
 
-            if (context.Request.Path.Value.StartsWith("/app") && context.Request.Path.Value.EndsWith("/"))
+            if (context.Request.Path.Value.StartsWith("/app") && !Path.HasExtension( context.Request.Path))
             {
                 
-                var indexPath = Path.Combine(Path.GetDirectoryName(appEngine.CorePlugin.PluginPath), "UICore", "index.html");//TODO: make it dinamic?
+                var indexPath = Path.Combine(Path.GetDirectoryName(appEngine.CorePlugin.PluginPath), "UICore", "index.html");
 
                 
                 var index = File.ReadAllText(indexPath);

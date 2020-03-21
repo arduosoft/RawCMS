@@ -2,7 +2,7 @@ import { BaseField } from "/app/common/formly-material/components/base-field/bas
 
 const _BoolField = async (res, rej) => {
   const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/formly-material/components/bool-field/bool-field.tpl.html"
+    "/app/common/formly-material/components/bool-field/bool-field.tpl.html"
   );
 
   res({

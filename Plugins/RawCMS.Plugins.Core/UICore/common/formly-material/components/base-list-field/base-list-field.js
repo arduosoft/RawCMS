@@ -4,7 +4,7 @@ import { BaseField } from "/app/common/formly-material/components/base-field/bas
 
 const _BaseListFieldDef = async () => {
   const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/formly-material/components/base-list-field/base-list-field.tpl.html"
+    "/app/common/formly-material/components/base-list-field/base-list-field.tpl.html"
   );
 
   return {

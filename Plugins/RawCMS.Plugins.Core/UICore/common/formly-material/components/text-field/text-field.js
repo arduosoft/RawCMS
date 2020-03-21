@@ -2,7 +2,7 @@ import { BaseField } from "/app/common/formly-material/components/base-field/bas
 
 const _TextField = async (res, rej) => {
   const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/formly-material/components/text-field/text-field.tpl.html"
+    "/app/common/formly-material/components/text-field/text-field.tpl.html"
   );
 
   res({

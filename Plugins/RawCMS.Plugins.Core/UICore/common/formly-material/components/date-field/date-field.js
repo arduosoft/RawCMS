@@ -2,7 +2,7 @@ import { BaseField } from "/app/common/formly-material/components/base-field/bas
 
 const _DateFieldDef = async () => {
   const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/formly-material/components/date-field/date-field.tpl.html"
+    "/app/common/formly-material/components/date-field/date-field.tpl.html"
   );
 
   return {

@@ -84,7 +84,7 @@ const _ListFieldWrapperDef = async () => {
 const _RelationField = async (res, rej) => {
   const wrapperDef = await _ListFieldWrapperDef();
   const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/formly-material/components/relation-field/relation-field.tpl.html"
+    "/app/common/formly-material/components/relation-field/relation-field.tpl.html"
   );
 
   res({
