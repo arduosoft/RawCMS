@@ -39,7 +39,7 @@ namespace RawCMS.Library.Lambdas
                 {
                     Dictionary<string, object> input = item.ToObject<Dictionary<string, object>>();
 
-                    Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); x.AllowClr(typeof(CRUDService).Assembly); });
+                    Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); });
                     engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
                     engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
                     engine.SetValue("RAWCMSCrudService", crudService);
