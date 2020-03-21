@@ -43,7 +43,7 @@ namespace RawCMS.Plugins.Core.Middlewares
                     .Replace("<!--CSS-->", uiService.GetCSStHtml())
                     .Replace("<!--SCRIPTS-->", uiService.GetJavascriptHtml()).Replace(".jss", ".js");
 
-                context.Response.WriteAsync(index);
+               await context.Response.WriteAsync(index);
             }
             else
             {
