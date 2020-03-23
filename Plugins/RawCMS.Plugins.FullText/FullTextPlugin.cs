@@ -15,6 +15,7 @@ using Nest;
 using Nest.JsonNetSerializer;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
+using RawCMS.Library.UI;
 using RawCMS.Plugins.FullText.Core;
 using System;
 
@@ -29,6 +30,8 @@ namespace RawCMS.Plugins.FullText
         private readonly FullTextConfig config;
 
         private AppEngine appEngine;
+
+        public override string Slug => "fulltext";
 
         public FullTextPlugin(AppEngine appEngine, FullTextConfig config, ILogger logger) : base(appEngine, logger)
         {
@@ -76,6 +79,12 @@ namespace RawCMS.Plugins.FullText
 
         public override void Setup(IConfigurationRoot configuration)
         {
+        }
+
+        public override UIMetadata GetUIMetadata()
+        {
+            return new UIMetadata();
+
         }
     }
 }

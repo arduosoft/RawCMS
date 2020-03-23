@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+	<TargetFramework>netcoreapp2.1</TargetFramework>
+	<IsPlugin>true</IsPlugin>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Folder Include="UI\components\" />
+	  <Folder Include="UI\services\" />
+	  <Folder Include="UI\views\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\RawCMS.Library\RawCMS.Library.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup>		
+		<PackageReference Include="McMaster.NETCore.Plugins" Version="0.2.4" />
+		<PackageReference Include="McMaster.NETCore.Plugins.Sdk" Version="0.2.4" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	</ItemGroup>
+
+
+	<Target Name="BuildUI" AfterTargets="Build">
+		<RemoveDir Directories="$(OutDir)\UI" />
+		<ItemGroup>
+			<Files Include="$(ProjectDir)UI\**" />
+		</ItemGroup>
+		<ItemGroup>
+			<File Include="C:\temp\FileApig.txt" />
+		</ItemGroup>
+
+		<WriteLinesToFile File="@(File)" Lines="@(Files)" Overwrite="true" Encoding="Unicode" />
+
+		<Copy SourceFiles="@(Files)" DestinationFiles="@(Files->'$(OutDir)\UI\%(RecursiveDir)%(Filename)%(Extension)')" />
+	</Target>
+
+
+	<Target Name="RemoveUICore" AfterTargets="AfterBuild">
+		<RemoveDir Directories="$(OutDir)\UICore" />
+	</Target>
+
+	
+</Project>

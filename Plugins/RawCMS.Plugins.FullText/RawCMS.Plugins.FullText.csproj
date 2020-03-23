@@ -70,10 +70,6 @@
     <ProjectReference Include="..\RawCMS.Plugins.Core\RawCMS.Plugins.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UI\" />
-  </ItemGroup>
-
 
 	<Target Name="BuildUI" AfterTargets="Build">
 		<RemoveDir Directories="$(OutDir)\UI" />
