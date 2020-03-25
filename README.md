@@ -24,6 +24,25 @@ You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) u
 
 You can follow the [**tutorial**](https://rawcms.readthedocs.io/en/latest/Tutorial/) for a quick start.
 
+
+## Key Benefits and Advantages
+### ⚒ Data Modelling without coding
+No matter if you're dealing with web apps, mobile apps or client application. Just forget about all data management effort. All you will need with RawCMS is to define your data structure and relationships, using a simple and intuitive UI. Simply say stop to the boring repetitive code.
+
+### 🎛 Agnostic and Universal Framework for your Data
+Due to the API approach, RawCMS is very flexible and adapts perfectly to all use cases. Using GraphQL or REST standard RawCMS can be used by everybody without any headhache. This give you a solid and modern foundation for your project. 
+
+### 🚀 Ready to use
+Built on top of the well-known .net core framework, can be deployed on every platforms in a click. No more matter about OS licenses of portability, just run it.
+Benefit from all existing Symfony Components and Bundles provided by the community or create your own 
+Bundles to extend your Projects with reusable components. 
+
+### 💎 Your backend consolidated in one Platform
+No more point-to-point integration, multiple tools, or expenses. You can consolidate Log Collecting, Api Gateway, Translation, Session Storage and CMS in one, simple, free user.
+
+### ✨️ Modern and Intuitive Architecture
+We love good software design and we aim to help others on building wonderful applications! Using RawCMS you will keep you architecture clean and reduce the effort.
+
 ## Deploy it
 
 You can deploy it using many options. RawCMS is dockerized from the development stage so modern hosting is fully supported.
@@ -44,13 +63,7 @@ You can deploy it using many options. RawCMS is dockerized from the development 
 
 ****If you are interested in contributing just open an issue to start a conversation. Help wanted.****
 
-## Run
 
-You have 3 options to start using RawCMS:
-
-- Run a docker **instance** using `docker pull arduosoft/rawcms-preview` or see [dockerhub page](https://hub.docker.com/r/arduosoft/rawcms-api-preview) to get more options like docker-compose file.
-- Download the **zip and deploy** a regular ASP.NET core application from [GitHub releases](https://github.com/arduosoft/RawCMS/releases)
-- **Fork** the repository and customize (then deploy as you want)
 
 
 ## Features
