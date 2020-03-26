@@ -8,10 +8,8 @@
 //******************************************************************************
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace RawCMS.Library.Core.Helpers
 {
@@ -39,7 +37,7 @@ namespace RawCMS.Library.Core.Helpers
                 }
             }
         }
-        
+
         public static void RegisterAllTypes<T>(this IServiceCollection services, Assembly[] assemblies,
         ServiceLifetime lifetime = ServiceLifetime.Transient)
         {
@@ -47,7 +45,7 @@ namespace RawCMS.Library.Core.Helpers
             foreach (Assembly assembly in assemblies)
             {
                 RegisterAllTypes<T>(services, assembly, lifetime);
-            }   
+            }
         }
     }
 }

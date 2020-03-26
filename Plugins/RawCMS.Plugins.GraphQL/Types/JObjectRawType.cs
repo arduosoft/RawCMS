@@ -93,9 +93,9 @@ namespace RawCMS.Plugins.GraphQL.Types
                     Resolver = new NameFieldResolver(),
                     Arguments = fieldType.Arguments
                 };
-                
+
                 AddField(subField);
-                
+
                 foreach (var arg in fieldType.Arguments.Where(x => !(new string[] { "pageNumber", "pageSize", "rawQuery", "_id" }.Contains(x.Name))).ToList())
                 {
                     arg.Name = $"{collectionName}_{arg.Name}";
@@ -114,7 +114,6 @@ namespace RawCMS.Plugins.GraphQL.Types
                 FillArgs(field.Name, graphQLType);
             }
         }
-    
 
         public QueryArguments TableArgs
         {

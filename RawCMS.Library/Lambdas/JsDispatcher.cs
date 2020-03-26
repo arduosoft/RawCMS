@@ -8,14 +8,14 @@
 //******************************************************************************
 using Jint;
 using Newtonsoft.Json.Linq;
-using RawCMS.Library.Core;
 using RawCMS.Library.JavascriptClient;
 using RawCMS.Library.Service;
+using System;
 using System.Collections.Generic;
 
 namespace RawCMS.Library.Lambdas
 {
-    public class JsDispatcher : PreSaveLambda
+    public abstract class JsDispatcher : DataProcessLambda
     {
         public override string Name => "JsDispatcher";
 
@@ -23,25 +23,36 @@ namespace RawCMS.Library.Lambdas
 
         protected readonly EntityService entityService;
 
-        public JsDispatcher(EntityService entityService)
+        private readonly CRUDService crudService;
+
+        public JsDispatcher(EntityService entityService, CRUDService crudService)
         {
-            this.entityService = entityService;
+            {
+                this.entityService = entityService;
+                this.crudService = crudService;
+            }
         }
 
         public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
         {
+            var eventName = Stage.ToString().Replace("Operation", string.Empty) + Operation.ToString();
             var settings = this.entityService.GetByName(collection);
+
             if (settings != null)
             {
-                if (!string.IsNullOrEmpty(settings.PresaveScript))
+                var eventScript = settings.Events?[eventName];
+
+                if (eventScript != null &&
+                    !string.IsNullOrEmpty(Convert.ToString(eventScript)))
                 {
                     Dictionary<string, object> input = item.ToObject<Dictionary<string, object>>();
-
-                    Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); });                    
+                    Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); });
                     engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
                     engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
+                    engine.SetValue("RAWCMSCrudService", crudService);
+
                     engine.SetValue("item", input);
-                    engine.Execute(settings.PresaveScript);
+                    engine.Execute(eventScript.ToString());
                     item = JObject.FromObject(input);
                 }
             }
