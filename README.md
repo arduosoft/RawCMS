@@ -54,7 +54,15 @@ You can deploy it using many options. RawCMS is dockerized from the development 
 3. *Heroku* using the provided images
 4. *Virtual machines* using the packages provided and deployed manually to the server
 
-## The mission of RawCMS
+## Architectural Prospective
+
+With RawCMs you have a central platform that manage most critical services, making them a commodity. You have just to focus on the ui development and on implementing business login. No more stress on deployng services or selecting online tools. You have all inclusive and free out of the box.
+<img src="https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/WithRawCMS.png?raw=true" width="100%" align="center" />
+
+Use RawCms brings to a clean and easy to manage infrastructure, please compare it with the traditional one. You have a meshed connected system, with multiple services that talks togheter. That's old style approach is hard to mantain and brings to multiple costs.
+<img src="https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/Without.png?raw=true" width="100%" align="center" />
+
+This result is possible thanks to the modular and scalable RawCMS architecture. See the key points:
 
 1. **Modular**: Each module is shipped in a NuGet package that can be added to the system to gain new features
 2. **Headless**: RawCMS doesn't include any presentation logic. All presentation is delegated to the caller. This aims to create a scalable and reusable system
@@ -63,12 +71,9 @@ You can deploy it using many options. RawCMS is dockerized from the development 
 5. **Buildless**: RawCMS must give the possibility to manage an installation without the need to manage a codebase or a code repository. It will be possible to add lambdas code at runtime.
 6. **Caller Friendly**: Produce data in many formats to help integration (Odata, GraphQL)
 
-****If you are interested in contributing just open an issue to start a conversation. Help wanted.****
 
 
-
-
-## Features
+## Low Level Features
 
 - Store and filter any data using MongoDB expression
 - Docker container ready
@@ -87,4 +92,3 @@ You can deploy it using many options. RawCMS is dockerized from the development 
 
 This software is published under the [GNU General Public License v3](https://github.com/arduosoft/RawCMS/blob/develop/LICENSE).
 
-##
