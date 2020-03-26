@@ -20,12 +20,6 @@ As every open source project, we are looking for contributors. Any kind of help 
 
 **The easy contribution you can give us is share your impression about the project. [Please invest 1 minute of your time to fill a quick survery and tell your opinion](https://forms.gle/wvu1HF9P52ZdXujv6)**
 
-## Try it
-
-You can test RawCMS using the public [demo](http://rawcms-demo.herokuapp.com/) using the default credentials (username:bob, password:XYZ). **App run in a free tier, so it can take a little bit to come up.**
-
-You can follow the [**tutorial**](https://rawcms.readthedocs.io/en/latest/Tutorial/) for a quick start.
-
 
 ## Key Benefits and Advantages
 ### ⚒ Data Modelling without coding
@@ -45,15 +39,6 @@ No more point-to-point integration, multiple tools, or expenses. You can consoli
 ### ✨️ Modern and Intuitive Architecture
 We love good software design and we aim to help others on building wonderful applications! Using RawCMS you will keep you architecture clean and reduce the effort.
 
-## Deploy it
-
-You can deploy it using many options. RawCMS is dockerized from the development stage so modern hosting is fully supported.
-
-1. *Docker Compose* using the provided docker-compose file
-2. *Kubernetes* using the provided docker images
-3. *Heroku* using the provided images
-4. *Virtual machines* using the packages provided and deployed manually to the server
-
 ## Architectural Prospective
 
 With RawCMs you have a central platform that manage most critical services, making them a commodity. You have just to focus on the ui development and on implementing business login. No more stress on deployng services or selecting online tools. You have all inclusive and free out of the box.
@@ -71,9 +56,9 @@ This result is possible thanks to the modular and scalable RawCMS architecture. 
 5. **Buildless**: RawCMS must give the possibility to manage an installation without the need to manage a codebase or a code repository. It will be possible to add lambdas code at runtime.
 6. **Caller Friendly**: Produce data in many formats to help integration (Odata, GraphQL)
 
+## Preview and Demo
 
-
-## Low Level Features
+### Low Level Features
 
 - Store and filter any data using MongoDB expression
 - Docker container ready
@@ -86,6 +71,23 @@ This result is possible thanks to the modular and scalable RawCMS architecture. 
 - GraphQL data query
 - Api Gateway
 - Relation between entities
+
+
+### Demo (CMS, Lambdas, User management, GraphQL)
+_URL_: [http://rawcms-demo.herokuapp.com/](http://rawcms-demo.herokuapp.com/)  **App run in a free tier, so it can take a little bit to come up.**
+_Username_: `bob`  
+_Password_: `XYZ`
+
+You can follow the [**tutorial**](https://rawcms.readthedocs.io/en/latest/Tutorial/) for a quick start.
+
+## Getting Started
+
+You can deploy it using many options. RawCMS is dockerized from the development stage so modern hosting is fully supported.
+
+1. *Docker Compose* using the provided docker-compose file
+2. *Kubernetes* using the provided docker images
+3. *Heroku* using the provided images
+4. *Virtual machines* using the packages provided and deployed manually to the server
 
 
 ## License
