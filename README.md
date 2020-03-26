@@ -59,20 +59,26 @@ This result is possible thanks to the modular and scalable RawCMS architecture. 
 ## Preview and Demo
 
 ### Data Modeling
+The data modeling is based on a simple UI that let you add field definition and relations in a click.
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/entity-definition.png?raw=true)
 
 ### Data Entry
+You can enter data manually, for configuration or data entry.
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/data-entry.png?raw=true)
 
+### Searching
+You can search for data using full query capabilities offert by MongoDB engine.
+![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/search.png?raw=true)
 
 ### Hook
+You can alter data or add your busiess logic directly from the UI.
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/hook.png?raw=true)
 
 ### Portable settings
+All the settings configured by UI are stored in json format and can be ported form one environment to another (by a copy and paste or using the cli)
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/json-portable.png?raw=true)
 
-### Searching
-![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/search.png?raw=true)
+
 
 
 ### Custom endpoints
@@ -95,8 +101,11 @@ This result is possible thanks to the modular and scalable RawCMS architecture. 
 
 
 ### Live Demo (CMS, Lambdas, User management, GraphQL)
+
 _URL_: [http://rawcms-demo.herokuapp.com/](http://rawcms-demo.herokuapp.com/)  **App run in a free tier, so it can take a little bit to come up.**
+
 _Username_: `bob`  
+
 _Password_: `XYZ`
 
 You can follow the [**tutorial**](https://rawcms.readthedocs.io/en/latest/Tutorial/) for a quick start.
