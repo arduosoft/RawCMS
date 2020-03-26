@@ -59,6 +59,27 @@ This result is possible thanks to the modular and scalable RawCMS architecture. 
 
 ## Preview and Demo
 
+### Data Modeling
+![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/entity-definition.png?raw=true)
+
+### Data Entry
+![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/data-entry.png?raw=true)
+
+
+### Hook
+![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/hook.png?raw=true)
+
+### Portable settings
+![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/json-portable.png?raw=true)
+
+### Searching
+![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/search.png?raw=true)
+
+
+### Custom endpoints
+![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/custom%20endpoint.png?raw=true)
+
+
 ### Low Level Features
 
 - Store and filter any data using MongoDB expression
