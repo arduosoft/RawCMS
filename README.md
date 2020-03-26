@@ -46,7 +46,6 @@ With RawCMs you have a central platform that manage most critical services, maki
 <img src="https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/WithRawCMS.png?raw=true" width="100%" align="center" />
 
 Use RawCms brings to a clean and easy to manage infrastructure, please compare it with the traditional one. You have a meshed connected system, with multiple services that talks togheter. That's old style approach is hard to mantain and brings to multiple costs.
-<img src="https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/Without.png?raw=true" width="100%" align="center" />
 
 This result is possible thanks to the modular and scalable RawCMS architecture. See the key points:
 
@@ -95,7 +94,7 @@ This result is possible thanks to the modular and scalable RawCMS architecture. 
 - Relation between entities
 
 
-### Demo (CMS, Lambdas, User management, GraphQL)
+### Live Demo (CMS, Lambdas, User management, GraphQL)
 _URL_: [http://rawcms-demo.herokuapp.com/](http://rawcms-demo.herokuapp.com/)  **App run in a free tier, so it can take a little bit to come up.**
 _Username_: `bob`  
 _Password_: `XYZ`
@@ -109,7 +108,12 @@ You can deploy it using many options. RawCMS is dockerized from the development 
 1. *Docker Compose* using the provided docker-compose file
 2. *Kubernetes* using the provided docker images
 3. *Heroku* using the provided images
-4. *Virtual machines* using the packages provided and deployed manually to the server
+
+But you can simply run it in two lined of code
+``` bash
+wget https://raw.githubusercontent.com/arduosoft/RawCMS/master/docker/docker-compose-prod.yml -o docker-compose.yml # or download it manually ;-)
+docker-compose op
+```
 
 
 ## License
