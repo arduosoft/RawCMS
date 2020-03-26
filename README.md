@@ -121,7 +121,7 @@ You can deploy it using many options. RawCMS is dockerized from the development 
 But you can simply run it in two lined of code
 ``` bash
 wget https://raw.githubusercontent.com/arduosoft/RawCMS/master/docker/docker-compose-prod.yml -o docker-compose.yml # or download it manually ;-)
-docker-compose op
+docker-compose up
 ```
 
 
