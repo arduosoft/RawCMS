@@ -30,9 +30,9 @@ namespace RawCMS.Plugins.Core.Data
                 {
                     item["NormalizedUserName"] = RawUserStore.NormalizeString(item["UserName"].Value<string>());
                 }
-                if (item.ContainsKey("NormalizedEmail"))
+                if (item.ContainsKey("Email"))
                 {
-                    item["NormalizedEmail"] = RawUserStore.NormalizeString(item["NormalizedEmail"].Value<string>());
+                    item["NormalizedEmail"] = RawUserStore.NormalizeString(item["Email"].Value<string>());
                 }
                 if (item.ContainsKey("NewPassword"))
                 {

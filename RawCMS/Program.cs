@@ -8,10 +8,12 @@
 //******************************************************************************
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace RawCMS
 {
@@ -41,31 +43,32 @@ namespace RawCMS
             var url = Environment.GetEnvironmentVariable("ASPNETCORE_SERVER_URLS");
             var port = Environment.GetEnvironmentVariable("PORT");
             Console.WriteLine(url);
-            if (port != null && url!=null)
+            if (port != null && url != null)
             {
                 url = url.Replace("$PORT", port);
                 Console.WriteLine(url);
             }
 
             Debug.WriteLine(Environment.GetEnvironmentVariable("PORT"));
-            var builder = WebHost.CreateDefaultBuilder()
 
-                 .ConfigureLogging(logging =>
-                 {
-                     logging.ClearProviders();
-                     logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                 })
-                 .UseKestrel();
-
-            if (url != null)
-            {                
-                builder = builder.UseUrls(url);
-            }
-            builder
-                 .UseNLog()
-                 .UseStartup<Startup>()
-                 .Build()
-                 .Run();
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder
+                            .UseContentRoot(Directory.GetCurrentDirectory())
+                            .UseSetting("detailedErrors", "true")
+                            .ConfigureLogging(logger =>
+                            {
+                                logger.ClearProviders();
+                                logger.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                            })
+                            .UseNLog()
+                            .UseStartup<Startup>();
+                    if (url != null)
+                    {
+                        webBuilder.UseUrls(url);
+                    }
+                }).Build().Run();
         }
     }
 }

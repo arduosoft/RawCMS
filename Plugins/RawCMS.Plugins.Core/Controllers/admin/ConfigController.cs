@@ -15,7 +15,8 @@ namespace RawCMS.Plugins.Core.Controllers.Controllers.admin
     [AllowAnonymous]
     [RawAuthentication]
     [Route("system/[controller]")]
-    public class ConfigController : Controller
+    [ApiController]
+    public class ConfigController : ControllerBase
     {
     }
 }

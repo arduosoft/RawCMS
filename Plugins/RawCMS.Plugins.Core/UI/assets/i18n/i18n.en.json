@@ -45,7 +45,10 @@
           "required": "Required"
         },
         "lambdasScript": "Actions",
-        "presave": "Presave Action"
+        "presave": "Pre Save Action",
+        "postsave": "Post Save Action",
+        "predelete": "Pre Delete Action",
+        "postdelete": "Post Delete Action"
       },
       "deleteConfirmMsgTpl": "Are you sure you want to delete entity {name}?",
       "deleteErrorMsgTpl": "An error occurred while deleting entity {name}.",

@@ -25,10 +25,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using IdentityRole = RawCMS.Plugins.Core.Model.IdentityRole;
+using IdentityUser = RawCMS.Plugins.Core.Model.IdentityUser;
 
 namespace RawCMS.Plugins.Core.Stores
 {
-    public class RawClaimsFactory : UserClaimsPrincipalFactory<IdentityUser, IdentityRole>
+    public class RawClaimsFactory : UserClaimsPrincipalFactory<Model.IdentityUser, IdentityRole>
     {
         public async Task<IList<Claim>> GetClaimsAsync(IdentityUser user)
         {
@@ -45,7 +47,7 @@ namespace RawCMS.Plugins.Core.Stores
                     claims.Add(new Claim(key.Name, key.Value.ToString()));
                 }
             }
-            return claims;
+            return await Task.Run(() => claims);
         }
 
         public RawClaimsFactory(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<IdentityOptions> options)
@@ -200,7 +202,6 @@ namespace RawCMS.Plugins.Core.Stores
                     Email = "test@test.it",
                     NormalizedEmail = "test@test.it",
                     NewPassword = "XYZ",//password will be hashed by service
-                    
                 };
 
                 userToAdd.Roles.Add("Admin");

@@ -23,6 +23,7 @@ const _configCoreModule = {
           text: "Dev portal",
           extLink: RawCMS.env.api.baseUrl
         }
+        { icon: "mdi-transit-connection-variant", text: "Swagger", extLink: RawCMS.env.api.baseUrl + '/swagger' }
       ];
     }
   },
@@ -77,7 +78,7 @@ const _configCoreModule = {
           }
         ],
         meta: {
-          i18nLoad: ["core", "formly-material"]
+            i18nLoad: ["modules/core", "common/formly-material"]
         }
       },
       {
@@ -121,7 +122,7 @@ const _configCoreModule = {
           }
         ],
         meta: {
-          i18nLoad: ["core", "formly-material"]
+            i18nLoad: ["modules/core", "common/formly-material"]
         }
       },
       {
@@ -256,7 +257,7 @@ const _configCoreModule = {
               await cmp.default(res, rej);
             },
             meta: {
-              i18nLoad: ["core", "formly-material"]
+                i18nLoad: ["modules/core", "common/formly-material"]
             }
           }
         ]
@@ -322,9 +323,6 @@ const _configCoreModule = {
     },
     clearRelationMetadata({ commit }) {
       commit("setRelationMetadata", {});
-    },
-    async updateTopBarTitle({ commit }, value) {
-      commit("setTopBarTitle", value);
     }
   }
 };

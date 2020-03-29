@@ -15,6 +15,7 @@ using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Model;
 using System.Threading;
 using System.Threading.Tasks;
+using IdentityRole = RawCMS.Plugins.Core.Model.IdentityRole;
 
 namespace RawCMS.Plugins.Core.Stores
 {

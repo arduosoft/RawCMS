@@ -61,8 +61,6 @@ namespace RawCMS.Plugins.Core
                           
                         }
                     });
-
-                   
                 }
 
               

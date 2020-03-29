@@ -6,7 +6,8 @@ import { snackbarService } from "/app/modules/core/services/snackbar.service.js"
 
 class MetadataService {
   async getFieldsMetadata() {
-    try {
+      try {
+        //TODO: remove exluded types 'fields-list', 'entities-list
       const res = await apiClient.get(`/system/metadata/fieldinfo`);
       return res.data.reduce((map, obj) => {
         map[obj.type.typeName] = obj;
