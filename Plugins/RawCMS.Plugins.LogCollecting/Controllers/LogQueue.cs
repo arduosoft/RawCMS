@@ -17,9 +17,9 @@ namespace RawCMS.Plugins.LogCollecting.Controllers
         }
         Queue<LogEntity> queque = new Queue<LogEntity>();
         public List<QueueLoad> QueueLoad { get; set; }
-        public int MaxProcessedItems { get; set; }
-        public int MaxQueueSize { get; set; }
-        public int RescheduleThereshold { get; set; }
+        public long MaxProcessedItems { get; set; }
+        public long  MaxQueueSize { get; set; }
+        public long RescheduleThereshold { get; set; }
         private static string lockObj = "";
         public long Count
         {
@@ -58,7 +58,7 @@ namespace RawCMS.Plugins.LogCollecting.Controllers
             }
             return result;
         }
-        public void AppendLoadValue(long count, int maxQueueSize)
+        public void AppendLoadValue()
         {
             if (this.QueueLoad.Count > 100)
             {
@@ -67,8 +67,8 @@ namespace RawCMS.Plugins.LogCollecting.Controllers
 
             this.QueueLoad.Add(new QueueLoad()
             {
-                MaxSize = maxQueueSize,
-                QueueSize = (int)count,
+                MaxSize = this.MaxQueueSize,
+                QueueSize = this.MaxQueueSize,
                 Time = DateTime.Now
             });
         }

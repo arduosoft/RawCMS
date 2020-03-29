@@ -13,23 +13,19 @@ namespace RawCMS.Plugins.LogCollecting.Controllers
     [Route("api/[controller]")]
     public class LogIngressController : Controller
     {
-        protected LogIngressService service;
-        public LogIngressController(LogIngressService service)
+        protected LogService service;
+        public LogIngressController(LogService service)
         {
             this.service = service;
         }
         [HttpPost()]
         [Route("{applicationId}")]
-        public RestMessage<bool> Log([FromRoute]string applicationId, [FromBody] LogEntity[] item)
+        public RestMessage<bool> Log([FromRoute]string applicationId, [FromBody] List<LogEntity> items)
         {
             var result = new RestMessage<bool>(true);
             try
             {
-                for (int i = 0; i < item.Length; i++)
-                {
-                    this.service.addLog(applicationId, item[i]);
-                }
-                
+                this.service.EnqueueLog(applicationId, items);
             }
             catch (Exception err)
             {
