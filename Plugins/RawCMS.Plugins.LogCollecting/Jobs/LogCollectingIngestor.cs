@@ -9,7 +9,7 @@ namespace RawCMS.Plugins.LogCollecting.Jobs
 {
     public class LogCollectingIngestor : BackgroundJobInstance
     {
-        public override string CronExpression => Cron.Minutely;
+        public override string CronExpression => Cron.Minutely();
 
         public override string Name => "LogCollectingIngestor";
 

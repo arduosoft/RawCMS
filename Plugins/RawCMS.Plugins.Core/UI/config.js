@@ -16,6 +16,7 @@ const _configCoreModule = {
         { icon: "mdi-book-open", text: "Collections", route: "collections" },
         { icon: "mdi-circle", text: "Lambdas", route: "lambdas" },
         { icon: "mdi-settings", text: "Configuration", route: "plugins" },
+        { icon: "mdi-cogs", text: "Background Jobs", route: "hangfire" },
 
         {
           icon: "mdi-file-document-outline",
@@ -217,11 +218,11 @@ const _configCoreModule = {
         ]
       },
       {
-        path: "/graphql",
-        name: "graphql",
+        path: "/hangfire",
+        name: "hangfire",
         component: async (res, rej) => {
           const cmp = await import(
-            "/app/modules/graphql/views/graphql-view/graphql-view.js"
+            "/app/modules/core/views/hangfire-view/hangfire-view.js"
           );
           await cmp.default(res, rej);
         }
