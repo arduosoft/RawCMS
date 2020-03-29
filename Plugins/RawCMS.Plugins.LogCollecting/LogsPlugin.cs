@@ -9,6 +9,7 @@ using RawCMS.Library.Core;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.UI;
 using RawCMS.Plugins.LogCollecting.Config;
+using RawCMS.Plugins.LogCollecting.Services;
 
 namespace RawCMS.Plugins.LogCollecting
 {
@@ -35,7 +36,8 @@ namespace RawCMS.Plugins.LogCollecting
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            
+            services.AddSingleton<LogIngressService, LogIngressService>();
+            services.AddSingleton<LogQueueService, LogQueueService>();
         }
 
         public override void Setup(IConfigurationRoot configuration)

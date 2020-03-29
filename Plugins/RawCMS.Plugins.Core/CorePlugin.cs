@@ -11,12 +11,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using RawCMS.Library.BackgroundJobs;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.DataModel;
 using RawCMS.Library.Service;
 
 namespace RawCMS.Plugins.Core
 {
+    [PluginInfo(0)]
     public class CorePlugin : RawCMS.Library.Core.Extension.Plugin
     {
         public override string Name => "Core";
@@ -52,9 +55,10 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<CRUDService>();
             services.AddSingleton<EntityService>();
             services.AddSingleton<RelationInfoService>();
+           
             services.AddHttpContextAccessor();
             services.AddMvcCore().AddAuthorization() // Note - this is on the IMvcBuilder, not the service collection
-    .AddJsonFormatters(options => options.ContractResolver = new CamelCasePropertyNamesContractResolver());
+                .AddJsonFormatters(options => options.ContractResolver = new CamelCasePropertyNamesContractResolver());
         }
 
         public override void Configure(IApplicationBuilder app)
@@ -80,4 +84,6 @@ namespace RawCMS.Plugins.Core
         {
         }
     }
+
+    
 }

@@ -6,6 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Folder Include="Controllers\" />
 	  <Folder Include="UI\components\" />
 	  <Folder Include="UI\services\" />
 	  <Folder Include="UI\views\" />
@@ -13,6 +14,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\RawCMS.Library\RawCMS.Library.csproj" />
+	  <ProjectReference Include="..\RawCMS.Plugins.FullText\RawCMS.Plugins.FullText.csproj" />
 	</ItemGroup>
 
 

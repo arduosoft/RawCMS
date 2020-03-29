@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Extension;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Service;
 using RawCMS.Library.UI;
@@ -17,7 +18,7 @@ using RawCMS.Plugins.Core.Middlewares;
 
 namespace RawCMS.Plugins.Core
 {
-    public class UIPlugin : RawCMS.Library.Core.Extension.Plugin, IConfigurablePlugin<UIPluginConfig>
+    public class UIPlugin :Plugin, IConfigurablePlugin<UIPluginConfig>
     {
         public override string Name => "UIPlugin";
 

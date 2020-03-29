@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Core.Extension;
 using RawCMS.Library.Core.Helpers;
 using RawCMS.Library.Core.Interfaces;
@@ -181,6 +182,15 @@ namespace RawCMS.Library.Core
             LoadPluginAssemblies();
 
             var pluginTypes = GetPluginsTypes();//GetAnnotatedInstances<Plugin>();
+
+
+            //Sort by ordere
+            //TODO: move plugin info to attribute. we need it before instance
+            pluginTypes = pluginTypes.Select(x => new
+            {
+                Type = x,
+                Order = x.GetCustomAttribute<PluginInfoAttribute>()?.Order ?? 99
+            }).OrderBy(x => x.Order).Select(x => x.Type).ToList();
 
             if (_logger.IsEnabled(LogLevel.Debug))
             {
