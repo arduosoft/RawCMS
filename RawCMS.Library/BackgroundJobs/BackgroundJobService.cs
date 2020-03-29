@@ -4,11 +4,12 @@ using System.Text;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Hangfire.Mongo;
+//using Hangfire.Mongo;
 using RawCMS.Library.Service;
 using RawCMS.Library.DataModel;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
+using Hangfire.MemoryStorage;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
@@ -31,20 +32,22 @@ namespace RawCMS.Library.BackgroundJobs
         {
 
 
-            var migrationOptions = new MongoMigrationOptions
-            {
-                Strategy = MongoMigrationStrategy.Migrate,
-                BackupStrategy = MongoBackupStrategy.Collections,                
-            };
-            var storageOptions = new MongoStorageOptions
-            {
-                //TODO: read from config                
-                MigrationOptions = migrationOptions,
-            };
+            //var migrationOptions = new MongoMigrationOptions
+            //{
+            //    Strategy = MongoMigrationStrategy.Migrate,
+            //    BackupStrategy = MongoBackupStrategy.Collections,                
+            //};
+            //var storageOptions = new MongoStorageOptions
+            //{
+            //    //TODO: read from config                
+            //    MigrationOptions = migrationOptions,
+            //};
 
 
-            // Add Hangfire services.
-            services.AddHangfire(configuration => configuration.UseMongoStorage(settings.ConnectionString, storageOptions));
+            //// Add Hangfire services.
+            //services.AddHangfire(configuration => configuration.UseMongoStorage(settings.ConnectionString, storageOptions));
+
+            services.AddHangfire(c => c.UseMemoryStorage());
 
             // Add the processing server as IHostedService
             services.AddHangfireServer();

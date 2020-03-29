@@ -10,6 +10,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog;
 using NLog.Web;
 using System;
 using System.Diagnostics;
@@ -28,6 +29,8 @@ namespace RawCMS
             }
             catch (Exception ex)
             {
+                var logger = LogManager.GetCurrentClassLogger();
+                logger.Error(ex);
                 Debug.WriteLine(ex.Message);
                 throw;
             }

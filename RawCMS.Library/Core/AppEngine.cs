@@ -86,13 +86,20 @@ namespace RawCMS.Library.Core
                 Type[] types = ass.GetTypes();
                 foreach (var type in types)
                 {
-                    if (type.IsPublic)
+                    try
                     {
-                        if (_logger.IsEnabled(LogLevel.Trace))
+                        if (type.IsPublic)
                         {
-                            //   _logger.LogDebug($"Added {type.FullName}..");
+                            if (_logger.IsEnabled(LogLevel.Trace))
+                            {
+                                _logger.LogDebug($"Added {type.FullName}..");
+                            }
+                            typesToAdd.Add(type);
                         }
-                        typesToAdd.Add(type);
+                    }
+                    catch (Exception err)
+                    {
+                        _logger.LogError(err,$"ERROR {type.FullName}..");
                     }
                 }
 
