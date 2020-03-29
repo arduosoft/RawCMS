@@ -8,6 +8,10 @@
 
   <ItemGroup>
     
+    <PackageReference Include="Hangfire" Version="1.7.9" />
+    
+    <PackageReference Include="Hangfire.Mongo" Version="0.6.7" />
+    
     <PackageReference Include="Jint" Version="2.11.58" />
     <PackageReference Include="McMaster.NETCore.Plugins" Version="1.2.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.10.2" />

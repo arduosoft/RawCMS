@@ -18,7 +18,6 @@ using NLog.Web;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Helpers;
 using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IO;
