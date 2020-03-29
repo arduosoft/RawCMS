@@ -10,11 +10,7 @@ namespace RawCMS.Plugins.LogCollecting.Controllers
 {
     public class LogQueue
     {
-        protected LogQueueService service;
-        public LogQueue(LogQueueService service)
-        {
-            this.service = service;
-        }
+       
         Queue<LogEntity> queque = new Queue<LogEntity>();
         public List<QueueLoad> QueueLoad { get; set; }
         public long MaxProcessedItems { get; set; }
@@ -30,7 +26,7 @@ namespace RawCMS.Plugins.LogCollecting.Controllers
             MaxProcessedItems = 10000;
             MaxQueueSize = 100000;
             QueueLoad = new List<QueueLoad>();
-            AppendLoadValue(0, MaxQueueSize);
+            AppendLoadValue();
             RescheduleThereshold = 1000;
         }
         

@@ -17,7 +17,7 @@ namespace RawCMS.Plugins.LogCollecting.Jobs
 
         public override void Execute(JObject data)
         {
-            Lo
+            
         }
     }
 }

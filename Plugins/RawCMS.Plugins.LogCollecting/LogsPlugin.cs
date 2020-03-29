@@ -36,8 +36,7 @@ namespace RawCMS.Plugins.LogCollecting
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<LogIngressService, LogIngressService>();
-            services.AddSingleton<LogQueueService, LogQueueService>();
+            services.AddSingleton<LogService, LogService>();
         }
 
         public override void Setup(IConfigurationRoot configuration)
