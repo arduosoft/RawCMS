@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Nest;
 using Nest.JsonNetSerializer;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.UI;
 using RawCMS.Plugins.FullText.Core;
@@ -21,6 +22,8 @@ using System;
 
 namespace RawCMS.Plugins.FullText
 {
+
+    [PluginInfo(1)]
     public class FullTextPlugin : RawCMS.Library.Core.Extension.Plugin, IConfigurablePlugin<FullTextConfig>
     {
         public override string Name => "FullTextPlugin";

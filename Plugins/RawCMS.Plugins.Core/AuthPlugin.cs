@@ -91,7 +91,7 @@ namespace RawCMS.Plugins.Core
                 }
             }
 
-            services.AddAuthorization(options =>
+            services.AddAuthorizationCore(options =>
             {
                 var defaultPolicyBuilder = new AuthorizationPolicyBuilder(schemeList.ToArray())
                     .RequireAuthenticatedUser()

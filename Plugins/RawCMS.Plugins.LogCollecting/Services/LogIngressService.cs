@@ -9,10 +9,10 @@ namespace RawCMS.Plugins.LogCollecting.Services
 {
     public class LogService
     {
-        private readonly FullTextService fullTextService;
+        private readonly ElasticFullTextService fullTextService;
         private readonly LogQueue logQueue;
 
-        public LogService(FullTextService fullTextService)
+        public LogService(ElasticFullTextService fullTextService)
         {
             this.fullTextService = fullTextService;
             this.logQueue = new LogQueue();

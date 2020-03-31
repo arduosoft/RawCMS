@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.UI;
 using RawCMS.Plugins.LogCollecting.Config;
@@ -13,6 +14,7 @@ using RawCMS.Plugins.LogCollecting.Services;
 
 namespace RawCMS.Plugins.LogCollecting
 {
+    [PluginInfo(2)]
     public class LogsPlugin : Library.Core.Extension.Plugin, IConfigurablePlugin<LogsPluginConfig>
     {
         public override string Name => "LogsCollecting";
@@ -36,6 +38,9 @@ namespace RawCMS.Plugins.LogCollecting
 
         public override void ConfigureServices(IServiceCollection services)
         {
+            var sp=services.BuildServiceProvider();
+            var fs = sp.GetService<FullText.Core.ElasticFullTextService>();
+            var fs2 = sp.GetService<FullText.Core.FullTextService>();
             services.AddSingleton<LogService, LogService>();
         }
 
