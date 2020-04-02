@@ -18,7 +18,9 @@
 		<Folder Include="UI\" />
 	</ItemGroup>
 
-
+  <ItemGroup>
+    <None Include="$(ProjectDir)UI\**" CopyToPublishDirectory="Always" />
+  </ItemGroup>
 
 
 	<Target Name="BuildUI" AfterTargets="Build">

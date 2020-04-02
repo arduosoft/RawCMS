@@ -47,7 +47,10 @@
 		<None Include="$(ProjectDir)UICore\**" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>-->
 
-
+  <ItemGroup>
+    <None Include="$(ProjectDir)UI\**" CopyToPublishDirectory="Always" />
+    <None Include="$(ProjectDir)UICore\**" CopyToPublishDirectory="Always" />
+  </ItemGroup>
 
 
 	<Target Name="WriteToFile" AfterTargets="Build">
