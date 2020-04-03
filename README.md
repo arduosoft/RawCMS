@@ -1,6 +1,6 @@
 <p align="center">
   <img  src="https://github.com/arduosoft/RawCMS/blob/develop/asset/logo_horizzontal.png?raw=true">
- </p>
+</p>
 
 RawCMS is a headless CMS written in ASP.NET Core, built for developers that embrace API-first technology. RawCMS uses MongoDB as its data storage and is ready to be hosted on Docker containers.
 
@@ -17,7 +17,7 @@ RawCMS is a headless CMS written in ASP.NET Core, built for developers that embr
 
 ## Contribution
 
-As every open source project, we are looking for contributors. Any kind of help is welcome. *Just a star on the project is a lot.* If you want to contribute as a developer, you can join the project by [filling out this form](https://forms.gle/dddbHWzcxypN9rpx9) or by opening an issue. Any other kind of contribution, from docs to tests, is also welcome.
+We are actively seeking contribution to continue improving our open source project. Any kind of help is welcome. *Just a star on the project is a lot.* If you would like to contribute as a developer, you can join the project by [filling out this form](https://forms.gle/dddbHWzcxypN9rpx9) or by opening an issue. Any other kind of contribution, from docs to tests, is also welcome.
 
 **The easy contribution you can give us is share your impression about the project. [Please invest 1 minute of your time to fill a quick survery and tell your opinion](https://forms.gle/wvu1HF9P52ZdXujv6)**
 
@@ -30,24 +30,23 @@ No matter if you're dealing with web apps, mobile apps or client application. Ju
 Due to the API approach, RawCMS is very flexible and adapts perfectly to all use cases. Using GraphQL or REST standard RawCMS can be used by everybody without any headhache. This give you a solid and modern foundation for your project. 
 
 ### 🚀 Ready to use
-Built on top of the well-known .net core framework, can be deployed on every platforms in a click. No more matter about OS licenses of portability, just run it.
-Benefit from all existing Symfony Components and Bundles provided by the community or create your own 
-Bundles to extend your Projects with reusable components. 
+Built on top of the well-known .net core framework, RawCMS can be deployed on every platforms in a click. No longer are there concerns about OS licenses of portability, just run it.
+Benefit from all existing Symfony Components and Bundles provided by the community, or create your own Bundles to extend projects with reusable components. 
 
 ### 💎 Your backend consolidated in one Platform
-No more point-to-point integration, multiple tools, or expenses. You can consolidate Log Collecting, Api Gateway, Translation, Session Storage and CMS in one, simple, free user.
+No more point-to-point integration, multiple tools, or expenses. You can consolidate Log Collecting, Api Gateway, Translation, Session Storage and CMS in one, simple, free platform.
 
 ### ✨️ Modern and Intuitive Architecture
-We love good software design and we aim to help others on building wonderful applications! Using RawCMS you will keep you architecture clean and reduce the effort.
+We love quality software design and aim to help others on building wonderful applications! Using RawCMS you will keep you architecture clean and efficient.
 
 ## Architectural Prospective
 
-With RawCMs you have a central platform that manage most critical services, making them a commodity. You have just to focus on the ui development and on implementing business login. No more stress on deployng services or selecting online tools. You have all inclusive and free out of the box.
+With RawCMs you have a central platform that manages most critical services, making them a commodity. You only have to focus on the UI development and on implementation of business logins. No more stress on deploying services or selecting online tools. You simply have a well-kept, and free, Content Management System.
 <img src="https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/WithRawCMS.png?raw=true" width="100%" align="center" />
 
-Use RawCms brings to a clean and easy to manage infrastructure, please compare it with the traditional one. You have a meshed connected system, with multiple services that talks togheter. That's old style approach is hard to mantain and brings to multiple costs.
+Use RawCms brings to a clean and easy to manage infrastructure, compared to the traditional design. You have a meshed connected system, with multiple services that talks together. The old style approach is hard to mantain and costly.
 
-This result is possible thanks to the modular and scalable RawCMS architecture. See the key points:
+The resulting program is possible thanks to the modular and scalable RawCMS architecture. See the key points:
 
 1. **Modular**: Each module is shipped in a NuGet package that can be added to the system to gain new features
 2. **Headless**: RawCMS doesn't include any presentation logic. All presentation is delegated to the caller. This aims to create a scalable and reusable system
@@ -59,19 +58,19 @@ This result is possible thanks to the modular and scalable RawCMS architecture. 
 ## Preview and Demo
 
 ### Data Modeling
-The data modeling is based on a simple UI that let you add field definition and relations in a click.
+Data modeling is based off a simple UI that allows for flexible field definition and relational table in a single click.
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/entity-definition.png?raw=true)
 
 ### Data Entry
-You can enter data manually, for configuration or data entry.
+Categories may be entered manually for configuration of data entered.
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/data-entry.png?raw=true)
 
 ### Searching
-You can search for data using full query capabilities offert by MongoDB engine.
+Using the full capabilities offered by MongoDB, data can be queried with speed and finesse.
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/search.png?raw=true)
 
 ### Hook
-You can alter data or add your busiess logic directly from the UI.
+Directly through the UI, data can be added or altered with ease.
 ![](https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/hook.png?raw=true)
 
 ### Portable settings
@@ -102,23 +101,26 @@ All the settings configured by UI are stored in json format and can be ported fo
 
 ### Live Demo (CMS, Lambdas, User management, GraphQL)
 
-_URL_: [http://rawcms-demo.herokuapp.com/](http://rawcms-demo.herokuapp.com/)  **App run in a free tier, so it can take a little bit to come up.**
+**This app runs in Heroku free tier**
+
+_URL_: [http://rawcms-demo.herokuapp.com/](http://rawcms-demo.herokuapp.com/)  
 
 _Username_: `bob`  
 
 _Password_: `XYZ`
 
-You can follow the [**tutorial**](https://rawcms.readthedocs.io/en/latest/Tutorial/) for a quick start.
+You can follow this [**tutorial**](https://rawcms.readthedocs.io/en/latest/Tutorial/) for a quick start.
 
 ## Getting Started
 
-You can deploy it using many options. RawCMS is dockerized from the development stage so modern hosting is fully supported.
+RawCMS is dockerized from the development stage so modern hosting is fully supported.
+Here are a few options for deployment.
 
 1. *Docker Compose* using the provided docker-compose file
 2. *Kubernetes* using the provided docker images
 3. *Heroku* using the provided images
 
-But you can simply run it in two lined of code
+Or within the command line: 
 ``` bash
 wget https://raw.githubusercontent.com/arduosoft/RawCMS/master/docker/docker-compose-prod.yml -o docker-compose.yml # or download it manually ;-)
 docker-compose up
