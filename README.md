@@ -41,7 +41,7 @@ We love quality software design and aim to help others on building wonderful app
 
 ## Architectural Prospective
 
-With RawCMs you have a central platform that manages most critical services, making them a commodity. You only have to focus on the UI development and on implementation of business logins. No more stress on deploying services or selecting online tools. You have well-kept and free out of the box.
+With RawCMs you have a central platform that manages most critical services, making them a commodity. You only have to focus on the UI development and on implementation of business logins. No more stress on deploying services or selecting online tools. You simply have a well-kept, and free, Content Management System.
 <img src="https://github.com/arduosoft/RawCMS/blob/master/asset/docimages/WithRawCMS.png?raw=true" width="100%" align="center" />
 
 Use RawCms brings to a clean and easy to manage infrastructure, compared to the traditional design. You have a meshed connected system, with multiple services that talks together. The old style approach is hard to mantain and costly.
