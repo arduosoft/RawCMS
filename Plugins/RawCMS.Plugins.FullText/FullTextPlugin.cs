@@ -19,6 +19,7 @@ using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.UI;
 using RawCMS.Plugins.FullText.Core;
 using System;
+using System.Collections.Generic;
 
 namespace RawCMS.Plugins.FullText
 {
@@ -88,6 +89,14 @@ namespace RawCMS.Plugins.FullText
         {
             return new UIMetadata();
 
+        }
+
+        public override List<Type> GetSharedType()
+        {
+            return  new List<Type>()
+            {
+                typeof(FullTextService)
+            };
         }
     }
 }

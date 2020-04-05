@@ -31,6 +31,12 @@
     <ProjectReference Include="..\RawCMS.Plugins.Core\RawCMS.Plugins.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 	<Target Name="BuildUI" AfterTargets="Build">
 		<RemoveDir Directories="$(OutDir)\UI" />

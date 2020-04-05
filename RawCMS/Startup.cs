@@ -117,8 +117,13 @@ namespace RawCMS
             logger.LogInformation($"loading plugins from {pluginPath}");
             Console.WriteLine($"loading plugins from {pluginPath}");
             List<Assembly> allAssembly = AssemblyHelper.GetAllAssembly();
+            File.AppendAllLines("C:\\temp\\Assemblies.txt", allAssembly.Select(x =>  (x.Location + ";" + x.FullName + ";") ).ToArray());
             var assLib = Path.Combine(AppContext.BaseDirectory, @"RawCms.Views.dll");
             AssemblyLoadContext.Default.LoadFromAssemblyPath(assLib);
+
+          
+          
+
             ReflectionManager rm = new ReflectionManager(allAssembly);
 
             appEngine = AppEngine.Create(

@@ -78,9 +78,15 @@ namespace RawCMS.Library.Core.Helpers
 
         public List<Type> GetAnnotatedBy<T>() where T : Attribute
         {
+            List<Assembly> bundledAssemblies = AssemblyScope;
+            return GetAnnotatedBy<T>(bundledAssemblies);
+        }
+
+            public List<Type> GetAnnotatedBy<T>(List<Assembly> bundledAssemblies) where T : Attribute
+        {
             _logger.LogDebug("Get all entries annotated by {0}", typeof(T).FullName);
             List<Type> result = new List<Type>();
-            List<Assembly> bundledAssemblies = AssemblyScope;
+            
 
             foreach (Assembly assembly in bundledAssemblies)
             {

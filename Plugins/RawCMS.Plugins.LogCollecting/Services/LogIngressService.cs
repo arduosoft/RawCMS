@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using RawCMS.Library.Schema;
+using RawCMS.Library.Service;
 using RawCMS.Plugins.FullText.Core;
 using RawCMS.Plugins.LogCollecting.Controllers;
 using RawCMS.Plugins.LogCollecting.Models;
+using System.Linq;
 
 namespace RawCMS.Plugins.LogCollecting.Services
 {
     public class LogService
     {
-        private readonly ElasticFullTextService fullTextService;
+        private readonly FullTextService fullTextService;
         private readonly LogQueue logQueue;
+        private readonly CRUDService crudService;
 
-        public LogService(ElasticFullTextService fullTextService)
+        private const int LOG_PROCESSING_SIZE= 100000;
+        private const int PROCESSING_ENTRY_COUNT = 1000;
+        public LogService(FullTextService fullTextService, CRUDService crudService)
         {
             this.fullTextService = fullTextService;
+            this.crudService = crudService;
             this.logQueue = new LogQueue();
         }
 
@@ -26,8 +33,10 @@ namespace RawCMS.Plugins.LogCollecting.Services
 
         public void EnqueueLog(string applicationId, List<LogEntity> data)
         {
-            data.ForEach(x =>
-                logQueue.Enqueue(x)
+            data.ForEach(x => {
+                x.ApplicationId = applicationId;
+                logQueue.Enqueue(x);
+                }
                 );
 
             logQueue.AppendLoadValue();
@@ -35,15 +44,28 @@ namespace RawCMS.Plugins.LogCollecting.Services
         }
 
 
-        public void PersistLog(string applicationId, List<LogEntity> data)
-        {
-
-        }
-
         public void PersistLog()
         {
-            //For each application
-            //PersistLog(
+            var applications = this.crudService.Query<Application>("applications", new Library.DataModel.DataQuery())
+                .Items
+                .Where(x=>x.PublicId != null).ToList();
+
+            int processedLog = 0;
+
+            List<LogEntity> batch;
+            string indexname = "";
+            while (processedLog < LOG_PROCESSING_SIZE && (batch = this.logQueue.Dequeue(PROCESSING_ENTRY_COUNT)) != null)
+            {
+                foreach (var log in batch)
+                {
+                    indexname = "log_" + applications.FirstOrDefault(x => x.PublicId.Equals(log.ApplicationId)).Id;
+
+                    //TODO: implement batch insert for performance
+                    this.fullTextService.AddDocument<LogEntity>(indexname, log);
+                }
+            }
+
+
         }
     }
 }

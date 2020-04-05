@@ -52,7 +52,14 @@ namespace RawCMS.Library.Service
             }
         }
 
-        public JObject Insert(string collection, JObject newitem)
+
+        public JObject Insert<T>(string collection, T newitem)
+        {
+            //Cannot return a T because during save piplene the output could be enriched and different from input
+            return Insert(collection, JObject.FromObject(newitem));
+        }
+
+            public JObject Insert(string collection, JObject newitem)
         {
             var dataContext = new Dictionary<string, object>();
             InvokeValidation(newitem, collection);
@@ -127,6 +134,12 @@ namespace RawCMS.Library.Service
             }
         }
 
+
+        public JObject Update<T>(string collection, T newitem, bool replace)
+        {
+            //Cannot return a T because during save piplene the output could be enriched and different from input
+            return Update(collection, JObject.FromObject(newitem), replace);
+        }
         public JObject Update(string collection, JObject item, bool replace)
         {
             var dataContext = new Dictionary<string, object>();
@@ -251,7 +264,21 @@ namespace RawCMS.Library.Service
             return count;
         }
 
-        public ItemList Query(string collection, DataQuery query)
+
+        public T Get<T>(string collection, string id)
+        {
+            var item = Get(collection, id);
+            if (item == null) return default(T);
+            return item.ToObject<T>();
+        }
+
+            public ItemList<T> Query<T>(string collection, DataQuery query)
+        {
+            var list = Query(collection, query);
+            return new ItemList<T>(list.Items.Select(x=> x.ToObject<T>()).ToList(), list.TotalCount, list.PageNumber, list.PageSize);
+        }
+
+            public ItemList Query(string collection, DataQuery query)
         {
             FilterDefinition<BsonDocument> filter = FilterDefinition<BsonDocument>.Empty;
             var dataContext = new Dictionary<string, object>();

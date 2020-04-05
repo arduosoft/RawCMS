@@ -1,5 +1,5 @@
 import { RawCmsListDef } from "/app/common/shared/components/list/list.js";
-import { logsService } from "/app/modules/core/services/application.service.js";
+import { applicationsService } from "/app/modules/core/services/application.service.js";
 
 const _LogsListWrapperDef = async () => {
   const rawCmsListDef = await RawCmsListDef();
@@ -7,7 +7,7 @@ const _LogsListWrapperDef = async () => {
   return {
     data: function() {
       return {
-        apiService: logsService
+          apiService: applicationsService
       };
     },
     extends: rawCmsListDef,

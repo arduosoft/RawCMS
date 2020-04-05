@@ -1,5 +1,5 @@
 import { RawCmsDataTableDef } from "/app/common/shared/components/data-table/data-table.js";
-import { logsService } from "/app/modules/core/services/application.service.js";
+import { applicationsService } from "/app/modules/core/services/application.service.js";
 import { fullTextService } from "/app/modules/fulltext/services/full-text.service.js";
 const _LogsTableWrapperDef = async () => {
   const rawCmsDataTableDef = await RawCmsDataTableDef();
@@ -7,7 +7,7 @@ const _LogsTableWrapperDef = async () => {
   return {
     data: function() {
       return {
-        apiService: logsService,
+        apiService: applicationsService,
         headTable: []
       };
     },
@@ -51,7 +51,7 @@ const _LogsTableWrapperDef = async () => {
 const _LogsDetailsDef = async () => {
   const tableWrapperDef = await _LogsTableWrapperDef();
   const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/core/components/logs-search/logs-search.tpl.html"
+    "/app/modules/logs/components/logs-search/logs-search.tpl.html"
   );
 
   return {
@@ -85,7 +85,7 @@ const _LogsDetailsDef = async () => {
       }
     },
     mounted: async function() {
-      const res = await logsService.getAppByName(this.CmpName);
+      const res = await applicationsService.getAppByName(this.CmpName);
       console.log(res.LogNameHash);
       return (this.logHashName = res.LogNameHash);
     },

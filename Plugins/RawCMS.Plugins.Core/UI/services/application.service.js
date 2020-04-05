@@ -1,8 +1,8 @@
 import { BaseCrudService } from "/app/common/shared/services/base-crud-service.js";
 
-class LogsService extends BaseCrudService {
+class ApplicationService extends BaseCrudService {
   constructor() {
-    super({ basePath: "/api/CRUD/Application" });
+    super({ basePath: "/api/CRUD/application" });
   }
 
   async getAppByName(name) {
@@ -15,5 +15,5 @@ class LogsService extends BaseCrudService {
   }
 }
 
-export const logsService = new LogsService();
-export default logsService;
+export const applicationsService = new ApplicationService();
+export default applicationsService;

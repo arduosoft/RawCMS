@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Core.Extension;
@@ -31,6 +32,15 @@ using System.Xml.Linq;
 
 namespace RawCMS.Library.Core
 {
+
+    public class PluginLoadingInfo
+    {
+        public string MainDLL { get; set; }
+        public string ConfigPath { get; set; }
+        public string ManifestPath { get; set; }
+
+        public int Order { get; set; } = 100;
+    }
     public class AppEngine
     {
         private readonly string pluginFolder = null;
@@ -79,6 +89,8 @@ namespace RawCMS.Library.Core
 
             List<Assembly> assembly = reflectionManager.AssemblyScope;
 
+            
+
             List<Type> typesToAdd = new List<Type>();
             foreach (var ass in assembly)
             {
@@ -106,6 +118,7 @@ namespace RawCMS.Library.Core
                 typesToAdd.AddRange(types);
             }
 
+            
             typesToAdd = typesToAdd.Distinct().ToList();
 
             _logger.LogInformation($"ASSEMBLY LOAD COMPLETED");
@@ -121,31 +134,92 @@ namespace RawCMS.Library.Core
             _logger.LogDebug($"Found  {string.Join(",", pluginFiles)}");
             //AssemblyLoadContext.Default.LoadFromAssemblyPath(assLib);
             var regex = new Regex("\"(.*?)\"");
-            
+
+            var infos = new List<PluginLoadingInfo>();
+
             foreach (var pluginInfo in pluginFiles)
             {
                 var infoXml = File.ReadAllText(pluginInfo);
                 var matchs = regex.Matches(infoXml);
-                if(matchs.Count > 0)
+
+                if (matchs.Count > 0)
                 {
-                    var dllName = matchs[0].Value.Replace("\"","");
+                    var dllName = matchs[0].Value.Replace("\"", "");
                     var assemblyPath = Path.Combine(Path.GetDirectoryName(pluginInfo), $"{dllName}.dll");
-                    _logger.LogInformation($"Loading plugin  {pluginInfo}");
-                    var loader = PluginLoader.CreateFromAssemblyFile(
-                    assemblyFile: assemblyPath,
-                    sharedTypes: typesToAdd.ToArray());
+                    var manifestJson = Path.Combine(Path.GetDirectoryName(pluginInfo), $"Manifest.json");
 
-                    loaders.Add(loader);
+                    var mabufest = new PluginLoadingInfo();
 
-                    var pluginAssembly = loader.LoadDefaultAssembly();
-                    pluginPathMapping[pluginAssembly.FullName] = pluginInfo;
+                    if (File.Exists(manifestJson))
+                    {
+                        mabufest = JsonConvert.DeserializeObject<PluginLoadingInfo>(File.ReadAllText(manifestJson));
+                    }
 
-                    reflectionManager.AppendAssemblyToScope(pluginAssembly);
+                    mabufest.ConfigPath = pluginInfo;
+                    mabufest.MainDLL = assemblyPath;
+                    mabufest.ManifestPath=manifestJson;
+
+                    infos.Add(mabufest);
                 }
                 else
                 {
                     _logger.LogWarning($"Unable load plugin from {pluginInfo}. Plugin skipped.");
                 }
+            }
+
+
+            infos = infos.OrderBy(x => x.Order).ToList();
+            var exportedTypes= new List<Type>();
+            foreach (var info in infos)
+            {
+                var tempTypes = new List<Type>(typesToAdd);
+                if (info.MainDLL.Contains("Log"))
+                {
+                    //tempTypes.AddRange(exportedTypes);
+                }
+
+
+                    _logger.LogInformation($"Loading plugin  {info.MainDLL}");
+                var loader = PluginLoader.CreateFromAssemblyFile(
+                assemblyFile: info.MainDLL,
+                sharedTypes: tempTypes.ToArray());
+
+                loaders.Add(loader);
+
+                var pluginAssembly = loader.LoadDefaultAssembly();
+
+                pluginPathMapping[pluginAssembly.FullName] = info.ConfigPath;
+
+                //   exportedTypes = reflectionManager.GetAnnotatedBy<SharedTypeAttribute>(new Assembly[]{ pluginAssembly }.ToList());
+
+
+                //if (exportedTypes.Count > 0)                    
+                //{
+                //    AssemblyLoadContext.Default.LoadFromAssemblyPath(info.MainDLL);
+                //}
+
+
+                reflectionManager.AppendAssemblyToScope(pluginAssembly);
+
+                if (info.MainDLL.Contains("FullText"))
+                {
+                    //var loader2 = PluginLoader.CreateFromAssemblyFile(
+                    //  assemblyFile: info.MainDLL,
+                    //  sharedTypes: tempTypes.ToArray());
+
+                    //    var pluginAssembly2 = loader2.LoadDefaultAssembly();
+                    
+                    //exportedTypes = reflectionManager.GetAnnotatedBy<SharedTypeAttribute>(new Assembly[] { pluginAssembly }.ToList())
+                    //.Where(x => x.IsAbstract == true).ToList();
+                    //tempTypes.AddRange(exportedTypes);
+
+
+
+                }
+
+
+             
+               
             }
 
         }

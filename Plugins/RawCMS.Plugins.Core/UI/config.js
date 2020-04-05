@@ -18,12 +18,7 @@ const _configCoreModule = {
         { icon: "mdi-settings", text: "Configuration", route: "plugins" },
         { icon: "mdi-cogs", text: "Background Jobs", route: "hangfire" },
 
-        {
-          icon: "mdi-file-document-outline",
-          text: "Dev portal",
-          extLink: RawCMS.env.api.baseUrl
-        }
-        { icon: "mdi-transit-connection-variant", text: "Swagger", extLink: RawCMS.env.api.baseUrl + '/swagger' }
+        { icon: "mdi-file-document-outline", text: "Swagger", extLink: RawCMS.env.api.baseUrl + '/swagger' }
       ];
     }
   },
