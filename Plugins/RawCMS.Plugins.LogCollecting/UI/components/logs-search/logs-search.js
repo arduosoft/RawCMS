@@ -1,14 +1,19 @@
 import { RawCmsDataTableDef } from "/app/common/shared/components/data-table/data-table.js";
 import { applicationsService } from "/app/modules/core/services/application.service.js";
 import { fullTextService } from "/app/modules/fulltext/services/full-text.service.js";
+import { evtLogSearch } from "/app/modules/logs/events.js";
+import { RawCMS } from "/app/config/raw-cms.js";
+
 const _LogsTableWrapperDef = async () => {
   const rawCmsDataTableDef = await RawCmsDataTableDef();
 
   return {
     data: function() {
       return {
-        apiService: applicationsService,
-        headTable: []
+          apiService: applicationsService,
+          fullTextService: fullTextService,
+          headTable: [],
+          logLevel:"ALL"
       };
     },
     extends: rawCmsDataTableDef,
@@ -33,18 +38,34 @@ const _LogsTableWrapperDef = async () => {
         ];
         return this.headTable;
       },
-      fetchData: async function() {
-        const res = await fullTextService.getTextByLevel(
-          "1337215778276f64eb92f3359b1164e220c122440b156cc174e6cf4baa9e8ebc",
-          "INFO"
-        );
-        this.items = res.map(x => {
+        search: async function (level, text, indexname) {
+
+         var app=applicationsService.getAppByName("default");
+            let res = await fullTextService.search(
+                {
+                    size: 1,
+                    query: {}
+                },
+                indexname
+            );
+                
+            this.items = res.map(x => {
+                console.log(x);
           return { ...x, _meta_: { isDeleting: false } };
         });
         this.totalItemsCount = this.totalCount;
         this.isLoading = false;
-      }
-    }
+        },
+
+
+     
+      }, mounted: function () {
+        console.log("inner mounted");
+          RawCMS.eventBus.$on(evtLogSearch, (level,text,indexname) => {
+              console.log("inner search $level,$text,$indexname");
+              this.search(level, text, indexname);
+          });
+      },
   };
 };
 
@@ -60,39 +81,33 @@ const _LogsDetailsDef = async () => {
     },
     data: function() {
       return {
-        level: 1,
+        level: 'ALL',
         levels: [
           { text: this.$t("core.logs.detail.level0") },
           { text: this.$t("core.logs.detail.level1") },
           { text: this.$t("core.logs.detail.level2") }
         ],
-        //search: '',
-        list: ""
+        text: '',
+        indexname:''
       };
     },
     methods: {
-      search: function() {
-        alert();
-        return;
-      },
-      sLevel: async function(level) {
-        const res = await fullTextService.getTextByLevel(
-          this.logHashName,
-          level
-        );
-        console.log(res);
-        return res;
+        search: async function() {
+
+            RawCMS.eventBus.$emit(evtLogSearch, this.level, this.text, this.indexname);
+            console.log("search");
+            
       }
     },
     mounted: async function() {
       const res = await applicationsService.getAppByName(this.CmpName);
-      console.log(res.LogNameHash);
-      return (this.logHashName = res.LogNameHash);
+      
+        return (this.indexname = "log_"+res.PublicId);
     },
     computed: {
-      CmpName: function() {
-        return this.$route.params.name;
-      }
+      //CmpName: function() {
+      //  return this.$route.params.name;
+      //}
     },
     //props: detailWrapperDef.extends.props,
     props: { name: String },

@@ -27,19 +27,7 @@ class FullTextService extends BaseCrudService {
     );
     return res.data.data;
   }
-  async getTextByLevel(logNameHash, level) {
-    debugger;
-    const res = await this.search(
-      {
-        size: 1,
-        query: {
-          level: level
-        }
-      },
-      logNameHash
-    );
-    return res;
-  }
+   
 }
 
 export const fullTextService = new FullTextService();

@@ -7,7 +7,7 @@
             label="LEVEL"
             v-model="level"
             :items="levels"
-            v-on:change="sLevel(level)"
+            v-on:change="search()"
             dense
             outlined
           >
@@ -18,7 +18,7 @@
             label="search"
             alignment="start"
             justify="start"
-            v-model="search"
+            v-model="text"
           ></v-text-field>
         </v-col>
         <v-col>
