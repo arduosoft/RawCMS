@@ -8,12 +8,12 @@ class FullTextService extends BaseCrudService {
   }
 
   async search(
-    { page = 1, size = 20, query = undefined, sort = undefined } = {},
+      { page = 1, size = 20, searchQuery = undefined, sort = undefined } = {},
     LogNameHash
   ) {
     const config = { pageSize: size, pageNumber: page };
     if (query) {
-      config.query = query;
+        config.searchQuery = searchQuery;
     }
     if (sort) {
       config.sort = JSON.stringify(sort);

@@ -43,13 +43,13 @@ const _LogsTableWrapperDef = async () => {
         showDetail() {
             this.isDetailShown = true;
         },
-        search: async function (level, text, indexname) {
+        search: async function (query, indexname) {
 
          var app=applicationsService.getAppByName("default");
             let res = await fullTextService.search(
                 {
                     size: 1,
-                    query: {}
+                    searchQuery: query
                 },
                 indexname
             );
@@ -66,9 +66,9 @@ const _LogsTableWrapperDef = async () => {
      
       }, mounted: function () {
         console.log("inner mounted");
-          RawCMS.eventBus.$on(evtLogSearch, (level,text,indexname) => {
-              console.log("inner search $level,$text,$indexname");
-              this.search(level, text, indexname);
+          RawCMS.eventBus.$on(evtLogSearch, (query,indexname) => {
+              console.log("inner search"+query);
+              this.search(query, indexname);
           });
       },
   };
@@ -85,12 +85,16 @@ const _LogsDetailsDef = async () => {
       TableWrapper: tableWrapperDef
     },
     data: function() {
-      return {
-        level: 'ALL',
-        levels: [
-          { text: this.$t("core.logs.detail.level0") },
-          { text: this.$t("core.logs.detail.level1") },
-          { text: this.$t("core.logs.detail.level2") }
+        return {
+            level: 'ALL',
+            levels: [
+                { level: 0, text: "ALL" },
+                { level: 1, text: "TRACE" },
+                { level: 2, text: "DEBUG" },
+                { level: 3, text: "INFO" },
+                { level: 4, text: "WARN" },
+                { level: 5, text: "ERROR" },
+                { level: 6, text: "FATAL" },
         ],
         text: '',
           indexname: '',
@@ -101,7 +105,7 @@ const _LogsDetailsDef = async () => {
     methods: {
         search: async function() {
 
-            RawCMS.eventBus.$emit(evtLogSearch, this.level, this.text, this.indexname);
+            RawCMS.eventBus.$emit(evtLogSearch, this.query, this.indexname);
             console.log("search");
             
         },
@@ -116,9 +120,27 @@ const _LogsDetailsDef = async () => {
         return (this.indexname = "log_"+res.PublicId);
     },
     computed: {
-      //CmpName: function() {
-      //  return this.$route.params.name;
-      //}
+        query: function () {
+            let queryRegExp = /[\s|\:|\=\{|>|<|\{|\}|\"|\*|\?]/gi; //just one query character 
+            let query = "";
+            
+            if (this.level >= 0)
+            {
+                query = "level:>" + this.level;
+            }
+            if (query.length > 0 && this.text.length>0) {
+                query += " AND ";
+            }
+            if (this.text.length > 0 && !queryRegExp.test(this.text))
+            {
+                query += " message: ";
+            }
+
+            query += this.text;
+            if (query.length == "") query = "*";
+            
+            return query;
+      }
     },
     //props: detailWrapperDef.extends.props,
     props: { name: String },
