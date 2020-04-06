@@ -45,9 +45,10 @@
         </slot>
       </div>
     </template>
-
+      
     <template v-slot:item.action="{ item }">
-      <slot name="item.action">
+        
+      <slot name="item.action" v-bind:item="item">
         <v-btn icon @click.stop="goTo(item)" v-if="!item._meta_.isDeleting">
           <v-icon>mdi-pencil-outline</v-icon>
         </v-btn>

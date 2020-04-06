@@ -13,11 +13,13 @@ const _LogsTableWrapperDef = async () => {
           apiService: applicationsService,
           fullTextService: fullTextService,
           headTable: [],
-          logLevel:"ALL"
+          logLevel: "ALL",
       };
     },
     extends: rawCmsDataTableDef,
-    methods: {
+      methods: {
+
+       
       deleteConfirmMsg(item) {
         return this.$t("core.collections.table.deleteConfirmMsgTpl");
       },
@@ -37,7 +39,10 @@ const _LogsTableWrapperDef = async () => {
           { text: "Message", value: "message", sortable: false }
         ];
         return this.headTable;
-      },
+        },
+        showDetail() {
+            this.isDetailShown = true;
+        },
         search: async function (level, text, indexname) {
 
          var app=applicationsService.getAppByName("default");
@@ -50,8 +55,8 @@ const _LogsTableWrapperDef = async () => {
             );
                 
             this.items = res.map(x => {
-                console.log(x);
-          return { ...x, _meta_: { isDeleting: false } };
+           
+                return { ...x, _meta_: { isDeleting: false, isDetailShown:false } };
         });
         this.totalItemsCount = this.totalCount;
         this.isLoading = false;
@@ -88,7 +93,9 @@ const _LogsDetailsDef = async () => {
           { text: this.$t("core.logs.detail.level2") }
         ],
         text: '',
-        indexname:''
+          indexname: '',
+          isDetailShown: false,
+          shownItem:{}
       };
     },
     methods: {
@@ -97,7 +104,11 @@ const _LogsDetailsDef = async () => {
             RawCMS.eventBus.$emit(evtLogSearch, this.level, this.text, this.indexname);
             console.log("search");
             
-      }
+        },
+        showDetail: async function (item) {
+            this.isDetailShown = true;
+            this.shownItem = item;
+        }
     },
     mounted: async function() {
       const res = await applicationsService.getAppByName(this.CmpName);

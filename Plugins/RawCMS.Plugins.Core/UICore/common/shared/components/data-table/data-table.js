@@ -193,7 +193,7 @@ const _RawCmsDataTableDef = async () => {
     props: {
       apiBasePath: String,
       detailRouteName: String,
-      externalRawQuery: Object
+      externalRawQuery: Object,
     },
     template: tpl,
     watch: {

@@ -60,13 +60,17 @@ namespace RawCMS
                     webBuilder
                             .UseContentRoot(Directory.GetCurrentDirectory())
                             .UseSetting("detailedErrors", "true")
+                            .SuppressStatusMessages(false)
                             .ConfigureLogging(logger =>
                             {
                                 logger.ClearProviders();
                                 logger.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                                logger.AddConsole();
                             })
-                            .UseNLog()
+                            .UseNLog(new NLogAspNetCoreOptions()
+                            { })
                             .UseStartup<Startup>();
+
                     if (url != null)
                     {
                         webBuilder.UseUrls(url);

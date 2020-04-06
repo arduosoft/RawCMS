@@ -1,35 +1,54 @@
 <v-card flat tile height="100%">
-  <v-form>
-    <v-container fluid>
-      <v-row class="px-6">
-        <v-col>
-          <v-select
-            label="LEVEL"
-            v-model="level"
-            :items="levels"
-            v-on:change="search()"
-            dense
-            outlined
-          >
-          </v-select>
-        </v-col>
-        <v-col>
-          <v-text-field
-            label="search"
-            alignment="start"
-            justify="start"
-            v-model="text"
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-btn @click="search()">{{ $t('core.logs.detail.search') }}</v-btn>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <table-wrapper></table-wrapper>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-form>
+    <v-form>
+        <v-container fluid>
+            <v-row class="px-6">
+                <v-col>
+                    <v-select label="LEVEL"
+                              v-model="level"
+                              :items="levels"
+                              v-on:change="search()"
+                              dense
+                              outlined>
+                    </v-select>
+                </v-col>
+                <v-col>
+                    <v-text-field label="search"
+                                  alignment="start"
+                                  justify="start"
+                                  v-model="text"></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-btn @click="search()">{{ $t('core.logs.detail.search') }}</v-btn>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <table-wrapper>
+
+                        <template v-slot:item.action="{ item }">
+
+                            <v-btn icon @click.stop="showDetail(item);">
+                                <v-icon>mdi-message-text-outline</v-icon>
+                            </v-btn>
+
+                        </template>
+
+
+
+
+                    </table-wrapper>
+                </v-col>
+            </v-row>
+            <v-dialog v-model="isDetailShown" hide-overlay>
+
+                <v-card>
+                    <v-card-title class="headline">Log Details</v-card-title>
+                    <pre>{{shownItem}}</pre>
+                    </v-card>
+            </v-dialog>
+        </v-container>
+    </v-form>
+
+  
 </v-card>
+
