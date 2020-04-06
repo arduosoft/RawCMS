@@ -14,7 +14,7 @@ const _LogsDetailsView = async (res, rej) => {
     mounted() {
       vuexStore.dispatch(
         "core/updateTopBarTitle",
-        this.$t("core.logs.detail.updateTitle", { name: this.Name })
+        this.$t("logs.detail.updateTitle", { name: this.Name })
       );
     },
     computed: {

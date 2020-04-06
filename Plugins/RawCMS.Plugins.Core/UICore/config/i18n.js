@@ -12,15 +12,24 @@ class I18nHelper {
       return Promise.resolve();
     }
 
-    return axios({
-      url: path,
-      method: "get"
-    }).then(x => {
-      this.filesLoaded.push(path);
-      const messages = x.data;
-      _i18n.mergeLocaleMessage(lang, messages);
-      return;
-    });
+      try {
+          return axios({
+              url: path,
+              method: "get"
+          }).then(x => {
+              this.filesLoaded.push(path);
+              const messages = x.data;
+              console.log(messages);
+              _i18n.mergeLocaleMessage(lang, messages);
+              console.log(_i18n.messages);
+              return;
+          });
+      
+      }
+      catch (error) {
+          console.log(error);
+          return Promise.resolve();
+    }
   }
 
   setLang(lang) {

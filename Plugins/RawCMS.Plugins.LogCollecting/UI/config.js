@@ -45,7 +45,11 @@ const _configCoreModule = {
               await cmp.default(res, rej);
             }
           }
-        ]
+            ]
+            ,
+            meta: {
+                i18nLoad: [ "modules/logs"]
+            }
       }
     ];
   },

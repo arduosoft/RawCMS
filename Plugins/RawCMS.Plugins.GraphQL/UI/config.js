@@ -20,7 +20,10 @@ const _configCoreModule = {
             "/app/modules/graphql/views/graphql-view/graphql-view.js"
           );
           await cmp.default(res, rej);
-        }
+            },
+         meta: {
+                i18nLoad: ["modules/graphql"]
+            }
       }
     ];
   },

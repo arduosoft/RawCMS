@@ -62,6 +62,7 @@ axios({
         if (module.getRoutes) {
           router.addRoutes(module.getRoutes());
         }
+
       }
 
       console.log(vuexStore);

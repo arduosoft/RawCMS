@@ -12,7 +12,7 @@ const _LogsListView = async (res, rej) => {
       LogsList: list
     },
     mounted() {
-      vuexStore.dispatch("core/updateTopBarTitle", this.$t("core.logs.title"));
+      vuexStore.dispatch("core/updateTopBarTitle", this.$t("logs.title"));
     },
     methods: {},
     template: tpl
