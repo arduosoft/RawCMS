@@ -50,9 +50,7 @@ public class LogCollectingIngestor : BackgroundJobInstance
         }
         public override void Execute(JObject data)
         {
-            this.logService.PersistLog();
-
-           
+            this.logService.PersistLog();           
         }
     }
 }
