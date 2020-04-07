@@ -24,7 +24,7 @@ using System.Collections.Generic;
 namespace RawCMS.Plugins.FullText
 {
 
-    [PluginInfo(1)]
+    [PluginInfo(3)]
     public class FullTextPlugin : RawCMS.Library.Core.Extension.Plugin, IConfigurablePlugin<FullTextConfig>
     {
         public override string Name => "FullTextPlugin";

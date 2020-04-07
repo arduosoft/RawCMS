@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.Core.Configuration;
@@ -29,6 +30,9 @@ using IdentityUser = RawCMS.Plugins.Core.Model.IdentityUser;
 
 namespace RawCMS.Plugins.Core
 {
+
+    [PluginInfo(1)]
+    
     public class AuthPlugin : RawCMS.Library.Core.Extension.Plugin, IConfigurablePlugin<AuthConfig>
     {
         public override string Name => "Authorization";

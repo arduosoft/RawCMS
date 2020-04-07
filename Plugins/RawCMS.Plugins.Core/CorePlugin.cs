@@ -59,6 +59,8 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<CRUDService>();
             services.AddSingleton<EntityService>();
             services.AddSingleton<RelationInfoService>();
+
+            services.AddSingleton<BackgroundJobService>();
            
             services.AddHttpContextAccessor();
             services.AddMvcCore()

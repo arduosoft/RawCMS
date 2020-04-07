@@ -34,7 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.9" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.10" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.10" />
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
     <PackageReference Include="IdentityServer4.Contrib.LocalAccessTokenValidation" Version="1.0.1" />
     <PackageReference Include="Jint" Version="2.11.58" />

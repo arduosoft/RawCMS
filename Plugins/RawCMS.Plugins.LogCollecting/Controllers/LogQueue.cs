@@ -39,7 +39,7 @@ namespace RawCMS.Plugins.LogCollecting.Controllers
             List<LogEntity> result = new List<LogEntity>();
             LogEntity newElem;
             int i = 0;
-            while (i < count)
+            while (i < count && queque.Count>0)
             {
                 newElem = queque.Dequeue();
                 if (newElem != null)

@@ -54,7 +54,7 @@ namespace RawCMS.Plugins.LogCollecting.Services
 
             List<LogEntity> batch;
             string indexname = "";
-            while (processedLog < LOG_PROCESSING_SIZE && (batch = this.logQueue.Dequeue(PROCESSING_ENTRY_COUNT)) != null)
+            while (processedLog < LOG_PROCESSING_SIZE && (batch = this.logQueue.Dequeue(PROCESSING_ENTRY_COUNT)).Count>0)
             {
                 foreach (var log in batch)
                 {

@@ -92,6 +92,7 @@ namespace RawCMS.Library.Core.Helpers
             {
                 _logger.LogDebug("loading from" + assembly.FullName);
 
+                
                 Type[] types = assembly.GetTypes();
 
                 foreach (Type type in types)
@@ -114,6 +115,34 @@ namespace RawCMS.Library.Core.Helpers
         {
             List<Type> types = GetImplementors<T>();
             return GetInstancesFromTypes<T>(types);
+        }
+
+        public  Type GetTypeByName(string typeName, bool partialMatch)
+        {
+
+            foreach (Assembly assembly in this.AssemblyScope)
+            {
+                // _logger.LogDebug("loading from" + assembly.FullName);
+                Type[] types = assembly.GetTypes();
+                foreach (Type type in types)
+                {
+                    try
+                    {
+                       if(typeName.Contains(type.FullName)&& partialMatch)
+                            return type;
+
+                        if (typeName==type.FullName)
+                            return type;
+
+                    }
+                    catch (Exception err)
+                    {
+                        _logger.LogError(err, "- (unable to lookup instance) - " + type.Name + " | " + type.GetType().FullName);
+                    }
+                }
+            }
+            
+            return Assembly.GetExecutingAssembly().GetType(typeName);
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Elasticsearch.Net;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,14 +12,16 @@ using Nest.JsonNetSerializer;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Core.Interfaces;
+using RawCMS.Library.Service;
 using RawCMS.Library.UI;
 using RawCMS.Plugins.FullText.Core;
 using RawCMS.Plugins.LogCollecting.Config;
+using RawCMS.Plugins.LogCollecting.Jobs;
 using RawCMS.Plugins.LogCollecting.Services;
 
 namespace RawCMS.Plugins.LogCollecting
 {
-    [PluginInfo(2)]
+    [PluginInfo(4)]
     public class LogsPlugin : Library.Core.Extension.Plugin, IConfigurablePlugin<LogsPluginConfig>
     {
         public override string Name => "LogsCollecting";
@@ -32,7 +35,7 @@ namespace RawCMS.Plugins.LogCollecting
 
         public override void Configure(IApplicationBuilder app)
         {
-            
+            RecurringJob.AddOrUpdate("prova", () => Console.WriteLine("PROVA"), Cron.Minutely);
         }
 
         public override void ConfigureMvc(IMvcBuilder builder)
@@ -42,41 +45,25 @@ namespace RawCMS.Plugins.LogCollecting
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            var sp = services.BuildServiceProvider();
-            var fs = sp.GetService<FullText.Core.ElasticFullTextService>();
-            var fs2 = sp.GetService<FullText.Core.FullTextService>();
+            //var sp = services.BuildServiceProvider();
+            //var fs = sp.GetService<FullText.Core.ElasticFullTextService>();
+            //var fs2 = sp.GetService<FullText.Core.FullTextService>();
             services.AddSingleton<LogService, LogService>();
 
-
-           
-               // RegisterElastiServices(services);
-
-           
-        }
-
-        private void RegisterElastiServices(IServiceCollection services)
-        {
-            var pool = new SingleNodeConnectionPool(new Uri(""));
-            var connection = new HttpConnection();
-            var connectionSettings =
-            new ConnectionSettings(pool, connection, (serializer, settings) =>
+            services.AddSingleton<LogCollectingIngestor, LogCollectingIngestor>((x)=> 
             {
-                return JsonNetSerializer.Default(serializer, settings);
-            })
-            // new ConnectionSettings(pool, connection)
-            .DisableAutomaticProxyDetection()
-            .EnableHttpCompression()
-            .DisableDirectStreaming()
-            .PrettyJson()
-            .RequestTimeout(TimeSpan.FromMinutes(2));
+                var logService = x.GetService<LogService>();
+                var crud = x.GetService<CRUDService>();
+                return new LogCollectingIngestor(logService, crud);
+            });
 
-            services.AddSingleton<ElasticClient>(new ElasticClient(connectionSettings));
-            services.AddSingleton<FullTextService, ElasticFullTextService>();
-            services.AddSingleton<FullTextUtilityService, FullTextUtilityService>();
+
+            
         }
 
 
-public override void Setup(IConfigurationRoot configuration)
+
+        public override void Setup(IConfigurationRoot configuration)
         {
             
         }

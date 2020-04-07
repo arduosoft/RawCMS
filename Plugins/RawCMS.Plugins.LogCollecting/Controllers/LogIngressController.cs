@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RawCMS.Library.BackgroundJobs;
 using RawCMS.Library.Core.Attributes;
 using RawCMS.Plugins.Core.Model;
 using RawCMS.Plugins.FullText.Core;
@@ -14,18 +16,22 @@ namespace RawCMS.Plugins.LogCollecting.Controllers
     public class LogIngressController : Controller
     {
         protected LogService service;
-        public LogIngressController(LogService service)
+        protected BackgroundJobService jobs;
+        public LogIngressController(LogService service, BackgroundJobService jobs)
         {
             this.service = service;
+            this.jobs = jobs;
         }
         [HttpPost()]
         [Route("{applicationId}")]
         public RestMessage<bool> Log([FromRoute]string applicationId, [FromBody] List<LogEntity> items)
         {
+
             var result = new RestMessage<bool>(true);
             try
             {
                 this.service.EnqueueLog(applicationId, items);
+                this.jobs.RunOnce("LogCollectingIngestor", new JObject());
             }
             catch (Exception err)
             {

@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.BackgroundJobs;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Core.Extension;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.DataModel;
@@ -15,6 +16,7 @@ using RawCMS.Plugins.Core.Configuration;
 
 namespace RawCMS.Plugins.Core
 {
+    [PluginInfo(2)]
     public class BackgoundJobPlugin : Plugin, IConfigurablePlugin<BackgroundJobSettings>
     {
         public override string Name => "BackgoundJobPlugin";
@@ -46,10 +48,7 @@ namespace RawCMS.Plugins.Core
             
             this.services = services;
             var sp=services.BuildServiceProvider();
-            var setting = sp.GetService<MongoSettings>();
-            var loggerFactory = sp.GetService<ILoggerFactory>();
-            jobServices = new BackgroundJobService(setting, loggerFactory.CreateLogger<BackgroundJobService>(), this.Engine);
-            this.services.AddSingleton<BackgroundJobService>(jobServices);
+            jobServices = sp.GetService<BackgroundJobService>();
             this.jobServices.Configure(this.services);
         }
 
