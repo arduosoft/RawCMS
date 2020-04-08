@@ -8,12 +8,9 @@
 //******************************************************************************
 using System;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Serialization;
 using RawCMS.Library.BackgroundJobs;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
@@ -61,11 +58,11 @@ namespace RawCMS.Plugins.Core
             services.AddSingleton<RelationInfoService>();
 
             services.AddSingleton<BackgroundJobService>();
-           
+
             services.AddHttpContextAccessor();
             services.AddMvcCore()
                 .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase);// Note - this is on the IMvcBuilder, not the service collection
-    //.AddJsonFormatters(options => options.ContractResolver = new CamelCasePropertyNamesContractResolver());
+                                                                                                                                             //.AddJsonFormatters(options => options.ContractResolver = new CamelCasePropertyNamesContractResolver());
         }
 
         public override void Configure(IApplicationBuilder app)
@@ -77,19 +74,16 @@ namespace RawCMS.Plugins.Core
             crudService.EnsureCollection("_schema");
 
             EnsureDefaultApplication(crudService);
-
-
-          
         }
 
         private void EnsureDefaultApplication(CRUDService crudService)
         {
-           crudService.EnsureCollection("application");
+            crudService.EnsureCollection("application");
             var app = crudService.Query("application", new DataQuery()
             {
                 RawQuery = "{'Name':'default'}"
             });
-            if(app.Items.Count==0)
+            if (app.Items.Count == 0)
             {
                 var defaultApp = new Application()
                 {
@@ -112,6 +106,4 @@ namespace RawCMS.Plugins.Core
         {
         }
     }
-
-    
 }

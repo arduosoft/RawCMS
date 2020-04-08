@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json.Linq;
-using RawCMS.Library.Core;
-using System.Linq;
-using RawCMS.Library.Service;
-using RawCMS.Plugins.Core.Model;
-using RawCMS.Plugins.Core.Configuration;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using RawCMS.Library.Core;
+using RawCMS.Library.Service;
+using RawCMS.Plugins.Core.Configuration;
+using RawCMS.Plugins.Core.Model;
 
 namespace RawCMS.Plugins.Core.Controllers
 {
     [Route("api/[controller]")]
-    public class UIMetadataController: Controller
+    public class UIMetadataController : Controller
     {
         private readonly AppEngine appEngine;
         private readonly UIService uiService;
         private readonly AuthConfig authConfig;
+
         public UIMetadataController(AppEngine appEngine, UIService uiService, AuthConfig authConfig)
         {
             this.appEngine = appEngine;
@@ -46,6 +43,5 @@ namespace RawCMS.Plugins.Core.Controllers
             result.metadata = uiService.Modules;
             return result;
         }
-
     }
 }

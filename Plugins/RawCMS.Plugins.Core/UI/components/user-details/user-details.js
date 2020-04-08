@@ -2,36 +2,36 @@ import { RawCmsDetailEditDef } from "/app/common/shared/components/detail-edit/d
 import { userService } from "/app/modules/core/services/users.service.js";
 
 const _UserDetailsWrapperDef = async () => {
-  const rawCmsDetailEditDef = await RawCmsDetailEditDef();
+    const rawCmsDetailEditDef = await RawCmsDetailEditDef();
 
-  return {
-    data: function() {
-      return {
-        apiService: userService
-      };
-    },
-    extends: rawCmsDetailEditDef
-  };
+    return {
+        data: function () {
+            return {
+                apiService: userService
+            };
+        },
+        extends: rawCmsDetailEditDef
+    };
 };
 
 const _UserDetailsDef = async () => {
-  const detailWrapperDef = await _UserDetailsWrapperDef();
-  const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/core/components/user-details/user-details.tpl.html"
-  );
+    const detailWrapperDef = await _UserDetailsWrapperDef();
+    const tpl = await RawCMS.loadComponentTpl(
+        "/app/modules/core/components/user-details/user-details.tpl.html"
+    );
 
-  return {
-    components: {
-      DetailWrapper: detailWrapperDef
-    },
-    props: detailWrapperDef.extends.props,
-    template: tpl
-  };
+    return {
+        components: {
+            DetailWrapper: detailWrapperDef
+        },
+        props: detailWrapperDef.extends.props,
+        template: tpl
+    };
 };
 
 const _UserDetails = async (res, rej) => {
-  const cmpDef = _UserDetailsDef();
-  res(cmpDef);
+    const cmpDef = _UserDetailsDef();
+    res(cmpDef);
 };
 
 export const UserDetailsDef = _UserDetailsDef;

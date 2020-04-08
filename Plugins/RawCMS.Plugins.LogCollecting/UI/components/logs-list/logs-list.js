@@ -2,49 +2,49 @@ import { RawCmsListDef } from "/app/common/shared/components/list/list.js";
 import { applicationsService } from "/app/modules/core/services/application.service.js";
 
 const _LogsListWrapperDef = async () => {
-  const rawCmsListDef = await RawCmsListDef();
+    const rawCmsListDef = await RawCmsListDef();
 
-  return {
-    data: function() {
-      return {
-          apiService: applicationsService
-      };
-    },
-    extends: rawCmsListDef,
-    methods: {
-      goTo: function(item) {
-        this.$router.push({
-          name: this.detailRouteName,
-          params: { name: item.Name }
-        });
-      }
-    },
-    props: {
-      detailRouteName: {
-        typ: String,
-        default: "logs-search"
-      }
-    }
-  };
+    return {
+        data: function () {
+            return {
+                apiService: applicationsService
+            };
+        },
+        extends: rawCmsListDef,
+        methods: {
+            goTo: function (item) {
+                this.$router.push({
+                    name: this.detailRouteName,
+                    params: { name: item.Name }
+                });
+            }
+        },
+        props: {
+            detailRouteName: {
+                typ: String,
+                default: "logs-search"
+            }
+        }
+    };
 };
 
 const _LogsListDef = async () => {
-  const listWrapperDef = await _LogsListWrapperDef();
-  const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/logs/components/logs-list/logs-list.tpl.html"
-  );
+    const listWrapperDef = await _LogsListWrapperDef();
+    const tpl = await RawCMS.loadComponentTpl(
+        "/app/modules/logs/components/logs-list/logs-list.tpl.html"
+    );
 
-  return {
-    components: {
-      ListWrapper: listWrapperDef
-    },
-    template: tpl
-  };
+    return {
+        components: {
+            ListWrapper: listWrapperDef
+        },
+        template: tpl
+    };
 };
 
 const _LogsList = async (res, rej) => {
-  const cmpDef = _LogsListDef();
-  res(cmpDef);
+    const cmpDef = _LogsListDef();
+    res(cmpDef);
 };
 
 export const LogsListDef = _LogsListDef;

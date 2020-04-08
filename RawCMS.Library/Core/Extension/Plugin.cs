@@ -32,9 +32,9 @@ namespace RawCMS.Library.Core.Extension
         private readonly AppEngine engine;
         private readonly ILogger logger;
 
-        public  string PluginPath { get; internal set; }
+        public string PluginPath { get; internal set; }
 
-        public virtual string Slug { get { return this.Name.Replace("RawCMS.Plugins.","").GenerateSlug(); } }
+        public virtual string Slug { get { return this.Name.Replace("RawCMS.Plugins.", "").GenerateSlug(); } }
 
         public string GetUIFolder()
         {
@@ -88,7 +88,6 @@ namespace RawCMS.Library.Core.Extension
         /// </summary>
         /// <param name="builder"></param>
         public abstract void ConfigureMvc(IMvcBuilder builder);
-
 
         public virtual UIMetadata GetUIMetadata()
         {

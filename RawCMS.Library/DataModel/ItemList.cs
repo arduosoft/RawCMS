@@ -27,7 +27,6 @@ namespace RawCMS.Library.DataModel
         }
     }
 
-
     public class ItemList<T>
     {
         public IList<T> Items { get; set; } = new List<T>();

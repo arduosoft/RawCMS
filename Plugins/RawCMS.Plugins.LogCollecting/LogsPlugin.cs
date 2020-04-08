@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Elasticsearch.Net;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Nest;
-using Nest.JsonNetSerializer;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Service;
 using RawCMS.Library.UI;
-using RawCMS.Plugins.FullText.Core;
 using RawCMS.Plugins.LogCollecting.Config;
 using RawCMS.Plugins.LogCollecting.Jobs;
 using RawCMS.Plugins.LogCollecting.Services;
@@ -40,7 +34,6 @@ namespace RawCMS.Plugins.LogCollecting
 
         public override void ConfigureMvc(IMvcBuilder builder)
         {
-            
         }
 
         public override void ConfigureServices(IServiceCollection services)
@@ -50,27 +43,21 @@ namespace RawCMS.Plugins.LogCollecting
             //var fs2 = sp.GetService<FullText.Core.FullTextService>();
             services.AddSingleton<LogService, LogService>();
 
-            services.AddSingleton<LogCollectingIngestor, LogCollectingIngestor>((x)=> 
+            services.AddSingleton<LogCollectingIngestor, LogCollectingIngestor>((x) =>
             {
                 var logService = x.GetService<LogService>();
                 var crud = x.GetService<CRUDService>();
                 return new LogCollectingIngestor(logService, crud);
             });
-
-
-            
         }
-
-
 
         public override void Setup(IConfigurationRoot configuration)
         {
-            
         }
+
         public override UIMetadata GetUIMetadata()
         {
             return new UIMetadata();
         }
-
     }
 }

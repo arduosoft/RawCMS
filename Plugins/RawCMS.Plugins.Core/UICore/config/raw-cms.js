@@ -1,17 +1,17 @@
 class RawCms {
-  plugins = {};
-  utils = {};
+    plugins = {};
+    utils = {};
 
-  vuexStore;
-  env = {};
+    vuexStore;
+    env = {};
 
-  eventBus = new Vue();
+    eventBus = new Vue();
 
-  loadComponentTpl = path => {
-    return axios.get(path).then(x => {
-      return x.data;
-    });
-  };
+    loadComponentTpl = path => {
+        return axios.get(path).then(x => {
+            return x.data;
+        });
+    };
 }
 
 const _rawCms = new RawCms();

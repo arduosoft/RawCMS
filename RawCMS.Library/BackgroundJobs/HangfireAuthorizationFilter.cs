@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Hangfire.Dashboard;
+﻿using Hangfire.Dashboard;
 
 namespace RawCMS.Library.BackgroundJobs
 {
@@ -11,9 +8,6 @@ namespace RawCMS.Library.BackgroundJobs
         {
             var httpContext = context.GetHttpContext();
             return true;// httpContext.User.Identity.IsAuthenticated; //TODO: add authentication role
-
         }
-
-
     }
 }

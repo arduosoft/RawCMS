@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RawCMS.Library.JavascriptClient
+﻿namespace RawCMS.Library.JavascriptClient
 {
     public enum RestStatus
     {

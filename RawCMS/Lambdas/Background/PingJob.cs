@@ -17,6 +17,7 @@ namespace RawCMS.Lambdas.Background
         public override string Description => "Ping Every minute";
 
         protected ILogger logger;
+
         public PingJob(ILogger logger)
         {
             this.logger = logger;

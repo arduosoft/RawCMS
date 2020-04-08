@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,7 +7,6 @@ using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
 using RawCMS.Library.Core.Extension;
 using RawCMS.Library.Core.Interfaces;
-using RawCMS.Library.DataModel;
 using RawCMS.Library.UI;
 using RawCMS.Plugins.Core.Configuration;
 
@@ -27,6 +23,7 @@ namespace RawCMS.Plugins.Core
         public override string Slug => "backgroundjobs";
 
         protected BackgroundJobService jobServices;
+
         public BackgoundJobPlugin(AppEngine appEngine, ILogger logger) : base(appEngine, logger)
         {
             Logger.LogInformation("BackgoundJobPlugin plugin loaded");
@@ -40,21 +37,18 @@ namespace RawCMS.Plugins.Core
 
         public override void ConfigureMvc(IMvcBuilder builder)
         {
-            
         }
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            
             this.services = services;
-            var sp=services.BuildServiceProvider();
+            var sp = services.BuildServiceProvider();
             jobServices = sp.GetService<BackgroundJobService>();
             this.jobServices.Configure(this.services);
         }
 
         public override void Setup(IConfigurationRoot configuration)
         {
-            
         }
 
         public override UIMetadata GetUIMetadata()

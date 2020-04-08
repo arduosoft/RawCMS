@@ -27,7 +27,6 @@ class FullTextService extends BaseCrudService {
         );
         return res.data.data;
     }
-
 }
 
 export const fullTextService = new FullTextService();

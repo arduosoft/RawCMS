@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 
 namespace RawCMS.Plugins.Core.Middlewares
 {
-    public class RawCmsPhysicalFileProvider: IFileProvider, IDisposable
+    public class RawCmsPhysicalFileProvider : IFileProvider, IDisposable
     {
-        Dictionary<string, PhysicalFileProvider> providerMap = new Dictionary<string, PhysicalFileProvider>();
+        private Dictionary<string, PhysicalFileProvider> providerMap = new Dictionary<string, PhysicalFileProvider>();
 
         public RawCmsPhysicalFileProvider()
         {
@@ -35,7 +34,6 @@ namespace RawCMS.Plugins.Core.Middlewares
 
         public void Dispose()
         {
-            
         }
     }
 }

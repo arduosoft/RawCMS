@@ -27,55 +27,54 @@ RawCMS.utils.epicSpinners = epicSpinners;
 
 // Add env and start app
 axios({
-  url: "/api/UIMetadata",
-  method: "get"
+    url: "/api/UIMetadata",
+    method: "get"
 })
-  .then(e => {
-    RawCMS.env = e.data;
-  })
-  .then(_ => {
-    console.log(RawCMS.env);
+    .then(e => {
+        RawCMS.env = e.data;
+    })
+    .then(_ => {
+        console.log(RawCMS.env);
 
-    const moduleConfigPromises = [
-      import("/app/common/formly-material/config.js").then(x => x.default)
-    ];
+        const moduleConfigPromises = [
+            import("/app/common/formly-material/config.js").then(x => x.default)
+        ];
 
-    RawCMS.env.metadata.forEach(module => {
-      console.log(module);
-      moduleConfigPromises.push(
-        import(module.moduleUrl + "config.js").then(x => x.default)
-      );
+        RawCMS.env.metadata.forEach(module => {
+            console.log(module);
+            moduleConfigPromises.push(
+                import(module.moduleUrl + "config.js").then(x => x.default)
+            );
+        });
+
+        const appCmpPromise = import("/app/app/app.js").then(x => x.App);
+
+        Promise.all([appCmpPromise, ...moduleConfigPromises]).then(x => {
+            const appCmp = x[0];
+
+            //App is not a module!
+            for (var i = 1; i < x.length; i++) {
+                let module = x[i];
+                vuexStore.registerModule(module.name, module);
+                if (module.init) {
+                    module.init();
+                }
+                if (module.getRoutes) {
+                    router.addRoutes(module.getRoutes());
+                }
+            }
+
+            console.log(vuexStore);
+
+            const vue = new Vue({
+                router: router,
+                vuetify: vuetify,
+                i18n: i18n,
+                vuelidate: vuelidate,
+                render: h => h(appCmp)
+            });
+
+            RawCMS.vue = vue;
+            vue.$mount("#app");
+        });
     });
-
-    const appCmpPromise = import("/app/app/app.js").then(x => x.App);
-
-    Promise.all([appCmpPromise, ...moduleConfigPromises]).then(x => {
-      const appCmp = x[0];
-
-      //App is not a module!
-      for (var i = 1; i < x.length; i++) {
-        let module = x[i];
-        vuexStore.registerModule(module.name, module);
-        if (module.init) {
-          module.init();
-        }
-        if (module.getRoutes) {
-          router.addRoutes(module.getRoutes());
-        }
-
-      }
-
-      console.log(vuexStore);
-
-      const vue = new Vue({
-        router: router,
-        vuetify: vuetify,
-        i18n: i18n,
-        vuelidate: vuelidate,
-        render: h => h(appCmp)
-      });
-
-      RawCMS.vue = vue;
-      vue.$mount("#app");
-    });
-  });

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RawCMS.Plugins.LogCollecting.Config
+﻿namespace RawCMS.Plugins.LogCollecting.Config
 {
     public class LogsPluginConfig
     {

@@ -4,36 +4,36 @@ import { rawCmsDetailEditEvents } from "/app/common/shared/components/detail-edi
 import { ConfigurationDetailsDef } from "/app/modules/core/components/configuration-details/configuration-details.js";
 
 const _ConfigurationDetailsView = async (res, rej) => {
-  const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/core/views/configuration-details-view/configuration-details-view.tpl.html"
-  );
-  const details = await ConfigurationDetailsDef();
+    const tpl = await RawCMS.loadComponentTpl(
+        "/app/modules/core/views/configuration-details-view/configuration-details-view.tpl.html"
+    );
+    const details = await ConfigurationDetailsDef();
 
-  res({
-    components: {
-      ConfigurationDetails: details
-    },
-    created: function() {
-      RawCMS.eventBus.$on(rawCmsDetailEditEvents.loaded, ev => {
-        this.updateTitle({
-          isNew: ev.isNew,
-          name: optionalChain(() => ev.value.plugin_name, {
-            fallbackValue: "<NONE>"
-          })
-        });
-      });
-    },
-    methods: {
-      updateTitle: function({ isNew, name }) {
-        let title = isNew
-          ? this.$t("core.configuration.detail.newTitle")
-          : this.$t("core.configuration.detail.updateTitle", { name: name });
+    res({
+        components: {
+            ConfigurationDetails: details
+        },
+        created: function () {
+            RawCMS.eventBus.$on(rawCmsDetailEditEvents.loaded, ev => {
+                this.updateTitle({
+                    isNew: ev.isNew,
+                    name: optionalChain(() => ev.value.plugin_name, {
+                        fallbackValue: "<NONE>"
+                    })
+                });
+            });
+        },
+        methods: {
+            updateTitle: function ({ isNew, name }) {
+                let title = isNew
+                    ? this.$t("core.configuration.detail.newTitle")
+                    : this.$t("core.configuration.detail.updateTitle", { name: name });
 
-        vuexStore.dispatch("core/updateTopBarTitle", title);
-      }
-    },
-    template: tpl
-  });
+                vuexStore.dispatch("core/updateTopBarTitle", title);
+            }
+        },
+        template: tpl
+    });
 };
 
 export const ConfigurationDetailsView = _ConfigurationDetailsView;
