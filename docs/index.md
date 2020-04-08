@@ -29,6 +29,7 @@ You can deploy it using many options. Rawcms is dockerized from the development 
 - [GraphQL](GraphQL)
 - [Full Text](FullText)
 - [Gateway](Gateway-Plugin)
+- [LogCollecting](LogCollecting)
 
 ### Frontend User
 
@@ -42,3 +43,4 @@ You can deploy it using many options. Rawcms is dockerized from the development 
 - [WebApp developer info](WebApp-Dev-Home)
 - [Api Test](APITest)
 - [Setup for development](Setup-Dev)
+- [Background Jobs](BackgroundJobs)
