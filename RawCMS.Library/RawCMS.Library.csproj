@@ -14,6 +14,8 @@
     
     <PackageReference Include="Hangfire.MemoryStorage.Core" Version="1.4.0" />
     
+    <PackageReference Include="Hangfire.Mongo" Version="0.6.7" />
+    
     
     
     <PackageReference Include="Jint" Version="2.11.58" />

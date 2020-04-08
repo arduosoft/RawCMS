@@ -18,67 +18,10 @@ using System.Reflection;
 using System.Linq.Expressions;
 using Hangfire.AspNetCore;
 using RawCMS.Library.Core.Helpers;
+using Hangfire.Mongo;
 
 namespace RawCMS.Library.BackgroundJobs
-{
-
-    
-
-    public class DependencyJobActivator : JobActivator
-    {
-        private readonly IServiceProvider _serviceProvider;
-
-        public DependencyJobActivator(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
-
-        public override object ActivateJob(Type jobType)
-        {
-            //return _serviceProvider.BuildServiceProvider().GetService(jobType);
-            if (jobType.FullName.Contains("PingJob2"))
-            {
-                Console.WriteLine("LOG2");
-            }
-            
-            var implementation = _serviceProvider.CreateScope().ServiceProvider.GetRequiredService(jobType);
-            return implementation;
-        }
-
-        public override JobActivatorScope BeginScope(PerformContext context)
-        {
-            if (context.BackgroundJob.Job.Type.FullName.Contains("PingJob2"))
-            {
-                Console.WriteLine("LOG2");
-            }
-
-            if (context.Job.Type.FullName.Contains("PingJob2"))
-            {
-                Console.WriteLine("LOG2");
-            }
-            var job = context.BackgroundJob.Job;
-            
-            var x= base.BeginScope(context);
-            return x;
-        }
-
-        public override JobActivatorScope BeginScope(JobActivatorContext context)
-        {
-            if (context.BackgroundJob.Job.Type.FullName.Contains("PingJob2"))
-            {
-                Console.WriteLine("LOG2");
-            }           
-
-            var x=base.BeginScope(context);
-            return x;
-        }
-
-        public override JobActivatorScope BeginScope()
-        {
-            return base.BeginScope();
-        }
-
-    }
+{   
 
     public class BackgroundJobService
     {
@@ -96,32 +39,27 @@ namespace RawCMS.Library.BackgroundJobs
             this.settings = settings;
             this.logger = logger;
             this.engine = engine;
-           // this.reflectionManager = reflectionManager;
+           this.reflectionManager = this.engine.ReflectionManager;
         }
         public void Configure(IServiceCollection services)
         {
 
 
-            //var migrationOptions = new MongoMigrationOptions
-            //{
-            //    Strategy = MongoMigrationStrategy.Migrate,
-            //    BackupStrategy = MongoBackupStrategy.Collections,                
-            //};
-            //var storageOptions = new MongoStorageOptions
-            //{
-            //    //TODO: read from config                
-            //    MigrationOptions = migrationOptions,
-            //};
+            var migrationOptions = new MongoMigrationOptions
+            {
+                Strategy = MongoMigrationStrategy.Migrate,
+                BackupStrategy = MongoBackupStrategy.Collections,
+            };
+            var storageOptions = new MongoStorageOptions
+            {
+                //TODO: read from config                
+                MigrationOptions = migrationOptions,
+            };
 
-
-            //// Add Hangfire services.
-            //services.AddHangfire(configuration => configuration.UseMongoStorage(settings.ConnectionString, storageOptions));
-
-            services.AddSingleton<DependencyJobActivator>();
-            var dep = services.BuildServiceProvider().GetService<DependencyJobActivator>();
-
+            //TODO: make it parametric
             services.AddHangfire(c => {
-                c.UseMemoryStorage();
+                //c.UseMemoryStorage();
+                c.UseMongoStorage(settings.ConnectionString, storageOptions);
                 c.UseColouredConsoleLogProvider();
                 c.UseTypeResolver((typeName) =>
                 {
@@ -130,19 +68,10 @@ namespace RawCMS.Library.BackgroundJobs
                     {
                         return type.GetType();
                     }
-                    //return this.reflectionManager.GetTypeByName(typeName, true);
-                    var t= Assembly.GetExecutingAssembly().GetTypes().FirstOrDefault(x => typeName.Contains(x.GetType().FullName));
-                    return typeof(JObject);
+                    return this.reflectionManager.GetTypeByName(new List<Assembly>() { Assembly.GetEntryAssembly(), this.GetType().Assembly},typeName, true,true);                   
                 });
             });
-
-            //// Add the processing server as IHostedService
-            //services.AddHangfireServer(x =>
-            //{
-            //    x.Activator = dep;
-
-
-            //});
+          
 
             this.services = services;
         }
@@ -159,10 +88,7 @@ namespace RawCMS.Library.BackgroundJobs
                 Authorization = new[] { new HangfireAuthorizationFilter() { } }
             });
 
-            app.UseHangfireServer(new BackgroundJobServerOptions()
-            {
-                Activator = new DependencyJobActivator(app.ApplicationServices)
-            });
+            app.UseHangfireServer();
          
         }
 
@@ -191,46 +117,10 @@ namespace RawCMS.Library.BackgroundJobs
             var client = new BackgroundJobClient();
             foreach (var job in jobs)
             {
-                job.Execute(null);
-                var info = new JObject();
-               
-                 RecurringJob.AddOrUpdate(job.Name, () => job.Execute(null), job.CronExpression);
-             
+                var info = new JObject();               
+                 RecurringJob.AddOrUpdate(job.Name, () => job.Execute(null), job.CronExpression);             
             }
         }
-
-        public async Task StartBouncePolling(BackgroundJobInstance job)
-        {
-        }
-        public void InvokeGeneric(Type scenarioType,string jobname,string cron)
-        {
-            MethodInfo addOrUpdate = typeof(RecurringJob).GetMethods().Where(x => x.Name == "AddOrUpdate" && x.IsGenericMethod && x.IsGenericMethodDefinition).Select(m => new
-            {
-                Method = m,
-                Params = m.GetParameters(),
-                Args = m.GetGenericArguments()
-            })
-                 .Where(x => x.Params.Length == 5
-                             && x.Params[0].ParameterType == typeof(string)
-                             && x.Params[2].ParameterType == typeof(string)
-                             && x.Params[3].ParameterType == typeof(TimeZoneInfo)
-                             && x.Params[4].ParameterType == typeof(string)
-                             )
-                 .Select(x => x.Method).FirstOrDefault();
-
-            MethodInfo generic = addOrUpdate.MakeGenericMethod(scenarioType);
-            ParameterExpression param = Expression.Parameter(scenarioType, "x");
-            ConstantExpression someValue = Expression.Constant(jobname, typeof(string));
-            MethodCallExpression methodCall = Expression.Call(param, scenarioType.GetMethod("Execute", new Type[] { typeof(string) }), someValue);
-            LambdaExpression expre = Expression.Lambda(methodCall, new ParameterExpression[] { param });
-            generic.Invoke(null, new object[] { jobname, expre, cron, TimeZoneInfo.Utc, null });
-        }
-
-        public void GenericExecute(BackgroundJobInstance job)
-        {
-            job.Execute(null);
-            
-        }
-
+        
     }
 }

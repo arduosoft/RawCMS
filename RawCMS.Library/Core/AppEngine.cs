@@ -58,6 +58,8 @@ namespace RawCMS.Library.Core
 
         public Plugin CorePlugin { get { return Plugins.Single(x => x.Name == "Core"); } }
 
+        public ReflectionManager ReflectionManager => reflectionManager;
+
         public AppEngine(ILogger _logger, Func<string, string> pluginPathLocator, ReflectionManager reflectionManager, IConfigurationRoot configuration)
         {
             this._logger = _logger;
@@ -68,12 +70,12 @@ namespace RawCMS.Library.Core
 
         public List<FieldTypeValidator> GetFieldTypeValidators()
         {
-            return this.reflectionManager.GetAssignablesInstances<FieldTypeValidator>();
+            return this.ReflectionManager.GetAssignablesInstances<FieldTypeValidator>();
         }
 
         public List<FieldType> GetFieldTypes()
         {
-            return this.reflectionManager.GetAssignablesInstances<FieldType>();
+            return this.ReflectionManager.GetAssignablesInstances<FieldType>();
         }
 
         public void Init()
@@ -87,7 +89,7 @@ namespace RawCMS.Library.Core
             _logger.LogInformation("LoadPluginAssemblies");
             loaders.Clear();
 
-            List<Assembly> assembly = reflectionManager.AssemblyScope;
+            List<Assembly> assembly = ReflectionManager.AssemblyScope;
 
             
 
@@ -199,7 +201,7 @@ namespace RawCMS.Library.Core
                 //}
 
 
-                reflectionManager.AppendAssemblyToScope(pluginAssembly);
+                ReflectionManager.AppendAssemblyToScope(pluginAssembly);
 
                 if (info.MainDLL.Contains("FullText"))
                 {
@@ -386,14 +388,14 @@ namespace RawCMS.Library.Core
         private List<Type> GetPluginsTypes()
         {
             _logger.LogInformation($" Getting all plugin types");
-            return this.reflectionManager.GetImplementors<Plugin>();
+            return this.ReflectionManager.GetImplementors<Plugin>();
         }
 
         private void LoadLambdas(IApplicationBuilder applicationBuilder)
         {
             _logger.LogDebug("Discover Lambdas in Bundle");
 
-            List<Type> lambdas = this.reflectionManager.GetImplementors<Lambda>();
+            List<Type> lambdas = this.ReflectionManager.GetImplementors<Lambda>();
 
             foreach (var lambda in lambdas)
             {
@@ -428,7 +430,7 @@ namespace RawCMS.Library.Core
         {
             _logger.LogDebug("Discover Middleware in Bundle");
 
-            var middlewears = this.reflectionManager.GetImplementors(typeof(IConfigurableMiddleware<>));
+            var middlewears = this.ReflectionManager.GetImplementors(typeof(IConfigurableMiddleware<>));
             middlewears = middlewears.OrderBy(x => (Attribute.GetCustomAttribute(x, typeof(MiddlewarePriorityAttribute)) as MiddlewarePriorityAttribute)?.Order ?? 1000).ToList();
             foreach (var mid in middlewears)
             {
@@ -505,8 +507,8 @@ namespace RawCMS.Library.Core
         {
             _logger.LogDebug("Discover Lambdas in Bundle");
 
-            List<Type> lambdas = this.reflectionManager.GetImplementors<Lambda>();
-            List<Type> _rest = this.reflectionManager.GetImplementors<RestLambda>();
+            List<Type> lambdas = this.ReflectionManager.GetImplementors<Lambda>();
+            List<Type> _rest = this.ReflectionManager.GetImplementors<RestLambda>();
 
             foreach (Type type in lambdas)
             {
