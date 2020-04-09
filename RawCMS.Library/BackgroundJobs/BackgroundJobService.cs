@@ -89,7 +89,7 @@ namespace RawCMS.Library.BackgroundJobs
                .Where(x => jobName.Equals(x.Name, StringComparison.InvariantCultureIgnoreCase))
                .FirstOrDefault();
             //TODO: add a background info class, fill with deatails about job and calling reasong, then convert to json and pass as argument
-            BackgroundJob.Enqueue<BackgroundJobInstance>(x => x.Execute(data));
+            BackgroundJob.Enqueue(() => job.Execute(data));
         }
 
         public void Init()
