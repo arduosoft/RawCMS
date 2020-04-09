@@ -13,7 +13,7 @@ using RawCMS.Plugins.Core.Configuration;
 namespace RawCMS.Plugins.Core
 {
     [PluginInfo(2)]
-    public class BackgoundJobPlugin : Plugin, IConfigurablePlugin<BackgroundJobSettings>
+    public class BackgroundJobPlugin : Plugin, IConfigurablePlugin<BackgroundJobSettings>
     {
         public override string Name => "BackgoundJobPlugin";
 
@@ -24,7 +24,7 @@ namespace RawCMS.Plugins.Core
 
         protected BackgroundJobService jobServices;
 
-        public BackgoundJobPlugin(AppEngine appEngine, ILogger logger) : base(appEngine, logger)
+        public BackgroundJobPlugin(AppEngine appEngine, ILogger logger) : base(appEngine, logger)
         {
             Logger.LogInformation("BackgoundJobPlugin plugin loaded");
         }
