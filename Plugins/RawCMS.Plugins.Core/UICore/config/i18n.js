@@ -19,9 +19,7 @@ class I18nHelper {
             }).then(x => {
                 this.filesLoaded.push(path);
                 const messages = x.data;
-                console.log(messages);
-                _i18n.mergeLocaleMessage(lang, messages);
-                console.log(_i18n.messages);
+                _i18n.mergeLocaleMessage(lang, messages);                
                 return;
             });
         }
