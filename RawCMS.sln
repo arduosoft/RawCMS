@@ -24,6 +24,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6F40-4D56-ACAD-03F3C8E08137}"
 	ProjectSection(SolutionItems) = preProject
 		docs\Authentication.md = docs\Authentication.md
+		docs\BackgroundJobs.md = docs\BackgroundJobs.md
 		docs\Configurable-Plugins.md = docs\Configurable-Plugins.md
 		docs\Custom-Field-Validation.md = docs\Custom-Field-Validation.md
 		docs\Custom-Validation.md = docs\Custom-Validation.md
@@ -36,8 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 		docs\FullText.md = docs\FullText.md
 		docs\Gateway-Plugin.md = docs\Gateway-Plugin.md
 		docs\GraphQL.md = docs\GraphQL.md
-		docs\Home.md = docs\Home.md
 		docs\index.md = docs\index.md
+		docs\LogCollecting.md = docs\LogCollecting.md
 		docs\Plugin.md = docs\Plugin.md
 		docs\RawCMS.postman_collection.json = docs\RawCMS.postman_collection.json
 		docs\Relation.md = docs\Relation.md
@@ -54,7 +55,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.ApiGateway",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.FullText", "Plugins\RawCMS.Plugins.FullText\RawCMS.Plugins.FullText.csproj", "{9D9923CC-CA63-4E7C-B0F5-5A151F0FF524}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawCMS.Plugins.LogCollecting", "Plugins\RawCMS.Plugins.LogCollecting\RawCMS.Plugins.LogCollecting.csproj", "{2A36139F-93E2-4BB3-9A0F-6B415BDDE13E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.LogCollecting", "Plugins\RawCMS.Plugins.LogCollecting\RawCMS.Plugins.LogCollecting.csproj", "{2A36139F-93E2-4BB3-9A0F-6B415BDDE13E}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{5257BAE3-1757-4AA0-9AD8-A529F4DDC50C}"
 	ProjectSection(SolutionItems) = preProject
 		docs\assets\auth0-new-api.png = docs\assets\auth0-new-api.png
