@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using RawCMS.Library.BackgroundJobs;
 using RawCMS.Library.Core;
 using RawCMS.Library.Core.Attributes;
@@ -99,19 +100,22 @@ namespace RawCMS.Plugins.Core
                     {
                         Name="Name",
                         Required=true,
-                        Type="text"
+                        Type="text",
+                        Options= new JObject()
                     },
                      new Field()
                     {
                         Name="Description",
                         Required=false,
-                        Type="text"
+                        Type="text",
+                        Options= new JObject()
                     },
                      new Field()
                     {
-                        Name="PublicID",
+                        Name="PublicId",
                         Required=false,
-                        Type="text"
+                        Type="text",
+                        Options= new JObject()
                     }
                 };
 
