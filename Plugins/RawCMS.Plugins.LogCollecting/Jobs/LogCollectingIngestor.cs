@@ -1,5 +1,4 @@
 ﻿using Hangfire;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using RawCMS.Library.BackgroundJobs;
 using RawCMS.Library.Service;
@@ -8,7 +7,6 @@ using RawCMS.Plugins.LogCollecting.Services;
 namespace RawCMS.Plugins.LogCollecting.Jobs
 
 {
-  
     public class LogCollectingIngestor : BackgroundJobInstance
     {
         public override string CronExpression => Cron.Minutely();

@@ -34,7 +34,6 @@ axios({
         RawCMS.env = e.data;
     })
     .then(_ => {
-        
         const moduleConfigPromises = [
             import("/app/common/formly-material/config.js").then(x => x.default)
         ];
@@ -61,7 +60,7 @@ axios({
                 if (module.getRoutes) {
                     router.addRoutes(module.getRoutes());
                 }
-            }            
+            }
 
             const vue = new Vue({
                 router: router,

@@ -58,8 +58,7 @@ const _LogsTableWrapperDef = async () => {
                 this.isLoading = false;
             },
         }, mounted: function () {
-            
-            RawCMS.eventBus.$on(evtLogSearch, (query, indexname) => {            
+            RawCMS.eventBus.$on(evtLogSearch, (query, indexname) => {
                 this.search(query, indexname);
             });
         },
@@ -96,7 +95,7 @@ const _LogsDetailsDef = async () => {
         },
         methods: {
             search: async function () {
-                RawCMS.eventBus.$emit(evtLogSearch, this.query, this.indexname);                
+                RawCMS.eventBus.$emit(evtLogSearch, this.query, this.indexname);
             },
             showDetail: async function (item) {
                 this.isDetailShown = true;

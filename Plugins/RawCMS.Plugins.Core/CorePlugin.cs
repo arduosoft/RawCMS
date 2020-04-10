@@ -80,7 +80,6 @@ namespace RawCMS.Plugins.Core
 
         private void EnsureDefaultApplication(CRUDService crudService)
         {
-
             crudService.EnsureCollection("application");
 
             var schema = crudService.Query("_schema", new DataQuery()
@@ -90,7 +89,6 @@ namespace RawCMS.Plugins.Core
 
             if (schema.Items.Count == 0)
             {
-
                 var appSchema = new CollectionSchema();
                 appSchema.CollectionName = "application";
                 appSchema.AllowNonMappedFields = false;
@@ -120,11 +118,9 @@ namespace RawCMS.Plugins.Core
                 };
 
                 crudService.Insert<CollectionSchema>("_schema", appSchema);
-
             }
 
-
-                var app = crudService.Query("application", new DataQuery()
+            var app = crudService.Query("application", new DataQuery()
             {
                 RawQuery = "{'Name':'default'}"
             });

@@ -10,7 +10,7 @@ class ApplicationService extends BaseCrudService {
             size: 1,
             rawQuery: { Name: name }
         });
-        
+
         return res.items[0];
     }
 }

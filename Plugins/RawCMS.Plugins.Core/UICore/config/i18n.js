@@ -19,7 +19,7 @@ class I18nHelper {
             }).then(x => {
                 this.filesLoaded.push(path);
                 const messages = x.data;
-                _i18n.mergeLocaleMessage(lang, messages);                
+                _i18n.mergeLocaleMessage(lang, messages);
                 return;
             });
         }
