@@ -23,9 +23,14 @@ namespace RawCMS.Library.Lambdas
 
         protected readonly EntityService entityService;
 
-        public JsDispatcher(EntityService entityService)
+        private readonly CRUDService crudService;
+
+        public JsDispatcher(EntityService entityService, CRUDService crudService)
         {
-            this.entityService = entityService;
+            {
+                this.entityService = entityService;
+                this.crudService = crudService;
+            }
         }
 
         public override void Execute(string collection, ref JObject item, ref Dictionary<string, object> dataContext)
@@ -44,6 +49,8 @@ namespace RawCMS.Library.Lambdas
                     Engine engine = new Engine((x) => { x.AllowClr(typeof(JavascriptRestClient).Assembly); x.AllowClr(typeof(JavascriptRestClientRequest).Assembly); });
                     engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
                     engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
+                    engine.SetValue("RAWCMSCrudService", crudService);
+
                     engine.SetValue("item", input);
                     engine.Execute(eventScript.ToString());
                     item = JObject.FromObject(input);

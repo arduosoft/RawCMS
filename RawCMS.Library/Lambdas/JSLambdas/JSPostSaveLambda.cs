@@ -21,7 +21,7 @@ namespace RawCMS.Library.Lambdas.JSLambdas
 
         public override string Description => "JSPostSaveLambda";
 
-        public JSPostSaveLambda(EntityService entityService) : base(entityService)
+        public JSPostSaveLambda(EntityService entityService, CRUDService crudService) : base(entityService, crudService)
         {
         }
     }

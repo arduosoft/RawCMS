@@ -36,7 +36,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="$(ProjectDir)UI\**" CopyToPublishDirectory="Always" />
+  </ItemGroup>
 
 	<Target Name="BuildUI" AfterTargets="Build">
 		<RemoveDir Directories="$(OutDir)\UI" />
