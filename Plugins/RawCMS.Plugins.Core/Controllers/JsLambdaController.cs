@@ -60,6 +60,7 @@ namespace RawCMS.Plugins.Core.Controllers
             engine.SetValue("input", tmpIn);
             engine.SetValue("RAWCMSRestClient", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClient)));
             engine.SetValue("RAWCMSRestClientRequest", Jint.Runtime.Interop.TypeReference.CreateTypeReference(engine, typeof(JavascriptRestClientRequest)));
+            engine.SetValue("RAWCMSCrudService", crudService);
 
             engine.SetValue("output", tmpOut);
 
