@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Plugins\RawCMS.Plugins.FullText\RawCMS.Plugins.FullText.csproj" />
+    <ProjectReference Include="..\Plugins\RawCMS.Plugins.LogCollecting\RawCMS.Plugins.LogCollecting.csproj" />
   </ItemGroup>
 
 </Project>

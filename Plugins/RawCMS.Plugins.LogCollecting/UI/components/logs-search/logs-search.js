@@ -33,8 +33,8 @@ const _LogsTableWrapperDef = async () => {
             },
             getDataHeaders: async function () {
                 this.headTable = [
-                    { text: "Level", value: "level", sortable: false },
-                    { text: "Message", value: "message", sortable: false }
+                    { text: "Level", value: "Severity", sortable: false },
+                    { text: "Message", value: "Message", sortable: false }
                 ];
                 return this.headTable;
             },

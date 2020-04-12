@@ -43,19 +43,22 @@ namespace RawCMS.Plugins.LogCollecting.Services
 
         public void PersistLog()
         {
-            var applications = this.crudService.Query<Application>("applications", new Library.DataModel.DataQuery())
+            var applications = this.crudService.Query<Application>("application", new Library.DataModel.DataQuery
+            {
+                PageNumber = 1,
+                PageSize = int.MaxValue
+            })
                 .Items
                 .Where(x => x.PublicId != null).ToList();
 
             int processedLog = 0;
-
             List<LogEntity> batch;
             string indexname = "";
             while (processedLog < LOG_PROCESSING_SIZE && (batch = this.logQueue.Dequeue(PROCESSING_ENTRY_COUNT)).Count > 0)
             {
                 foreach (var log in batch)
                 {
-                    indexname = "log_" + applications.FirstOrDefault(x => x.PublicId.Equals(log.ApplicationId)).Id;
+                    indexname = "log_" + log.ApplicationId;//applications.FirstOrDefault(x => x.PublicId.ToString().Equals(log.ApplicationId)).Id;
 
                     //TODO: implement batch insert for performance
                     this.fullTextService.AddDocument<LogEntity>(indexname, log);
