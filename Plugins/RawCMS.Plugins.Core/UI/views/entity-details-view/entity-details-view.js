@@ -22,9 +22,9 @@ const _EntityDetailsView = async (res, rej) => {
                                 PreWrite: '',
                                 PostWrite: '',
                                 PreDelete: '',
-                                PostDelete: '',
-                            },
-                        },
+                                PostDelete: ''
+                            }
+                        }
                     });
                 }
                 this.updateTitle({

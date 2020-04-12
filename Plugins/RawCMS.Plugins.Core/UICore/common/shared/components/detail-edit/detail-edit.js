@@ -4,7 +4,8 @@ import { snackbarService } from "/app/modules/core/services/snackbar.service.js"
 import { BaseCrudService } from "/app/common/shared/services/base-crud-service.js";
 
 const _rawCmsDetailEditEvents = {
-    loaded: "rawcms_detail-edit_loaded"
+    loaded: "rawcms_detail-edit_loaded",
+    default: "rawcms_detail-edit_default"
 };
 
 const _RawCmsDetailEditDef = async () => {
