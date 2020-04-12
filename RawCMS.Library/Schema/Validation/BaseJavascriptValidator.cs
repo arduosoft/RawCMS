@@ -51,7 +51,7 @@ namespace RawCMS.Library.Schema.Validation
                   .SetValue("errors", errors)
                   .SetValue("options", options)
                   .SetValue("name", field.Name)
-                  .SetValue("required", field.Required)
+                  .SetValue("required", field.Required) //TODO: field required is alread checked by lambda. We can remove lambda and add validation here?
                   .SetValue("Type", field.Type)
                   .SetValue("value", convValue)
                   .SetValue("backendResult", backendResult)

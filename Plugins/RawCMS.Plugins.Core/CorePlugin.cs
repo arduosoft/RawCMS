@@ -114,7 +114,14 @@ namespace RawCMS.Plugins.Core
                         Required=false,
                         Type="text",
                         Options= new JObject()
-                    }
+                    },
+                     new Field()
+                     {
+                         Name = "AllowedRoles",
+                         Required = false,
+                         Type = "text",
+                         Options = new JObject()
+                     }
                 };
 
                 crudService.Insert<CollectionSchema>("_schema", appSchema);

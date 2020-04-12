@@ -19,13 +19,13 @@ namespace RawCMS.Library.Schema.Validation
                 return @"
 const innerValidation = function() {
     if (value === null || value === undefined) {
-        return;
+        return JSON.stringify(errors);
     }
 
     // code starts here
     if (typeof(value) !== 'string') {
         errors.push({""Code"":""STRING-01"", ""Title"":""Not a string""});
-        return;
+        return JSON.stringify(errors);
     }
 
     if (options.maxlength !== undefined && options.maxlength < value.length) {

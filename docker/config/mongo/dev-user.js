@@ -1,6 +1,6 @@
 db.auth("root", "password");
 
-db = db.getSiblingDB("admin");
+db = db.getSiblingDB("rawcms");
 
 db.createUser({
   user: "dev",
