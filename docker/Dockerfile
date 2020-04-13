@@ -11,5 +11,5 @@ RUN chmod +x ./build.unix.sh && bash /src/build.unix.sh
 
 FROM base AS final
 WORKDIR /app
-COPY --from=build /dist .
+COPY --from=build /dist/. .
 ENTRYPOINT ["dotnet", "RawCMS.dll"]
