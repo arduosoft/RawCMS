@@ -27,6 +27,8 @@ namespace RawCMS.Plugins.FullText.Core
 
         public abstract void AddDocumentRaw(string indexname, object data);
 
+        public abstract void BulkAddDocument<T>(string indexname, ICollection<T> data);
+
         public virtual T GetDocument<T>(string indexname, string docId)
         {
             var raw = GetDocumentRaw(indexname, docId);

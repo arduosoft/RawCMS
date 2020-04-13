@@ -45,7 +45,6 @@ namespace RawCMS.Plugins.LogCollecting.Services
         {
             var applications = this.crudService.Query<Application>("application", new Library.DataModel.DataQuery
             {
-                PageNumber = 1,
                 PageSize = int.MaxValue
             })
                 .Items
@@ -56,12 +55,11 @@ namespace RawCMS.Plugins.LogCollecting.Services
             string indexname = "";
             while (processedLog < LOG_PROCESSING_SIZE && (batch = this.logQueue.Dequeue(PROCESSING_ENTRY_COUNT)).Count > 0)
             {
-                foreach (var log in batch)
+                var appsId = batch.Select(x => x.ApplicationId).Distinct();
+                foreach(var appId in appsId)
                 {
-                    indexname = "log_" + log.ApplicationId;//applications.FirstOrDefault(x => x.PublicId.ToString().Equals(log.ApplicationId)).Id;
-
-                    //TODO: implement batch insert for performance
-                    this.fullTextService.AddDocument<LogEntity>(indexname, log);
+                    indexname = "log_" + applications.FirstOrDefault(x => x.PublicId.ToString().Equals(appId)).Id;
+                    this.fullTextService.BulkAddDocument<LogEntity>(indexname, batch.Where(x => x.ApplicationId.Equals(appId)).ToList());
                 }
             }
         }

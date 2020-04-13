@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Text;
 using Elasticsearch.Net;
 using Nest;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace RawCMS.Plugins.FullText.Core
@@ -32,10 +33,8 @@ namespace RawCMS.Plugins.FullText.Core
             this.client = client;
         }
 
-        public override void AddDocumentRaw(string indexname, object data)
+        private static JObject EnsureId(JObject jobj)
         {
-            var jobj = JObject.FromObject(data);
-
             //Resolve object id. elastic whant an "id" field, mongo uses _id...
             if (!jobj.ContainsKey("Id"))
             {
@@ -58,7 +57,29 @@ namespace RawCMS.Plugins.FullText.Core
                 jobj.Property("_id").Remove();
             }
 
+            return jobj;
+        }
+
+        public override void AddDocumentRaw(string indexname, object data)
+        {
+            var jobj = JObject.FromObject(data);
+
+            jobj = EnsureId(jobj);
+
             var resp = client.LowLevel.Index<JObjectResponse>(indexname, jobj["Id"].ToString(), PostData.String(jobj.ToString()));
+        }
+
+        public override void BulkAddDocument<T>(string indexname, ICollection<T> data)
+        {
+            var descriptor = new BulkDescriptor();
+            foreach (var item in data)
+            {
+                var jobj = JObject.FromObject(item);
+                jobj = EnsureId(jobj);
+                descriptor.Index<JObject>(opt => opt.Index(indexname).Document(jobj).Id(jobj["Id"].ToString()));
+
+            }
+            var result = client.Bulk(descriptor);
         }
 
         public override void CreateIndex(string name)

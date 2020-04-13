@@ -30,9 +30,7 @@
             <v-row>
                 <v-col>
                     <table-wrapper>
-
                         <template v-slot:item.action="{ item }">
-
                             <v-btn icon @click.stop="showDetail(item);">
                                 <v-icon>mdi-message-text-outline</v-icon>
                             </v-btn>
@@ -41,7 +39,6 @@
                 </v-col>
             </v-row>
             <v-dialog v-model="isDetailShown" hide-overlay>
-
                 <v-card>
                     <v-card-title class="headline">Log Details</v-card-title>
                     <pre>{{shownItem}}</pre>
