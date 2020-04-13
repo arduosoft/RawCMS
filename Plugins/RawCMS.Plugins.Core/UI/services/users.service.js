@@ -1,9 +1,9 @@
 import { BaseCrudService } from "/app/common/shared/services/base-crud-service.js";
 
 class UserService extends BaseCrudService {
-  constructor() {
-    super({ basePath: "/system/admin/_users" });
-  }
+    constructor() {
+        super({ basePath: "/system/admin/_users" });
+    }
 }
 
 export const userService = new UserService();

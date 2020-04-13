@@ -1,21 +1,21 @@
 import { NumberFieldDef } from "/app/common/formly-material/components/number-field/number-field.js";
 
 const _IntFieldDef = async () => {
-  const baseDef = await NumberFieldDef();
+    const baseDef = await NumberFieldDef();
 
-  return {
-    extends: baseDef,
-    props: {
-      step: {
-        default: 1
-      }
-    }
-  };
+    return {
+        extends: baseDef,
+        props: {
+            step: {
+                default: 1
+            }
+        }
+    };
 };
 
 const _IntField = async (res, rej) => {
-  const cmpDef = await _IntFieldDef();
-  res(cmpDef);
+    const cmpDef = await _IntFieldDef();
+    res(cmpDef);
 };
 
 export const IntFieldDef = _IntFieldDef;

@@ -15,6 +15,8 @@
     <PackageReference Include="NEST" Version="7.6.1" />
     <PackageReference Include="NEST.JsonNetSerializer" Version="7.6.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Security.AccessControl" Version="4.7.0" />
+    <PackageReference Include="System.Threading.AccessControl" Version="4.7.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -24,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Plugins\RawCMS.Plugins.FullText\RawCMS.Plugins.FullText.csproj" />
+    <ProjectReference Include="..\Plugins\RawCMS.Plugins.LogCollecting\RawCMS.Plugins.LogCollecting.csproj" />
   </ItemGroup>
 
 </Project>

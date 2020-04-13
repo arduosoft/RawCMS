@@ -19,7 +19,7 @@ namespace RawCMS.Library.Schema.Validation
                 return @"
 const innerValidation = function() {
     if (value === null || value === undefined) {
-        return;
+        return JSON.stringify(errors);
     }
 
     // code starts here

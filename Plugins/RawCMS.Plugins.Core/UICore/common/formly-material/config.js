@@ -9,26 +9,26 @@ import { RelationField } from "/app/common/formly-material/components/relation-f
 import { TextField } from "/app/common/formly-material/components/text-field/text-field.js";
 
 const _configFormlyMaterialModule = {
-  name: "formly-material",
+    name: "formly-material",
 
-  init() {
-    // Bool
-    Vue.$formly.addType("bool", BoolField);
-    // Strings
-    Vue.$formly.addType("regexp", TextField);
-    Vue.$formly.addType("text", TextField);
-    // Numbers
-    Vue.$formly.addType("number", NumberField);
-    Vue.$formly.addType("int", IntField);
-    // Date/Time
-    Vue.$formly.addType("date", DateField);
-    // List
-    Vue.$formly.addType("list", ListField);
-    // Relations
-    Vue.$formly.addType("relation", RelationField);
-    Vue.$formly.addType("entities-list", EntitiesListField);
-    Vue.$formly.addType("fields-list", FieldsListField);
-  }
+    init() {
+        // Bool
+        Vue.$formly.addType("bool", BoolField);
+        // Strings
+        Vue.$formly.addType("regexp", TextField);
+        Vue.$formly.addType("text", TextField);
+        // Numbers
+        Vue.$formly.addType("number", NumberField);
+        Vue.$formly.addType("int", IntField);
+        // Date/Time
+        Vue.$formly.addType("date", DateField);
+        // List
+        Vue.$formly.addType("list", ListField);
+        // Relations
+        Vue.$formly.addType("relation", RelationField);
+        Vue.$formly.addType("entities-list", EntitiesListField);
+        Vue.$formly.addType("fields-list", FieldsListField);
+    }
 };
 
 export const configFormlyMaterialModule = _configFormlyMaterialModule;

@@ -19,12 +19,12 @@ namespace RawCMS.Library.Schema.Validation
                 return @"
 const innerValidation = function() {
     if (value === null || value === undefined) {
-        return;
+        return JSON.stringify(errors);
     }
 
     if(!(value instanceof Date)) {
         errors.push({""Code"":""DATE-01"", ""Title"":""Not a date""});
-        return;
+        return JSON.stringify(errors);
     }
 
     if (options.min !== undefined) {

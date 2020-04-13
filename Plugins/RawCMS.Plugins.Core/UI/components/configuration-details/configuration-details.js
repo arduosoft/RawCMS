@@ -2,36 +2,36 @@ import { RawCmsDetailEditDef } from "/app/common/shared/components/detail-edit/d
 import { configurationService } from "/app/modules/core/services/configuration.service.js";
 
 const _ConfigurationDetailsWrapperDef = async () => {
-  const rawCmsDetailEditDef = await RawCmsDetailEditDef();
+    const rawCmsDetailEditDef = await RawCmsDetailEditDef();
 
-  return {
-    data: function() {
-      return {
-        apiService: configurationService
-      };
-    },
-    extends: rawCmsDetailEditDef
-  };
+    return {
+        data: function () {
+            return {
+                apiService: configurationService
+            };
+        },
+        extends: rawCmsDetailEditDef
+    };
 };
 
 const _ConfigurationDetailsDef = async () => {
-  const detailWrapperDef = await _ConfigurationDetailsWrapperDef();
-  const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/core/components/configuration-details/configuration-details.tpl.html"
-  );
+    const detailWrapperDef = await _ConfigurationDetailsWrapperDef();
+    const tpl = await RawCMS.loadComponentTpl(
+        "/app/modules/core/components/configuration-details/configuration-details.tpl.html"
+    );
 
-  return {
-    components: {
-      DetailWrapper: detailWrapperDef
-    },
-    props: detailWrapperDef.extends.props,
-    template: tpl
-  };
+    return {
+        components: {
+            DetailWrapper: detailWrapperDef
+        },
+        props: detailWrapperDef.extends.props,
+        template: tpl
+    };
 };
 
 const _ConfigurationDetails = async (res, rej) => {
-  const cmpDef = _ConfigurationDetailsDef();
-  res(cmpDef);
+    const cmpDef = _ConfigurationDetailsDef();
+    res(cmpDef);
 };
 
 export const ConfigurationDetailsDef = _ConfigurationDetailsDef;

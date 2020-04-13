@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using RawCMS.Library.Core;
 using RawCMS.Library.UI;
-using System.Linq;
 
 namespace RawCMS.Library.Service
 {
@@ -13,10 +13,7 @@ namespace RawCMS.Library.Service
 
         public List<UIResourceRequirement> Requirements = new List<UIResourceRequirement>();
 
-
-
         public List<UIMetadata> Modules = new List<UIMetadata>();
-
 
         public UIService(AppEngine appEngine)
         {
@@ -35,12 +32,13 @@ namespace RawCMS.Library.Service
                     }
                 }
             }
-
         }
+
         public List<UIMetadata> GetModules()
         {
             return Modules;
         }
+
         public List<String> GetPluginsPaths()
         {
             var slugs = this.appEngine.Plugins.OrderBy(x => x.Priority).Select(x =>
@@ -54,7 +52,6 @@ namespace RawCMS.Library.Service
             });
             return result;
         }
-
 
         private const string PluginPathBaseTemplate = "/app/modules/{0}/";
 
@@ -73,7 +70,6 @@ namespace RawCMS.Library.Service
 
         public string GetCSStHtml()
         {
-
             var requirements = Requirements.Where(x => x.Type == UIResourceRequirementType.CSS).ToList();
             StringBuilder sb = new StringBuilder();
             RequirementsToHtml("link", "href", requirements, sb);
@@ -82,10 +78,8 @@ namespace RawCMS.Library.Service
 
         private void RequirementsToHtml(string tag, string urlAttribute, List<UIResourceRequirement> requirements, StringBuilder stringBuilder)
         {
-
             foreach (var iem in requirements)
             {
-
                 stringBuilder.AppendLine();
 
                 stringBuilder.Append("<");
@@ -100,16 +94,13 @@ namespace RawCMS.Library.Service
                 stringBuilder.Append(iem.ResourceUrl);
                 stringBuilder.Append("'");
 
-
                 if (iem.Type == UIResourceRequirementType.CSS)
                 {
-
                     stringBuilder.Append(" rel='stylesheet' ");
                     stringBuilder.Append("/>");
                 }
                 else
                 {
-
                     stringBuilder.Append(">");
 
                     stringBuilder.Append("</");
@@ -120,4 +111,3 @@ namespace RawCMS.Library.Service
         }
     }
 }
-

@@ -19,7 +19,7 @@ namespace RawCMS.Library.Schema.Validation
                 return @"
 const innerValidation = function() {
     if (value === null || value === undefined) {
-        return;
+        return JSON.stringify(errors);
     }
 
     // code starts here
@@ -27,13 +27,13 @@ const innerValidation = function() {
 
     if (isNaN(intVal) || intVal  === NaN ) {
         errors.push({""Code"":""INT - 01"", ""Title"":""Not a number""});
-        return;
+        return JSON.stringify(errors);
     }
 
     if (!(parseFloat(value) === intVal)) {
         var err=""Value ""+value+""not an INT number"";
         errors.push({""Code"":""INT - 04"", ""Title"":err});
-        return;
+        return JSON.stringify(errors);
     }
 
     if (options.min !== undefined && options.min > intVal) {

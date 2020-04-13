@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using RawCMS.Library.UI;
 
 namespace RawCMS.Plugins.Core.Model
 {
-
-
-
     public class UIResult
     {
         public Api api { get; set; }
@@ -28,5 +23,4 @@ namespace RawCMS.Plugins.Core.Model
         public string client_id { get; set; }
         public string client_secret { get; set; }
     }
-
 }

@@ -1,0 +1,52 @@
+<v-card flat tile height="100%">
+    <v-form>
+        <v-container>
+            <v-row>
+                <v-col class="col-1">
+                    <v-select label="LEVEL"
+                              v-model="level"
+                              :items="levels"
+                              v-on:change="search()"
+                              dense
+                              outlined
+                              item-text="text"
+                              item-value="level">
+                    </v-select>
+                </v-col>
+                <v-col class="col-9">
+                    <v-text-field label="search"
+                                  alignment="start"
+                                  justify="start"
+                                  v-model="text"
+                                  placeholder="type a text to find inside message or a query"></v-text-field>
+                </v-col>
+                <v-col class="col-1">
+                    <v-btn @click="search()">{{ $t('logs.detail.search') }}</v-btn>
+                </v-col>
+            </v-row>
+            <v-row>
+                <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax" target="_blank">Query: </a>  {{query}}
+            </v-row>
+            <v-row>
+                <v-col>
+                    <table-wrapper>
+
+                        <template v-slot:item.action="{ item }">
+
+                            <v-btn icon @click.stop="showDetail(item);">
+                                <v-icon>mdi-message-text-outline</v-icon>
+                            </v-btn>
+                        </template>
+                    </table-wrapper>
+                </v-col>
+            </v-row>
+            <v-dialog v-model="isDetailShown" hide-overlay>
+
+                <v-card>
+                    <v-card-title class="headline">Log Details</v-card-title>
+                    <pre>{{shownItem}}</pre>
+                </v-card>
+            </v-dialog>
+        </v-container>
+    </v-form>
+</v-card>

@@ -1,160 +1,140 @@
 <detail-wrapper v-on="$listeners" v-bind="$props" class="rawcms-entity-details">
-  <template slot="custom-tabs">
-    <link
-      rel="stylesheet"
-      href="/app/modules/core/components/entity-details/entity-details.css"
-    />
+    <template slot="custom-tabs">
+        <link rel="stylesheet"
+              href="/app/modules/core/components/entity-details/entity-details.css" />
 
-    <v-tab href="#tabFormly">
-      {{ $t('core.common.editText') }}
-      <v-icon>mdi-pen</v-icon>
-    </v-tab>
-    <v-tab href="#lambdas">
-      {{ $t('core.entities.detail.lambdasScript')}}
-      <v-icon>mdi-lambda</v-icon>
-    </v-tab>
-  </template>
-
-  <template v-slot:custom-tab-items="{ value }">
-    <v-tab-item value="lambdas">
-      <v-tabs vertical>
-        <v-tab>
-          <v-icon left>mdi-flip-to-back</v-icon>
-          {{ $t('core.entities.detail.presave')}}
+        <v-tab href="#tabFormly">
+            {{ $t('core.common.editText') }}
+            <v-icon>mdi-pen</v-icon>
         </v-tab>
-        <v-tab-item>
-          <v-card flat>
-            <monaco-editor
-              ref="lambdaMonaco"
-              v-model="value.Events.PreWrite"
-              style="height:800px;"
-              :options="customMonacoOptions"
-              :amdRequire="amdRequire"
-            >
-            </monaco-editor>
-          </v-card>
-        </v-tab-item>
-        <v-tab>
-          <v-icon left>mdi-flip-to-back</v-icon>
-          {{ $t('core.entities.detail.postsave')}}
+        <v-tab href="#lambdas">
+            {{ $t('core.entities.detail.lambdasScript')}}
+            <v-icon>mdi-lambda</v-icon>
         </v-tab>
-        <v-tab-item>
-          <v-card flat>
-            <monaco-editor
-              ref="lambdaMonaco"
-              v-model="value.Events.PostWrite"
-              style="height:800px;"
-              :options="customMonacoOptions"
-              :amdRequire="amdRequire"
-            >
-            </monaco-editor>
-          </v-card>
+    </template>
+
+    <template v-slot:custom-tab-items="{ value }">
+        <v-tab-item value="lambdas">
+            <v-tabs vertical>
+                <v-tab>
+                    <v-icon left>mdi-flip-to-back</v-icon>
+                    {{ $t('core.entities.detail.presave')}}
+                </v-tab>
+                <v-tab-item>
+                    <v-card flat>
+                        <monaco-editor ref="lambdaMonaco"
+                                       v-model="value.Events.PreWrite"
+                                       style="height:800px;"
+                                       :options="customMonacoOptions"
+                                       :amdRequire="amdRequire">
+                        </monaco-editor>
+                    </v-card>
+                </v-tab-item>
+                <v-tab>
+                    <v-icon left>mdi-flip-to-back</v-icon>
+                    {{ $t('core.entities.detail.postsave')}}
+                </v-tab>
+                <v-tab-item>
+                    <v-card flat>
+                        <monaco-editor ref="lambdaMonaco"
+                                       v-model="value.Events.PostWrite"
+                                       style="height:800px;"
+                                       :options="customMonacoOptions"
+                                       :amdRequire="amdRequire">
+                        </monaco-editor>
+                    </v-card>
+                </v-tab-item>
+                <v-tab>
+                    <v-icon left>mdi-flip-to-back</v-icon>
+                    {{ $t('core.entities.detail.predelete')}}
+                </v-tab>
+                <v-tab-item>
+                    <v-card flat>
+                        <monaco-editor ref="lambdaMonaco"
+                                       v-model="value.Events.PreDelete"
+                                       style="height:800px;"
+                                       :options="customMonacoOptions"
+                                       :amdRequire="amdRequire">
+                        </monaco-editor>
+                    </v-card>
+                </v-tab-item>
+                <v-tab>
+                    <v-icon left>mdi-flip-to-back</v-icon>
+                    {{ $t('core.entities.detail.postdelete')}}
+                </v-tab>
+                <v-tab-item>
+                    <v-card flat>
+                        <monaco-editor ref="lambdaMonaco"
+                                       v-model="value.Events.PostDelete"
+                                       style="height:800px;"
+                                       :options="customMonacoOptions"
+                                       :amdRequire="amdRequire">
+                        </monaco-editor>
+                    </v-card>
+                </v-tab-item>
+            </v-tabs>
         </v-tab-item>
-        <v-tab>
-          <v-icon left>mdi-flip-to-back</v-icon>
-          {{ $t('core.entities.detail.predelete')}}
-        </v-tab>
-        <v-tab-item>
-          <v-card flat>
-            <monaco-editor
-              ref="lambdaMonaco"
-              v-model="value.Events.PreDelete"
-              style="height:800px;"
-              :options="customMonacoOptions"
-              :amdRequire="amdRequire"
-            >
-            </monaco-editor>
-          </v-card>
+        <v-tab-item value="tabFormly">
+            <v-card flat tile>
+                <v-form>
+                    <v-container fluid>
+                        <v-row class="px-3">
+                            <v-col cols="12" sm="6">
+                                <v-text-field v-model="value.CollectionName"
+                                              :rules="nameRules"
+                                              :label="$t('core.entities.detail.name')"
+                                              required></v-text-field>
+                            </v-col>
+
+                            <v-col cols="12" sm="6">
+                                <v-checkbox :label="$t('core.entities.detail.allowNotMappedFields')"
+                                            v-model="value.AllowNonMappedFields"></v-checkbox>
+                            </v-col>
+                        </v-row>
+
+                        <v-row class="px-3">
+                            <v-col>
+                                <span class="headline">{{ $t('core.entities.detail.fields') }}</span>
+
+                                <v-list class="elevation-2">
+                                    <v-list-item v-for="i of value.FieldSettings"
+                                                 :key="i.Name"
+                                                 @click.stop="showFieldDialog(i)">
+                                        <v-list-item-content>
+                                            <v-list-item-title>{{ i.Name }}</v-list-item-title>
+                                        </v-list-item-content>
+                                        <v-list-item-icon class="show-on-hover">
+                                            <v-btn icon @click.stop="showFieldDialog(i)">
+                                                <v-icon>mdi-pencil-outline</v-icon>
+                                            </v-btn>
+                                            <v-btn icon @click.stop="removeField(value, i)">
+                                                <v-icon>mdi-delete-outline</v-icon>
+                                            </v-btn>
+                                        </v-list-item-icon>
+                                    </v-list-item>
+
+                                    <v-list-item @click.stop="showFieldDialog()">
+                                        <v-list-item-icon>
+                                            <v-icon>mdi-plus-circle-outline</v-icon>
+                                        </v-list-item-icon>
+                                        <v-list-item-content>
+                                            <v-list-item-title>Add new field</v-list-item-title>
+                                        </v-list-item-content>
+                                        <v-list-item-icon class="show-on-hover">
+                                            <v-icon>mdi-plus</v-icon>
+                                        </v-list-item-icon>
+                                    </v-list-item>
+                                </v-list>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-form>
+
+                <v-dialog persistent v-model="isFieldDialogVisible">
+                    <field-edit :field="currentFieldCopy"
+                                @closed="onFieldEdited(value, $event)"></field-edit>
+                </v-dialog>
+            </v-card>
         </v-tab-item>
-        <v-tab>
-          <v-icon left>mdi-flip-to-back</v-icon>
-          {{ $t('core.entities.detail.postdelete')}}
-        </v-tab>
-        <v-tab-item>
-          <v-card flat>
-            <monaco-editor
-              ref="lambdaMonaco"
-              v-model="value.Events.PostDelete"
-              style="height:800px;"
-              :options="customMonacoOptions"
-              :amdRequire="amdRequire"
-            >
-            </monaco-editor>
-          </v-card>
-        </v-tab-item>
-      </v-tabs>
-    </v-tab-item>
-    <v-tab-item value="tabFormly">
-      <v-card flat tile>
-        <v-form>
-          <v-container fluid>
-            <v-row class="px-3">
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  v-model="value.CollectionName"
-                  :rules="nameRules"
-                  :label="$t('core.entities.detail.name')"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="6">
-                <v-checkbox
-                  :label="$t('core.entities.detail.allowNotMappedFields')"
-                  v-model="value.AllowNonMappedFields"
-                ></v-checkbox>
-              </v-col>
-            </v-row>
-
-            <v-row class="px-3">
-              <v-col>
-                <span class="headline"
-                  >{{ $t('core.entities.detail.fields') }}</span
-                >
-
-                <v-list class="elevation-2">
-                  <v-list-item
-                    v-for="i of value.FieldSettings"
-                    :key="i.Name"
-                    @click.stop="showFieldDialog(i)"
-                  >
-                    <v-list-item-content>
-                      <v-list-item-title>{{ i.Name }}</v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-icon class="show-on-hover">
-                      <v-btn icon @click.stop="showFieldDialog(i)">
-                        <v-icon>mdi-pencil-outline</v-icon>
-                      </v-btn>
-                      <v-btn icon @click.stop="removeField(value, i)">
-                        <v-icon>mdi-delete-outline</v-icon>
-                      </v-btn>
-                    </v-list-item-icon>
-                  </v-list-item>
-
-                  <v-list-item @click.stop="showFieldDialog()">
-                    <v-list-item-icon>
-                      <v-icon>mdi-plus-circle-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title>Add new field</v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-icon class="show-on-hover">
-                      <v-icon>mdi-plus</v-icon>
-                    </v-list-item-icon>
-                  </v-list-item>
-                </v-list>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-form>
-
-        <v-dialog persistent v-model="isFieldDialogVisible">
-          <field-edit
-            :field="currentFieldCopy"
-            @closed="onFieldEdited(value, $event)"
-          ></field-edit>
-        </v-dialog>
-      </v-card>
-    </v-tab-item>
-  </template>
+    </template>
 </detail-wrapper>

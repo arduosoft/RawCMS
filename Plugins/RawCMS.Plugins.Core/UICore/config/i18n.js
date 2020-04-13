@@ -1,33 +1,39 @@
 const _i18n = new VueI18n({
-  locale: "en",
-  fallbackLocale: "en",
-  messages: { en: {} }
+    locale: "en",
+    fallbackLocale: "en",
+    messages: { en: {} }
 });
 
 class I18nHelper {
-  filesLoaded = [];
+    filesLoaded = [];
 
-  load(lang, path) {
-    if (this.filesLoaded.includes(path)) {
-      return Promise.resolve();
+    load(lang, path) {
+        if (this.filesLoaded.includes(path)) {
+            return Promise.resolve();
+        }
+
+        try {
+            return axios({
+                url: path,
+                method: "get"
+            }).then(x => {
+                this.filesLoaded.push(path);
+                const messages = x.data;
+                _i18n.mergeLocaleMessage(lang, messages);
+                return;
+            });
+        }
+        catch (error) {
+            console.log(error);
+            return Promise.resolve();
+        }
     }
 
-    return axios({
-      url: path,
-      method: "get"
-    }).then(x => {
-      this.filesLoaded.push(path);
-      const messages = x.data;
-      _i18n.mergeLocaleMessage(lang, messages);
-      return;
-    });
-  }
-
-  setLang(lang) {
-    _i18n.locale = lang;
-    axios.defaults.headers.common["Accept-Language"] = lang;
-    document.querySelector("html").setAttribute("lang", lang);
-  }
+    setLang(lang) {
+        _i18n.locale = lang;
+        axios.defaults.headers.common["Accept-Language"] = lang;
+        document.querySelector("html").setAttribute("lang", lang);
+    }
 }
 
 export const i18nHelper = new I18nHelper();

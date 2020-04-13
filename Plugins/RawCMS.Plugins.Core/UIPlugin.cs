@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
@@ -9,22 +6,23 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using RawCMS.Library.Core;
+using RawCMS.Library.Core.Extension;
 using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Service;
 using RawCMS.Library.UI;
 using RawCMS.Plugins.Core.Configuration;
-using RawCMS.Plugins.Core.Middlewares;
 
 namespace RawCMS.Plugins.Core
 {
-    public class UIPlugin : RawCMS.Library.Core.Extension.Plugin, IConfigurablePlugin<UIPluginConfig>
+    public class UIPlugin : Plugin, IConfigurablePlugin<UIPluginConfig>
     {
         public override string Name => "UIPlugin";
 
         public override string Description => "The UI CORE";
 
-        protected  UIPluginConfig config;
-        public UIPlugin(AppEngine appEngine, UIPluginConfig config, ILogger logger):base(appEngine,logger)
+        protected UIPluginConfig config;
+
+        public UIPlugin(AppEngine appEngine, UIPluginConfig config, ILogger logger) : base(appEngine, logger)
         {
             this.config = config;
         }
@@ -33,11 +31,9 @@ namespace RawCMS.Plugins.Core
 
         public override void Configure(IApplicationBuilder app)
         {
-
-
             app.UseRewriter(
                   new RewriteOptions().AddRedirect("^$", "app", 302)
-                  ); 
+                  );
 
             Logger.LogInformation("Loading plugin UI");
             foreach (var plugin in this.Engine.Plugins)
@@ -57,14 +53,11 @@ namespace RawCMS.Plugins.Core
                             ctx.Context.Response.Headers.Add("Cache-Control", new Microsoft.Extensions.Primitives.StringValues(new string[] { "no-cache", "no-store" }));
                             ctx.Context.Response.Headers.Add("Pragma", new Microsoft.Extensions.Primitives.StringValues(new string[] { "no-cache" }));
                             ctx.Context.Response.Headers.Remove("ETag");
-                          
                         }
                     });
                 }
-
-              
             }
-            var baseFolder = Path.GetDirectoryName(this.Engine.CorePlugin.GetUIFolder());            
+            var baseFolder = Path.GetDirectoryName(this.Engine.CorePlugin.GetUIFolder());
 
             var uiCoreFolder = Path.Combine(baseFolder, "UICore");
             app.UseStaticFiles(new StaticFileOptions()
@@ -77,22 +70,17 @@ namespace RawCMS.Plugins.Core
                     ctx.Context.Response.Headers.Add("Cache-Control", new Microsoft.Extensions.Primitives.StringValues(new string[] { "no-cache", "no-store" }));
                     ctx.Context.Response.Headers.Add("Pragma", new Microsoft.Extensions.Primitives.StringValues(new string[] { "no-cache" }));
                     ctx.Context.Response.Headers.Remove("ETag");
-                    
-
-
                 }
-
             }); ;
 
             app.UseWelcomePage(new WelcomePageOptions()
             {
-                Path="/"
+                Path = "/"
             });
         }
 
         public override void ConfigureMvc(IMvcBuilder builder)
         {
-           
         }
 
         public override void ConfigureServices(IServiceCollection services)
@@ -102,9 +90,7 @@ namespace RawCMS.Plugins.Core
 
         public override void Setup(IConfigurationRoot configuration)
         {
-          
         }
-
 
         public override UIMetadata GetUIMetadata()
         {
@@ -112,9 +98,9 @@ namespace RawCMS.Plugins.Core
 
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {
-                Type =UIResourceRequirementType.CSS,
-                ResourceUrl= "https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900",
-                Order=0
+                Type = UIResourceRequirementType.CSS,
+                ResourceUrl = "https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900",
+                Order = 0
             });
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {
@@ -129,7 +115,7 @@ namespace RawCMS.Plugins.Core
                 ResourceUrl = "https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css",
                 Order = 2
             });
-        
+
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {
                 Type = UIResourceRequirementType.CSS,
@@ -144,14 +130,13 @@ namespace RawCMS.Plugins.Core
                 Order = 4
             });
 
-
             //JS
 
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {
                 Type = UIResourceRequirementType.Javascript,
                 ResourceUrl = "https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js",
-                Order =1000
+                Order = 1000
             });
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {
@@ -166,7 +151,6 @@ namespace RawCMS.Plugins.Core
                 ResourceUrl = "https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js",
                 Order = 1002
             });
-
 
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {
@@ -203,14 +187,12 @@ namespace RawCMS.Plugins.Core
                 Order = 1007
             });
 
-
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {
                 Type = UIResourceRequirementType.Javascript,
                 ResourceUrl = "https://cdn.jsdelivr.net/npm/vue-formly@2.5.8/dist/vue-formly.min.js",
                 Order = 1008
             });
-
 
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {
@@ -244,8 +226,8 @@ namespace RawCMS.Plugins.Core
                 Type = UIResourceRequirementType.Javascript,
                 ResourceUrl = "https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js",
                 Order = 1013
-            }); 
-            
+            });
+
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {
                 Type = UIResourceRequirementType.Javascript,

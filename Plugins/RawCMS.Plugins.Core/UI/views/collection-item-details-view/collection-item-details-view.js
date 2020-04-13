@@ -1,22 +1,22 @@
 import { CollectionItemDetailsDef } from "/app/modules/core/components/collection-item-details/collection-item-details.js";
 
 const _CollectionItemDetailsView = async (res, rej) => {
-  const tpl = await RawCMS.loadComponentTpl(
-    "/app/modules/core/views/collection-item-details-view/collection-item-details-view.tpl.html"
-  );
-  const collectionItemDetails = await CollectionItemDetailsDef();
+    const tpl = await RawCMS.loadComponentTpl(
+        "/app/modules/core/views/collection-item-details-view/collection-item-details-view.tpl.html"
+    );
+    const collectionItemDetails = await CollectionItemDetailsDef();
 
-  res({
-    components: {
-      CollectionItemDetails: collectionItemDetails
-    },
-    computed: {
-      collectionName: function() {
-        return this.$route.params.collName;
-      }
-    },
-    template: tpl
-  });
+    res({
+        components: {
+            CollectionItemDetails: collectionItemDetails
+        },
+        computed: {
+            collectionName: function () {
+                return this.$route.params.collName;
+            }
+        },
+        template: tpl
+    });
 };
 
 export const CollectionItemDetailsView = _CollectionItemDetailsView;

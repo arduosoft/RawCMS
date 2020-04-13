@@ -1,0 +1,9 @@
+{
+    "logs": {
+        "detail": {
+            "updateTitle": "Logs for {name}",
+            "search": "Search"
+        },
+        "title": "Logs"
+    }
+}

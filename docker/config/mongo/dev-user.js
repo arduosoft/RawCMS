@@ -1,6 +1,6 @@
 db.auth("root", "password");
 
-db = db.getSiblingDB("admin");
+db = db.getSiblingDB("rawcms");
 
 db.createUser({
   user: "dev",
@@ -8,6 +8,10 @@ db.createUser({
   roles: [
     {
       role: "readWrite",
+      db: "rawcms"
+    },
+    {
+      role: "dbOwner",
       db: "rawcms"
     }
   ]

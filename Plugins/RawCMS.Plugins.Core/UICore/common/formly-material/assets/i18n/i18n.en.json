@@ -1,8 +1,8 @@
 {
-  "formly": {
-    "clearBtn": "Clear",
-    "validation": {
-      "required": "This field is required"
+    "formly": {
+        "clearBtn": "Clear",
+        "validation": {
+            "required": "This field is required"
+        }
     }
-  }
 }
