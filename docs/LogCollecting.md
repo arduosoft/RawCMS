@@ -1,7 +1,7 @@
 # Log Collecting
 
-This module enables the log collecting feature. Logs are isolated by application. A "default" application is created automatically.
-Each application has a Public ID. This ID is the public key used for sending log through http request.
+This module enables the log collecting feature. The application isolates logs. A "default" application created automatically.
+Each application has a Public ID. This ID is the public key used for sending log through an HTTP request.
 
 *Note:* for performance log must be added in bulk mode, one call with multiple rows.
 
@@ -18,7 +18,7 @@ BODY
 
 ```
 
-*Serverity values:*
+*Severity values:*
 
 ```
 	ALL = 0,
@@ -31,10 +31,10 @@ BODY
 ```
 
 
-Items are processed in background and may need up to a minute to be visible.
+Items are processed in the background and may need up to a minute to be visible.
 
 ## Read logs by API
-Api logs are avaiable by regular fulltext api, like this:
+API logs are available by regular full-text API, like this:
 
 ```
 GET /api/FullText/doc/search/log_<APPLICATION_PUBLIC_ID>?searchQuery=level:>=1 AND message:Prova&start=0&size=20
