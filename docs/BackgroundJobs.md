@@ -1,14 +1,16 @@
-# Background Jobs
-It is possible to schedule background jobs inside the application. This can be done in two way.
 
-1. C# code using plugin
+# Background Jobs
+It is possible to schedule background jobs inside the application. This job can be done in two ways.
+
+1. C# code using the plugin
 2. JS code using UI
 
-## C# code using plugin
+## C# code using the plugin
 Inside your plugin you have to implement a Lamba with background job role. Here a sample:
 
 ```cs 
  public class PingJob : BackgroundJobInstance
+
 {
     public override string CronExpression => Hangfire.Cron.Minutely();
 
