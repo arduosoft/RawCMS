@@ -69,7 +69,7 @@ axios({
                 vuelidate: vuelidate,
                 render: h => h(appCmp)
             });
-
+            
             RawCMS.vue = vue;
             vue.$mount("#app");
         });

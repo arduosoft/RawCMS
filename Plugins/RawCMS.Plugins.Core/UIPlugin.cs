@@ -221,26 +221,26 @@ namespace RawCMS.Plugins.Core
                 Order = 1012
             });
 
-            metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
-            {
-                Type = UIResourceRequirementType.Javascript,
-                ResourceUrl = "https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js",
-                Order = 1013
-            });
+            //metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
+            //{
+            //    Type = UIResourceRequirementType.Javascript,
+            //    ResourceUrl = "https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js",
+            //    Order = 1013
+            //});
 
-            metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
-            {
-                Type = UIResourceRequirementType.Javascript,
-                ResourceUrl = "https://d3js.org/d3-color.v1.min.js",
-                Order = 1014
-            });
+            //metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
+            //{
+            //    Type = UIResourceRequirementType.Javascript,
+            //    ResourceUrl = "https://d3js.org/d3-color.v1.min.js",
+            //    Order = 1014
+            //});
 
-            metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
-            {
-                Type = UIResourceRequirementType.Javascript,
-                ResourceUrl = "https://d3js.org/d3-interpolate.v1.min.js",
-                Order = 1015
-            });
+            //metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
+            //{
+            //    Type = UIResourceRequirementType.Javascript,
+            //    ResourceUrl = "https://d3js.org/d3-interpolate.v1.min.js",
+            //    Order = 1015
+            //});
 
             metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
             {
@@ -255,6 +255,20 @@ namespace RawCMS.Plugins.Core
                 ResourceUrl = "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/vs/loader.js",
                 Order = 1017
             });
+
+            //metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
+            //{
+            //    Type = UIResourceRequirementType.Javascript,
+            //    ResourceUrl = "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js",
+            //    Order = 1018
+            //});
+
+            //metadata.Requirements.Add(new Library.UI.UIResourceRequirement()
+            //{
+            //    Type = UIResourceRequirementType.Javascript,
+            //    ResourceUrl = "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js",
+            //    Order = 1019
+            //});
 
             return metadata;
         }

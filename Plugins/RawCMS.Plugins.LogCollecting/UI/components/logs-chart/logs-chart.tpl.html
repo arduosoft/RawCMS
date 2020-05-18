@@ -1,0 +1,7 @@
+﻿<v-card tile :loading="isLoading">
+    <v-card-text class="d-flex justify-center">
+        <line-chart :context="chartData"
+                    :options="chartOptions"
+                    :width="chartWidth"/>
+    </v-card-text>
+</v-card>

@@ -16,8 +16,9 @@ namespace RawCMS.Plugins.KeyStore.Controllers
 {
     [AllowAnonymous]
     [RawAuthentication]
+    [ApiController]
     [Route("api/[controller]")]
-    public class KeyStoreController : Controller
+    public class KeyStoreController : ControllerBase
     {
         private KeyStoreService service;
 

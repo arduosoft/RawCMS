@@ -4,6 +4,7 @@ using RawCMS.Library.Schema;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.FullText.Core;
 using RawCMS.Plugins.LogCollecting.Controllers;
+using RawCMS.Plugins.LogCollecting.Model;
 using RawCMS.Plugins.LogCollecting.Models;
 
 namespace RawCMS.Plugins.LogCollecting.Services
@@ -27,6 +28,27 @@ namespace RawCMS.Plugins.LogCollecting.Services
         public void PersistLog(string applicationId, LogEntity data)
         {
             this.fullTextService.AddDocumentRaw(applicationId, data);
+        }
+
+        public List<LogStatistic> GetStatistic(string applicationId = null)
+        {
+            var applications = this.crudService.Query<Application>("application", new Library.DataModel.DataQuery
+            {
+                PageSize = int.MaxValue
+            }).Items.ToList();
+            
+            var logs = this.logQueue.GetQueueStatistic(applicationId);
+
+            return applications.Join(logs,
+                x => x.PublicId.ToString(), 
+                y => y.ApplicationId,
+                (x, y) => new LogStatistic
+                {
+                    ApplicationId = y.ApplicationId,
+                    ApplicationName = x.Name,
+                    Count = y.Count,
+                    Time = y.Time
+                }).ToList(); 
         }
 
         public void EnqueueLog(string applicationId, List<LogEntity> data)

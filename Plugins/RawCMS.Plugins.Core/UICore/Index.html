@@ -60,8 +60,9 @@
 
     <!--CSS-->
 </head>
-
 <body>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js'></script>
     <noscript>
         <strong>
             We're sorry but Raw CMS GUI doesn't work properly without JavaScript
@@ -73,26 +74,26 @@
     <!--SCRIPTS-->
     <!-- MONACO config-->
     <script>
-      require.config({
-        paths: {
-          vs:
-            "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/vs/"
-        }
-      });
+        require.config({
+            paths: {
+                vs:
+                    "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/vs/"
+            }
+        });
 
-      // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
-      // the default worker url location (used when creating WebWorkers). The problem here is that
-      // HTML5 does not allow cross-domain web workers, so we need to proxy the instantiation of
-      // a web worker through a same-domain script
-      window.MonacoEnvironment = {
-        getWorkerUrl: function(workerId, label) {
-          return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
-            self.MonacoEnvironment = {
-              baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/'
-            };
-            importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/vs/base/worker/workerMain.js');`)}`;
-        }
-      };
+        // Before loading vs/editor/editor.main, define a global MonacoEnvironment that overwrites
+        // the default worker url location (used when creating WebWorkers). The problem here is that
+        // HTML5 does not allow cross-domain web workers, so we need to proxy the instantiation of
+        // a web worker through a same-domain script
+        window.MonacoEnvironment = {
+            getWorkerUrl: function (workerId, label) {
+                return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+                    self.MonacoEnvironment = {
+                      baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/'
+                    };
+                    importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.18.0/min/vs/base/worker/workerMain.js');`)}`;
+            }
+        };
     </script>
 
     <!-- Main app files -->

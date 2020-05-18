@@ -6,9 +6,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Folder Include="Controllers\" />
-	  <Folder Include="UI\components\" />
-	  <Folder Include="UI\services\" />
 	  <Folder Include="UI\views\" />
 	</ItemGroup>
 

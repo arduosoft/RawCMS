@@ -10,7 +10,8 @@ using RawCMS.Plugins.LogCollecting.Services;
 namespace RawCMS.Plugins.LogCollecting.Controllers
 {
     [Route("api/[controller]")]
-    public class LogIngressController : Controller
+    [ApiController]
+    public class LogIngressController : ControllerBase
     {
         protected LogService service;
         protected BackgroundJobService jobs;

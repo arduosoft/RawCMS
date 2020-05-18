@@ -28,4 +28,18 @@ services:
         soft: -1
         hard: -1
     ports:
-      - 9300:9200
+      - 9300:9200  
+  rawcms-app:
+    build:
+      dockerfile: ./docker/Dockerfile
+      context: ../
+    depends_on:
+      - mongo
+      - elasticsearchtest
+    ports:
+      - "6580:80"
+      - "6543:443"
+    environment:
+      - MongoSettings__ConnectionString=mongodb://dev:password@mongo:27017/rawcms
+      - PORT=80
+      - ASPNETCORE_ENVIRONMENT=Docker

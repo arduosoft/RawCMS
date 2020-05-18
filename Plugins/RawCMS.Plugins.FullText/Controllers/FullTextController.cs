@@ -19,8 +19,9 @@ namespace RawCMS.Plugins.FullText.Controllers
 {
     [AllowAnonymous]
     [RawAuthentication]
+    [ApiController]
     [Route("api/[controller]")]
-    public class FullTextController : Controller
+    public class FullTextController : ControllerBase
     {
         protected FullTextService service;
 

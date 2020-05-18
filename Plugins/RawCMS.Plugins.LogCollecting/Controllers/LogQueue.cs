@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using RawCMS.Plugins.LogCollecting.Model;
 using RawCMS.Plugins.LogCollecting.Models;
 
 namespace RawCMS.Plugins.LogCollecting.Controllers
@@ -67,6 +69,17 @@ namespace RawCMS.Plugins.LogCollecting.Controllers
                 QueueSize = this.MaxQueueSize,
                 Time = DateTime.Now
             });
+        }
+
+        public List<LogStatistic> GetQueueStatistic(string applicationId = null)
+        {
+            var array = this.queque.ToArray();
+            if (!string.IsNullOrEmpty(applicationId))
+            {
+                array = array.Where(x => x.ApplicationId.Equals(applicationId)).ToArray();
+            }
+            var time = DateTime.Now;
+            return array.GroupBy(x => x.ApplicationId).Select(x => new LogStatistic { ApplicationId = x.Key, Count = x.Key.Count(), Time = time }).ToList();
         }
     }
 }
