@@ -13,13 +13,15 @@ RawCMS is a headless CMS written in ASP.NET Core, built for developers that embr
 - 📚 [API Documentation](https://raw.githubusercontent.com/arduosoft/RawCMS/master/docs/RawCMS.postman_collection.json)
 - 🐞 [Issue Tracker](https://github.com/arduosoft/RawCMS/issues) - Report bugs or suggest new features
 - 👪 [Community Chat](https://gitter.im/arduosoft/RawCMS-Headless-CMS-Aspnet) - Gitter
-- 🍕 [Demo](http://rawcms-demo.herokuapp.com/)  login with bob\XYZ. It is on a free tier, so be patient (you may need to click login button twice).
+- 🍕 [Demo](http://rawcms-demo.herokuapp.com/)  login with **bob\XYZ**. It is on a free tier, so be patient (you may need to click login button twice).
 
 ## Contribution
 
 We are actively seeking contribution to continue improving our open source project. Any kind of help is welcome. *Just a star on the project is a lot.* If you would like to contribute as a developer, you can join the project by [filling out this form](https://forms.gle/dddbHWzcxypN9rpx9) or by opening an issue. Any other kind of contribution, from docs to tests, is also welcome.
 
-**The easy contribution you can give us is share your impression about the project. [Please invest 1 minute of your time to fill a quick survery and tell your opinion](https://forms.gle/wvu1HF9P52ZdXujv6)**
+
+📣 Please fill out our [fast 5-question survey](https://forms.gle/wvu1HF9P52ZdXujv6) so that we can learn what do you think about RawCMS, how you are using it, and what improvements we should make. Thank you! 👯
+
 
 
 ## Key Benefits and Advantages
