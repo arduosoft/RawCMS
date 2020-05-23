@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using RawCMS.Library.Schema;
+﻿using RawCMS.Library.Schema;
 using RawCMS.Library.Service;
 using RawCMS.Plugins.FullText.Core;
 using RawCMS.Plugins.LogCollecting.Controllers;
 using RawCMS.Plugins.LogCollecting.Model;
 using RawCMS.Plugins.LogCollecting.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RawCMS.Plugins.LogCollecting.Services
 {
@@ -36,11 +36,11 @@ namespace RawCMS.Plugins.LogCollecting.Services
             {
                 PageSize = int.MaxValue
             }).Items.ToList();
-            
+
             var logs = this.logQueue.GetQueueStatistic(applicationId);
 
             return applications.Join(logs,
-                x => x.PublicId.ToString(), 
+                x => x.PublicId.ToString(),
                 y => y.ApplicationId,
                 (x, y) => new LogStatistic
                 {
@@ -48,7 +48,7 @@ namespace RawCMS.Plugins.LogCollecting.Services
                     ApplicationName = x.Name,
                     Count = y.Count,
                     Time = y.Time
-                }).ToList(); 
+                }).ToList();
         }
 
         public void EnqueueLog(string applicationId, List<LogEntity> data)
@@ -78,7 +78,7 @@ namespace RawCMS.Plugins.LogCollecting.Services
             while (processedLog < LOG_PROCESSING_SIZE && (batch = this.logQueue.Dequeue(PROCESSING_ENTRY_COUNT)).Count > 0)
             {
                 var appsId = batch.Select(x => x.ApplicationId).Distinct();
-                foreach(var appId in appsId)
+                foreach (var appId in appsId)
                 {
                     indexname = "log_" + applications.FirstOrDefault(x => x.PublicId.ToString().Equals(appId)).Id;
                     this.fullTextService.BulkAddDocument<LogEntity>(indexname, batch.Where(x => x.ApplicationId.Equals(appId)).ToList());

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +10,7 @@ using RawCMS.Library.Core.Interfaces;
 using RawCMS.Library.Service;
 using RawCMS.Library.UI;
 using RawCMS.Plugins.Core.Configuration;
+using System.IO;
 
 namespace RawCMS.Plugins.Core
 {

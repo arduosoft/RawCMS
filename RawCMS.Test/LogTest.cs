@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RawCMS.Plugins.LogCollecting.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -19,7 +18,6 @@ namespace RawCMS.Test
             var client = new HttpClient();
             client.BaseAddress = new Uri("https://localhost:44318/");
 
-
             do
             {
                 var logs = Enumerable.Range(1, rand.Next(50, 100)).Select(index => new LogEntity
@@ -36,7 +34,6 @@ namespace RawCMS.Test
                 var resp2 = client.PostAsync("api/logingress/4187e72b-4565-4100-8319-92471b338af1", content).Result;
 
                 System.Threading.Thread.Sleep(1000);
-
             } while (DateTime.Now.Subtract(start).TotalSeconds < 30);
         }
     }

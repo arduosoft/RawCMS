@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Primitives;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Primitives;
 
 namespace RawCMS.Plugins.Core.Middlewares
 {

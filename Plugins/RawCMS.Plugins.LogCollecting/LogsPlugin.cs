@@ -1,5 +1,4 @@
-﻿using System;
-using Hangfire;
+﻿using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +11,7 @@ using RawCMS.Library.UI;
 using RawCMS.Plugins.LogCollecting.Config;
 using RawCMS.Plugins.LogCollecting.Jobs;
 using RawCMS.Plugins.LogCollecting.Services;
+using System;
 
 namespace RawCMS.Plugins.LogCollecting
 {

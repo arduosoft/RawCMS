@@ -10,7 +10,6 @@ const _LineLogsChart = async () => {
     return {
         computed: {
             chartData: function () {
-
                 return this.context;
             }
         },
@@ -37,7 +36,6 @@ const _LineLogsChart = async () => {
     };
 };
 
-
 const _LogsChartdDef = async () => {
     const lineLogsChart = await _LineLogsChart();
     const tpl = await RawCMS.loadComponentTpl(
@@ -62,7 +60,7 @@ const _LogsChartdDef = async () => {
                 }
                 return res;
             }, {
-                    fallbackValue: []
+                fallbackValue: []
             });
 
             this.model.datasets = [];
@@ -80,7 +78,6 @@ const _LogsChartdDef = async () => {
                     return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
                 };
                 data.forEach(app => {
-                    
                     let dataApp = {};
                     if (!this.model.datasets.find(x => x.applicationId == app.applicationId)) {
                         dataApp.label = app.applicationName;
@@ -96,7 +93,7 @@ const _LogsChartdDef = async () => {
                         dataApp.data.push(app.count);
                         dataApp.data.splice(0, 1);
                         dataset.push(dataApp);
-                    }    
+                    }
                 });
 
                 this.model.datasets.forEach(app => {

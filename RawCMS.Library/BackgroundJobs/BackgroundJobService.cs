@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Hangfire;
+﻿using Hangfire;
 using Hangfire.Mongo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +9,10 @@ using RawCMS.Library.Core.Helpers;
 
 //using Hangfire.Mongo;
 using RawCMS.Library.DataModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace RawCMS.Library.BackgroundJobs
 {

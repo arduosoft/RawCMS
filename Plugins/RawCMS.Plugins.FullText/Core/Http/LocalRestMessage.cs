@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using RawCMS.Library.JavascriptClient;
+﻿using RawCMS.Library.JavascriptClient;
+using System.Collections.Generic;
 
 namespace RawCMS.Plugins.FullText.Core.Http
 {
