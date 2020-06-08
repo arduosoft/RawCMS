@@ -73,7 +73,7 @@ namespace RawCMS
 
                     if (url != null)
                     {
-                        webBuilder.UseUrls(url);
+                        webBuilder.UseKestrel().UseUrls(url);
                     }
                 }).Build().Run();
         }
