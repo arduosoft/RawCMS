@@ -1,14 +1,14 @@
-# Autentication
+# Authentication
 
-Authentication module allows to authenticate users in two way:
+Authentication module allows to authenticate users in two ways:
 
 - using RawCMS provider
 - using external providers
 
-RawCMS provider uses identity server 4 like internal IDP and exposes parts of its features.
+RawCMS provider uses identity server four like internal IDP and exposes parts of its features.
 The main target of RawCMS authentication is:
 
-- identify a user and use user info to make different things (i.e. profile data and feature)
+- identify a user and use user info to make different things (i.e., profile data and feature)
 - use an external identity server to validate the user and get user info
 - in case you do not have an identity server, RawCMS can act as an identity server
 
@@ -16,8 +16,7 @@ Please do not consider RawCMS as an identity server: we expose only minimal feat
 
 ## RawCMS Provider
 
-Like all [configurable plugin](https://rawcms.readthedocs.io/en/latest/Configurable-Plugins/) of RawCMS, athentication
-module can be configurable.
+Like all [configurable plugin](https://rawcms.readthedocs.io/en/latest/Configurable-Plugins/) of RawCMS, the authentication module can be configurable.
 
 ```json
 {
@@ -33,12 +32,11 @@ module can be configurable.
 }
 ```
 
-RawCMSProvider property allows us to configure IdentityServer, on the next paragraph we can see how can get token
-for the user.
+RawCMSProvider property allows us to configure IdentityServer; in the next paragraph, we can see how we can get a token for the user.
 
 ## Users
 
-When user are stored locally, they are saved into `_users` collection, with following structure
+When the user is stored locally, they saved into `_users` collection, with the following structure
 
 ```json
 {
@@ -221,8 +219,7 @@ External Roles are managed using RoleClaimType property and on the login process
 
 ## AUTH0 like provider
 
-In this chapter we can see how configure [Auth0](https://auth0.com/) like identity provider for single page application and integrate
-it with RawCMS.
+In this chapter, we can see how to configure [Auth0](https://auth0.com/) like identity provider for single page application and integrate it with RawCMS.
 
 - Create new application
 
@@ -230,7 +227,7 @@ it with RawCMS.
 
 - Configure application
   - set _Application type_ with Single Page Application
-  - set _Allowed Callback URLs_ with SPA url (http://localhost:8080/)
+  - set _Allowed Callback URLs_ with SPA URL (http://localhost:8080/)
 - Get parameters
 
   - ClientId

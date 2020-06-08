@@ -10,7 +10,7 @@ You can deploy it using many options. Rawcms is dockerized from the development 
 3. *Heroku* using the provided images
 4. *Virtual machines* using the packges provided and deployed manually to the server
 
-[Just follow the guide to have it working in 5 minutes](Deploy)
+[Just follow the guide to have it working in 5 minutes](Deploy) and watch [video tutorials](Tutorial) for a quickstart. 
 
 ### Customize
 
@@ -44,3 +44,4 @@ You can deploy it using many options. Rawcms is dockerized from the development 
 - [Api Test](APITest)
 - [Setup for development](Setup-Dev)
 - [Background Jobs](BackgroundJobs)
+- [Troubleshooting](Troubleshooting)
