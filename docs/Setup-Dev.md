@@ -10,7 +10,16 @@
 
 # Configuration
 
-## Setup postman and visual studio
+## Initial Local Setup For contributors
+
+Open the terminal, move to the docker folder of rawCms project, then digit **docker-compose up**.
+Open the project on Visual Studio and start it. This will activate a mongodb installation, with a preconfigured database. 
+Please doublecheck the port number of appsettings.json file and the one exposed by docker compose. Must be the same.
+**Non docker user** for user that do not have docker, you can install mongodb locally and change the port number according.
+
+[![Docker RawCMS setup](http://img.youtube.com/vi/vFgC9N6bb3Q/0.jpg)](http://www.youtube.com/watch?v=vFgC9N6bb3Q)
+
+## Setup postman
 
 On Postman import the collection file rawCMS/docs/RawCMS.postman_collection.json.
 After that, open any collection and copy the port number from the link (should be 28436).
