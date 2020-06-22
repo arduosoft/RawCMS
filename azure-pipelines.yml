@@ -37,3 +37,14 @@ steps:
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker Registry Arduosoft'
+    repository: 'arduosoft/RawCms'
+    command: 'buildAndPush'
+    Dockerfile: 'docker/Dockerfile'
+    buildContext: '.'
+    tags: |
+      $(Build.BuildId)
+      latest
