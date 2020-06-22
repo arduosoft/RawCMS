@@ -41,7 +41,7 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'Docker Registry Arduosoft'
-    repository: 'arduosoft/RawCms'
+    repository: 'arduosoft/rawcms-alpha'
     command: 'buildAndPush'
     Dockerfile: 'docker/Dockerfile'
     buildContext: '.'
