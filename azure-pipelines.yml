@@ -48,3 +48,29 @@ steps:
     tags: |
       $(Build.BuildId)
       latest
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'docker'
+    Contents: 'Dockerfile'
+    TargetFolder: '$(Build.Repository.LocalPath)'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      #install heroku
+      sudo apt update
+      sudo apt install snapd -y
+      echo "HEROKU INSTALL"
+      sudo snap install --classic heroku
+      sudo apt-get install nodejs
+      export PATH="$PATH:/snap/bin"
+      heroku
+      echo "Set token"
+      export HEROKU_API_KEY="$(HEROKU_TOKEN)"
+      heroku container:login
+      
+      echo "login"
+      heroku container:push web -a rawcms-preview
+      heroku container:release web -a rawcms-preview
