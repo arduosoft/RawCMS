@@ -1,2 +1,6 @@
 bin\
 obj\
+.vs
+.github
+.git
+log

@@ -1,0 +1,16 @@
+<list-wrapper v-on="$listeners">
+    <template v-slot:content="slotProps">
+        <v-list-item-content>
+            <v-list-item-title v-html="slotProps.item.CollectionName"></v-list-item-title>
+        </v-list-item-content>
+    </template>
+    <template v-slot:delete-confirm-msg="slotProps">
+        {{
+ $t('core.entities.deleteConfirmMsgTpl', { name:
+    slotProps.item.CollectionName })
+        }}
+    </template>
+    <template v-slot:empty-content="slotProps">
+        {{ $t('core.entities.emptyMsg') }}
+    </template>
+</list-wrapper>
