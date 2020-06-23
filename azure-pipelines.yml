@@ -49,8 +49,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: 'RawCMS.Client\RawCMS.Client.csproj'
-    arguments: ' --output $(Build.ArtifactStagingDirectory)'
+    arguments: 'RawCMS.Client\RawCMS.Client.csproj --output $(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   inputs:
