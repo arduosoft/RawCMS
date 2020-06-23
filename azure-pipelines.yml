@@ -42,13 +42,15 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: 'RawCMS\RawCMS.csproj --output $(Build.ArtifactStagingDirectory)'
+    projects: 'RawCMS\RawCMS.csproj'
+    arguments: ' --output $(Build.ArtifactStagingDirectory)'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: 'RawCMS.Client\RawCMS.Client.csproj --output $(Build.ArtifactStagingDirectory)'
+    projects: 'RawCMS.Client\RawCMS.Client.csproj'
+    arguments: ' --output $(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   inputs:
