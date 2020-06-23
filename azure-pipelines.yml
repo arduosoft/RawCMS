@@ -39,6 +39,7 @@ steps:
     pollingTimeoutSec: '300'
 
 - task: Docker@2
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     containerRegistry: 'Docker Registry Arduosoft'
     repository: 'arduosoft/rawcms-alpha'
@@ -50,12 +51,14 @@ steps:
       latest
 
 - task: CopyFiles@2
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     SourceFolder: 'docker'
     Contents: 'Dockerfile'
     TargetFolder: '$(Build.Repository.LocalPath)'
 
 - task: Bash@3
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     targetType: 'inline'
     script: |
