@@ -49,11 +49,19 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
+    zipAfterPublish: true
+    modifyOutputPath: true
     arguments: 'RawCMS.Client\RawCMS.Client.csproj --output $(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\RawCms.zip'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\RawCms.Client.zip'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
