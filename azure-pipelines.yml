@@ -46,17 +46,17 @@ steps:
       #!/usr/bin/env bash
 
       dotnet publish RawCMS/RawCMS.csproj --output $(Build.BinariesDirectory) --configuration Release &&\
-            
-      ls -1 Plugins/*/*.csproj | while read folder; do 
+ 
+      ls -1 Plugins/*/*.csproj | while read folder; do
 
           IFS='/' # hyphen (-) is set as delimiter
           read -ra parts <<<$folder # str is read into an array as tokens separated by IFS
           IFS=' ' # reset to default value after usage
-      
+
       echo "building $folder and plugin ${parts[1]}"
          dotnet publish $folder --configuration Release --output $(Build.BinariesDirectory)/Plugins/${parts[1]}/
       done
-      
+
       echo "change settings"
       rm $(Build.BinariesDirectory)/appsettings.json
       rm $(Build.BinariesDirectory)/appsettings.Docker.json
@@ -65,13 +65,13 @@ steps:
       mv $(Build.BinariesDirectory)/appsettings.Release.json $(Build.BinariesDirectory)/appsettings.json
 
       echo "build output"
-      ls $(Build.BinariesDirectory) -lhs 
+      ls $(Build.BinariesDirectory) -lhs
       echo "settings"
-      cat $(Build.BinariesDirectory)/appsettings.json  
+      cat $(Build.BinariesDirectory)/appsettings.json
       echo "plugins"
-      ls $(Build.BinariesDirectory)/Plugins -lhs 
-      echo "plugin content" 
-      ls -1 $(Build.BinariesDirectory)/Plugins | while read folder; do 
+      ls $(Build.BinariesDirectory)/Plugins -lhs
+      echo "plugin content"
+      ls -1 $(Build.BinariesDirectory)/Plugins | while read folder; do
         echo "building $folder"
         ls  $(Build.BinariesDirectory)/Plugins/$folder -lhs
       done

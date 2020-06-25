@@ -28,7 +28,7 @@ services:
         soft: -1
         hard: -1
     ports:
-      - 9300:9200  
+      - 9300:9200
   rawcms-app:
     image: arduosoft/rawcms-alpha
     depends_on:
