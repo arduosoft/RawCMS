@@ -64,7 +64,7 @@ steps:
          dotnet publish $folder --configuration Release --output $(Build.BinariesDirectory)/Plugins/${parts[1]}/
       done
       
-      ls $(Build.BinariesDirectory)/plugins -lh
+      ls $(Build.BinariesDirectory)/Plugins -lh
       done
     noProfile: false
     noRc: false
