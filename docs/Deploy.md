@@ -1,37 +1,22 @@
 ## Deply on docker containers
 
-You can start from the base docker-compose. At the moment we have two images, one for the api and one for the ui. This means you have two containers. Both of them must be reachable by the user, so they have to be exposed. The following example creates and sets using local address and port mapping. On production you have to change them with public url. You can bind directly the port, even this may be tricky in case you want to use standard ports and the machine is not embedded for this application. Moreover, to enable https and get more control about traffic, it is suggested to run all the containers under a nginx proxy.
+You can start from the base docker-compose. 
+The following example creates and sets using local address and port mapping. On production you have to change them with public url. You can bind directly the port, even this may be tricky in case you want to use standard ports and the machine is not embedded for this application. Moreover, to enable https and get more control about traffic, it is suggested to run all the containers under a nginx proxy.
 
 ```yaml
 version: "3"
 services:
-  rawcms-api:
-    image: arduosoft/rawcms-api-preview:latest
-    ports:
-      - "3581:3581"
-    environment:
-      - MongoSettings__ConnectionString=mongodb://root:password@mongo:27017/rawcms?authSource=admin
-      - PORT=3581
-      - ASPNETCORE_ENVIRONMENT=Docker
-      - ASPNETCORE_SERVER_URLS=http://*:3581
-  rawcms-ui:
-    image: arduosoft/rawcms-ui-preview:latest
-    environment:
-      - BASE_URL=http://localhost:3581
-      - CLIENT_ID=raw.client
-      - CLIENT_SECRET=raw.secret
-
-    ports:
-      - "3681:80"
   mongo:
     image: mongo
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=password
       - MONGO_INITDB_DATABASE=rawcms
+      - MONGO_INITDB_USERNAME=dev
+      - MONGO_INITDB_PASSWORD=password
     ports:
-      - 38017:27017
-  elasticsearch:
+      - 28017:27017
+  elasticsearchtest:
     image: elasticsearch:7.4.0
     environment:
       - discovery.type=single-node
@@ -45,7 +30,19 @@ services:
         soft: -1
         hard: -1
     ports:
-      - 4200:9200
+      - 9300:9200  
+  rawcms-app:
+    image: arduosoft/rawcms-alpha
+    depends_on:
+      - mongo
+      - elasticsearchtest
+    ports:
+      - "6580:80"
+      - "6543:443"
+    environment:
+      - MongoSettings__ConnectionString=mongodb://dev:password@mongo:27017/rawcms
+      - PORT=80
+      - ASPNETCORE_ENVIRONMENT=Docker
 ```
 
 Api will be available at http://localhost:3680 (api http://localhost:3580).
@@ -54,49 +51,24 @@ You can find documentationa about each docker image on [docker hub](https://hub.
 
 ## Deploy on heroku
 
-As the CMS is released in two different containers, you need to deploy two different application
-
-### Deploy UI on Heroku
-
-1. Create an app, ie. your-demo-ui
+1. Create an app, ie. your-demo-rawcms
 2. Set the environment variables. See later the variable mapping.
 3. Deploy using the heroku cli
 
 **Variables**
 
 ```bash
-BASE_URL=<your api heroky url, i.e your-demo-api.herokuapp.com>
-CLIENT_ID=raw.client
-CLIENT_SECRET=raw.secret
+ASPNETCORE_ENVIRONMENT=Docker
+ASPNETCORE_SERVER_URLS=http://*:$PORT
+MongoSettings__ConnectionString=<your connection string for mongodb service>
 GOOGLE_ANALITYCS= <your api key on GA, optional>
 ```
 
 **deploy**
 
 ```bash
-heroku container:push web -a your-demo-ui
-heroku container:release web -a your-demo-ui
-
-```
-
-### Deploy API on Heroku
-
-1. Create an app, ie. your-demo-ui
-2. Set the environment variables. See later the variable mapping.
-3. Deploy using the heroku cli
-
-**Variables**
-
-```bash
-MongoSettings__ConnectionString=<url to mongo db, a mongo atlas free account can be OK>
-ASPNETCORE_ENVIRONMENT=Docker
-```
-
-**deploy**
-
-```bash
-heroku container:push web -a your-demo-api
-heroku container:release web -a your-demo-api
+heroku container:push web -a your-demo-rawcms
+heroku container:release web -a your-demo-rawcms
 
 ```
 
@@ -106,15 +78,15 @@ A simple configuration for Kubernetes can be made using following yaml files
 
 ### UI
 
-save this file as ui.yml
+save this file as rawcms.yml
 
 ```yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: ui
+  name: rawcms
   labels:
-    run: ui
+    run: rawcms
 spec:
   type: ClusterIP
   ports:
@@ -123,79 +95,31 @@ spec:
       protocol: TCP
       name: http
   selector:
-    run: ui
+    run: rawcms
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ui
+  name: rawcms
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        run: ui
+        run: rawcms
     spec:
       containers:
-        - name: api
-          image: arduosoft/rawcms-ui-preview
+        - name: rawcms
+          image: arduosoft/rawcms-alpha
           imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
             ## use secret on production
-            - name: BASE_URL
-              value: <your api url>
-            - name: CLIENT_ID
-              value: raw.client
-            - name: CLIENT_ID
-              value: raw.secret
-```
-
-## API
-
-save this snippet as api.yml
-
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: api
-  labels:
-    run: api
-spec:
-  type: ClusterIP
-  ports:
-    - port: 80
-      targetPort: 80
-      protocol: TCP
-      name: http
-  selector:
-    run: api
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: api
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        run: api
-    spec:
-      containers:
-        - name: api
-          image: arduosoft/rawcms-api-preview
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 80
-          env:
-            ## use secret on production
-            - name: MongoSettings__ConnectionString
-              value: <your mongodb url>
             - name: ASPNETCORE_ENVIRONMENT
               value: Docker
+            - name: MongoSettings__ConnectionString
+              value: <your connectionstring for mondodb  service>
 ```
 
 ### Ingress
@@ -211,18 +135,11 @@ metadata:
     # kubernetes.io/ingress.class: addon-http-application-routing # this directive is for azure AKS
 spec:
   rules:
-    - host: <my API url>
+    - host: <my url>
       http:
         paths:
           - backend:
-              serviceName: frontend
-              servicePort: 80
-            path: /
-    - host: <my API url>
-      http:
-        paths:
-          - backend:
-              serviceName: api
+              serviceName: rawcms
               servicePort: 80
             path: /
 ```
@@ -230,9 +147,7 @@ spec:
 ### Deploy it
 
 ```bash
-kubectl create -f ui.yml
-
-kubectl create -f api.yml
+kubectl create -f rawcms.yml
 
 kubectl create -f ingress.yml
 ```
@@ -242,7 +157,7 @@ You can create a kubernetes cluster from scratch using Microsoft Azure using [th
 ## Manual deployment
 
 If you want you can use the zip packages and deploy them directly. This practice is niether recommended nor supported.
-The two applications can be deployed as following:
+The applications can be deployed as following:
 
-- **UI** is a static html web site, can be serverd by nginx or all other web server. All the url must point to index.html with a rewrite rule. You can use the nginx condiguration of our [nginx container as refernence ](https://github.com/arduosoft/RawCMS/blob/master/docker/config/ui/nginx.conf)
-- **API** is a regular aspnet core application, and can be run using command 'dotnet RawCMS.dll'. IIS should work as well. It is tested on frmework 2.2 and 2.1
+- **IIS** configure IIS web side and use zip package content as resource. Change appsetting.json for configure application
+- **Kesterl** run 'dotnet RaWCms.dll' from unziped package
