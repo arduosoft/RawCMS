@@ -46,7 +46,7 @@ steps:
       #!/usr/bin/env bash
 
       dotnet publish RawCMS/RawCMS.csproj --output $(Build.BinariesDirectory) --configuration Release &&\
- 
+
       ls -1 Plugins/*/*.csproj | while read folder; do
 
           IFS='/' # hyphen (-) is set as delimiter
