@@ -45,6 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 		docs\LogCollecting.md = docs\LogCollecting.md
 		docs\Plugin.md = docs\Plugin.md
 		docs\RawCMS.postman_collection.json = docs\RawCMS.postman_collection.json
+		README.md = README.md
 		docs\Relation.md = docs\Relation.md
 		docs\Setup-Dev.md = docs\Setup-Dev.md
 		docs\TestBook.md = docs\TestBook.md
