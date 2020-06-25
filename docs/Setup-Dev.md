@@ -2,6 +2,7 @@
 
 - [Visual Studio](https://visualstudio.microsoft.com/it/thank-you-downloading-visual-studio/?sku=Community&rel=16)
 - [Visual Studio Code](https://code.visualstudio.com/)
+- [ASP.NET Core SDK 3.1.200](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 - Client Git([Fork](https://git-fork.com/) or [GitExtensions](http://gitextensions.github.io/))
 - [NodeJS last LTS](https://nodejs.org/it/download/)
 - [MongoDB Server](https://www.mongodb.com/)
@@ -35,7 +36,3 @@ Do the same for _apiKey_ and set it to _apikey_, then _Update_.
 Restart the app on Visual Studio.
 On Postman click on the collection _create user_, on headers at the entry _Authorization_ delete {{token}} and set it to _Apikey apikeyadmin_.
 On the body, change _name_ (example: "alice"), _newPassword_ (example: "alice") and set roles to _"Admin"_, then _send_.
-
-## start front-end application
-
-Open raw-cms-app under project root directory inside VSCode, open an inline terminal and run npm i (this should be done only once). When finished, run npm run serve to start the FE app.

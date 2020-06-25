@@ -1,32 +1,20 @@
 version: "3"
 services:
-  rawcms-api:
-    image: arduosoft/rawcms-api-preview
-    ports:
-      - "3580:80"
-      - "3543:443"
-    environment:
-      - MongoSettings__ConnectionString=mongodb://root:password@mongo:27017/rawcms?authSource=admin
-      - PORT=80
-      - ASPNETCORE_ENVIRONMENT=Docker
-  rawcms-ui:
-    image: arduosoft/rawcms-ui-preview
-    environment:
-      - BASE_URL=http://localhost:3580
-      - CLIENT_ID=raw.client
-      - CLIENT_SECRET=raw.secret
-    ports:
-      - "3680:80"
-      - "3643:443"
   mongo:
     image: mongo
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=password
       - MONGO_INITDB_DATABASE=rawcms
+      - MONGO_INITDB_USERNAME=dev
+      - MONGO_INITDB_PASSWORD=password
     ports:
-      - 38017:27017
-  elasticsearch:
+      - 28017:27017
+    volumes:
+      - ./data/database/seed/:/docker-entrypoint-initdb.d/seed/:ro
+      - ./config/mongo/init-mongo.sh:/docker-entrypoint-initdb.d/1init-mongo.sh:ro
+      - ./config/mongo/dev-user.js:/docker-entrypoint-initdb.d/0dev-user.js:ro
+  elasticsearchtest:
     image: elasticsearch:7.4.0
     environment:
       - discovery.type=single-node
@@ -40,4 +28,16 @@ services:
         soft: -1
         hard: -1
     ports:
-      - 4200:9200
+      - 9300:9200  
+  rawcms-app:
+    image: arduosoft/rawcms-alpha
+    depends_on:
+      - mongo
+      - elasticsearchtest
+    ports:
+      - "6580:80"
+      - "6543:443"
+    environment:
+      - MongoSettings__ConnectionString=mongodb://dev:password@mongo:27017/rawcms
+      - PORT=80
+      - ASPNETCORE_ENVIRONMENT=Docker

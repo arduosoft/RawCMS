@@ -23,17 +23,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.Core", "Plug
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6F40-4D56-ACAD-03F3C8E08137}"
 	ProjectSection(SolutionItems) = preProject
+		docs\APITest.md = docs\APITest.md
 		docs\Authentication.md = docs\Authentication.md
 		docs\BackgroundJobs.md = docs\BackgroundJobs.md
+		docs\Client.md = docs\Client.md
 		docs\Configurable-Plugins.md = docs\Configurable-Plugins.md
 		docs\Custom-Field-Validation.md = docs\Custom-Field-Validation.md
 		docs\Custom-Validation.md = docs\Custom-Validation.md
 		docs\Data-process-Lambda.md = docs\Data-process-Lambda.md
 		docs\Data-Schema.md = docs\Data-Schema.md
 		docs\Define-net-lambda.md = docs\Define-net-lambda.md
+		docs\Deploy.md = docs\Deploy.md
 		docs\Docker.md = docs\Docker.md
 		docs\Dynamic-Crud-Controller.md = docs\Dynamic-Crud-Controller.md
 		docs\Dynamic-Lambda-Controller.md = docs\Dynamic-Lambda-Controller.md
+		docs\Frontend-Lambda-Examples.md = docs\Frontend-Lambda-Examples.md
 		docs\FullText.md = docs\FullText.md
 		docs\Gateway-Plugin.md = docs\Gateway-Plugin.md
 		docs\GraphQL.md = docs\GraphQL.md
@@ -42,7 +46,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{18F5053A-6
 		docs\Plugin.md = docs\Plugin.md
 		docs\RawCMS.postman_collection.json = docs\RawCMS.postman_collection.json
 		docs\Relation.md = docs\Relation.md
+		docs\Setup-Dev.md = docs\Setup-Dev.md
 		docs\TestBook.md = docs\TestBook.md
+		docs\Troubleshooting.md = docs\Troubleshooting.md
+		docs\Tutorial.md = docs\Tutorial.md
+		docs\WebApp-Dev-Home.md = docs\WebApp-Dev-Home.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RawCMS.Plugins.GraphQL", "Plugins\RawCMS.Plugins.GraphQL\RawCMS.Plugins.GraphQL.csproj", "{2C443D9E-BDDE-4147-9EE4-7E93652EE7EC}"
