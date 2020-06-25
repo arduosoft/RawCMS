@@ -38,12 +38,65 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
-- task: DotNetCoreCLI@2
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'publish'
+#     publishWebProjects: true
+#     projects: 'RawCMS\RawCMS.csproj'
+#     zipAfterPublish: false
+#     arguments: ' --output $(Build.BinariesDirectory)'
+
+- task: Bash@3
   inputs:
-    command: 'publish'
-    publishWebProjects: true
-    projects: 'RawCMS\RawCMS.csproj'
-    arguments: ' --output $(Build.ArtifactStagingDirectory)'
+    targetType: 'inline'
+    script: |
+      #!/usr/bin/env bash
+
+      dotnet publish RawCMS/RawCMS.csproj --output $(Build.BinariesDirectory) --configuration Release &&\
+            
+      ls -1 Plugins/*/*.csproj | while read folder; do 
+
+          IFS='/' # hyphen (-) is set as delimiter
+          read -ra parts <<<$folder # str is read into an array as tokens separated by IFS
+          IFS=' ' # reset to default value after usage
+      
+      echo "building $folder and plugin ${parts[1]}"
+         dotnet publish $folder --configuration Release --output $(Build.BinariesDirectory)/Plugins/${parts[1]}/
+      done
+      
+      echo "change settings"
+      rm $(Build.BinariesDirectory)/appsettings.json
+      rm $(Build.BinariesDirectory)/appsettings.Docker.json
+      rm $(Build.BinariesDirectory)/appsettings.Development.json
+
+      mv $(Build.BinariesDirectory)/appsettings.Release.json $(Build.BinariesDirectory)/appsettings.json
+
+      echo "build output"
+      ls $(Build.BinariesDirectory) -lhs 
+      echo "settings"
+      cat $(Build.BinariesDirectory)/appsettings.json  
+      echo "plugins"
+      ls $(Build.BinariesDirectory)/Plugins -lhs 
+      echo "plugin content" 
+      ls -1 $(Build.BinariesDirectory)/Plugins | while read folder; do 
+        echo "building $folder"
+        ls  $(Build.BinariesDirectory)/Plugins/$folder -lhs
+      done
+    noProfile: false
+    noRc: false
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/RawCMS.zip'
+    replaceExistingArchive: true
+
+- task: DeleteFiles@1
+  inputs:
+    SourceFolder: '$(Build.BinariesDirectory)'
+    Contents: '**/*'
 
 - task: DotNetCoreCLI@2
   inputs:
