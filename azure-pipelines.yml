@@ -49,13 +49,25 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    zipAfterPublish: true
-    modifyOutputPath: true
-    arguments: 'RawCMS.Client\RawCMS.Client.csproj --output $(Build.ArtifactStagingDirectory)'
+    arguments: 'RawCMS.Client\RawCMS.Client.csproj --output $(Build.BinariesDirectory)'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/RawCMS.Client.zip'
+    replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/RawCMS.Client.zip'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/RawCMS.zip'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
