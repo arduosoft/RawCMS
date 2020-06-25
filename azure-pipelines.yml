@@ -64,7 +64,24 @@ steps:
          dotnet publish $folder --configuration Release --output $(Build.BinariesDirectory)/Plugins/${parts[1]}/
       done
       
-      ls $(Build.BinariesDirectory)/Plugins -lh
+      echo "change settings"
+      rm $(Build.BinariesDirectory)/appsettings.json
+      rm $(Build.BinariesDirectory)/appsettings.Docker.json
+      rm $(Build.BinariesDirectory)/appsettings.Development.json
+
+      mv $(Build.BinariesDirectory)/appsettings.Release.json $(Build.BinariesDirectory)/appsettings.json
+
+      echo "build output"
+      ls $(Build.BinariesDirectory) -lhs 
+      echo "settings"
+      cat $(Build.BinariesDirectory)/appsettings.json  
+      echo "plugins"
+      ls $(Build.BinariesDirectory)/Plugins -lhs 
+      echo "plugin content" 
+      ls -1 $(Build.BinariesDirectory)/Plugins | while read folder; do 
+        echo "building $folder"
+        ls  $(Build.BinariesDirectory)/Plugins/$folder -lhs
+      done
     noProfile: false
     noRc: false
 
