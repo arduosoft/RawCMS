@@ -38,15 +38,8 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
-# - task: DotNetCoreCLI@2
-#   inputs:
-#     command: 'publish'
-#     publishWebProjects: true
-#     projects: 'RawCMS\RawCMS.csproj'
-#     zipAfterPublish: false
-#     arguments: ' --output $(Build.BinariesDirectory)'
-
 - task: Bash@3
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     targetType: 'inline'
     script: |
@@ -86,6 +79,7 @@ steps:
     noRc: false
 
 - task: ArchiveFiles@2
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
@@ -94,17 +88,20 @@ steps:
     replaceExistingArchive: true
 
 - task: DeleteFiles@1
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     SourceFolder: '$(Build.BinariesDirectory)'
     Contents: '**/*'
 
 - task: DotNetCoreCLI@2
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     command: 'publish'
     publishWebProjects: false
     arguments: 'RawCMS.Client\RawCMS.Client.csproj --output $(Build.BinariesDirectory)'
 
 - task: ArchiveFiles@2
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
@@ -113,12 +110,14 @@ steps:
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/RawCMS.Client.zip'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
 - task: PublishBuildArtifacts@1
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/RawCMS.zip'
     ArtifactName: 'drop'
