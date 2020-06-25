@@ -65,7 +65,6 @@ steps:
       done
       
       ls $(Build.BinariesDirectory)/Plugins -lh
-      done
     noProfile: false
     noRc: false
 
