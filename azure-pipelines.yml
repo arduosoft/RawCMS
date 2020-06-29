@@ -39,7 +39,7 @@ steps:
     pollingTimeoutSec: '300'
 
 - task: Bash@3
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
   inputs:
     targetType: 'inline'
     script: |
@@ -79,7 +79,7 @@ steps:
     noRc: false
 
 - task: ArchiveFiles@2
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
@@ -88,20 +88,20 @@ steps:
     replaceExistingArchive: true
 
 - task: DeleteFiles@1
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
   inputs:
     SourceFolder: '$(Build.BinariesDirectory)'
     Contents: '**/*'
 
 - task: DotNetCoreCLI@2
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
   inputs:
     command: 'publish'
     publishWebProjects: false
     arguments: 'RawCMS.Client\RawCMS.Client.csproj --output $(Build.BinariesDirectory)'
 
 - task: ArchiveFiles@2
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
   inputs:
     rootFolderOrFile: '$(Build.BinariesDirectory)'
     includeRootFolder: false
@@ -110,40 +110,40 @@ steps:
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/RawCMS.Client.zip'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
 - task: PublishBuildArtifacts@1
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/RawCMS.zip'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
 - task: Docker@2
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
   inputs:
     containerRegistry: 'Docker Registry Arduosoft'
-    repository: 'arduosoft/rawcms-alpha'
+    repository: 'arduosoft/rawcms-2'
     command: 'buildAndPush'
     Dockerfile: 'docker/Dockerfile'
     buildContext: '.'
     tags: |
-      $(Build.BuildId)
+      $(Build.BuildId)-alpha
       latest
 
 - task: CopyFiles@2
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
   inputs:
     SourceFolder: 'docker'
     Contents: 'Dockerfile'
     TargetFolder: '$(Build.Repository.LocalPath)'
 
 - task: Bash@3
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
   inputs:
     targetType: 'inline'
     script: |

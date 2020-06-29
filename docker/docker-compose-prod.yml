@@ -30,7 +30,7 @@ services:
     ports:
       - 9300:9200
   rawcms-app:
-    image: arduosoft/rawcms-alpha
+    image: arduosoft/rawcms-2
     depends_on:
       - mongo
       - elasticsearchtest
