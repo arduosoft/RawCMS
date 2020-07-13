@@ -28,4 +28,8 @@ export class ICrudService {
     async delete(id) {
         throw new Error(`Please Provide an implementation for ${this.delete.name}`);
     }
+
+    async count(obj) {
+        throw new Error(`Please Provide an implementation for ${this.count.name}`);
+    }
 }

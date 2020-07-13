@@ -93,4 +93,14 @@ export class BaseCrudService extends mix(BaseApiService, ICrudService) {
 
         return res.data.data;
     }
+
+    async count() {
+
+        const res = await this._apiClient.get(`${this._basePath}/count`);
+        if (!this._checkGenericError(res)) {
+            return false;
+        }
+
+        return res.data.data;
+    }
 }

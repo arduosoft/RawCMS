@@ -245,7 +245,7 @@ namespace RawCMS.Library.Service
             return output;
         }
 
-        public long Count(string collection, string query)
+        public long Count(string collection, string query = null)
         {
             FilterDefinition<BsonDocument> filter = FilterDefinition<BsonDocument>.Empty;
             if (!string.IsNullOrWhiteSpace(query))
