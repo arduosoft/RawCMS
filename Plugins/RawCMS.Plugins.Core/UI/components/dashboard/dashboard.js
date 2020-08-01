@@ -15,7 +15,7 @@ const _DashboardDef = async () => {
             totalRecordsNum: function () {
                 const quotasObj = optionalChain(() => this.info.recordQuotas);
                 if (quotasObj === undefined) {
-                    return undefined;
+                    return 0;
                 }
 
                 return Object.keys(quotasObj)
@@ -28,10 +28,10 @@ const _DashboardDef = async () => {
                 });
                 const labels = [];
                 const data = [];
-                Object.keys(quotasObj).forEach(x => {
-                    labels.push(x);
-                    data.push(quotasObj[x]);
-                });
+                for (const index in quotasObj) {
+                    labels.push(index);
+                    data.push(quotasObj[index]);
+                }
 
                 return { data, labels };
             }

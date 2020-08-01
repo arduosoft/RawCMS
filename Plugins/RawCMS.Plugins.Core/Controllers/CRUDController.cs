@@ -183,5 +183,28 @@ namespace RawCMS.Plugins.Core.Controllers
             }
             return response;
         }
+
+        //
+        [HttpGet("{collection}/count")]
+        public RestMessage<long> Count(string collection)
+        {
+            RestMessage<long> response = new RestMessage<long>(0);
+            try
+            {
+                var result = service.Count(collection);
+                response.Data = result;
+            }catch(Exception ex)
+            {
+                //TODO: log here
+                response.Errors.Add(new Library.Core.Error()
+                {
+                    Code = "UNEXPEXTED",
+                    Title = $"{collection} produces an unexpexted error",
+                    Description = ex.Message,
+                });
+            }
+
+            return response;
+        }
     }
 }

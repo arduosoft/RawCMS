@@ -1,29 +1,26 @@
-import { sleep } from "/app/utils/time.utils.js";
-import { BaseApiService } from "/app/common/shared/services/base-api-service.js";
+import { BaseCrudService } from '/app/common/shared/services/base-crud-service.js';
 
-class DashboardService extends BaseApiService {
+class DashboardService extends BaseCrudService {
     constructor() {
-        super();
+        super({ basePath: "/system/admin/_schema" });
     }
 
     async getDashboardInfo() {
-        // FIXME: For now we use mock data
-
-        await sleep(5000);
-
-        const quota = {
-            TEST: Math.floor(Math.random() * 100),
-            Items1: Math.floor(Math.random() * 100),
-            Items2: Math.floor(Math.random() * 100),
-            Items3: Math.floor(Math.random() * 100),
-            Items4: Math.floor(Math.random() * 100),
-            Items5: Math.floor(Math.random() * 100),
-            Items6: Math.floor(Math.random() * 100)
-        };
+        
+        this._basePath = '/system/admin/_schema';
+        let recordCount = await this.count();
+        let collections = await this.getAll();
+        let quota = {};
+        for await (const item of collections) {
+            let collName = item.CollectionName;
+            this._basePath = '/api/CRUD/' + collName;
+            let collCount = await this.count();
+            quota[collName] = collCount;
+        }
+        
         return {
             recordQuotas: quota,
-            entitiesNum: Object.keys(quota).length,
-            lastWeekCallsNum: Math.floor(Math.random() * 500)
+            entitiesNum: recordCount
         };
     }
 }

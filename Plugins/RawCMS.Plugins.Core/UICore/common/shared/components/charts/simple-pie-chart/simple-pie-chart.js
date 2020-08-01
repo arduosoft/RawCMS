@@ -29,13 +29,16 @@ const _SimplePieChart = {
             return res;
         },
         sortedData: function () {
+            //let data = optionalChain(() => [...this.context.data], {
+            //    fallbackValue: []
+            //}).sort((a, b) => a - b);
+
+            //if (this.options.lowerIsBetter) {
+            //    data = data.reverse();
+            //}
             let data = optionalChain(() => [...this.context.data], {
                 fallbackValue: []
-            }).sort((a, b) => a - b);
-
-            if (this.options.lowerIsBetter) {
-                data = data.reverse();
-            }
+            })
 
             return data;
         }
