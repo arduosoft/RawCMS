@@ -27,16 +27,19 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'arduosoft_RawCMS'
     projectName: 'RawCms'
+  enabled: false
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
 
 - task: SonarCloudAnalyze@1
+  enabled: false
 
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
+  enabled: false
 
 - task: Bash@3
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master-2'))
