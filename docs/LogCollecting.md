@@ -1,9 +1,9 @@
 # Log Collecting
 
 This module enables the log collecting feature. Logs are isolated by application. A "default" application is created automatically.
-Each application has a Public ID. This ID is the public key used for sending log through http request.
+Each application has a Public ID. This ID is the public key used for sending log through the http request.
 
-*Note:* for performance log must be added in bulk mode, one call with multiple rows.
+*Note:* For a better performance, log must be added in bulk mode, one API call containing multiple rows.
 
 
 ```
