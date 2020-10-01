@@ -156,7 +156,7 @@ export const configCoreModule = _configCoreModule;
 export default _configCoreModule;
 ```
 
-The menuItems getter provide men� items for the app, The getRoutes method provides routes for app.
+The menuItems getter provide menu items for the app, The getRoutes method provides routes for app.
 
 ## Plugin class
 
