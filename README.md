@@ -26,13 +26,13 @@ We are actively seeking contribution to continue improving our open source proje
 
 ## Key Benefits and Advantages
 ### ⚒ Data Modelling without coding
-No matter if you're dealing with web apps, mobile apps or client application. Just forget about all data management effort. All you will need with RawCMS is to define your data structure and relationships, using a simple and intuitive UI. Simply say stop to the boring repetitive code.
+Whether you're dealing with web apps, mobile apps or client application, just forget about all data management effort. All you will need with RawCMS is to define your data structure and relationships, using a simple and intuitive UI. Simply say stop to the boring repetitive code!
 
 ### 🎛 Agnostic and Universal Framework for your Data
-Due to the API approach, RawCMS is very flexible and adapts perfectly to all use cases. Using GraphQL or REST standard RawCMS can be used by everybody without any headhache. This give you a solid and modern foundation for your project. 
+Due to the API approach, RawCMS is very flexible and adapts perfectly to all use cases. Using GraphQL or REST standard RawCMS can be used by everybody without any headhaches. This gives you a solid and modern foundation for your project. 
 
 ### 🚀 Ready to use
-Built on top of the well-known .net core framework, RawCMS can be deployed on every platforms in a click. No longer are there concerns about OS licenses of portability, just run it.
+Built on top of the well-known .net core framework, RawCMS can be deployed on every platforms in a click. No longer are there concerns about OS licenses or portability, just run it.
 Benefit from all existing Symfony Components and Bundles provided by the community, or create your own Bundles to extend projects with reusable components. 
 
 ### 💎 Your backend consolidated in one Platform
