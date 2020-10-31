@@ -75,10 +75,11 @@ namespace RawCMS.Library.Service
             {
                 Field field = new Field
                 {
-                    Name = "_id",
                     //BaseType = FieldBaseType.String,
-                    Type = "ObjectId",
-                    Required = true
+                    Name = "_id",
+                    Required = true,
+                    Type = "ObjectId"
+                                       
                 };
                 schema.FieldSettings.Add(field);
             }
