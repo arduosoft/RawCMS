@@ -54,7 +54,7 @@ You can find documentationa about each docker image on [docker hub](https://hub.
 
 
 ## Deploy on heroku
-As the CMS is released in two different containers, you need to deploy two different application
+As the CMS is released in two different containers, you need to deploy two different applications
 
 ### Deploy UI on Heroku
 1. Create an app, ie. your-demo-ui
@@ -100,7 +100,7 @@ heroku container:release web -a your-demo-api
 A simple configuration for Kubernetes can be made using following yaml files
 
 ### UI 
-save this file as ui.yml
+Save this file as ui.yml
 ```yaml
 apiVersion: v1
 kind: Service
@@ -148,7 +148,7 @@ spec:
 
 ## API
 
-save this snippet as api.yml
+Save this snippet as api.yml
 ```yaml
 apiVersion: v1
 kind: Service
@@ -193,7 +193,7 @@ spec:
 ```
 
 ### Ingress
-save this snippet as ingress.yml
+Save this snippet as ingress.yml
 ```yaml
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -232,7 +232,7 @@ You can create a kubernetes cluster from scratch using Microsoft Azure using [th
 
 
 ## Manual deployment
-If you want you can use the zip packages and deploy them directly. This practice is niether recommended nor supported.
-The two applications can be deployed as following:
-- **UI** is a static html web site, can be serverd by nginx or all other web server. All the url must point to index.html with a rewrite rule. You can use the nginx condiguration of our [nginx container as refernence ](https://github.com/arduosoft/RawCMS/blob/master/docker/config/ui/nginx.conf)
-- **API** is a regular aspnet core application, and can be run using command 'dotnet RawCMS.dll'. IIS should work as well. It is tested on frmework 2.2 and 2.1
+If you want you can use the zip packages and deploy them directly. This practice is neither recommended nor supported.
+The two applications can be deployed as follows:
+- **UI** is a static html web site, can be served by nginx or any other web server. All the urls must point to index.html with a rewrite rule. You can use the nginx configuration of our [nginx container as refernence ](https://github.com/arduosoft/RawCMS/blob/master/docker/config/ui/nginx.conf)
+- **API** is a regular ASP.NET core application, and can be run using command "dotnet RawCMS.dll". IIS should work as well. It is tested on .NET CORE 2.2 and 2.1
