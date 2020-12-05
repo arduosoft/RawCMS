@@ -18,7 +18,7 @@ BODY
 
 ```
 
-*Serverity values:*
+*Severity values:*
 
 ```
 	ALL = 0,
