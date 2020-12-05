@@ -193,18 +193,9 @@ namespace RawCMS.Plugins.Core.Stores
             }
             if (count == 0)
             {
-                IdentityUser userToAdd = new IdentityUser()
-                {
-                    UserName = "bob",
-                    NormalizedUserName = "BOB",
-                    Email = "test@test.it",
-                    NormalizedEmail = "test@test.it",
-                    NewPassword = "XYZ",//password will be hashed by service
-                };
+                IdentityUser initialUser = GetInitialUser();
 
-                userToAdd.Roles.Add("Admin");
-                userToAdd.Roles.Add("User");
-                await CreateAsync(userToAdd, CancellationToken.None);
+                await CreateAsync(initialUser, CancellationToken.None);
             }
         }
 
@@ -355,6 +346,27 @@ namespace RawCMS.Plugins.Core.Stores
 
         public async Task IsActiveAsync(IsActiveContext context)
         {
+        }
+
+        /// <summary>
+        /// Get a new user with enviroment variables data or default
+        /// </summary>
+        private static IdentityUser GetInitialUser()
+        {
+            IdentityUser initialUser = new IdentityUser()
+            {
+                UserName = Environment.GetEnvironmentVariable("RAWCMS_INITIAL_USER") ?? "admin",
+                Email = Environment.GetEnvironmentVariable("RAWCMS_INITIAL_EMAIL") ?? "rawcms@mail.org",
+                NewPassword = Environment.GetEnvironmentVariable("RAWCMS_INITIAL_PASSWORD") ?? "rawcmsrocks",//password will be hashed by service
+
+                //unnecessary
+                //NormalizedUserName = Environment.GetEnvironmentVariable("RAWCMS_INITIAL_USER")?.ToUpper() ?? "admin",
+                //NormalizedEmail = Environment.GetEnvironmentVariable("RAWCMS_INITIAL_EMAIL")?.ToUpper() ?? "rawcms@mail.org",
+            };
+
+            initialUser.Roles.Add("Admin");
+            initialUser.Roles.Add("User");
+            return initialUser;
         }
 
         public static string NormalizeString(string value)
