@@ -7,7 +7,9 @@ const _UserDetailsWrapperDef = async () => {
   return {
     data: function() {
       return {
+        activeTabId: 'tabFormly',
         apiService: userService,
+        userRoles: this.$slots,
       };
     },
     extends: rawCmsDetailEditDef,
@@ -23,6 +25,18 @@ const _UserDetailsDef = async () => {
   return {
     components: {
       DetailWrapper: detailWrapperDef,
+    },
+    data: function() {
+      return {
+        nameRules: [v => !!v || this.$t('core.users.detail.requiredNameMsg')],
+        emailRules: [v => !!v || this.$t('core.users.detail.requiredEmailMsg')],
+        emailRules: [v => !!v || this.$t('core.users.detail.requiredRoleslMsg')],
+      };
+    },
+    computed: {
+      userRoles: function() {
+        return this.$slots;
+      },
     },
     props: detailWrapperDef.extends.props,
     template: tpl,

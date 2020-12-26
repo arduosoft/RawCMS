@@ -35,7 +35,6 @@
         "fields": "Fields",
         "name": "Name",
         "newTitle": "New entity",
-        "requiredNameMsg": "Name is required",
         "updateTitle": "Entity {name}",
         "fieldEdit": {
           "nameLabel": "Name",
@@ -68,7 +67,7 @@
       "deleteConfirmMsgTpl": "Are you sure you want to delete lambda {name}?",
       "deleteErrorMsgTpl": "An error occurred while deleting lambda {name}.",
       "deleteSuccessMsgTpl": "Lambda {name} was deleted.",
-      "emptyMsg": "There are no lambdas yet. Add some with the button below!",
+      "empt1yMsg": "There are no lambdas yet. Add some with the button below!",
       "title": "Lambdas",
       "details": {
         "nameLabel": "Name",
@@ -92,7 +91,12 @@
     "users": {
       "detail": {
         "newTitle": "New user",
-        "updateTitle": "User {name}"
+        "newEmail": "New Email",
+        "newRoles": "New Roles",
+        "updateTitle": "User {name}",
+        "requiredNameMsg": "Name is required",
+        "requiredEmailMsg": "Email is required",
+        "requiredRoleslMsg": "Roles is required"
       },
       "deleteConfirmMsgTpl": "Are you sure you want to delete user {name}?",
       "deleteErrorMsgTpl": "An error occurred while deleting user {name}.",
